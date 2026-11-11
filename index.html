@@ -357,6 +357,22 @@ details.done-box .list{margin-top:8px}
 let lang="zh";
 try{lang=localStorage.getItem("lifeos-lang")||((navigator.language||"").toLowerCase().startsWith("zh")?"zh":"en")}catch(e){lang=(navigator.language||"").toLowerCase().startsWith("zh")?"zh":"en"}
 const L=(zh,en)=>lang==="en"?en:zh;
+
+/* ---------- which boards are switched on (per browser) ---------- */
+const BOARDS_KEY="lifeos-boards";
+const boards={habit:true,life:true,study:true,work:true,shop:true};
+try{Object.assign(boards,JSON.parse(localStorage.getItem(BOARDS_KEY)||"{}"))}catch(e){}
+const on=k=>k==="shop"?boards.life&&boards.shop:!!boards[k];
+const taskSpaces=()=>["life","study","work"].filter(on);
+const pickSpace=()=>taskSpaces().includes(tab)?tab:taskSpaces()[0];
+function applyBoards(){
+  const order=["habit","life","study","work"].filter(on);
+  document.querySelectorAll(".tab").forEach(b=>b.hidden=!on(b.dataset.k));
+  const nav=document.querySelector("nav.tabs"); if(nav)nav.style.gridTemplateColumns=`repeat(${order.length},1fr)`;
+  if(tab!=="journal"&&!on(tab))tab=order[0];
+  if(!on("shop"))lifeSub="goals";
+  const fab=document.getElementById("fab"); if(fab)fab.hidden=!taskSpaces().length;
+}
 const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const WDEN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const n_=(n,one,many)=>n===1?one:many;
@@ -449,7 +465,7 @@ function dueLabel(due){
 }
 
 /* ---------- buddy mood & growth ---------- */
-function habitStats(){const td=checkins[todayStr()]||{};const live=habits.filter(h=>!h.archived);return {live,done:live.filter(h=>td[h.id]).length}}
+function habitStats(){const td=checkins[todayStr()]||{};const live=on("habit")?habits.filter(h=>!h.archived):[];return {live,done:live.filter(h=>td[h.id]).length}}
 // water is derived from the record itself: each finished task = 1 drop, each check-in = 2 drops
 function waterTotal(){
   const t=tasks.filter(x=>x.done).length;
@@ -469,7 +485,7 @@ function buddyState(){
   if(bloom)return {...base,mood:"cheer",say:L("今天的打卡全部完成！我开花啦 🌸","All check-ins done today! I'm blooming 🌸")};
   if(urgent)return {...base,mood:"idle",say:L(`有 ${urgent} 件今天到期或已经过期，先看看它们？`,`${urgent} ${n_(urgent,"thing is","things are")} due today or overdue. Take a look first?`)};
   if(h<11)return {...base,mood:"happy",say:L("早上好！完成一件事就能给我浇一滴水哦。","Good morning! Every task you finish gives me a drop of water.")};
-  if(h<18)return {...base,mood:"idle",say:done?L(`今天打卡 ${done} 个了，喝饱了～`,`${done} check-in${done===1?"":"s"} today, I'm nicely watered～`):L("下午好，打个卡给我浇点水？","Good afternoon! Check in to give me some water?")};
+  if(h<18)return {...base,mood:"idle",say:!on("habit")?L("下午好！完成一件事就能给我浇一滴水哦。","Good afternoon! Every task you finish gives me a drop of water."):done?L(`今天打卡 ${done} 个了，喝饱了～`,`${done} check-in${done===1?"":"s"} today, I'm nicely watered～`):L("下午好，打个卡给我浇点水？","Good afternoon! Check in to give me some water?")};
   if(!(journal[todayStr()]||{}).note)return {...base,mood:"happy",say:L("晚上好，今天辛苦了。点右上角「今日小结」看看你今天做了什么吧。","Good evening, you worked hard today. Tap Today at the top to see what you got done.")};
   return {...base,mood:"happy",say:L("晚上好，今天辛苦了。还有什么想记下来的吗？","Good evening, you worked hard today. Anything else to jot down?")};
 }
@@ -539,6 +555,7 @@ function setStatus(t){const el=$("#status");el.textContent=t||"";el.hidden=!t}
 
 /* ---------- rendering ---------- */
 function render(){
+  applyBoards();
   document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.k===tab)));
   const open=k=>tasks.filter(t=>t.space===k&&!t.done&&!t.deleted).length;
   $("#n-work").textContent=open("work"); $("#n-life").textContent=open("life"); $("#n-study").textContent=open("study");
@@ -573,6 +590,7 @@ function sortTasks(a,b){
 const EMPTY={};
 const LIFE_HZ={};
 function lifeSeg(){
+  if(!on("shop"))return "";
   const need=shop.filter(x=>!x.bought).length, goals=tasks.filter(t=>t.space==="life"&&!t.done&&!t.deleted).length;
   return `<div class="seg" role="group" aria-label="${L("生活分区","Life sections")}">
     <button data-act="lifesub" data-v="shop" aria-pressed="${lifeSub==="shop"}">🛒 ${L("购物清单","Shopping")} <span class="n">${need}</span></button>
@@ -754,17 +772,24 @@ function ruleParse(text,today,fallback="life",dayFirst=false){
     else if(has(raw,RULES.long))horizon="long";
     out.push({title:title.slice(0,200),space,horizon,due,note:"",keep:true});
   };
+  const isTaskish=x=>has(x,RULES.study)||has(x,RULES.work);
   for(const chunk of chunks){
     const sm=chunk.match(SHOP_RE);
-    const shopTail=sm?pickDate(chunk.slice(sm.index+sm[0].length),today,dayFirst).rest:null;
-    if(sm && !has(shopTail,RULES.study) && !has(shopTail,RULES.work)){
-      // everything before the buy-clause is ordinary tasks; the clause that holds "buy" is just the errand itself
-      const parts=chunk.slice(0,sm.index).split(/[，,]/);
-      const lead=parts.pop();
-      parts.forEach(addTask);
-      if(lead&&(has(lead,RULES.study)||has(lead,RULES.work)))addTask(lead);
-      shopItems(shopTail).forEach(name=>out.push({title:name,space:"shop",horizon:"week",due:null,note:"",keep:true}));
-      continue;
+    if(sm){
+      // the items run from "buy" until a comma-part that looks like a separate task (study/work words or its own date)
+      const segs=chunk.slice(sm.index+sm[0].length).split(/[，,]/), shopSegs=[];
+      let i=0;
+      for(;i<segs.length;i++){const sg=segs[i]; if(isTaskish(sg)||(i>0&&pickDate(sg,today,dayFirst).due))break; shopSegs.push(sg)}
+      if(shopSegs.length){
+        // everything before the buy-clause is ordinary tasks; the clause that holds "buy" is just the errand itself
+        const parts=chunk.slice(0,sm.index).split(/[，,]/);
+        const lead=parts.pop();
+        parts.forEach(addTask);
+        if(lead&&isTaskish(lead))addTask(lead);
+        shopItems(pickDate(shopSegs.join(","),today,dayFirst).rest).forEach(name=>out.push({title:name,space:"shop",horizon:"week",due:null,note:"",keep:true}));
+        segs.slice(i).forEach(addTask);
+        continue;
+      }
     }
     chunk.split(/[，,]\s*(?=\S)/).forEach(addTask);
   }
@@ -813,17 +838,17 @@ function journalView(){
   const comment=J.comment||"";
   return `<div class="board" data-k="journal">
     <div class="jnav"><button data-act="jprev" aria-label="${L("前一天","Previous day")}">‹</button><h2>${L(label+"的小结",label==="Today"||label==="Yesterday"?label+"'s recap":"Recap · "+label)}<small>${L(`${m}月${dd}日 · 周${wd}`,`${WDEN[wdIdx]}, ${dd} ${MON[m-1]}`)}</small></h2><button data-act="jnext" aria-label="${L("后一天","Next day")}" ${d>=t?"disabled":""}>›</button></div>
-    <div class="jstats">
-      <div class="jstat"><b style="color:var(--habit-ink)">${D.hNames.length}<span style="font-size:13px"> / ${D.hTotal}</span></b><span>${L("打卡","Check-in")}</span></div>
-      <div class="jstat"><b style="color:var(--life-ink)">${D.life.length}</b><span>${L("生活","Life")}</span></div>
-      <div class="jstat"><b style="color:var(--study-ink)">${D.study.length}</b><span>${L("学习","Study")}</span></div>
-      <div class="jstat"><b style="color:var(--work-ink)">${D.work.length}</b><span>${L("工作","Work")}</span></div>
+    <div class="jstats" style="grid-template-columns:repeat(${Math.min(["habit","life","study","work"].filter(on).length,4)},1fr)">
+      ${on("habit")?`<div class="jstat"><b style="color:var(--habit-ink)">${D.hNames.length}<span style="font-size:13px"> / ${D.hTotal}</span></b><span>${L("打卡","Check-in")}</span></div>`:""}
+      ${on("life")?`<div class="jstat"><b style="color:var(--life-ink)">${D.life.length}</b><span>${L("生活","Life")}</span></div>`:""}
+      ${on("study")?`<div class="jstat"><b style="color:var(--study-ink)">${D.study.length}</b><span>${L("学习","Study")}</span></div>`:""}
+      ${on("work")?`<div class="jstat"><b style="color:var(--work-ink)">${D.work.length}</b><span>${L("工作","Work")}</span></div>`:""}
     </div>
     <div class="jgrid">
-      ${box(L("打卡","Check-in"),"--habit",list(D.hNames))}
-      ${box(L("生活","Life"),"--life",lifeInner)}
-      ${box(L("学习","Study"),"--study",list(D.study,"title"))}
-      ${box(L("工作","Work"),"--work",list(D.work,"title"))}
+      ${on("habit")?box(L("打卡","Check-in"),"--habit",list(D.hNames)):""}
+      ${on("life")?box(L("生活","Life"),"--life",lifeInner):""}
+      ${on("study")?box(L("学习","Study"),"--study",list(D.study,"title")):""}
+      ${on("work")?box(L("工作","Work"),"--work",list(D.work,"title")):""}
     </div>
     <div class="comment">
       <div class="mini">${treeSVG(jBusy?"think":"happy",stageOf(waterTotal()),false)}</div>
@@ -886,7 +911,7 @@ function renderPreview(){
     <div class="pv-body">
       <input class="pv-title" id="pv-t-${i}" data-pv="title" data-i="${i}" value="${esc(p.title)}" aria-label="${L("任务标题","Task title")}">
       <div class="chips">
-        ${["life","study","work","shop"].map(s=>`<button class="chip ${s==="shop"?"life":s}${p.space===s?" on":""}" data-pv="space" data-v="${s}" data-i="${i}">${s==="shop"?"🛒 "+SPACE.shop:SPACE[s]}</button>`).join("")}
+        ${["life","study","work","shop"].filter(on).map(s=>`<button class="chip ${s==="shop"?"life":s}${p.space===s?" on":""}" data-pv="space" data-v="${s}" data-i="${i}">${s==="shop"?"🛒 "+SPACE.shop:SPACE[s]}</button>`).join("")}
         ${p.space==="shop"?"":`<span class="gap"></span>`+HZ.map(h=>`<button class="chip hz${p.horizon===h.k?" on":""}" data-pv="hz" data-v="${h.k}" data-i="${i}">${h.name}</button>`).join("")}
         ${p.due?`<span class="chip">${L("截止 ","Due ")}${esc(p.due)}</span>`:""}
       </div>
@@ -896,7 +921,10 @@ function renderPreview(){
 async function parseCapture(){
   const text=$("#cap").value.trim(); if(!text)return;
   if(!sample){
-    pending=ruleParse(text,todayStr(),["life","study","work"].includes(tab)?tab:"life",lang==="en");
+    pending=ruleParse(text,todayStr(),pickSpace(),lang==="en").map(p=>{
+      if(p.space==="shop"&&!on("shop"))p={...p,space:"life",title:L("买","Buy ")+p.title};
+      if(!on(p.space))p={...p,space:pickSpace()};
+      return p});
     if(pending.length)cheer(L(`分好啦，一共 ${pending.length} 条，看看对不对？`,`Sorted into ${pending.length} ${n_(pending.length,"item","items")}. Look right?`));
     else $("#capHint").textContent=L("没分出任务，换个说法试试，或者先丢进收件箱。","Couldn't find anything to sort. Try rewording, or put it in the inbox.");
     renderPreview();return}
@@ -938,7 +966,7 @@ async function addTask(t){
 }
 async function addInbox(){
   const text=$("#cap").value.trim(); if(!text||!db)return;
-  const space=["life","study","work"].includes(tab)?tab:"life";
+  const space=pickSpace();
   await addTask({title:text.slice(0,200),space,horizon:"inbox"});
   $("#cap").value=""; closeCap(); if(tab==="habit"){tab=space;render()}
   cheer(L(`收到！放进${SPACE[space]}收件箱了。`,`Got it! Added to the ${SPACE[space].toLowerCase()} inbox.`));
@@ -1181,6 +1209,11 @@ function seed(){
 }
 
 /* ---------- settings: name, backup, restore ---------- */
+function boardChips(){
+  return [["habit","打卡","Habits"],["life","生活","Life"],["shop","🛒 购物清单","🛒 Shopping list"],["study","学习","Study"],["work","工作","Work"]]
+    .map(([k,zh,en])=>{const off=k==="shop"&&!boards.life;
+      return `<button class="chip hz${boards[k]&&!off?" on":""}" data-set="board" data-v="${k}" ${off?'disabled style="opacity:.45"':""} aria-pressed="${boards[k]&&!off}">${boards[k]&&!off?"✓ ":""}${L(zh,en)}</button>`}).join("");
+}
 function langChips(attr="data-set"){return [["zh","中文"],["en","English"]].map(([k,n])=>`<button class="chip hz${lang===k?" on":""}" ${attr}="lang" data-v="${k}">${n}</button>`).join("")}
 function openSettings(){
   let confirmWipe=false;
@@ -1188,6 +1221,9 @@ function openSettings(){
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("设置","Settings")}">
     <h3>${L("设置","Settings")}</h3>
     <div class="field"><span>${L("语言","Language")}</span><div class="chips">${langChips()}</div></div>
+    <div class="field"><span>${L("板块","Boards")}</span><div class="chips">${boardChips()}</div>
+      <p class="hint" style="margin:0">${L("关掉用不到的板块，里面的数据不会删除，随时可以再打开。","Turn off what you don't need. Nothing inside is deleted, and you can turn it back on anytime.")}</p>
+      <span class="saved" id="board-msg"></span></div>
     <label class="field"><span>${L("你的名字","Your name")}</span><input id="set-name" value="${esc(userName)}" maxlength="20" placeholder="${L("比如：Gracy","e.g. Gracy")}"></label>
     <div class="field"><span>${L("备份","Backup")}</span>
       <p class="hint" style="margin:0">${L("数据只存在这个浏览器里。换手机、换浏览器或清理浏览器数据之前，先导出一份备份。","Your data lives only in this browser. Export a backup before switching phones or browsers, or clearing browser data.")}</p>
@@ -1203,6 +1239,11 @@ function openSettings(){
   bg.addEventListener("click",e=>{
     if(e.target===bg){bg.remove();return}
     const b=e.target.closest("[data-set]"); if(!b)return; const a=b.dataset.set;
+    if(a==="board"){
+      const k=b.dataset.v, mains=["habit","life","study","work"].filter(x=>boards[x]);
+      if(k!=="shop"&&boards[k]&&mains.length===1){const el=bg.querySelector("#board-msg");if(el)el.textContent=L("至少要保留一个板块哦。","Keep at least one board on.");return}
+      boards[k]=!boards[k]; try{localStorage.setItem(BOARDS_KEY,JSON.stringify(boards))}catch(_){}
+      const n=bg.querySelector("#set-name").value; draw(); bg.querySelector("#set-name").value=n; render(); return}
     if(a==="lang"){const n=bg.querySelector("#set-name").value;setLang(b.dataset.v);draw();bg.querySelector("#set-name").value=n;return}
     if(a==="close"){bg.remove();return}
     if(a==="save"){const n=bg.querySelector("#set-name").value.trim();if(n){userName=n;try{localStorage.setItem(NAME_KEY,n)}catch(_){};applyName()}bg.remove();return}

@@ -13,6 +13,7 @@ My "life server": a bilingual (中文 / English) task and habit tracker with a s
 - **Daily recap**: see what you finished today, read a note from Sprout and write a reflection if you like.
 - **Light and dark**: light sky blue during the day, deep blue at night.
 - **Bilingual**: switch between 中文 and English in ⚙️ settings.
+- **Only the boards you need**: turn Habits, Life, the shopping list, Study or Work on and off in ⚙️ settings. Nothing is deleted.
 
 ## Your data
 
@@ -26,6 +27,7 @@ Everything is stored in your own browser (localStorage). Nothing is uploaded and
 - 点右下角的小芽随手记，自动拆成几条任务、分到对应板块、换算日期，确认后才保存
 - 生活板块里有购物清单，常买的东西点一下就加进去
 - 今日小结汇总当天完成的事，小芽会写一段鼓励，你也可以写感想
+- 用不到的板块可以在 ⚙️ 里关掉，数据不会删除
 - 数据只存在你自己的浏览器里，换设备前记得在 ⚙️ 里导出备份
 
 ## Run it yourself
