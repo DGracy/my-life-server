@@ -254,30 +254,83 @@ details.done-box .list{margin-top:8px}
 .fmode svg{width:18px;height:18px;flex:none}
 .rc-btns{display:flex;flex-wrap:wrap;gap:6px;border-top:2px dashed var(--line);padding-top:10px}
 .rc-btns .btn{font-size:13px;padding:5px 12px}
-.rc-sheet{gap:14px;max-width:600px}
-.rc-head{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:center}
-.rc-head h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:22px}
-.rc-head .x{border:none;background:var(--surface-2);border-radius:50%;width:34px;height:34px;font-size:18px;color:var(--muted);align-self:start}
-.rc-buddy{width:72px;height:72px}.rc-buddy svg{width:100%;height:100%}
-.rc-stats{grid-template-columns:repeat(auto-fit,minmax(70px,1fr))!important}
-.rc-stats .jstat{box-shadow:none;background:var(--bg-2)}
-.rc-sheet .rc-comment{display:block;box-shadow:none;background:var(--bg-2)}
-.rc-sec{display:flex;flex-direction:column;gap:6px}
-.rc-sec h4{margin:0;display:flex;align-items:center;gap:7px;font-family:var(--f-display);font-weight:400;font-size:17px}
-.rc-sec h4 i{width:10px;height:10px;border-radius:50%}
-.rc-sec h4 .msface{width:22px;height:22px}
-.rc-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:3px;font-size:14px}
-.rc-list li{display:flex;gap:6px;overflow-wrap:anywhere}
-.rc-list li::before{content:"✓";color:var(--muted);font-weight:700}
-.rc-list.plain li::before{content:"★";color:var(--habit)}
-.rc-sec textarea{width:100%;min-height:96px;resize:vertical;border:2px solid var(--line);border-radius:16px;background:var(--bg-2);padding:10px 14px;line-height:1.6}
-.rc-sec textarea:focus{border-color:var(--brand);outline:none}
-.rc-bars{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;height:90px;align-items:end}
-.rc-bar{display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end}
-.rc-bar i{width:100%;min-height:3px;border-radius:6px 6px 3px 3px;background:linear-gradient(180deg,var(--brand),var(--water))}
+/* recap sheet: a keepsake page */
+.sheet.rc-sheet{padding:0;gap:0;max-width:600px;overflow:auto}
+.rc-hero{position:relative;display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;padding:24px 20px 20px;background:linear-gradient(135deg,color-mix(in srgb,var(--water) 42%,var(--surface)) 0%,color-mix(in srgb,var(--leaf) 34%,var(--surface)) 100%);overflow:hidden}
+.rc-spark{position:absolute;inset:0;width:100%;height:100%;fill:var(--surface);opacity:.7;pointer-events:none}
+.rc-titles{position:relative;display:flex;flex-direction:column;gap:6px;min-width:0}
+.rc-eyebrow{font-size:12.5px;letter-spacing:.08em;color:var(--fg);opacity:.65}
+.rc-titles h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:30px;line-height:1.1;text-wrap:balance}
+.rc-range{width:fit-content;background:var(--surface);border-radius:999px;padding:3px 12px;font-size:13px;font-family:var(--f-num);font-variant-numeric:tabular-nums;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+.rc-pet{position:relative;width:96px;height:96px;margin-right:14px}
+.rc-pet .mface{width:100%;height:100%}
+.rc-hero .x{position:absolute;top:10px;right:10px;border:none;background:var(--surface);border-radius:50%;width:32px;height:32px;font-size:18px;color:var(--muted);line-height:1}
+.rc-body{padding:18px 20px 8px;display:flex;flex-direction:column;gap:20px}
+.rc-sum{display:flex;flex-direction:column;gap:8px}
+.rc-big{display:flex;align-items:baseline;gap:6px}
+.rc-big .drop{font-size:26px;align-self:center}
+.rc-big b{font-family:var(--f-num);font-weight:600;font-size:46px;line-height:1;color:var(--water);font-variant-numeric:tabular-nums}
+.rc-big span:last-child{font-size:15px;color:var(--muted)}
+.rc-sum p{margin:0;color:var(--muted);font-size:14px}
+.rc-split{display:flex;gap:3px;height:12px;border-radius:999px;overflow:hidden;background:var(--surface-2)}
+.rc-split i{display:block;min-width:8px}
+.rc-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted)}
+.rc-legend span{display:flex;align-items:center;gap:5px}.rc-legend i{width:9px;height:9px;border-radius:3px}.rc-legend b{color:var(--fg);font-family:var(--f-num)}
+.rc-say{display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:start}
+.rc-avatar{width:52px;height:52px}.rc-avatar .mface{width:100%;height:100%}
+.rc-bubble{position:relative;background:color-mix(in srgb,var(--brand) 9%,var(--surface));border:2px solid color-mix(in srgb,var(--brand) 22%,var(--surface));border-radius:6px 20px 20px 20px;padding:12px 16px;display:flex;flex-direction:column;gap:6px}
+.rc-bubble .who{font-family:var(--f-display);font-size:15px;color:var(--brand-ink)}
+:root[data-tod="night"] .rc-bubble .who{color:var(--work-ink)}
+.rc-bubble p{margin:0;line-height:1.8;font-size:15px}
+.rc-bubble .link{align-self:flex-start;color:var(--brand);padding:0;font-weight:500}
+.rc-sec{display:flex;flex-direction:column;gap:10px}
+.rc-sec>h4{margin:0;font-family:var(--f-display);font-weight:400;font-size:18px;display:flex;align-items:center;gap:8px}
+.rc-sec>h4::after{content:"";flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 11px)}
+.rc-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.rc-day{display:flex;flex-direction:column;align-items:center;gap:3px;background:var(--bg-2);border-radius:14px;padding:6px 0 7px}
+.rc-day.future{opacity:.45}
+.rc-mood{height:22px;width:22px}.rc-mood svg{width:100%;height:100%}
+.rc-col{display:flex;align-items:flex-end;width:14px;height:58px;background:var(--surface-2);border-radius:999px;overflow:hidden}
+.rc-col i{display:block;width:100%;border-radius:999px;background:linear-gradient(180deg,var(--leaf),var(--water))}
+.rc-day b{font-family:var(--f-num);font-size:12.5px;min-height:15px;line-height:15px}
+.rc-day small{font-size:11px;color:var(--muted)}
+.tickets{display:flex;flex-direction:column;gap:8px}
+.ticket{display:grid;grid-template-columns:58px 1fr;background:#fff3c4;color:#5a4400;border-radius:14px;position:relative;overflow:hidden;box-shadow:0 3px 0 #f0d270}
+.ticket .stub{display:flex;flex-direction:column;align-items:center;justify-content:center;background:#ffd34d;padding:8px 0;font-family:var(--f-num);line-height:1.05}
+.ticket .stub b{font-size:22px;font-weight:600}.ticket .stub small{font-size:11px}
+.ticket .stub.icon .msface{width:34px;height:34px}
+.ticket .tk-t{display:flex;align-items:center;gap:8px;padding:12px 12px 12px 16px;font-weight:600;border-left:2px dashed #e5b923;min-width:0}
+.ticket .tk-t span{flex:1;min-width:0;overflow-wrap:anywhere}
+.ticket::before,.ticket::after{content:"";position:absolute;left:51px;width:14px;height:14px;border-radius:50%;background:var(--surface)}
+.ticket::before{top:-7px}.ticket::after{bottom:-7px}
+.ticket .del{border:none;background:none;color:#a07a00;font-size:18px;padding:0 4px;line-height:1}
+.tk-btn{border:none;background:none;padding:0;text-align:left;width:100%}
+.tk-btn:hover .ticket{transform:translateY(-1px)}
+.rc-board{display:flex;flex-direction:column;gap:7px}
+.rc-board h5{margin:0;display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:var(--ki)}
+.rc-board h5 i{width:10px;height:10px;border-radius:50%;background:var(--k)}
+.rc-board h5 span{font-family:var(--f-num);background:var(--ks);border-radius:999px;padding:0 8px;font-size:12px}
+.rc-chips{display:flex;flex-wrap:wrap;gap:6px}
+.rc-chips span{background:var(--ks);color:var(--ki);border-radius:12px;padding:5px 11px;font-size:13.5px;line-height:1.35;overflow-wrap:anywhere}
+.rc-chips .more{background:transparent;border:2px dashed var(--ks)}
+.rc-bars{display:grid;grid-template-columns:repeat(12,1fr);gap:5px;height:110px;align-items:end;background:var(--bg-2);border-radius:16px;padding:12px 10px 8px}
+.rc-bar{display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.rc-bar i{width:100%;border-radius:8px 8px 4px 4px;background:color-mix(in srgb,var(--brand) 45%,var(--surface))}
+.rc-bar.top i{background:linear-gradient(180deg,var(--habit),var(--buddy))}
 .rc-bar span{font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums}
-.rc-trees{display:flex;flex-wrap:wrap;gap:4px}.rc-trees>div{width:64px;height:64px}.rc-trees svg{width:100%;height:100%}
-.ms-row.static{cursor:default}
+.podium{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.podium li{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;background:var(--bg-2);border-radius:14px;padding:7px 12px 7px 8px}
+.medal{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-num);font-weight:600;color:#fff}
+.medal.m0{background:#f2b705}.medal.m1{background:#a9b4c2}.medal.m2{background:#cd8a4f}
+.podium .pn{font-weight:500;min-width:0;overflow-wrap:anywhere}.podium .pc{font-size:13px;color:var(--muted);font-family:var(--f-num)}
+.rc-trees{display:flex;flex-wrap:wrap;gap:4px;background:color-mix(in srgb,var(--leaf) 18%,var(--surface));border-radius:16px;padding:6px}.rc-trees>div{width:68px;height:68px}.rc-trees svg{width:100%;height:100%}
+.rc-note textarea{width:100%;min-height:140px;resize:vertical;border:2px solid var(--line);border-radius:16px;background:var(--bg-2) repeating-linear-gradient(transparent 0 29px,var(--line) 29px 30px);background-position:0 8px;line-height:30px;padding:8px 16px;font-size:15px}
+.rc-note textarea:focus{border-color:var(--brand);outline:none}
+.rc-foot{position:sticky;bottom:0;padding:14px 20px calc(16px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,var(--surface) 35%)}
+.rc-foot .btn{width:100%;padding:11px;font-size:15px}
+@media(max-width:420px){.rc-titles h3{font-size:25px}.rc-pet{width:76px;height:76px;margin-right:6px}.rc-days{gap:4px}}
+/* day page: Sprout's note as a speech bubble */
+.comment .body p{background:var(--bg-2);border-radius:4px 18px 18px 18px;padding:10px 14px}
 .cal-legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--muted)}
 .cal-legend span{display:flex;align-items:center;gap:5px}
 .cal-legend i{width:9px;height:9px;border-radius:3px}
@@ -990,7 +1043,7 @@ function milestoneCard(d){
   const list=msOn(d);
   return `<div class="ms-card${list.length?" has":""}">
     <div class="card-head">${milestoneFace()}<h3>${L("值得记住的大小事","Moments worth remembering")}</h3></div>
-    ${list.length?`<ul class="ms-list">${list.map(x=>`<li><span class="ms-t">${esc(x.title)}</span><button class="del" data-act="msdel" data-id="${x.id}" aria-label="${L("删除这件事","Delete this moment")}">×</button></li>`).join("")}</ul>`:""}
+    ${list.length?`<div class="tickets">${list.map(x=>ticket(x,false,`<button class="del" data-act="msdel" data-id="${x.id}" aria-label="${L("删除这件事","Delete this moment")}">×</button>`)).join("")}</div>`:""}
     <form class="ms-add" id="msForm" data-date="${d}"><input type="text" id="ms-input-${d}" maxlength="80" placeholder="${L("比如：拿到第一个 offer 了！或者：第一次自己做了红烧肉","e.g. Got my first job offer! Or: cooked my first proper dinner")}" aria-label="${L("值得记住的事","A moment worth remembering")}"><button class="btn ms-btn" type="submit">${L("记下来","Add")}</button></form>
   </div>`;
 }
@@ -999,7 +1052,7 @@ function milestoneWall(){
   const recent=[...milestones].sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:(b.createdAt||0)-(a.createdAt||0)).slice(0,5);
   const fmt=d=>{const [y,m,dd]=d.split("-").map(Number);return L(`${y===+todayStr().slice(0,4)?"":y+"年"}${m}月${dd}日`,`${dd} ${MON[m-1]}${y===+todayStr().slice(0,4)?"":" "+y}`)};
   return `<div class="ms-wall"><div class="ms-wall-head"><b>${L("值得记住的大小事","Moments worth remembering")}</b><span>${L(`一共 ${milestones.length} 件`,`${milestones.length} in total`)}</span></div>
-    ${recent.map(x=>`<button class="ms-row" data-act="jday" data-v="${x.date}">${milestoneFace()}<span class="ms-row-t">${esc(x.title)}</span><span class="ms-row-d">${fmt(x.date)}</span></button>`).join("")}</div>`;
+    <div class="tickets">${recent.map(x=>`<button class="tk-btn" data-act="jday" data-v="${x.date}" aria-label="${fmt(x.date)}">${ticket(x)}</button>`).join("")}</div></div>`;
 }
 const ICON_MEADOW=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 21c4-4 8-5 11-5s7 1 11 5z" fill="var(--leaf)"/><path d="M12 9V6" stroke="var(--leaf-2)" stroke-width="1.6" stroke-linecap="round"/><path d="M12 7c-2.3 0-3.6-1.3-3.6-3.2 2.3 0 3.4 1.3 3.6 3.2z" fill="var(--leaf)"/><path d="M12 7c2.3 0 3.6-1.3 3.6-3.2-2.3 0-3.4 1.3-3.6 3.2z" fill="var(--leaf-2)"/><ellipse cx="12" cy="13" rx="5.6" ry="4.6" fill="var(--buddy)"/><circle cx="10" cy="12.6" r=".9" fill="var(--buddy-ink)"/><circle cx="14" cy="12.6" r=".9" fill="var(--buddy-ink)"/><path d="M10.8 14.6q1.2 1 2.4 0" stroke="var(--buddy-ink)" stroke-width=".9" fill="none" stroke-linecap="round"/></svg>`;
 const ICON_MAP=`<svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="21.5" rx="5" ry="1.4" fill="var(--leaf)" opacity=".7"/><path d="M12 22c-4-5-7-8-7-12a7 7 0 0 1 14 0c0 4-3 7-7 12z" fill="var(--brand)"/><path d="M12 6.4V4.6" stroke="var(--leaf-2)" stroke-width="1.4" stroke-linecap="round"/><path d="M12 5.2c-1.8 0-2.8-1-2.8-2.5 1.8 0 2.6 1 2.8 2.5z" fill="var(--leaf)"/><circle cx="12" cy="10.4" r="4.3" fill="var(--buddy)"/><circle cx="10.5" cy="10" r=".8" fill="var(--buddy-ink)"/><circle cx="13.5" cy="10" r=".8" fill="var(--buddy-ink)"/><path d="M11 11.6q1 .8 2 0" stroke="var(--buddy-ink)" stroke-width=".8" fill="none" stroke-linecap="round"/></svg>`;
@@ -1063,6 +1116,10 @@ ${L(`请用中文、第一人称"我"对"你"说一段 ${kind==="week"?"120 到 
   catch(e){if(e&&e.code==="not_granted")sample=null}
   finally{recapBusy=false;if(document.body.contains(bg))draw()}
 }
+function ticket(x,showDate=true,extra=""){
+  const [,m,dd]=x.date.split("-").map(Number);
+  return `<div class="ticket${showDate?"":" nodate"}">${showDate?`<div class="stub"><b>${dd}</b><small>${L(m+"月",MON[m-1])}</small></div>`:`<div class="stub icon">${milestoneFace()}</div>`}<div class="tk-t"><span>${esc(x.title)}</span>${extra}</div></div>`;
+}
 function openRecap(kind,id,opts={}){
   const isWeek=kind==="week", t=todayStr();
   const a=isWeek?id:`${id}-01-01`, b=isWeek?addDays(id,6):`${id}-12-31`;
@@ -1075,30 +1132,50 @@ function openRecap(kind,id,opts={}){
   const draw=()=>{
     const doc=(isWeek?weekly:yearly)[id]||{};
     const prevNote=bg.querySelector("textarea")?.value;
-    const stat=(n,label,c)=>`<div class="jstat"><b style="color:var(${c})">${n}</b><span>${label}</span></div>`;
-    const stats=[stat(R.days,L("行动天数","Active days"),"--brand-ink"),stat(R.drops,L("滴水","Drops"),"--water"),
-      ...(on("habit")?[stat(R.ck,L("打卡","Check-ins"),"--habit-ink")]:[]),
-      ...keys.map(k=>stat(R.by[k].length,BOARD_NAME(k),`--${k}-ink`))].join("");
-    const lists=keys.filter(k=>R.by[k].length).map(k=>{const arr=R.by[k], cap=isWeek?8:6;
-      return `<div class="rc-sec"><h4><i style="background:var(--${k})"></i>${BOARD_NAME(k)} · ${arr.length}</h4><ul class="rc-list">${arr.slice(0,cap).map(x=>`<li>${esc(x.title)}</li>`).join("")}</ul>${arr.length>cap?`<span class="hint">${L(`还有 ${arr.length-cap} 件`,`and ${arr.length-cap} more`)}</span>`:""}</div>`}).join("");
-    const habitTop=on("habit")?Object.entries(R.perHabit).map(([id,n])=>[(habits.find(h=>h.id===id)||{}).name,n]).filter(x=>x[0]).sort((x,y)=>y[1]-x[1]).slice(0,3):[];
-    const max=Math.max(1,...R.perMonth);
-    const months=!isWeek?`<div class="rc-sec"><h4>${L("每个月的努力","Month by month")}</h4><div class="rc-bars">${R.perMonth.map((n,i)=>`<div class="rc-bar" title="${n}"><i style="height:${Math.round(n/max*100)}%"></i><span>${L(i+1,MON[i].slice(0,1))}</span></div>`).join("")}</div></div>`:"";
+    const tot=keys.reduce((n,k)=>n+R.by[k].length,0);
+    const split=tot?`<div class="rc-split">${keys.filter(k=>R.by[k].length).map(k=>`<i style="flex:${R.by[k].length};background:var(--${k})"></i>`).join("")}</div>
+      <div class="rc-legend">${keys.map(k=>`<span><i style="background:var(--${k})"></i>${BOARD_NAME(k)} <b>${R.by[k].length}</b></span>`).join("")}</div>`:"";
+    const facts=[L(`${R.days} 天在行动`,`${R.days} active ${n_(R.days,"day","days")}`),...(on("habit")?[L(`打卡 ${R.ck} 次`,`${R.ck} check-${R.ck===1?"in":"ins"}`)]:[]),L(`完成 ${R.total} 件`,`${R.total} done`)].join(" · ");
+    // seven little columns for the week, with the mood Sprout on top when one was picked
+    let week="";
+    if(isWeek){
+      const per=[...Array(7)].map((_,i)=>{const d=addDays(a,i);const n=tasks.filter(x=>x.done&&dayOf(x.doneAt)===d).length+Object.keys(checkins[d]||{}).length;return {d,n,mood:(journal[d]||{}).mood,ms:msOn(d).length}});
+      const mx=Math.max(1,...per.map(x=>x.n)), wd=L(["一","二","三","四","五","六","日"],["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]);
+      week=`<div class="rc-sec"><h4>${L("这一周的每一天","Day by day")}</h4><div class="rc-days">${per.map((x,i)=>`<div class="rc-day${x.d>t?" future":""}">
+        <span class="rc-mood">${x.ms?milestoneFace():MOODS.some(m=>m[0]===x.mood)?moodFace(x.mood):""}</span>
+        <span class="rc-col"><i style="height:${x.n?Math.max(14,Math.round(x.n/mx*100)):0}%"></i></span><b>${x.n||""}</b><small>${wd[i]}</small></div>`).join("")}</div></div>`;
+    }
+    const mx=Math.max(1,...R.perMonth);
+    const months=!isWeek?`<div class="rc-sec"><h4>${L("每个月的努力","Month by month")}</h4><div class="rc-bars">${R.perMonth.map((n,i)=>`<div class="rc-bar${n===mx&&n>0?" top":""}" title="${n}"><i style="height:${n?Math.max(6,Math.round(n/mx*100)):0}%"></i><span>${L(i+1,MON[i].slice(0,1))}</span></div>`).join("")}</div></div>`:"";
+    const lists=keys.filter(k=>R.by[k].length).map(k=>{const arr=R.by[k], cap=isWeek?12:10;
+      return `<div class="rc-board" style="--k:var(--${k});--ks:var(--${k}-soft);--ki:var(--${k}-ink)"><h5><i></i>${BOARD_NAME(k)}<span>${arr.length}</span></h5>
+        <div class="rc-chips">${arr.slice(0,cap).map(x=>`<span>${esc(x.title)}</span>`).join("")}${arr.length>cap?`<span class="more">${L(`+${arr.length-cap} 件`,`+${arr.length-cap} more`)}</span>`:""}</div></div>`}).join("");
+    const habitTop=on("habit")?Object.entries(R.perHabit).map(([hid,n])=>[(habits.find(h=>h.id===hid)||{}).name,n]).filter(x=>x[0]).sort((x,y)=>y[1]-x[1]).slice(0,3):[];
+    const habitsSec=habitTop.length?`<div class="rc-sec"><h4>${L("坚持最多的习惯","Most kept habits")}</h4><ol class="podium">${habitTop.map(([n,c],i)=>`<li><span class="medal m${i}">${i+1}</span><span class="pn">${esc(n)}</span><span class="pc">${L(`${c} 天`,`${c} ${n_(c,"day","days")}`)}</span></li>`).join("")}</ol></div>`:"";
     const trees=!isWeek&&R.trees.length?`<div class="rc-sec"><h4>${L(`这一年种出的树 · ${R.trees.length}`,`Trees grown this year · ${R.trees.length}`)}</h4><div class="rc-trees">${R.trees.map(f=>`<div>${treeSVG("happy",STAGES.length-1,false,f.theme)}</div>`).join("")}</div></div>`:"";
-    const habitsSec=habitTop.length?`<div class="rc-sec"><h4>${L("坚持最多的习惯","Most kept habits")}</h4><ul class="rc-list plain">${habitTop.map(([n,c])=>`<li>${esc(n)} <span class="hint">· ${L(`${c} 天`,`${c} ${n_(c,"day","days")}`)}</span></li>`).join("")}</ul></div>`:"";
-    const msSec=R.ms.length?`<div class="rc-sec"><h4>${milestoneFace()}${L("值得记住的大小事","Moments worth remembering")}</h4>${R.ms.map(x=>`<div class="ms-row static">${milestoneFace()}<span class="ms-row-t">${esc(x.title)}</span><span class="ms-row-d">${fmtRange(x.date,x.date).split(" – ")[0]}</span></div>`).join("")}</div>`:"";
+    const msSec=R.ms.length?`<div class="rc-sec"><h4>${L("值得记住的大小事","Moments worth remembering")}</h4><div class="tickets">${R.ms.map(x=>ticket(x)).join("")}</div></div>`:"";
     const comment=doc.comment||recapComment(kind,R,id);
     bg.innerHTML=`<div class="sheet rc-sheet" role="dialog" aria-label="${title}">
-      <div class="rc-head"><div class="rc-buddy">${treeSVG(recapBusy?"think":"cheer",stageOf(curWater()),false,curTheme)}</div><div><h3>${title}</h3><span class="hint">${sub}</span></div><button class="x" data-rc="close" aria-label="${L("关闭","Close")}">×</button></div>
-      <div class="jstats rc-stats">${stats}</div>
-      <div class="comment rc-comment"><div class="body"><h4>${L("小芽想对你说","A note from Sprout")}</h4><p>${recapBusy?L("让我好好想想…","Let me think…"):esc(comment)}</p>
-        ${sample&&!partial?`<div class="acts"><button class="btn primary" data-rc="ai" ${recapBusy?"disabled":""}>${doc.comment?L("✨ 再写一段","✨ Write another"):L("✨ 让小芽认真写","✨ Ask Sprout to write one")}</button></div>`:""}</div></div>
-      ${msSec}${months}${lists}${habitsSec}${trees}
-      ${hasData(R)?"":`<p class="hint">${L("这段时间还没有完成的记录。","Nothing finished in this period yet.")}</p>`}
-      <div class="rc-sec"><h4>${isWeek?L("这一周的感想","Thoughts on the week"):L("这一年的感想","Thoughts on the year")}</h4>
-        <textarea id="rc-note-${kind}-${id}" maxlength="6000" placeholder="${isWeek?L("这周最开心的是什么？有什么想对下周的自己说？","What made you happiest this week? Anything for next week's you?"):L("这一年你最骄傲的是什么？想对明年的自己说什么？","What are you proudest of this year? What would you tell next year's you?")}">${esc(doc.note||"")}</textarea>
-        <span class="saved" id="rc-saved"></span></div>
-      <div class="sheet-actions"><span></span><button class="btn primary" data-rc="close">${L("收好了","All done")}</button></div>
+      <div class="rc-hero">
+        <svg class="rc-spark" viewBox="0 0 200 120" aria-hidden="true">${[[18,24,5],[60,12,3],[150,18,4],[176,70,3],[110,96,3],[34,92,4]].map(([x,y,r])=>`<path d="M${x} ${y-r*2}l${r*.5} ${r*1.5} ${r*1.5} ${r*.5}-${r*1.5} ${r*.5}-${r*.5} ${r*1.5}-${r*.5}-${r*1.5}-${r*1.5}-${r*.5} ${r*1.5}-${r*.5}z"/>`).join("")}</svg>
+        <div class="rc-titles"><span class="rc-eyebrow">${isWeek?L("小芽的周小记","Sprout's weekly notes"):L("小芽的年度总结","Sprout's year in review")}</span><h3>${title}</h3><span class="rc-range">${sub}</span></div>
+        <div class="rc-pet">${moodFace(recapBusy?"meh":"great")}</div>
+        <button class="x" data-rc="close" aria-label="${L("关闭","Close")}">×</button>
+      </div>
+      <div class="rc-body">
+        <div class="rc-sum"><div class="rc-big"><span class="drop">💧</span><b>${R.drops}</b><span>${L("滴水","drops")}</span></div><p>${facts}</p>${split}</div>
+        <div class="rc-say"><div class="rc-avatar">${moodFace(recapBusy?"meh":"good")}</div>
+          <div class="rc-bubble"><span class="who">${L("小芽想对你说","A note from Sprout")}</span><p>${recapBusy?L("让我好好想想…","Let me think…"):esc(comment)}</p>
+          ${sample&&!partial?`<button class="link" data-rc="ai" ${recapBusy?"disabled":""}>${doc.comment?L("✨ 再写一段","✨ Write another"):L("✨ 让小芽认真写","✨ Ask Sprout to write one")}</button>`:""}</div></div>
+        ${week}${msSec}${months}
+        ${lists?`<div class="rc-sec"><h4>${L("完成的事","What you finished")}</h4>${lists}</div>`:""}
+        ${habitsSec}${trees}
+        ${hasData(R)?"":`<p class="hint">${L("这段时间还没有完成的记录。","Nothing finished in this period yet.")}</p>`}
+        <div class="rc-sec rc-note"><h4>${L("写给自己","A note to yourself")}</h4>
+          <textarea id="rc-note-${kind}-${id}" maxlength="6000" placeholder="${isWeek?L("这周最开心的是什么？有什么想对下周的自己说？","What made you happiest this week? Anything for next week's you?"):L("这一年你最骄傲的是什么？想对明年的自己说什么？","What are you proudest of this year? What would you tell next year's you?")}">${esc(doc.note||"")}</textarea>
+          <span class="saved" id="rc-saved"></span></div>
+      </div>
+      <div class="rc-foot"><button class="btn primary" data-rc="close">${L("收好了 🌱","All done 🌱")}</button></div>
     </div>`;
     if(prevNote!=null)bg.querySelector("textarea").value=prevNote;
   };
