@@ -433,6 +433,13 @@ details.done-box .list{margin-top:8px}
 .sw.on{border-color:var(--brand);background:var(--surface-2)}
 
 .wish-top{gap:12px}
+.sic{display:block}
+.w-ic .sic{width:38px;height:38px}
+.group h2 .sic{width:26px;height:26px}
+.chip .sic{width:20px;height:20px;display:inline-block;vertical-align:-5px;margin:-2px 2px -2px -4px}
+.w-sum .sic{width:18px;height:18px;display:inline-block;vertical-align:-4px}
+.seg button .sic{width:24px;height:24px;flex:none;margin-block:-4px}
+.wa-row select,.wish-sheet-cur{border:2px solid var(--line);background:var(--bg-2);border-radius:999px;padding:7px 10px;font-family:var(--f-num)}
 .seg button{white-space:nowrap;min-width:0;font-size:14px;padding:8px 4px;gap:4px}
 @media(max-width:440px){.seg button{font-size:13px}.seg button .n{padding:0 5px}}
 .wish-top .card-head .sub{flex-basis:100%;order:3}
@@ -443,6 +450,8 @@ details.done-box .list{margin-top:8px}
 .wa-row{display:flex;gap:8px;flex-wrap:wrap}
 .wa-row input{flex:1 1 160px;min-width:0;border:2px solid var(--line);border-radius:999px;background:var(--bg-2);padding:8px 16px}
 .wa-row input[type=number]{flex:0 1 110px}
+.wa-row .field input,.wa-row .field select{flex:none;width:100%}
+.wa-row .field{min-width:0}
 .wa-row input:focus{border-color:var(--study);outline:none}
 .wish-btn{background:var(--study);border-color:var(--study);color:#fff;box-shadow:0 3px 0 var(--study-ink)}
 .wish{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:12px 14px;background:var(--surface);border-radius:18px;box-shadow:var(--shadow)}
@@ -835,10 +844,10 @@ function sortTasks(a,b){
 const EMPTY={};
 const LIFE_HZ={};
 function lifeSeg(){
-  const subs=[["shop","🛒",L("购物清单","Shopping"),shop.filter(x=>!x.bought).length],["goals","🎯",L("目标","Goals"),tasks.filter(t=>t.space==="life"&&!t.done&&!t.deleted).length],["wish","✨",L("愿望清单","Wishlist"),wishes.filter(w=>!w.done).length]].filter(x=>x[0]==="goals"||on(x[0]));
+  const subs=[["shop",sproutIcon("shop"),L("购物清单","Shopping"),shop.filter(x=>!x.bought).length],["goals",sproutIcon("goals"),L("目标","Goals"),tasks.filter(t=>t.space==="life"&&!t.done&&!t.deleted).length],["wish",sproutIcon("wish"),L("愿望清单","Wishlist"),wishes.filter(w=>!w.done).length]].filter(x=>x[0]==="goals"||on(x[0]));
   if(subs.length<2)return "";
   return `<div class="seg" role="group" aria-label="${L("生活分区","Life sections")}" style="grid-template-columns:repeat(${subs.length},1fr)">
-    ${subs.map(([k,ic,n,c])=>`<button data-act="lifesub" data-v="${k}" aria-pressed="${lifeSub===k}">${ic} ${n} <span class="n">${c}</span></button>`).join("")}</div>`;
+    ${subs.map(([k,ic,n,c])=>`<button data-act="lifesub" data-v="${k}" aria-pressed="${lifeSub===k}">${ic}${n} <span class="n">${c}</span></button>`).join("")}</div>`;
 }
 function shopBoard(){
   const inList=new Set(shop.map(x=>x.name.trim().toLowerCase()));
@@ -1607,20 +1616,52 @@ async function addStaple(name){
 }
 const splitItems=t=>t.split(/[,，、;；\n]+/).map(x=>x.trim()).filter(Boolean);
 
+/* ---------- Sprout icons for sections ---------- */
+function sproutIcon(kind){
+  const ink="var(--buddy-ink)";
+  const heart=(x,y)=>`<path d="M${x} ${y+2.6}l-3.1-3.1a1.9 1.9 0 0 1 3.1-2.3 1.9 1.9 0 0 1 3.1 2.3z" fill="#ff5d8f"/>`;
+  const dots=`<circle cx="14" cy="22.5" r="2.2" fill="${ink}"/><circle cx="26" cy="22.5" r="2.2" fill="${ink}"/><circle cx="14.8" cy="21.7" r=".8" fill="#fff"/><circle cx="26.8" cy="21.7" r=".8" fill="#fff"/>`;
+  const smile=`<path d="M16.5 27.5q3.5 3.4 7 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+  let face="", front="", back="";
+  if(kind==="shop"){ // peeking out of a basket
+    back=`<path d="M7 27q13-16 26 0" stroke="var(--bark)" stroke-width="2.4" fill="none"/>`;
+    face=`<path d="M11 21q3-3 6 0M23 21q3-3 6 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="20" cy="25" rx="2" ry="1.4" fill="${ink}"/>`;
+    front=`<path d="M4 27h32l-3 10H7z" fill="var(--bark)"/><path d="M5 30.5h30M6 34h28M12 27l1 10M20 27v10M28 27l-1 10" stroke="#fff" stroke-opacity=".45" stroke-width="1.2"/>`;
+  }else if(kind==="goals"){ // holding a little flag
+    back=`<path d="M33 8v24" stroke="var(--bark)" stroke-width="2" stroke-linecap="round"/><path d="M33 8l-9 3.5 9 3.5z" fill="var(--danger)"/>`;
+    face=dots+`<path d="M15.5 27q4.5 5 9 0z" fill="${ink}"/>`;
+  }else if(kind==="wish"){ // eyes closed, making a wish under a shooting star
+    face=`<path d="M11 22q3 3 6 0M23 22q3 3 6 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M18 28q2 1.6 4 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+    front=`<path d="M25 9l8-6" stroke="#ffd34d" stroke-width="1.6" stroke-linecap="round" opacity=".8"/><path d="M34 2.2l1 2.4 2.5.4-1.9 1.7.5 2.5-2.1-1.3-2.2 1.2.6-2.5-1.8-1.8 2.5-.3z" fill="#f2b705"/>`;
+  }else if(kind==="buy"){ // heart eyes and a shopping bag
+    face=heart(14,21)+heart(26,21)+smile;
+    front=`<path d="M28 28.5q0-4 3.5-4t3.5 4" stroke="var(--buddy-ink)" stroke-width="1.4" fill="none"/><rect x="26" y="28" width="11" height="10" rx="2" fill="var(--pink)"/><path d="M29 31.5h5" stroke="#fff" stroke-width="1.2" stroke-linecap="round" opacity=".7"/>`;
+  }else if(kind==="go"){ // sunglasses and a paper plane
+    face=`<rect x="9.5" y="19.5" width="9" height="6" rx="2.6" fill="${ink}"/><rect x="21.5" y="19.5" width="9" height="6" rx="2.6" fill="${ink}"/><path d="M18.5 21.5h3" stroke="${ink}" stroke-width="1.6"/><path d="M11.5 21l2.4-.6" stroke="#fff" stroke-width="1.1" stroke-linecap="round" opacity=".8"/>`+smile;
+    front=`<path d="M1.5 9.5l11-4.5-3.6 9.5-2.3-3.6z" fill="var(--water)"/><path d="M6.6 10.9l5.9-5.9" stroke="#fff" stroke-width=".9" opacity=".8"/>`;
+  }else{ // "do": determined brows and a star
+    face=`<path d="M10.5 18.4l5.5 1.6M29.5 18.4l-5.5 1.6" stroke="${ink}" stroke-width="1.9" stroke-linecap="round"/>`+dots+`<path d="M15.5 27q4.5 5 9 0z" fill="${ink}"/>`;
+    front=`<path d="M33 3.5l1.4 3.2 3.4.4-2.6 2.3.8 3.4-3-1.8-3 1.8.8-3.4-2.6-2.3 3.4-.4z" fill="#f2b705"/>`;
+  }
+  return `<svg class="sic" viewBox="0 0 40 40" aria-hidden="true" style="${themeStyle(curTheme)}">${back}<path d="M20 12V7" stroke="var(--leaf-2)" stroke-width="2" stroke-linecap="round"/><path d="M20 9c-3.6 0-6-2-6-5 3.6 0 5.6 2 6 5z" fill="var(--leaf)"/><path d="M20 12c9 0 15 6 15 13.5S29 37 20 37 5 33 5 25.5 11 12 20 12z" fill="var(--buddy)"/><ellipse cx="10" cy="27.5" rx="2.6" ry="1.7" fill="var(--pink)" opacity=".75"/><ellipse cx="30" cy="27.5" rx="2.6" ry="1.7" fill="var(--pink)" opacity=".75"/>${face}${front}</svg>`;
+}
+
 /* ---------- wishlist: things to buy, places to go, things to do someday ---------- */
-let wishes=[], wishKind="buy", wishCur="£";
-try{wishCur=localStorage.getItem("los-cur")||"£"}catch(e){}
+let wishes=[], wishKind="buy", wishCur=(navigator.language||"").toLowerCase()==="zh-cn"?"¥":"£";
+try{wishCur=localStorage.getItem("los-cur")||wishCur}catch(e){}
+const CURS=[["£","英镑","GBP"],["¥","人民币","RMB"],["$","美元","USD"],["€","欧元","EUR"],["HK$","港币","HKD"]];
+const curOptions=sel=>CURS.map(([c,zh,en])=>`<option value="${c}"${c===sel?" selected":""}>${c} ${L(zh,en)}</option>`).join("");
 const WISH_KINDS=[["buy","🛍️","想买","To buy"],["go","✈️","想去","To go"],["do","🌟","想做","To do"]];
-const money=n=>{const v=Math.round((+n||0)*100)/100;return wishCur+(v%1?v.toFixed(2):v.toLocaleString())};
+const money=(n,c=wishCur)=>{const v=Math.round((+n||0)*100)/100;return c+(v%1?v.toFixed(2):v.toLocaleString())};
 function wishItem(w){
   const K=WISH_KINDS.find(k=>k[0]===w.kind)||WISH_KINDS[2];
-  const price=+w.price||0, saved=Math.min(+w.saved||0,price||Infinity);
+  const price=+w.price||0, saved=Math.min(+w.saved||0,price||Infinity), cur=w.cur||"£";
   const pct=price?Math.round(saved/price*100):0;
   return `<div class="wish k-${K[0]}${w.done?" done":""}">
-    <span class="w-ic" aria-hidden="true">${K[1]}</span>
+    <span class="w-ic" aria-hidden="true">${sproutIcon(K[0])}</span>
     <button class="w-main" data-act="wishedit" data-id="${w.id}">
       <b>${esc(w.title)}</b>
-      ${price?`<span class="w-money"><span>${saved?L(`已攒 ${money(saved)} / ${money(price)}`,`${money(saved)} saved of ${money(price)}`):money(price)}</span>${!w.done?`<span class="w-bar"><i style="width:${pct}%"></i></span>`:""}</span>`:""}
+      ${price?`<span class="w-money"><span>${saved?L(`已攒 ${money(saved,cur)} / ${money(price,cur)}`,`${money(saved,cur)} saved of ${money(price,cur)}`):money(price,cur)}</span>${!w.done?`<span class="w-bar"><i style="width:${pct}%"></i></span>`:""}</span>`:""}
       ${w.note?`<small>${esc(w.note)}</small>`:""}
       ${w.done&&w.doneAt?`<small>${L("实现于 ","Came true on ")}${fmtRange(dayOf(w.doneAt),dayOf(w.doneAt)).split(" – ")[0]}</small>`:""}
     </button>
@@ -1631,17 +1672,18 @@ function wishBoard(){
   const open=wishes.filter(w=>!w.done).sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
   const done=wishes.filter(w=>w.done).sort((a,b)=>(b.doneAt||0)-(a.doneAt||0));
   const buys=open.filter(w=>w.kind==="buy"&&+w.price);
-  const total=buys.reduce((n,w)=>n+(+w.price||0),0), saved=buys.reduce((n,w)=>n+Math.min(+w.saved||0,+w.price||0),0);
+  const byCur={}; buys.forEach(w=>{const c=w.cur||"£";byCur[c]=byCur[c]||[0,0];byCur[c][0]+=+w.price||0;byCur[c][1]+=Math.min(+w.saved||0,+w.price||0)});
+  const curs=Object.keys(byCur), total=curs.length, sumOf=i=>curs.map(c=>money(byCur[c][i],c)).join(" + ");
   const counts=WISH_KINDS.map(k=>[k,open.filter(w=>w.kind===k[0]).length]).filter(x=>x[1]);
-  const groups=WISH_KINDS.map(k=>{const arr=open.filter(w=>(w.kind||"do")===k[0]);return arr.length?`<section class="group"><h2><span class="badge"></span>${k[1]} ${L(k[2],k[3])}<span class="cnt">${arr.length}</span></h2><div class="list">${arr.map(wishItem).join("")}</div></section>`:""}).join("");
+  const groups=WISH_KINDS.map(k=>{const arr=open.filter(w=>(w.kind||"do")===k[0]);return arr.length?`<section class="group"><h2><span class="badge"></span>${sproutIcon(k[0])} ${L(k[2],k[3])}<span class="cnt">${arr.length}</span></h2><div class="list">${arr.map(wishItem).join("")}</div></section>`:""}).join("");
   return `<div class="card wish-top">
       <div class="card-head"><h3>${L("愿望清单","Wishlist")}</h3><span class="sub">${L("想要的、想去的、想做的，都先放在这里","Things to buy, places to go, things to do someday")}</span>
-        <span class="right"><select id="wishCur" aria-label="${L("货币","Currency")}">${["£","¥","$","€"].map(c=>`<option${c===wishCur?" selected":""}>${c}</option>`).join("")}</select></span></div>
-      ${counts.length?`<p class="w-sum">${counts.map(([k,n])=>`${k[1]} ${L(k[2],k[3])} <b>${n}</b>`).join(" · ")}${total?`<br>${L(`想买的加起来约 <b>${money(total)}</b>，已经攒了 <b>${money(saved)}</b>`,`Things to buy add up to about <b>${money(total)}</b>, with <b>${money(saved)}</b> saved`)}`:""}</p>`:""}
+</div>
+      ${counts.length?`<p class="w-sum">${counts.map(([k,n])=>`${sproutIcon(k[0])} ${L(k[2],k[3])} <b>${n}</b>`).join(" · ")}${total?`<br>${L(`想买的加起来约 <b>${sumOf(0)}</b>，已经攒了 <b>${sumOf(1)}</b>`,`Things to buy add up to about <b>${sumOf(0)}</b>, with <b>${sumOf(1)}</b> saved`)}`:""}</p>`:""}
       <form class="wish-add" id="wishForm">
-        <div class="chips">${WISH_KINDS.map(k=>`<button type="button" class="chip hz${wishKind===k[0]?" on":""}" data-act="wishkind" data-v="${k[0]}">${k[1]} ${L(k[2],k[3])}</button>`).join("")}</div>
+        <div class="chips">${WISH_KINDS.map(k=>`<button type="button" class="chip hz${wishKind===k[0]?" on":""}" data-act="wishkind" data-v="${k[0]}">${sproutIcon(k[0])}${L(k[2],k[3])}</button>`).join("")}</div>
         <div class="wa-row"><input type="text" id="wishTitle" maxlength="100" placeholder="${{buy:L("比如：一台拍立得","e.g. An instant camera"),go:L("比如：去冰岛看极光","e.g. See the northern lights in Iceland"),do:L("比如：学会冲浪","e.g. Learn to surf")}[wishKind]}" aria-label="${L("愿望","Wish")}">
-          ${wishKind==="buy"?`<input type="number" id="wishPrice" min="0" step="0.01" inputmode="decimal" placeholder="${L("价格","Price")} ${wishCur}" aria-label="${L("价格","Price")}">`:""}
+          ${wishKind==="buy"?`<select id="wishCur" aria-label="${L("货币","Currency")}">${curOptions(wishCur)}</select><input type="number" id="wishPrice" min="0" step="0.01" inputmode="decimal" placeholder="${L("价格（可不填）","Price (optional)")}" aria-label="${L("价格","Price")}">`:""}
           <button class="btn wish-btn" type="submit">${L("许愿","Add")}</button></div>
       </form>
     </div>
@@ -1650,15 +1692,15 @@ function wishBoard(){
 }
 function openWish(id){
   const w=wishes.find(x=>x.id===id); if(!w||!db)return;
-  const draft={...w}; let confirmDel=false;
+  const draft={...w,cur:w.cur||"£"}; let confirmDel=false;
   const bg=document.createElement("div"); bg.className="sheet-bg";
-  const grab=()=>{draft.title=bg.querySelector("#we-title").value;draft.note=bg.querySelector("#we-note").value;const p=bg.querySelector("#we-price"),s=bg.querySelector("#we-saved");if(p)draft.price=p.value;if(s)draft.saved=s.value};
+  const grab=()=>{draft.title=bg.querySelector("#we-title").value;draft.note=bg.querySelector("#we-note").value;const p=bg.querySelector("#we-price"),s=bg.querySelector("#we-saved"),c=bg.querySelector("#we-cur");if(p)draft.price=p.value;if(s)draft.saved=s.value;if(c)draft.cur=c.value};
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑愿望","Edit wish")}">
     <h3>${L("改一改这个愿望","Edit this wish")}</h3>
-    <div class="field"><span>${L("类型","Type")}</span><div class="chips">${WISH_KINDS.map(k=>`<button class="chip hz${draft.kind===k[0]?" on":""}" data-we="kind" data-v="${k[0]}">${k[1]} ${L(k[2],k[3])}</button>`).join("")}</div></div>
+    <div class="field"><span>${L("类型","Type")}</span><div class="chips">${WISH_KINDS.map(k=>`<button class="chip hz${draft.kind===k[0]?" on":""}" data-we="kind" data-v="${k[0]}">${sproutIcon(k[0])}${L(k[2],k[3])}</button>`).join("")}</div></div>
     <label class="field"><span>${L("愿望","Wish")}</span><input id="we-title" value="${esc(draft.title)}" maxlength="100"></label>
-    ${draft.kind==="buy"?`<div class="wa-row"><label class="field" style="flex:1"><span>${L("价格","Price")} (${wishCur})</span><input id="we-price" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(draft.price||"")}"></label>
-      <label class="field" style="flex:1"><span>${L("已经攒了","Saved so far")} (${wishCur})</span><input id="we-saved" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(draft.saved||"")}"></label></div>`:""}
+    ${draft.kind==="buy"?`<div class="wa-row"><label class="field"><span>${L("货币","Currency")}</span><select id="we-cur" class="wish-sheet-cur">${curOptions(draft.cur)}</select></label><label class="field" style="flex:1"><span>${L("价格","Price")}</span><input id="we-price" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(draft.price||"")}"></label>
+      <label class="field" style="flex:1"><span>${L("已经攒了","Saved so far")}</span><input id="we-saved" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(draft.saved||"")}"></label></div>`:""}
     <label class="field"><span>${L("备注","Notes")}</span><textarea id="we-note" placeholder="${L("链接、颜色、想和谁一起去……","A link, a colour, who to go with…")}">${esc(draft.note||"")}</textarea></label>
     <div class="sheet-actions">
       <span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn danger" data-we="del">${confirmDel?L("再点一次确认删除","Tap again to delete"):L("删除","Delete")}</button>${draft.done?`<button class="btn" data-we="undo">${L("标记为还没实现","Mark as not yet")}</button>`:""}</span>
@@ -1675,7 +1717,7 @@ function openWish(id){
     if(a==="del"){if(!confirmDel){confirmDel=true;draw();return}bg.remove();queued(ref.path,()=>ref.delete());return}
     if(a==="undo"){bg.remove();queued(ref.path,()=>ref.update({done:false,doneAt:null}));return}
     if(a==="save"){bg.remove();queued(ref.path,()=>ref.update({title:(draft.title.trim()||w.title).slice(0,100),kind:draft.kind,note:(draft.note||"").slice(0,1000),
-      price:draft.kind==="buy"&&draft.price!==""&&draft.price!=null?Math.max(0,+draft.price):null,saved:draft.kind==="buy"&&draft.saved!==""&&draft.saved!=null?Math.max(0,+draft.saved):null}))}
+      cur:draft.cur,price:draft.kind==="buy"&&draft.price!==""&&draft.price!=null?Math.max(0,+draft.price):null,saved:draft.kind==="buy"&&draft.saved!==""&&draft.saved!=null?Math.max(0,+draft.saved):null}))}
   });
   bg.querySelector("#we-title").focus();
 }
@@ -1809,7 +1851,7 @@ document.addEventListener("click",async e=>{
   }
 });
 $("#buddy").addEventListener("click",()=>cheer((lang==="en"?["Hehe, that tickles～",`I'm Sprout, ${userName?userName+"'s":"your"} little tree.`,"Keep watering me and I'll grow big and bloom!","Remember to eat well today!"]:["嘿嘿，戳我干嘛～",`我是小芽，${userName||"你"}的小树。`,"多浇水，我会长成大树开花的！","今天也要好好吃饭！"])[Math.floor(Math.random()*4)]));
-document.addEventListener("change",e=>{if(e.target.id==="wishCur"){wishCur=e.target.value;try{localStorage.setItem("los-cur",wishCur)}catch(_){};render()}});
+document.addEventListener("change",e=>{if(e.target.id==="wishCur"){wishCur=e.target.value;try{localStorage.setItem("los-cur",wishCur)}catch(_){}}});
 document.addEventListener("input",e=>{
   if(e.target.dataset&&e.target.dataset.jnote&&db){
     const d=e.target.dataset.jnote, v=e.target.value; jSaved=L("正在保存…","Saving…"); const sv=$("#jsaved"); if(sv)sv.textContent=jSaved;
@@ -1826,7 +1868,7 @@ document.addEventListener("submit",async e=>{
     const pr=$("#wishPrice"), price=wishKind==="buy"&&pr&&pr.value!==""?Math.max(0,+pr.value):null;
     $("#wishTitle").value=""; if(pr)pr.value="";
     const ref=db.collection("wishes").doc();
-    await queued(ref.path,()=>ref.set({title:title.slice(0,100),kind:wishKind,price,saved:null,note:"",done:false,createdAt:Date.now()}));
+    await queued(ref.path,()=>ref.set({title:title.slice(0,100),kind:wishKind,price,cur:wishCur,saved:null,note:"",done:false,createdAt:Date.now()}));
     cheer(L(`许下愿望「${title}」，我帮你记着 ✨`,`Wish made: “${title}”. I'll keep it safe ✨`));return}
   if(e.target.id==="msForm"){e.preventDefault();if(!db)return;
     const d=e.target.dataset.date, inp=e.target.querySelector("input"), title=inp.value.trim(); if(!title)return;
