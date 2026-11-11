@@ -8,7 +8,7 @@ My "life server": a bilingual (中文 / English) task and habit tracker with a s
 
 - **Four boards, kept apart**: Habits, Life, Study and Work. Each task sits in Inbox, This week, This month or Long term.
 - **Sprout grows with you**: every finished task waters it with 1 drop and every check-in with 2. It grows from a seed into a blooming tree over seven stages (200 drops), and flowers on days you finish every check-in.
-- **Your forest**: plant each blooming tree in your forest, then start a new seed in a colour you pick: Lemon, Sakura, Mint, Sky, Lavender or Maple.
+- **Your forest**: plant each blooming tree on your own meadow (tap a tree to see when it bloomed), then start a new seed in a colour you pick: Lemon, Sakura, Mint, Sky, Lavender or Maple.
 - **Quick capture**: tap Sprout in the corner and type something like "Finish my CV by Friday; buy eggs and milk this weekend". It splits the text into tasks, picks a board and works out the dates. Nothing is saved until you confirm.
 - **Shopping list**: save staples you buy often, add them in one tap and tick items off at the shop.
 - **Daily recap with a calendar**: see what you finished each day, pick a Sprout face for your mood, write a reflection, and tap any day in the calendar to read it again.

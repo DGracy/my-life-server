@@ -271,14 +271,31 @@ details.done-box .list{margin-top:8px}
 .forest-btn .fn{font-family:var(--f-num);font-variant-numeric:tabular-nums}
 .forest-btn[aria-pressed=true]{border-color:var(--leaf-2);background:color-mix(in srgb,var(--leaf) 18%,transparent)}
 #plantBtn{width:fit-content;padding:5px 14px}
-.forest-card{position:relative;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,var(--water) 14%,var(--surface)) 0,var(--surface) 38%,color-mix(in srgb,var(--leaf) 16%,var(--surface)) 70%,color-mix(in srgb,var(--leaf) 30%,var(--surface)) 100%);border-radius:22px;padding:14px 16px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
-.forest-card::before,.forest-card::after{content:"";position:absolute;background:var(--surface);border-radius:999px;opacity:.85;pointer-events:none}
-.forest-card::before{width:70px;height:20px;top:46px;right:28px;box-shadow:16px -10px 0 2px var(--surface)}
-.forest-card::after{width:52px;height:16px;top:70px;left:38%;box-shadow:12px -8px 0 1px var(--surface);opacity:.6}
-.forest-card>*{position:relative;z-index:1}
-.grove{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:4px 4px;position:relative}
-.grove .ftree:nth-child(3n+2){transform:translateY(10px)}
-.grove .ftree:nth-child(3n){transform:translateY(4px)}
+.forest-card{background:var(--surface);border-radius:22px;padding:14px 14px 12px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.meadow-wrap{border-radius:18px;overflow:hidden;margin-inline:-4px;box-shadow:inset 0 0 0 2px var(--line)}
+.meadow{display:block;width:100%;height:auto}
+.fs-s1{stop-color:color-mix(in srgb,var(--water) 38%,var(--surface))}
+.fs-s2{stop-color:color-mix(in srgb,var(--water) 10%,var(--surface))}
+.fs-sun{fill:var(--buddy)}
+.fs-sun.halo{opacity:.25}
+.fs-cloud ellipse{fill:var(--surface);opacity:.92}
+.fs-hill{fill:color-mix(in srgb,var(--leaf) 38%,var(--surface))}
+.fs-grass{fill:color-mix(in srgb,var(--leaf) 58%,var(--surface))}
+.fs-grass2{fill:color-mix(in srgb,var(--leaf) 72%,var(--surface))}
+.fs-tuft{fill:var(--leaf-2);opacity:.75}
+.fs-f1{fill:var(--pink)}.fs-f2{fill:#fff}.fs-f3{fill:var(--study)}.fs-fc{fill:var(--buddy)}
+.fs-glow{fill:#fff;opacity:.7}
+.fs-tree{cursor:pointer}
+.fs-tree:focus{outline:none}
+.fs-tree:focus-visible svg{outline:2px solid var(--brand)}
+.forest-cap{margin:0;font-size:13.5px;color:var(--muted);line-height:1.6;min-height:2.6em}
+.forest-cap b{color:var(--fg);font-weight:600}
+@media (prefers-reduced-motion:no-preference){
+  .fs-cloud{animation:drift 18s ease-in-out infinite alternate}.fs-cloud.c2{animation-duration:24s}
+  .fs-tree.sel svg{animation:hop .55s ease-out}
+}
+@keyframes drift{from{transform:translateX(-8px)}to{transform:translateX(14px)}}
+
 .ftree{display:flex;flex-direction:column;align-items:center;gap:1px;text-align:center;min-width:0}
 .ftree svg{width:100%;max-width:124px;aspect-ratio:1;height:auto}
 .ftree b{font-family:var(--f-display);font-weight:400;font-size:15px}
@@ -882,6 +899,7 @@ function moodFace(k){
   return `<svg class="mface" viewBox="0 0 40 40" aria-hidden="true" style="${themeStyle(curTheme)}"><path d="M20 12V7" stroke="var(--leaf-2)" stroke-width="2" stroke-linecap="round"/><path d="M20 9c-3.6 0-6-2-6-5 3.6 0 5.6 2 6 5z" fill="var(--leaf)"/><path d="M20 12c9 0 15 6 15 13.5S29 37 20 37 5 33 5 25.5 11 12 20 12z" fill="var(--buddy)"/><ellipse cx="10" cy="27" rx="2.6" ry="1.7" fill="var(--pink)" opacity=".75"/><ellipse cx="30" cy="27" rx="2.6" ry="1.7" fill="var(--pink)" opacity=".75"/>${F[k]||F.good}</svg>`;
 }
 
+document.addEventListener("keydown",e=>{const t=e.target.closest&&e.target.closest(".fs-tree");if(t&&(e.key==="Enter"||e.key===" ")){e.preventDefault();t.dispatchEvent(new MouseEvent("click",{bubbles:true}))}});
 /* ---------- calendar of past days ---------- */
 const MONFULL=["January","February","March","April","May","June","July","August","September","October","November","December"];
 let calMonth=null;
@@ -918,18 +936,60 @@ let forest=[], curTheme="lemon";
 const curWater=()=>Math.max(0,waterTotal()-forest.reduce((a,f)=>a+(f.drops||MAXW),0));
 const tName=k=>{const t=THEMES[k]||THEMES.lemon;return L(t.zh,t.en)};
 function swatches(sel,act){return Object.keys(THEMES).map(k=>`<button class="sw${sel===k?" on":""}" data-act="${act}" data-v="${k}" aria-pressed="${sel===k}" style="${themeStyle(k)}"><span class="dot"></span>${tName(k)}</button>`).join("")}
+let forestSel=null;
+// spots on the meadow, back (small, high) to front (big, low); filled in this order so a young forest still looks balanced
+const MEADOW_ROWS=[
+  {b:118,s:50,x:[30,90,150,210,270,330]},
+  {b:148,s:62,x:[50,120,190,260,320]},
+  {b:186,s:78,x:[45,135,225,315]},
+  {b:236,s:94,x:[60,180,300]},
+];
+const MEADOW_ORDER=[[2,1],[2,2],[1,1],[1,3],[2,0],[2,3],[3,0],[3,2],[1,0],[1,2],[1,4],[0,1],[0,3],[0,5],[0,0],[0,2],[0,4]];
+const jit=i=>{const v=Math.sin(i*12.9898+4.1)*43758.5453;return v-Math.floor(v)};
+function meadowSpot(i){
+  if(i<MEADOW_ORDER.length){const [r,c]=MEADOW_ORDER[i],R=MEADOW_ROWS[r];return {cx:R.x[c]+(jit(i)-.5)*14,b:R.b+(jit(i+7)-.5)*6,s:R.s}}
+  // a big forest keeps filling the far hillside with smaller trees
+  const k=i-MEADOW_ORDER.length, perRow=11, row=Math.floor(k/perRow), col=k%perRow;
+  return {cx:18+col*32+(row%2?16:0)+(jit(i)-.5)*8, b:104-row*6+(jit(i+3)-.5)*4, s:Math.max(30,40-row*4)};
+}
+function placeTree(svg,spot,attrs){
+  const x=spot.cx-spot.s/2, y=spot.b-spot.s*150/160;
+  return `<g ${attrs}>${svg.replace("<svg ",`<svg x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${spot.s}" height="${spot.s}" `)}</g>`;
+}
 function forestView(){
   const trees=[...forest].sort((a,b)=>(a.grownAt||0)-(b.grownAt||0));
   const st=stageOf(curWater());
   const fmtD=ts=>{const d=new Date(ts||Date.now());return L(`${d.getMonth()+1}月${d.getDate()}日`,`${d.getDate()} ${MON[d.getMonth()]}`)};
-  const cell=(svg,label,sub,cls="")=>`<div class="ftree ${cls}">${svg}<b>${label}</b><small>${sub}</small></div>`;
-  const items=trees.map((t,i)=>cell(treeSVG("happy",STAGES.length-1,false,t.theme),L(`第 ${i+1} 棵`,`Tree ${i+1}`),`${tName(t.theme)} · ${fmtD(t.grownAt)}`)).join("")
-    +cell(treeSVG("idle",st,false,curTheme),L("正在长","Growing now"),`${tName(curTheme)} · ${STAGES[st].n}`,"growing");
+  const items=trees.map((t,i)=>({i,spot:meadowSpot(i),svg:treeSVG(forestSel===i?"cheer":"happy",STAGES.length-1,false,t.theme)}));
+  items.push({i:"cur",spot:{cx:180,b:240,s:96},svg:treeSVG(forestSel==="cur"?"happy":"idle",st,false,curTheme)});
+  items.sort((a,b)=>a.spot.b-b.spot.b);
+  const tuft=(x,y)=>`<path class="fs-tuft" d="M${x} ${y}l-3-7 4 5 1-8 2 8 3-6-1 8z"/>`;
+  const bloom=(x,y,c)=>`<circle cx="${x}" cy="${y}" r="2.2" class="${c}"/><circle cx="${x}" cy="${y}" r=".9" class="fs-fc"/>`;
+  const scene=`<svg class="meadow" viewBox="0 0 360 260" role="img" aria-label="${L(`森林里有 ${trees.length} 棵树`,`A meadow with ${trees.length} ${n_(trees.length,"tree","trees")}`)}">
+    <defs><linearGradient id="fsSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="fs-s1"/><stop offset="1" class="fs-s2"/></linearGradient></defs>
+    <rect width="360" height="260" fill="url(#fsSky)"/>
+    <circle cx="312" cy="34" r="16" class="fs-sun"/><circle cx="312" cy="34" r="24" class="fs-sun halo"/>
+    <g class="fs-cloud c1"><ellipse cx="70" cy="34" rx="22" ry="8"/><ellipse cx="84" cy="28" rx="13" ry="9"/><ellipse cx="58" cy="30" rx="10" ry="7"/></g>
+    <g class="fs-cloud c2"><ellipse cx="200" cy="52" rx="17" ry="6"/><ellipse cx="210" cy="47" rx="10" ry="7"/></g>
+    <path class="fs-hill" d="M0 112 C60 82 120 92 180 104 S300 80 360 100 V260 H0Z"/>
+    <path class="fs-grass" d="M0 124 C70 110 140 122 200 116 S310 108 360 120 V260 H0Z"/>
+    <path class="fs-grass2" d="M0 200 C90 186 190 206 260 196 S340 190 360 198 V260 H0Z"/>
+    ${[[24,150],[110,170],[160,138],[240,160],[338,150],[96,214],[200,224],[290,218],[20,246],[140,252],[330,250],[70,130],[280,132]].map(([x,y])=>tuft(x,y)).join("")}
+    ${[[40,164,"fs-f1"],[132,196,"fs-f2"],[214,172,"fs-f1"],[300,186,"fs-f3"],[60,230,"fs-f2"],[250,246,"fs-f1"],[350,226,"fs-f2"],[188,140,"fs-f3"]].map(([x,y,c])=>bloom(x,y,c)).join("")}
+    ${items.map(it=>{
+      const glow=forestSel===it.i?`<ellipse cx="${it.spot.cx}" cy="${it.spot.b}" rx="${it.spot.s*.42}" ry="${it.spot.s*.09}" class="fs-glow"/>`:"";
+      return glow+placeTree(it.svg,it.spot,`class="fs-tree${forestSel===it.i?" sel":""}" data-act="ftree" data-v="${it.i}" role="button" tabindex="0" aria-label="${it.i==="cur"?L("正在长的小芽","The sprout growing now"):L(`第 ${it.i+1} 棵`,`Tree ${it.i+1}`)}"`)}).join("")}
+  </svg>`;
+  let cap;
+  if(forestSel==="cur")cap=`<b>${L("正在长的小芽","Growing now")}</b> · ${tName(curTheme)} · ${STAGES[st].n} · ${L(`已经喝了 ${curWater()} 滴水`,`${curWater()} drops so far`)}`;
+  else if(forestSel!==null&&trees[forestSel]){const t=trees[forestSel];cap=`<b>${L(`第 ${forestSel+1} 棵`,`Tree ${forestSel+1}`)}</b> · ${tName(t.theme)} · ${L(`${fmtD(t.grownAt)}开花，喝了 ${t.drops||MAXW} 滴水`,`bloomed on ${fmtD(t.grownAt)} after ${t.drops||MAXW} drops`)}`}
+  else cap=trees.length?L(`草地上已经有 ${trees.length} 棵开花的树了。点一棵树，看看它是哪天长成的。`,`${trees.length} blooming ${n_(trees.length,"tree is","trees are")} on your meadow. Tap one to see when it bloomed.`)
+                       :L("草地还空着，最前面那颗就是正在长的小芽。它开花后可以种进这片草地，再从一颗新种子开始。","The meadow is still empty. The little one at the front is your sprout. Once it blooms, plant it here and start again from a new seed.");
   return `<div class="board" data-k="forest">
     <div class="forest-card">
-      <div class="card-head"><h3>${L("我的森林","My forest")}</h3><span class="sub">${trees.length?L(`已经种出 ${trees.length} 棵开花的树`,`${trees.length} blooming ${n_(trees.length,"tree","trees")} so far`):L("还没有种出来的树","No trees planted yet")}</span></div>
-      <div class="grove">${items}</div>
-      ${trees.length?"":`<p class="hint" style="margin:0">${L("小芽长成开花的树后，可以把它种进森林，再从一颗新种子开始。","Once Sprout is in full bloom, plant it here and start again from a new seed.")}</p>`}
+      <div class="card-head"><h3>${L("我的森林","My forest")}</h3><span class="sub">${trees.length?L(`${trees.length} 棵开花的树`,`${trees.length} blooming ${n_(trees.length,"tree","trees")}`):L("还没有种出来的树","No trees planted yet")}</span></div>
+      <div class="meadow-wrap">${scene}</div>
+      <p class="forest-cap">${cap}</p>
     </div>
     <div class="card">
       <div class="card-head"><h3>${L("现在这颗的颜色","This sprout's colour")}</h3><span class="sub">${L("随时可以换","Change it anytime")}</span></div>
@@ -1223,6 +1283,7 @@ document.addEventListener("click",async e=>{
   }
   const act=e.target.closest("[data-act]"); if(!act)return;
   if(act.dataset.act==="jday"){jDate=act.dataset.v;jSaved="";render();const j=document.querySelector(".jnav");if(j)j.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});return}
+  if(act.dataset.act==="ftree"){const v=act.dataset.v==="cur"?"cur":+act.dataset.v;forestSel=forestSel===v?null:v;render();return}
   if(act.dataset.act==="calprev"){shiftMonth(-1);return}
   if(act.dataset.act==="calnext"){shiftMonth(1);return}
   if(act.dataset.act==="jprev"){jDate=addDays(jDate||todayStr(),-1);calMonth=null;jSaved="";render();return}
