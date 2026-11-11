@@ -1,0 +1,1267 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="人生服务器">
+<meta name="theme-color" content="#eaf4ff">
+<title>我的人生服务器</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Fredoka:wght@500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* Layout: a sky-blue playroom — the sprout buddy greets you up top, a puffy capture card, three pastel boards behind bubbly tabs */
+:root{
+  --bg:#eaf4ff; --bg-2:#f6faff; --surface:#ffffff; --surface-2:#edf4fe; --line:#d3e3f7;
+  --fg:#1f3156; --muted:#5b7099; --faint:#9db0cf;
+  --work:#3a8bff; --work-soft:#e0eeff; --work-ink:#1f66d1; --brand:#2f7cf6; --brand-ink:#1b5fc4; --title:#1b5fc4;
+  --life:#2fb38a; --life-soft:#dcf6ec; --life-ink:#1f8a69;
+  --study:#8b6cf0; --study-soft:#efeaff; --study-ink:#6447d1;
+  --habit:#ff9a3d; --habit-soft:#ffeedd; --habit-ink:#d86f12;
+  --pink:#ff8fb1; --buddy:#ffe08a; --buddy-ink:#3a3350; --leaf:#5cc98f; --leaf-2:#3faa74; --bark:#e3a86f; --soil:#c9b49a; --water:#4aa8ff;
+  --danger:#ef5d6e; --shadow:0 6px 0 rgba(47,124,246,.12);
+  --f-display:"ZCOOL KuaiLe","Fredoka","Noto Sans SC",system-ui,sans-serif;
+  --f-num:"Fredoka","Noto Sans SC",system-ui,sans-serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme]):not([data-tod]){
+  --bg:#0f1a2e; --bg-2:#14223b; --surface:#1a2a47; --surface-2:#223558; --line:#2c4269;
+  --fg:#eaf2ff; --muted:#a3b7d8; --faint:#6a82aa;
+  --work:#6fb0ff; --work-soft:#1f3a63; --work-ink:#a6cdff; --brand:#3a8bff; --brand-ink:#1f66d1; --title:#a6cdff;
+  --life:#58d6ac; --life-soft:#1f4a3e; --life-ink:#7fe6c3;
+  --study:#b29cff; --study-soft:#352a63; --study-ink:#cfc2ff;
+  --habit:#ffb366; --habit-soft:#4a3520; --habit-ink:#ffc68a;
+  --pink:#ff9fbe; --buddy:#ffd76e; --buddy-ink:#2a2540; --leaf:#6fdc9f; --leaf-2:#45b67f; --bark:#c98f58; --soil:#4b4361; --water:#6cbcff;
+  --danger:#ff8592; --shadow:0 6px 0 rgba(0,0,0,.3); color-scheme:dark}}
+:root[data-theme="dark"],:root:not([data-theme])[data-tod="night"]{
+  --bg:#0f1a2e; --bg-2:#14223b; --surface:#1a2a47; --surface-2:#223558; --line:#2c4269;
+  --fg:#eaf2ff; --muted:#a3b7d8; --faint:#6a82aa;
+  --work:#6fb0ff; --work-soft:#1f3a63; --work-ink:#a6cdff; --brand:#3a8bff; --brand-ink:#1f66d1; --title:#a6cdff;
+  --life:#58d6ac; --life-soft:#1f4a3e; --life-ink:#7fe6c3;
+  --study:#b29cff; --study-soft:#352a63; --study-ink:#cfc2ff;
+  --habit:#ffb366; --habit-soft:#4a3520; --habit-ink:#ffc68a;
+  --pink:#ff9fbe; --buddy:#ffd76e; --buddy-ink:#2a2540; --leaf:#6fdc9f; --leaf-2:#45b67f; --bark:#c98f58; --soil:#4b4361; --water:#6cbcff;
+  --danger:#ff8592; --shadow:0 6px 0 rgba(0,0,0,.3); color-scheme:dark}
+
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+[hidden]{display:none!important}
+.gear{border:none;background:var(--surface);border-radius:50%;width:34px;height:34px;font-size:16px;box-shadow:0 3px 0 var(--line);padding:0}
+.title-row .jbtn{margin-left:auto}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.55;
+  background-image:radial-gradient(circle at 10% 6%,var(--bg-2) 0 130px,transparent 131px),radial-gradient(circle at 90% 18%,var(--bg-2) 0 90px,transparent 91px),radial-gradient(circle at 80% 70%,var(--bg-2) 0 110px,transparent 111px);background-attachment:fixed;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:720px;margin:0 auto;padding-block:14px 110px;display:flex;flex-direction:column;gap:14px}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+
+/* garden with the growing buddy */
+.garden{position:relative;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;background:var(--surface);border-radius:24px;padding:10px 16px 10px 8px;box-shadow:var(--shadow)}
+.title-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+h1{font-family:var(--f-display);font-weight:400;font-size:28px;margin:0;letter-spacing:.02em;line-height:1.1;color:var(--title)}
+.today{font-family:var(--f-num);font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.buddy{width:104px;height:104px;flex:none;cursor:pointer;position:relative}
+.buddy svg{width:100%;height:100%;overflow:visible}
+.g-text{min-width:0;display:flex;flex-direction:column;gap:6px}
+.stage{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.stage b{font-family:var(--f-display);font-weight:400;font-size:18px}
+.stage .lv{font-family:var(--f-num);font-size:12.5px;font-weight:600;color:var(--leaf-2);background:color-mix(in srgb,var(--leaf) 20%,transparent);border-radius:999px;padding:1px 9px}
+.bubble{position:relative;background:var(--bg-2);border-radius:14px;padding:6px 12px;font-size:13.5px;width:fit-content;max-width:100%}
+.bubble::before{content:"";position:absolute;left:-6px;top:13px;width:12px;height:12px;background:var(--bg-2);transform:rotate(45deg);border-radius:3px}
+.bubble span{position:relative}
+.meter{display:flex;flex-direction:column;gap:5px}
+.meter-top{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted);flex-wrap:wrap}
+.meter-top .w{font-family:var(--f-num);font-weight:600;color:var(--water);font-variant-numeric:tabular-nums}
+.wbar{height:9px;border-radius:999px;background:var(--surface-2);overflow:hidden}
+.wbar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--water),var(--leaf));transition:width .6s}
+.status{font-size:13px;color:var(--danger)}
+.plus{position:absolute;font-family:var(--f-num);font-weight:600;color:var(--water);font-size:18px;pointer-events:none;z-index:3}
+.drop{position:fixed;font-size:20px;pointer-events:none;z-index:31;left:0;top:0}
+/* capture: floating button + bottom sheet */
+.fab{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:15;border:none;border-radius:50%;width:72px;height:72px;padding:0;background:var(--brand);box-shadow:0 5px 0 var(--brand-ink),0 10px 24px rgba(30,80,160,.25);display:grid;place-items:center;transition:transform .15s}
+.fab svg{width:60px;height:60px;overflow:visible;margin-top:2px}
+.fab:hover{transform:translateY(-2px) rotate(-6deg)}
+.fab .tw{transform-box:fill-box;transform-origin:center}
+@media (prefers-reduced-motion:no-preference){.fab .tw{animation:tw 1.8s ease-in-out infinite}.fab .tw2{animation-delay:.6s}.fab .tw3{animation-delay:1.1s}}
+@keyframes tw{0%,100%{transform:scale(.5);opacity:.5}50%{transform:scale(1.15);opacity:1}}
+.fab:active{transform:translateY(2px);box-shadow:0 2px 0 var(--brand-ink)}
+.cap-wrap{position:fixed;inset:0;z-index:25;background:rgba(20,35,70,.38);display:flex;align-items:flex-end;justify-content:center}
+.cap-wrap .capture{width:100%;max-width:580px;border-radius:26px 26px 0 0;max-height:88vh;overflow:auto;padding:18px max(18px,env(safe-area-inset-left,0px)) calc(18px + env(safe-area-inset-bottom,0px))}
+@media(min-width:640px){.cap-wrap{align-items:center}.cap-wrap .capture{border-radius:26px}}
+.cap-head .x{margin-left:auto;border:none;background:var(--surface-2);border-radius:50%;width:32px;height:32px;font-size:18px;color:var(--muted);line-height:1}
+@media (prefers-reduced-motion:no-preference){.cap-wrap:not([hidden]) .capture{animation:up .22s ease-out}}
+@keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+/* capture */
+.capture{background:var(--surface);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow)}
+.cap-head{display:flex;align-items:center;gap:8px;font-family:var(--f-display);font-size:18px}
+.cap-head .pen{width:26px;height:26px}
+.capture textarea{width:100%;min-height:68px;resize:vertical;border:2px solid var(--line);border-radius:16px;background:var(--bg-2);padding:11px 14px;line-height:1.55}
+.capture textarea:focus{border-color:var(--brand);outline:none}
+.cap-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 16px;font-size:14px;font-weight:500;transition:transform .12s}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--brand);color:#fff;border-color:var(--brand);box-shadow:0 3px 0 var(--brand-ink)}
+.btn:disabled{opacity:.55;cursor:default;transform:none}
+.hint{font-size:12.5px;color:var(--muted)}
+.preview{display:flex;flex-direction:column;gap:8px;border-top:2px dashed var(--line);padding-top:12px}
+.pv{display:grid;grid-template-columns:auto 1fr;gap:8px 10px;align-items:start;padding:10px 12px;border-radius:14px;background:var(--bg-2)}
+.pv input[type=checkbox]{margin-top:5px;accent-color:var(--work);width:16px;height:16px}
+.pv-body{min-width:0;display:flex;flex-direction:column;gap:7px}
+.pv-title{border:none;background:transparent;padding:0;width:100%;font-weight:500}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:12.5px;border:2px solid var(--line);border-radius:999px;padding:1px 10px;background:var(--surface);color:var(--muted)}
+.chip.on.work{background:var(--work-soft);color:var(--work-ink);border-color:var(--work)}
+.chip.on.study{background:var(--study-soft);color:var(--study-ink);border-color:var(--study)}
+.chip.on.life{background:var(--life-soft);color:var(--life-ink);border-color:var(--life)}
+.chip.on.hz{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.gap{width:4px}
+
+/* tabs */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:6px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tab{border:2px solid transparent;background:var(--surface);border-radius:18px;padding:8px 6px;font-weight:500;color:var(--muted);display:flex;gap:6px;justify-content:center;align-items:center;transition:transform .15s}
+.tab svg{width:22px;height:22px;flex:none}
+.tab .tl{white-space:nowrap}
+.tab .n{font-family:var(--f-num);font-size:12.5px;font-variant-numeric:tabular-nums;padding:0 8px;border-radius:999px;background:var(--surface-2)}
+.tab[aria-selected=true]{color:var(--fg);transform:translateY(-2px)}
+.tab[data-k=work][aria-selected=true]{border-color:var(--work);background:var(--work-soft);box-shadow:0 4px 0 var(--work)}
+.tab[data-k=study][aria-selected=true]{border-color:var(--study);background:var(--study-soft);box-shadow:0 4px 0 var(--study)}
+.tab[data-k=life][aria-selected=true]{border-color:var(--life);background:var(--life-soft);box-shadow:0 4px 0 var(--life)}
+.tab[data-k=habit][aria-selected=true]{border-color:var(--habit);background:var(--habit-soft);box-shadow:0 4px 0 var(--habit)}
+.tab[aria-selected=true] .n{background:var(--surface)}
+
+/* boards */
+.board{display:flex;flex-direction:column;gap:20px;--c:var(--work);--soft:var(--work-soft);--ink:var(--work-ink)}
+.board[data-k=study]{--c:var(--study);--soft:var(--study-soft);--ink:var(--study-ink)}
+.board[data-k=life]{--c:var(--life);--soft:var(--life-soft);--ink:var(--life-ink)}
+.board[data-k=habit]{--c:var(--habit);--soft:var(--habit-soft);--ink:var(--habit-ink)}
+.group h2{display:flex;align-items:center;gap:8px;font-family:var(--f-display);font-weight:400;font-size:19px;margin:0 0 8px;color:var(--fg)}
+.group h2 .badge{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.group h2 .sub{font-family:var(--f-body);font-size:12.5px;color:var(--muted)}
+.group h2 .add{width:26px;height:26px;border-radius:50%;border:2px solid var(--c);background:var(--surface);color:var(--c);display:grid;place-items:center;padding:0;flex:none;transition:transform .15s,background .15s}
+.group h2 .add:hover{background:var(--c);color:#fff;transform:rotate(90deg)}
+.group h2 .add svg{width:12px;height:12px;stroke:currentColor;stroke-width:3;stroke-linecap:round}
+.group h2 .cnt{margin-left:auto;font-family:var(--f-num);font-size:14px;color:var(--ink);background:var(--soft);border-radius:999px;padding:0 10px}
+.list{display:flex;flex-direction:column;gap:8px}
+.empty{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:18px;border:2px dashed var(--line);color:var(--muted);font-size:13.5px}
+.empty svg{width:44px;height:44px;flex:none}
+.task{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 14px;background:var(--surface);border-radius:18px;box-shadow:var(--shadow);transition:transform .15s}
+.task:hover{transform:translateY(-1px)}
+.check{width:26px;height:26px;border-radius:50%;border:2.5px solid var(--c);background:transparent;display:grid;place-items:center;padding:0;transition:transform .15s}
+.check:hover{transform:scale(1.1)}
+.check.on{background:var(--c)}
+.check svg{width:14px;height:14px;stroke:#fff;stroke-width:3.4;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.check.on svg{opacity:1}
+.t-main{min-width:0;border:none;background:transparent;text-align:left;padding:0;display:flex;flex-direction:column;gap:2px}
+.t-title{overflow-wrap:anywhere;font-weight:500}
+.task.done{box-shadow:none;background:var(--surface-2)}
+.task.done .t-title{color:var(--faint);text-decoration:line-through;font-weight:400}
+.t-note{font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.due{font-family:var(--f-num);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap;padding:2px 10px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
+.due.over{background:var(--danger);color:#fff}
+.due.soon{background:var(--habit-soft);color:var(--habit-ink)}
+details.done-box summary{cursor:pointer;font-size:13.5px;color:var(--muted);padding:4px 2px;list-style:none}
+details.done-box summary::before{content:"▸ ";}
+details.done-box[open] summary::before{content:"▾ ";}
+details.done-box .list{margin-top:8px}
+
+/* life sub-sections */
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--surface);border-radius:18px;padding:5px;box-shadow:var(--shadow)}
+.seg button{border:none;background:transparent;border-radius:14px;padding:8px;font-weight:500;color:var(--muted);display:flex;gap:6px;align-items:center;justify-content:center}
+.seg button .n{font-family:var(--f-num);font-size:12px;background:var(--surface-2);border-radius:999px;padding:0 7px}
+.seg button[aria-pressed=true]{background:var(--life-soft);color:var(--life-ink)}
+.seg button[aria-pressed=true] .n{background:var(--surface)}
+.card{background:var(--surface);border-radius:22px;padding:14px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.card-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card-head h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:19px}
+.card-head .sub{font-size:12.5px;color:var(--muted)}
+.card-head .right{margin-left:auto;display:flex;gap:6px}
+.link{border:none;background:none;color:var(--life-ink);font-size:13px;padding:2px 4px}
+.staples{display:flex;flex-wrap:wrap;gap:7px}
+.st{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:14px;display:inline-flex;gap:6px;align-items:center;transition:transform .12s}
+.st:hover{transform:translateY(-1px)}
+.st.pick{background:var(--life);border-color:var(--life);color:#fff}
+.st.inlist{border-style:dashed;color:var(--faint)}
+.st .x{font-size:13px;color:var(--danger);font-weight:700}
+.shop-add{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.shop-add input[type=text]{flex:1;min-width:0;border:2px solid var(--line);border-radius:999px;background:var(--bg-2);padding:8px 16px}
+.shop-add input[type=text]:focus{border-color:var(--life);outline:none}
+.shop-add label{font-size:13px;color:var(--muted);display:flex;gap:5px;align-items:center}
+.shop-add input[type=checkbox]{accent-color:var(--life)}
+.btn.life{background:var(--life);border-color:var(--life);color:#fff;box-shadow:0 3px 0 var(--life-ink)}
+.items{display:flex;flex-direction:column}
+.item{display:grid;grid-template-columns:auto 1fr auto auto;gap:10px;align-items:center;padding:9px 2px;border-top:2px dotted var(--line)}
+.item:first-child{border-top:none}
+.item .nm{overflow-wrap:anywhere;min-width:0}
+.item.got .nm{color:var(--faint);text-decoration:line-through}
+.item .star{border:none;background:none;padding:2px;font-size:16px;color:var(--faint);line-height:1}
+.item .star.on{color:var(--habit)}
+.item .del{border:none;background:none;color:var(--faint);font-size:18px;padding:0 4px;line-height:1}
+.item .del:hover{color:var(--danger)}
+.shop-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+
+/* daily summary */
+.title-row .jbtn{margin-left:auto;border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 14px;font-weight:500;font-size:14px;box-shadow:0 3px 0 var(--line);transition:transform .12s}
+.title-row .jbtn:hover{transform:translateY(-1px)}
+.title-row .jbtn[aria-pressed=true]{background:var(--brand);color:#fff;border-color:var(--brand);box-shadow:0 3px 0 var(--brand-ink)}
+.jnav{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface);border-radius:20px;padding:8px 10px;box-shadow:var(--shadow)}
+.jnav h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:21px;text-align:center}
+.jnav h2 small{display:block;font-family:var(--f-body);font-size:12px;color:var(--muted)}
+.jnav button{border:none;background:var(--surface-2);border-radius:999px;width:38px;height:38px;font-size:18px;color:var(--muted)}
+.jnav button:disabled{opacity:.35;cursor:default}
+.jstats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.jstat{background:var(--surface);border-radius:18px;padding:10px 8px;text-align:center;box-shadow:var(--shadow)}
+.jstat b{display:block;font-family:var(--f-num);font-weight:600;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums}
+.jstat span{font-size:12px;color:var(--muted)}
+.jgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.jbox{background:var(--surface);border-radius:20px;padding:12px 14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px;min-width:0}
+.jbox h4{margin:0;display:flex;align-items:center;gap:7px;font-family:var(--f-display);font-weight:400;font-size:17px}
+.jbox h4 i{width:10px;height:10px;border-radius:50%;flex:none}
+.jbox ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.jbox li{display:flex;gap:6px;align-items:baseline;overflow-wrap:anywhere}
+.jbox li::before{content:"✓";font-weight:700;color:var(--c,var(--muted))}
+.jbox .none{font-size:13px;color:var(--faint)}
+.comment{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;background:var(--surface);border-radius:22px;padding:14px 16px;box-shadow:var(--shadow)}
+.comment .mini{width:64px;height:64px}
+.comment .mini svg{width:100%;height:100%;overflow:visible}
+.comment .body{min-width:0;display:flex;flex-direction:column;gap:8px}
+.comment h4{margin:0;font-family:var(--f-display);font-weight:400;font-size:17px}
+.comment p{margin:0;line-height:1.75;white-space:pre-wrap}
+.comment .acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.reflect{background:var(--surface);border-radius:22px;padding:14px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.reflect h4{margin:0;font-family:var(--f-display);font-weight:400;font-size:17px}
+.moods{display:flex;gap:6px;flex-wrap:wrap}
+.mood{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 11px;font-size:13.5px;display:flex;gap:4px;align-items:center}
+.mood.on{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 14%,transparent)}
+.reflect textarea{width:100%;min-height:96px;resize:vertical;border:2px solid var(--line);border-radius:16px;background:var(--bg-2);padding:10px 14px;line-height:1.6}
+.reflect textarea:focus{border-color:var(--brand);outline:none}
+.saved{font-size:12px;color:var(--muted)}
+@media(max-width:520px){.jgrid{grid-template-columns:1fr}.jstats{grid-template-columns:repeat(2,1fr)}}
+
+/* habits */
+.daycard{display:grid;grid-template-columns:1fr auto;gap:6px 14px;align-items:center;background:var(--surface);border-radius:22px;padding:14px 16px;box-shadow:var(--shadow)}
+.daycard h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:19px}
+.daycard .big{font-family:var(--f-num);font-weight:600;font-size:28px;color:var(--habit-ink);font-variant-numeric:tabular-nums;line-height:1}
+.bar{grid-column:1/-1;height:14px;border-radius:999px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:999px;background:repeating-linear-gradient(45deg,var(--habit) 0 10px,var(--pink) 10px 20px);transition:width .4s}
+.habit{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:12px 14px;background:var(--surface);border-radius:20px;box-shadow:var(--shadow)}
+.stamp{width:52px;height:52px;border-radius:50%;border:3px dashed var(--faint);background:transparent;display:grid;place-items:center;padding:0;transition:transform .2s}
+.stamp:hover{transform:rotate(-8deg) scale(1.05)}
+.stamp.on{border:3px solid var(--habit);background:var(--habit-soft)}
+.stamp svg{width:32px;height:32px;opacity:.25;transition:opacity .2s,transform .3s}
+.stamp.on svg{opacity:1;transform:rotate(-12deg)}
+.h-main{min-width:0;display:flex;flex-direction:column;gap:7px}
+.h-name{font-weight:500;overflow-wrap:anywhere}
+.dots{display:flex;gap:4px;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;background:var(--surface-2)}
+.dot.on{background:var(--habit)}
+.dot.today{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--habit)}
+.streak{display:flex;flex-direction:column;align-items:center;min-width:48px}
+.streak b{font-family:var(--f-num);font-weight:600;font-size:22px;font-variant-numeric:tabular-nums;line-height:1;color:var(--habit-ink)}
+.streak small{font-size:11px;color:var(--muted);margin-top:2px}
+.streak svg{width:18px;height:18px}
+.h-del{border:none;background:none;color:var(--faint);font-size:12px;padding:0;text-align:left;width:fit-content}
+.h-del:hover{color:var(--danger)}
+.habit-add{display:flex;gap:8px}
+.habit-add input{flex:1;min-width:0;border:2px solid var(--line);border-radius:999px;background:var(--surface);padding:8px 16px}
+.habit-add input:focus{border-color:var(--habit);outline:none}
+.habit-add .btn{background:var(--habit);border-color:var(--habit);color:#fff;box-shadow:0 3px 0 var(--habit-ink)}
+
+/* editor sheet */
+.sheet-bg{position:fixed;inset:0;background:rgba(30,35,70,.4);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--surface);width:100%;max-width:540px;border-radius:26px 26px 0 0;padding:20px max(20px,env(safe-area-inset-left,0px)) calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:13px;max-height:90vh;overflow:auto}
+@media(min-width:640px){.sheet-bg{align-items:center}.sheet{border-radius:26px}}
+.sheet h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:20px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field > span{font-size:12.5px;color:var(--muted)}
+.field input,.field textarea{border:2px solid var(--line);border-radius:14px;background:var(--bg-2);padding:8px 12px;width:100%}
+.field textarea{min-height:76px;resize:vertical}
+.sheet-actions{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap}
+.btn.danger{color:var(--danger)}
+
+/* confetti */
+.spark{position:fixed;width:9px;height:9px;border-radius:2px;pointer-events:none;z-index:30}
+
+@media (prefers-reduced-motion:no-preference){
+  .buddy svg{animation:bob 3.2s ease-in-out infinite}
+  .buddy.hop svg{animation:hop .55s ease-out}
+  .eye-open{animation:blink 4.5s infinite;transform-origin:center;transform-box:fill-box}
+  .zz{animation:zz 2.4s ease-in-out infinite}
+}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes hop{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-16px) scale(1.05,.95)}60%{transform:translateY(0) scale(1.06,.92)}100%{transform:translateY(0) scale(1)}}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+@keyframes zz{0%,100%{opacity:.2;transform:translate(0,0)}50%{opacity:1;transform:translate(3px,-5px)}}
+@media(max-width:460px){.garden{grid-template-columns:84px 1fr;gap:8px;padding:8px 12px 8px 4px}.buddy{width:84px;height:84px}.meter-top{font-size:12px}h1{font-size:22px}.title-row .jbtn{padding:4px 11px;font-size:13px}.tab{font-size:13.5px;padding:8px 2px;gap:4px}.tab .n{padding:0 6px}nav.tabs{gap:5px}.tab svg{display:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="title-row"><h1 id="appName">我的人生服务器</h1><span class="today" id="today"></span><button class="jbtn" id="jbtn" aria-pressed="false">📔 <span id="jbtnTxt">今日小结</span></button><button class="gear" id="gear" aria-label="设置">⚙️</button></div>
+  <section class="garden" aria-label="小芽的成长">
+    <div class="buddy" id="buddy" role="img" aria-label="小芽"></div>
+    <div class="g-text">
+      <div class="stage"><b id="stageName">小芽</b><span class="lv" id="stageLv">Lv.1</span></div>
+      <div class="bubble"><span id="say">正在把你的东西搬过来…</span></div>
+      <div class="meter">
+        <div class="meter-top"><span>💧 <span class="w" id="water">0</span> <span id="dropsLbl">滴水</span></span><span id="nextTxt"></span></div>
+        <div class="wbar"><i id="wbar" style="width:0%"></i></div>
+      </div>
+      <div class="status" id="status" hidden></div>
+    </div>
+  </section>
+
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" data-k="habit"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z" fill="var(--habit)"/></svg><span class="tl" id="tl-habit">打卡</span> <span class="n" id="n-habit">0/0</span></button>
+    <button class="tab" role="tab" data-k="life"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-9.5A4 4 0 0 1 12 8a4 4 0 0 1 7 2.5C19 15.6 12 20 12 20z" fill="var(--life)"/></svg><span class="tl" id="tl-life">生活</span> <span class="n" id="n-life">0</span></button>
+    <button class="tab" role="tab" data-k="study"><svg viewBox="0 0 24 24"><path d="M4 5.5C6.5 4.5 9.5 4.6 12 6.3c2.5-1.7 5.5-1.8 8-.8V19c-2.5-1-5.5-.9-8 .8-2.5-1.7-5.5-1.8-8-.8z" fill="var(--study)"/><path d="M12 6.3v13.5" stroke="#fff" stroke-width="1.6"/></svg><span class="tl" id="tl-study">学习</span> <span class="n" id="n-study">0</span></button>
+    <button class="tab" role="tab" data-k="work"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="4" fill="var(--work)"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7" stroke="var(--work)" stroke-width="2" fill="none"/><circle cx="12" cy="13" r="1.8" fill="#fff"/></svg><span class="tl" id="tl-work">工作</span> <span class="n" id="n-work">0</span></button>
+  </nav>
+
+  <main id="main"></main>
+  <div class="cap-wrap" id="capWrap" hidden>
+  <section class="capture" aria-label="快速记录">
+    <div class="cap-head"><svg class="pen" viewBox="0 0 32 32"><rect x="5" y="7" width="22" height="20" rx="5" fill="var(--pink)"/><rect x="8" y="5" width="16" height="5" rx="2.5" fill="var(--buddy)"/><path d="M10 15h12M10 20h8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><label for="cap" id="capLbl">想到什么就丢给我</label><button class="x" id="capClose" aria-label="关闭">×</button></div>
+    <textarea id="cap" placeholder="例如：周五前改完简历投三家伦敦的公司；周末买洗衣液和鸡蛋；今年想把雅思口语练到 8"></textarea>
+    <div class="cap-row">
+      <button class="btn primary" id="parseBtn">✨ 自动分拣</button>
+      <button class="btn" id="inboxBtn">先丢进收件箱</button>
+      <span class="hint" id="capHint">按规则拆成几条、分到对应板块、换算日期，你确认后才保存。分错了点一下就能改。</span>
+    </div>
+    <div class="preview" id="preview" hidden></div>
+  </section>
+  </div>
+  <button class="fab" id="fab" aria-label="记下一个想法" title="想到什么就丢给小芽"><svg viewBox="0 0 120 120" aria-hidden="true">
+      <path d="M60 32C60 26 60 22 60 18" stroke="var(--leaf)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M60 22C51 22 44 17 44 9 53 9 59 14 60 22Z" fill="var(--leaf)"/><path d="M60 22C69 22 76 17 76 9 67 9 61 14 60 22Z" fill="var(--leaf-2)"/>
+      <path d="M60 30C88 30 104 50 104 74 104 96 86 110 60 110 34 110 16 96 16 74 16 50 32 30 60 30Z" fill="var(--buddy)"/>
+      <circle cx="44" cy="68" r="10" fill="var(--buddy-ink)"/><circle cx="76" cy="68" r="10" fill="var(--buddy-ink)"/>
+      <circle cx="47.5" cy="64" r="4.2" fill="#fff"/><circle cx="79.5" cy="64" r="4.2" fill="#fff"/>
+      <circle cx="40.5" cy="72" r="2" fill="#fff"/><circle cx="72.5" cy="72" r="2" fill="#fff"/>
+      <ellipse cx="30" cy="84" rx="7" ry="4.5" fill="var(--pink)" opacity=".8"/><ellipse cx="90" cy="84" rx="7" ry="4.5" fill="var(--pink)" opacity=".8"/>
+      <path d="M52 86q8 9 16 0z" fill="var(--buddy-ink)"/>
+      <path class="tw" d="M100 18l2.6 6.4 6.4 2.6-6.4 2.6-2.6 6.4-2.6-6.4-6.4-2.6 6.4-2.6z" fill="#fff"/>
+      <path class="tw tw2" d="M20 26l1.8 4.2 4.2 1.8-4.2 1.8-1.8 4.2-1.8-4.2-4.2-1.8 4.2-1.8z" fill="#fff"/>
+      <path class="tw tw3" d="M110 50l1.4 3.2 3.2 1.4-3.2 1.4-1.4 3.2-1.4-3.2-3.2-1.4 3.2-1.4z" fill="var(--buddy)"/>
+    </svg></button>
+</div>
+
+<script>
+/* ---------- language ---------- */
+let lang="zh";
+try{lang=localStorage.getItem("lifeos-lang")||((navigator.language||"").toLowerCase().startsWith("zh")?"zh":"en")}catch(e){lang=(navigator.language||"").toLowerCase().startsWith("zh")?"zh":"en"}
+const L=(zh,en)=>lang==="en"?en:zh;
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const WDEN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const n_=(n,one,many)=>n===1?one:many;
+const HZ=[
+  {k:"inbox",name:"收件箱",sub:"刚记下，还没安排"},
+  {k:"week",name:"近期",sub:"这周内"},
+  {k:"month",name:"中期",sub:"这个月内"},
+  {k:"long",name:"长期",sub:"慢慢长大的目标"}
+];
+const HZNAME=Object.fromEntries(HZ.map(h=>[h.k,h.name]));
+const SPACE={work:"工作",life:"生活",study:"学习",shop:"购物"};
+const PLUS='<svg viewBox="0 0 12 12"><path d="M6 1.5v9M1.5 6h9"/></svg>';
+const CHECK='<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const STAR='<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.6L12 17.1l-5.9 3.3 1.3-6.6L2.5 9.3l6.6-.8z" fill="var(--habit)" stroke="var(--habit-ink)" stroke-width="1" stroke-linejoin="round"/></svg>';
+const FLAME='<svg viewBox="0 0 24 24"><path d="M12 22c-4 0-6.5-2.7-6.5-6.2 0-3.3 2.6-5.3 3.8-8.3.3 2 1.4 3 2.4 3.4.3-3 1.6-5.6 4-7.4-.4 3 1 4.7 2.2 6.6 1 1.6 1.6 3.4 1.6 5.6C19.5 19.3 16.3 22 12 22z" fill="var(--habit)"/><path d="M12 22c-1.9 0-3.2-1.3-3.2-3 0-2 1.6-3 2.4-4.6.5 1.2 1.3 1.6 2 1.7.1-1 .5-1.9 1.1-2.5.7 1.4 1 2.6 1 3.6 0 2.2-1.4 4.8-3.3 4.8z" fill="var(--buddy)"/></svg>';
+
+/* ---------- the growing buddy (original mascot) ---------- */
+const STAGES=[
+  {n:"种子",w:0},{n:"小芽",w:5},{n:"幼苗",w:15},{n:"小树苗",w:35},{n:"小树",w:70},{n:"大树",w:120},{n:"开花的树",w:200}
+];
+function stageOf(w){let i=0;STAGES.forEach((s,j)=>{if(w>=s.w)i=j});return i}
+function face(mood,x,y,k){
+  const ink="var(--buddy-ink)";let e,m,ex="";
+  if(mood==="sleepy"){e=`<path d="M-18 0q5 4 10 0M8 0q5 4 10 0" stroke="${ink}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`;m=`<ellipse cx="0" cy="12" rx="3.5" ry="2.8" fill="${ink}"/>`}
+  else if(mood==="happy"||mood==="cheer"){e=`<path d="M-18 2q5-7 10 0M8 2q5-7 10 0" stroke="${ink}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`;m=`<path d="M-8 8q8 11 16 0z" fill="${ink}"/><path d="M-4 13q4 3 8 0" fill="var(--pink)"/>`}
+  else if(mood==="think"){e=`<g class="eye-open"><circle cx="-11" cy="-2" r="4.2" fill="${ink}"/><circle cx="13" cy="-2" r="4.2" fill="${ink}"/></g>`;m=`<path d="M-5 12q5-3 10 0" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>`}
+  else{e=`<g class="eye-open"><circle cx="-13" cy="0" r="4.6" fill="${ink}"/><circle cx="13" cy="0" r="4.6" fill="${ink}"/><circle cx="-11.6" cy="-1.6" r="1.5" fill="#fff"/><circle cx="14.4" cy="-1.6" r="1.5" fill="#fff"/></g>`;m=`<path d="M-6 10q6 6 12 0" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>`}
+  ex=`<ellipse cx="-21" cy="9" rx="6" ry="4" fill="var(--pink)" opacity=".75"/><ellipse cx="21" cy="9" rx="6" ry="4" fill="var(--pink)" opacity=".75"/>`;
+  return `<g transform="translate(${x} ${y}) scale(${k})">${ex}${e}${m}</g>`;
+}
+const flower=(x,y,r,c="var(--pink)")=>`<g transform="translate(${x} ${y})">${[0,72,144,216,288].map(a=>`<ellipse cx="0" cy="${-r}" rx="${r*.62}" ry="${r*.85}" fill="${c}" transform="rotate(${a})"/>`).join("")}<circle r="${r*.55}" fill="var(--buddy)"/></g>`;
+const leaf=(x,y,rot,len,c="var(--leaf)")=>`<path d="M0 0C${len*.35} ${-len*.45} ${len*.8} ${-len*.4} ${len} 0C${len*.8} ${len*.4} ${len*.35} ${len*.45} 0 0Z" fill="${c}" transform="translate(${x} ${y}) rotate(${rot})"/>`;
+function treeSVG(mood,stage,bloom){
+  let body="",top=100,fx=80,fy=122,fk=1;
+  const blob=(cy,rx,ry)=>`<ellipse cx="80" cy="${cy}" rx="${rx}" ry="${ry}" fill="var(--buddy)"/><path d="M${80-rx*.6} ${cy-ry*.45}q${rx*.2} ${-ry*.35} ${rx*.55} ${-ry*.45}" stroke="#fff" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".7"/>`;
+  const canopy=cs=>cs.map(([x,y,r],i)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${i%2?"var(--leaf-2)":"var(--leaf)"}"/>`).join("")+cs.slice(0,1).map(([x,y,r])=>`<path d="M${x-r*.6} ${y-r*.35}q${r*.25} ${-r*.4} ${r*.65} ${-r*.45}" stroke="#fff" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".45"/>`).join("");
+  const trunk=(x,y,w,h)=>`<path d="M${80-w/2} 150 L${80-w/2+3} ${y+8} Q80 ${y-4} ${80+w/2-3} ${y+8} L${80+w/2} 150Z" fill="var(--bark)"/>`;
+  if(stage===0){
+    body=`<path d="M80 108V98" stroke="var(--leaf-2)" stroke-width="3.5" stroke-linecap="round"/>${leaf(80,100,-40,12)}${blob(128,24,21)}`;
+    top=96;fy=130;fk=.78; if(bloom)body+=flower(80,96,5);
+  }else if(stage===1){
+    body=`<path d="M80 94V80" stroke="var(--leaf-2)" stroke-width="4" stroke-linecap="round"/>${leaf(80,84,-150,22)}${leaf(80,84,-30,22)}${blob(120,31,28)}`;
+    top=72; if(bloom)body+=flower(80,78,6);
+  }else if(stage===2){
+    body=`<path d="M80 94C78 76 83 62 80 46" stroke="var(--leaf-2)" stroke-width="4.5" stroke-linecap="round" fill="none"/>${leaf(79,78,-160,24)}${leaf(80,72,-20,26)}${leaf(81,58,-155,20,"var(--leaf-2)")}${leaf(80,52,-25,22,"var(--leaf-2)")}<circle cx="80" cy="44" r="5" fill="var(--leaf)"/>${blob(120,31,28)}`;
+    top=40; if(bloom)body+=flower(80,42,7);
+  }else{
+    const T={3:{tw:36,ty:92,cs:[[80,62,34],[62,74,18],[98,74,18]],fy:120,fk:.82,top:28},
+             4:{tw:44,ty:88,cs:[[80,56,38],[52,72,24],[108,72,24]],fy:117,fk:.95,top:18},
+             5:{tw:50,ty:84,cs:[[80,50,40],[44,68,28],[116,68,28],[60,32,22],[100,32,22]],fy:115,fk:1.05,top:8},
+             6:{tw:50,ty:84,cs:[[80,50,40],[44,68,28],[116,68,28],[60,32,22],[100,32,22]],fy:115,fk:1.05,top:8}}[stage];
+    body=trunk(80,T.ty,T.tw)+canopy(T.cs);
+    fy=T.fy;fk=T.fk;top=T.top;
+    if(stage===6){
+      body+=[[56,46],[96,30],[110,60],[70,24],[42,72],[86,62],[122,74],[62,66]].map(([x,y],i)=>flower(x,y,i%3?5:6.5)).join("");
+      body+=[[74,44],[104,46],[52,58]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="4.5" fill="var(--danger)"/><path d="M${x} ${y-4}l1.5 -3" stroke="var(--leaf-2)" stroke-width="1.6" stroke-linecap="round"/>`).join("");
+    }else if(bloom){
+      body+=[[64,40],[96,46],[80,30]].map(([x,y])=>flower(x,y,5.5)).join("");
+    }
+  }
+  let extra="";
+  if(mood==="sleepy")extra=`<g class="zz" font-family="Fredoka,sans-serif" font-weight="600" fill="var(--work)"><text x="${118}" y="${Math.max(top+10,24)}" font-size="16">z</text><text x="${130}" y="${Math.max(top,14)}" font-size="11">z</text></g>`;
+  if(mood==="think")extra=`<g fill="var(--work)"><circle cx="124" cy="${top+24}" r="3.5"/><circle cx="132" cy="${top+12}" r="5"/><circle cx="128" cy="${top}" r="2.8"/></g>`;
+  if(mood==="cheer")extra=`<g fill="var(--habit)"><path d="M22 ${top+20}l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="M136 ${top+30}l1.5 3.5 3.5 1.5-3.5 1.5-1.5 3.5-1.5-3.5-3.5-1.5 3.5-1.5z"/><path d="M128 ${top+6}l1.2 3 3 1.2-3 1.2-1.2 3-1.2-3-3-1.2 3-1.2z"/></g>`;
+  return `<svg viewBox="0 0 160 160"><ellipse cx="80" cy="150" rx="${30+stage*5}" ry="6" fill="var(--soil)"/>${body}${face(mood,fx,fy,fk)}${extra}</svg>`;
+}
+function miniBuddy(){return `<svg viewBox="0 0 120 120"><path d="M60 30C60 24 60 20 60 18" stroke="var(--leaf)" stroke-width="5" stroke-linecap="round"/><path d="M60 22C53 22 48 18 48 12 55 12 59 16 60 22Z" fill="var(--leaf)"/><path d="M60 30C88 30 102 50 102 74 102 96 84 108 60 108 36 108 18 96 18 74 18 50 32 30 60 30Z" fill="var(--buddy)"/><circle cx="46" cy="66" r="5" fill="var(--buddy-ink)"/><circle cx="74" cy="66" r="5" fill="var(--buddy-ink)"/><path d="M54 80q6 4 12 0" stroke="var(--buddy-ink)" stroke-width="3.2" fill="none" stroke-linecap="round"/><ellipse cx="36" cy="78" rx="7" ry="4.5" fill="var(--pink)" opacity=".75"/><ellipse cx="84" cy="78" rx="7" ry="4.5" fill="var(--pink)" opacity=".75"/></svg>`}
+
+let db=null, sample=null;
+let tasks=[], habits=[], checkins={}, shop=[], staples=[], trips=[], journal={};
+let jDate=null, jBusy=false, jSaved="", noteTimer=null;
+let tab="habit", loaded={t:false,h:false,c:false,s:false};
+let pending=[], flash=null, flashTimer=null, thinking=false, lifeSub="shop", pick=new Set(), stapleEdit=false;
+try{const s=localStorage.getItem("los-tab");if(s&&["work","life","study","habit","journal"].includes(s))tab=s;const l=localStorage.getItem("los-life");if(l==="goals"||l==="shop")lifeSub=l}catch(e){}
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad=n=>String(n).padStart(2,"0");
+const ymd=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const todayStr=()=>ymd(new Date());
+const addDays=(s,n)=>{const [y,m,d]=s.split("-").map(Number);return ymd(new Date(y,m-1,d+n))};
+const WD=["日","一","二","三","四","五","六"];
+const fmtToday=()=>{const d=new Date();return L(`${d.getMonth()+1}月${d.getDate()}日 · 周${WD[d.getDay()]}`,`${WDEN[d.getDay()]}, ${d.getDate()} ${MON[d.getMonth()]}`)};
+function dueLabel(due){
+  if(!due)return null;
+  const diff=Math.round((new Date(due)-new Date(todayStr()))/864e5);
+  let cls="", txt=L(due.slice(5).replace("-","/"),`${+due.slice(8)} ${MON[+due.slice(5,7)-1]}`);
+  if(diff<0){cls="over";txt+=L(" 过期"," overdue")}else if(diff===0){cls="soon";txt=L("今天","Today")}else if(diff===1){cls="soon";txt=L("明天","Tomorrow")}else if(diff<=3)cls="soon";
+  return {cls,txt};
+}
+
+/* ---------- buddy mood & growth ---------- */
+function habitStats(){const td=checkins[todayStr()]||{};const live=habits.filter(h=>!h.archived);return {live,done:live.filter(h=>td[h.id]).length}}
+// water is derived from the record itself: each finished task = 1 drop, each check-in = 2 drops
+function waterTotal(){
+  const t=tasks.filter(x=>x.done).length;
+  let c=0; for(const d in checkins)c+=Object.keys(checkins[d]||{}).length;
+  return t+c*2+trips.length;
+}
+function buddyState(){
+  const {live,done}=habitStats();
+  const w=waterTotal(), stage=stageOf(w), bloom=live.length>0&&done===live.length;
+  const base={stage,bloom,w};
+  if(thinking)return {...base,mood:"think",say:L("让我想想怎么分…","Let me think how to sort this…")};
+  if(flash)return {...base,mood:flash.mood,say:flash.say};
+  if(!loaded.t)return {...base,mood:"idle",say:L("正在把你的东西搬过来…","Bringing your things over…")};
+  const h=new Date().getHours();
+  const urgent=tasks.filter(t=>!t.done&&!t.deleted&&t.due&&t.due<=todayStr()).length;
+  if(h<5)return {...base,mood:"sleepy",say:L(`已经凌晨 ${h} 点啦，记完就去睡吧，事情明天还在～`,`It's ${h} a.m. already. Jot it down and get some sleep, it'll all still be here tomorrow.`)};
+  if(bloom)return {...base,mood:"cheer",say:L("今天的打卡全部完成！我开花啦 🌸","All check-ins done today! I'm blooming 🌸")};
+  if(urgent)return {...base,mood:"idle",say:L(`有 ${urgent} 件今天到期或已经过期，先看看它们？`,`${urgent} ${n_(urgent,"thing is","things are")} due today or overdue. Take a look first?`)};
+  if(h<11)return {...base,mood:"happy",say:L("早上好！完成一件事就能给我浇一滴水哦。","Good morning! Every task you finish gives me a drop of water.")};
+  if(h<18)return {...base,mood:"idle",say:done?L(`今天打卡 ${done} 个了，喝饱了～`,`${done} check-in${done===1?"":"s"} today, I'm nicely watered～`):L("下午好，打个卡给我浇点水？","Good afternoon! Check in to give me some water?")};
+  if(!(journal[todayStr()]||{}).note)return {...base,mood:"happy",say:L("晚上好，今天辛苦了。点右上角「今日小结」看看你今天做了什么吧。","Good evening, you worked hard today. Tap Today at the top to see what you got done.")};
+  return {...base,mood:"happy",say:L("晚上好，今天辛苦了。还有什么想记下来的吗？","Good evening, you worked hard today. Anything else to jot down?")};
+}
+let lastBuddy="", lastStage=null;
+function renderBuddy(){
+  const s=buddyState(); const key=s.mood+s.stage+s.bloom;
+  if(key!==lastBuddy){$("#buddy").innerHTML=treeSVG(s.mood,s.stage,s.bloom);lastBuddy=key}
+  $("#say").textContent=s.say;
+  $("#stageName").textContent=L("小芽 · ","Sprout · ")+STAGES[s.stage].n;
+  $("#stageLv").textContent="Lv."+(s.stage+1);
+  $("#water").textContent=s.w;
+  const next=STAGES[s.stage+1];
+  if(next){const cur=STAGES[s.stage].w;$("#nextTxt").textContent=L(`再浇 ${next.w-s.w} 滴长成「${next.n}」`,`${next.w-s.w} more to become a ${next.n.toLowerCase()}`);$("#wbar").style.width=Math.round((s.w-cur)/(next.w-cur)*100)+"%"}
+  else{$("#nextTxt").textContent=L("已经是最大的树啦，继续浇水让它更茂盛","Fully grown! Keep watering to keep it lush");$("#wbar").style.width="100%"}
+  if(loaded.t&&loaded.c){
+    if(lastStage!==null&&s.stage>lastStage){
+      lastStage=s.stage; levelUp(s.stage);
+    }else lastStage=s.stage;
+  }
+}
+function levelUp(st){
+  const r=$("#buddy").getBoundingClientRect();
+  burst(r.left+r.width/2,r.top+r.height/3,[css("--leaf"),css("--pink"),css("--buddy"),css("--water")]);
+  setTimeout(()=>burst(r.left+r.width/2,r.top+r.height/3,[css("--leaf"),css("--pink"),css("--habit")]),250);
+  cheer(L(`我长成「${STAGES[st].n}」啦！谢谢你一直浇水 🎉`,`I grew into a ${STAGES[st].n.toLowerCase()}! Thanks for all the water 🎉`),"cheer");
+}
+function cheer(say,mood="happy"){
+  flash={say,mood}; clearTimeout(flashTimer); flashTimer=setTimeout(()=>{flash=null;renderBuddy()},3200);
+  const b=$("#buddy"); b.classList.remove("hop"); void b.offsetWidth; b.classList.add("hop");
+  renderBuddy();
+}
+function water(fromEl,n){
+  const g=$("#buddy"), gr=g.getBoundingClientRect();
+  const plus=()=>{const p=document.createElement("span");p.className="plus";p.textContent="+"+n+" 💧";
+    p.style.left=(g.offsetLeft+gr.width/2-20)+"px";p.style.top=(g.offsetTop+10)+"px";g.parentElement.appendChild(p);
+    p.animate([{transform:"translateY(0)",opacity:1},{transform:"translateY(-28px)",opacity:0}],{duration:1100,easing:"ease-out"}).onfinish=()=>p.remove()};
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches||!fromEl){plus();return}
+  const fr=fromEl.getBoundingClientRect();
+  const x0=fr.left+fr.width/2-10,y0=fr.top+fr.height/2-12,x1=gr.left+gr.width/2-10,y1=gr.top+gr.height*.3;
+  const d=document.createElement("span");d.className="drop";d.textContent="💧";document.body.appendChild(d);
+  const mx=(x0+x1)/2,my=Math.min(y0,y1)-60;
+  d.animate([{transform:`translate(${x0}px,${y0}px) scale(.8)`},{transform:`translate(${mx}px,${my}px) scale(1.15)`},{transform:`translate(${x1}px,${y1}px) scale(.6)`,opacity:.9}],{duration:700,easing:"ease-in-out"}).onfinish=()=>{d.remove();plus()};
+}
+const PRAISE=[];
+function burst(x,y,colors){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  for(let i=0;i<14;i++){
+    const s=document.createElement("span"); s.className="spark";
+    s.style.left=x+"px"; s.style.top=y+"px"; s.style.background=colors[i%colors.length];
+    if(i%3===0)s.style.borderRadius="50%";
+    document.body.appendChild(s);
+    const a=Math.random()*Math.PI*2, d=40+Math.random()*50;
+    s.animate([{transform:"translate(-50%,-50%) rotate(0)",opacity:1},{transform:`translate(${Math.cos(a)*d-5}px,${Math.sin(a)*d+20}px) rotate(${Math.random()*360}deg)`,opacity:0}],{duration:650+Math.random()*250,easing:"cubic-bezier(.2,.7,.4,1)"}).onfinish=()=>s.remove();
+  }
+}
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+/* ---------- writes ---------- */
+const chains={};
+function queued(path,fn){const p=(chains[path]||Promise.resolve()).then(fn,fn);chains[path]=p.catch(()=>{});return p.catch(e=>{setStatus(errText(e));throw e})}
+function errText(e){
+  if(e&&e.code==="quota_exceeded")return L("存储满了，删掉一些已完成的任务再试。","Storage is full. Delete some finished tasks and try again.");
+  if(e&&e.code==="invalid_argument")return L("只有页面的主人可以修改数据。","Only the owner can change this data.");
+  return L("没保存上，稍后再试一次。","Couldn't save that. Try again in a moment.");
+}
+function setStatus(t){const el=$("#status");el.textContent=t||"";el.hidden=!t}
+
+/* ---------- rendering ---------- */
+function render(){
+  document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.k===tab)));
+  const open=k=>tasks.filter(t=>t.space===k&&!t.done&&!t.deleted).length;
+  $("#n-work").textContent=open("work"); $("#n-life").textContent=open("life"); $("#n-study").textContent=open("study");
+  const {live,done}=habitStats(); $("#n-habit").textContent=done+"/"+live.length;
+  $("#jbtn").setAttribute("aria-pressed",String(tab==="journal"));
+  // keep whatever is being typed when live data re-renders the board
+  const ae=document.activeElement, keep={};
+  document.querySelectorAll("#main input[id], #main textarea[id]").forEach(el=>{if(el.type!=="checkbox")keep[el.id]=el.value});
+  const fid=ae&&ae.id&&ae.closest("#main")?ae.id:null; let ss=null,se=null; try{ss=ae.selectionStart;se=ae.selectionEnd}catch(_){}
+  $("#main").innerHTML= tab==="habit"?habitBoard(): tab==="journal"?journalView(): taskBoard(tab);
+  for(const k in keep){const el=document.getElementById(k);if(el)el.value=keep[k]}
+  if(fid){const el=document.getElementById(fid);if(el){el.focus();try{if(ss!=null)el.setSelectionRange(ss,se)}catch(_){}}}
+  renderBuddy();
+}
+function emptyBox(text){return `<div class="empty">${miniBuddy()}<span>${text}</span></div>`}
+function taskRow(t){
+  const d=dueLabel(t.due);
+  return `<div class="task${t.done?" done":""}">
+    <button class="check${t.done?" on":""}" data-act="toggle" data-id="${t.id}" aria-label="${t.done?L("标记为未完成","Mark as not done"):L("标记为完成","Mark as done")}">${CHECK}</button>
+    <button class="t-main" data-act="edit" data-id="${t.id}">
+      <span class="t-title">${esc(t.title)}</span>
+      ${t.note?`<span class="t-note">${esc(t.note)}</span>`:""}
+    </button>
+    ${d?`<span class="due ${d.cls}">${d.txt}</span>`:"<span></span>"}
+  </div>`;
+}
+function sortTasks(a,b){
+  if(a.due&&b.due)return a.due<b.due?-1:a.due>b.due?1:0;
+  if(a.due)return -1; if(b.due)return 1;
+  return (b.createdAt||0)-(a.createdAt||0);
+}
+const EMPTY={};
+const LIFE_HZ={};
+function lifeSeg(){
+  const need=shop.filter(x=>!x.bought).length, goals=tasks.filter(t=>t.space==="life"&&!t.done&&!t.deleted).length;
+  return `<div class="seg" role="group" aria-label="${L("生活分区","Life sections")}">
+    <button data-act="lifesub" data-v="shop" aria-pressed="${lifeSub==="shop"}">🛒 ${L("购物清单","Shopping")} <span class="n">${need}</span></button>
+    <button data-act="lifesub" data-v="goals" aria-pressed="${lifeSub==="goals"}">🎯 ${L("目标","Goals")} <span class="n">${goals}</span></button></div>`;
+}
+function shopBoard(){
+  const inList=new Set(shop.map(x=>x.name.trim().toLowerCase()));
+  const sts=[...staples].sort((a,b)=>(a.order||0)-(b.order||0));
+  const stapleNames=new Set(sts.map(x=>x.name.trim().toLowerCase()));
+  const chips=sts.map(st=>{const has=inList.has(st.name.trim().toLowerCase());
+    if(stapleEdit)return `<button class="st" data-act="stdel" data-id="${st.id}">${esc(st.name)} <span class="x">×</span></button>`;
+    return `<button class="st${pick.has(st.id)?" pick":""}${has?" inlist":""}" data-act="stpick" data-id="${st.id}" ${has?`title="${L("已在清单里","Already on the list")}"`:""}>${pick.has(st.id)?"✓ ":""}${esc(st.name)}</button>`}).join("");
+  const need=shop.filter(x=>!x.bought).sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
+  const got=shop.filter(x=>x.bought).sort((a,b)=>(a.boughtAt||0)-(b.boughtAt||0));
+  const row=x=>`<div class="item${x.bought?" got":""}">
+      <button class="check${x.bought?" on":""}" data-act="shopbuy" data-id="${x.id}" aria-label="${x.bought?L("标记为没买","Mark as not bought"):L("标记为已买","Mark as bought")}">${CHECK}</button>
+      <span class="nm">${esc(x.name)}</span>
+      <button class="star${stapleNames.has(x.name.trim().toLowerCase())?" on":""}" data-act="shopstar" data-id="${x.id}" aria-label="${L("设为常买","Save as a staple")}">★</button>
+      <button class="del" data-act="shopdel" data-id="${x.id}" aria-label="${L("从清单删除","Remove from list")}">×</button></div>`;
+  return `<div class="card">
+      <div class="card-head"><h3>${L("常买","Staples")}</h3><span class="sub">${L("点选几样，一起加进清单","Pick a few and add them in one go")}</span>
+        <span class="right">${sts.length?`<button class="link" data-act="stedit">${stapleEdit?L("完成","Done"):L("管理","Edit")}</button>`:""}</span></div>
+      <div class="staples">${chips||`<span class="hint">${L("还没有常买的东西。清单里点 ★ 就能把它设为常买。","No staples yet. Tap ★ next to an item on your list to save it here.")}</span>`}</div>
+      ${pick.size&&!stapleEdit?`<div><button class="btn life" data-act="stadd">${L(`加入清单（${pick.size}）`,`Add to list (${pick.size})`)}</button> <button class="link" data-act="stclear">${L("取消选择","Clear")}</button></div>`:""}
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>${L("下次去超市","Next shop")}</h3><span class="sub">${need.length?L(`还要买 ${need.length} 样`,`${need.length} to buy`):L("清单是空的","The list is empty")}</span></div>
+      <form class="shop-add" id="shopForm">
+        <input type="text" id="shopName" placeholder="${L("要买什么？可以一次写好几样，用逗号隔开","What do you need? Add several at once, separated by commas")}" maxlength="200" aria-label="${L("要买的东西","Item to buy")}">
+        <label><input type="checkbox" id="shopStaple"> ${L("设为常买","Save as staple")}</label>
+        <button class="btn life" type="submit">${L("添加","Add")}</button>
+      </form>
+      <div class="items">${need.map(row).join("")||(got.length?"":emptyBox(L("想到要买的就记在这里，到了超市一样样勾掉。","Note things down as you think of them, then tick them off at the shop.")))}${got.map(row).join("")}</div>
+      ${got.length?`<div class="shop-foot"><span>${L(`已经买了 ${got.length} 样`,`${got.length} bought`)}</span><button class="btn life" data-act="tripdone">${L("这趟买完了 · 清掉已买的","Done shopping · clear bought items")}</button></div>`:""}
+    </div>
+    <p class="hint">${L("每完成一趟采购，小芽喝 1 滴水。","Each finished shopping trip gives Sprout 1 drop of water.")}</p>`;
+}
+function taskBoard(k){
+  if(k==="life"&&lifeSub==="shop")return `<div class="board" data-k="life">${lifeSeg()}${loaded.s?shopBoard():emptyBox(L("正在读取购物清单…","Loading your shopping list…"))}</div>`;
+  if(!loaded.t)return `<div class="board" data-k="${k}">${emptyBox(L("正在读取"+SPACE[k]+"任务…","Loading "+SPACE[k].toLowerCase()+" tasks…"))}</div>`;
+  const mine=tasks.filter(t=>t.space===k&&!t.deleted);
+  const groups=HZ.map(h=>{
+    const items=mine.filter(t=>!t.done&&t.horizon===h.k).sort(sortTasks);
+    if(h.k==="inbox"&&!items.length)return "";
+    return `<section class="group"><h2><span class="badge"></span>${k==="life"&&LIFE_HZ[h.k]?LIFE_HZ[h.k]:h.name}<span class="sub">${h.sub}</span><span class="cnt">${items.length}</span><button class="add" data-act="newtask" data-space="${k}" data-hz="${h.k}" aria-label="${L("在","Add to ")}${k==="life"&&LIFE_HZ[h.k]?LIFE_HZ[h.k]:h.name}${L("里添加","")}">${PLUS}</button></h2>
+      <div class="list">${items.length?items.map(taskRow).join(""):emptyBox(EMPTY[h.k])}</div></section>`;
+  }).join("");
+  const done=mine.filter(t=>t.done).sort((a,b)=>(b.doneAt||0)-(a.doneAt||0)).slice(0,50);
+  const doneBox=done.length?`<details class="done-box"><summary>${L(`已完成 ${done.length} 件`,`${done.length} done`)}</summary><div class="list">${done.map(taskRow).join("")}</div></details>`:"";
+  return `<div class="board" data-k="${k}">${k==="life"?lifeSeg():""}${groups}${doneBox}</div>`;
+}
+function streakOf(id){
+  const t=todayStr(); let d=(checkins[t]||{})[id]?t:addDays(t,-1); let n=0;
+  while((checkins[d]||{})[id]){n++;d=addDays(d,-1)}
+  return n;
+}
+function habitBoard(){
+  const t=todayStr(); const td=checkins[t]||{};
+  const {live,done}=habitStats(); live.sort((a,b)=>(a.order||0)-(b.order||0));
+  const pct=live.length?Math.round(done/live.length*100):0;
+  const days=[...Array(14)].map((_,i)=>addDays(t,i-13));
+  const rows=live.map(h=>{
+    const s=streakOf(h.id);
+    return `<div class="habit">
+      <button class="stamp${td[h.id]?" on":""}" data-act="hcheck" data-id="${h.id}" aria-label="${esc(h.name)} ${L("今日打卡","check in today")}">${STAR}</button>
+      <div class="h-main">
+        <span class="h-name">${esc(h.name)}</span>
+        <div class="dots" aria-label="${L("最近 14 天","Last 14 days")}">${days.map(d=>`<span class="dot${(checkins[d]||{})[h.id]?" on":""}${d===t?" today":""}" title="${d}"></span>`).join("")}</div>
+        <button class="h-del" data-act="hdel" data-id="${h.id}">${L("移除","Remove")}</button>
+      </div>
+      <div class="streak">${s?FLAME:""}<b>${s}</b><small>${L("连续天","day streak")}</small></div>
+    </div>`}).join("");
+  return `<div class="board" data-k="habit">
+    <div class="daycard"><h3>${L("今天的能量","Today's energy")}</h3><span class="big">${done}<span style="font-size:16px;color:var(--muted)"> / ${live.length}</span></span><div class="bar"><i style="width:${pct}%"></i></div></div>
+    <div class="list">${!loaded.h?emptyBox(L("正在读取打卡项…","Loading check-ins…")):rows||emptyBox(L('还没有打卡项。加一个每天想坚持的小习惯，比如"背 30 个单词"。','No check-ins yet. Add a small daily habit, like "30 minutes of reading".'))}</div>
+    <form class="habit-add" id="habitForm"><input id="habitName" placeholder="${L("新的每日小习惯","New daily habit")}" maxlength="40" aria-label="${L("新的每日小习惯","New daily habit")}"><button class="btn" type="submit">${L("添加","Add")}</button></form>
+    <p class="hint">${L("完成一件任务浇 1 滴水，打一次卡浇 2 滴水，水攒够了小芽就会长大。当天打卡全部完成，它会开花。","Each finished task is 1 drop of water and each check-in is 2. Sprout grows as the water adds up, and blooms on days you finish every check-in.")}</p>
+  </div>`;
+}
+
+/* ---------- rule-based sorting (no AI needed, reads Chinese and English) ---------- */
+const RULES={
+  study:["笔记","课程","上课","网课","作业","复习","预习","考试","期中","期末","论文","阅读","读文献","文献","背单词","单词","雅思","托福","刷题","算法","教程","自学","学习","学会","练习","统计","课件",
+    "dissertation","essay","assignment","lecture","seminar","tutorial","reading","quiz","exam","lab","presentation","gre","ielts","toefl","leetcode","stats","audit","coursework","moodle",
+    "notes","note","revise","revision","homework","course","module","class","study","learn","practice","practise","vocab","vocabulary","thesis","paper","problem set","pset","textbook","midterm","final","grade",/week\s?\d+/i],
+  work:["简历","面试","投递","网申","申请岗位","实习","工作","求职","内推","领英","求职信","笔试","项目汇报","汇报","开会","会议","周报","日报","客户","老板","同事","入职","岗位","秋招","春招","校招","作品集",
+    "cv","resume","résumé","interview","offer","internship","intern","job","jobs","linkedin","cover letter","oa","hr","coffee chat","networking","cold email","portfolio","apply","application","recruiter","career","meeting","client","manager","boss","colleague","onboarding","standup","report","deck","proposal"],
+  long:["今年","明年","长期","以后","慢慢","坚持","养成","学会","目标","梦想","有空","总有一天","将来","未来","一直",
+    "this year","next year","someday","some day","eventually","long term","long-term","habit","goal","dream","learn to","get better at","every day","everyday","regularly","one day"],
+  month:["这个月","本月","下个月","下月","月底","月初","这学期","学期末","this month","next month","end of the month","end of month","this term"],
+  week:["今天","今晚","明天","后天","马上","尽快","这周","本周","周末","最近","近期","这几天","赶紧","today","tonight","tomorrow","asap","soon","this week","weekend","urgent","right away"],
+};
+const SHOP_RE=/(买|购买|采购|补货|囤|入手|补一下|补点)|\b(buy|grab|pick up|purchase|restock|shop for)\b/i;
+const isAscii=w=>/^[\x00-\x7f]+$/.test(w);
+const escRe=w=>w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+const hit=(t,w)=>w instanceof RegExp?w.test(t):isAscii(w)?new RegExp("\\b"+escRe(w)+"s?\\b","i").test(t):t.includes(w);
+const has=(t,list)=>list.reduce((n,w)=>n+(hit(t,w)?1:0),0);
+const WDMAP={"一":1,"二":2,"三":3,"四":4,"五":5,"六":6,"日":0,"天":0,"末":6};
+const ENWD={sun:0,mon:1,tue:2,tues:2,wed:3,thu:4,thur:4,thurs:4,fri:5,sat:6,sunday:0,monday:1,tuesday:2,wednesday:3,thursday:4,friday:5,saturday:6};
+const ENMON={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,sept:9,oct:10,nov:11,dec:12,january:1,february:2,march:3,april:4,june:6,july:7,august:8,september:9,october:10,november:11,december:12};
+const CN={"一":1,"二":2,"两":2,"三":3,"四":4,"五":5,"六":6,"七":7,"八":8,"九":9,"十":10};
+const toNum=s=>/^\d+$/.test(s)?+s:(s.length===2&&s[0]==="十"?10+CN[s[1]]:s.length===2&&s[1]==="十"?CN[s[0]]*10:s.length===3?CN[s[0]]*10+CN[s[2]]:CN[s]);
+const ENNUM={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,a:1};
+
+// returns {due, rest} where rest is the text with the date phrase removed
+function pickDate(text,today,dayFirst){
+  const [Y,M,D]=today.split("-").map(Number); const base=new Date(Y,M-1,D);
+  const fmt=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  const plus=n=>{const d=new Date(base);d.setDate(d.getDate()+n);return fmt(d)};
+  const md=(mm,dd)=>{let d=new Date(Y,mm-1,dd);if(d<base)d=new Date(Y+1,mm-1,dd);return fmt(d)};
+  const toWeekday=(w,mode)=>{const mon=(base.getDay()+6)%7, target=(w+6)%7; let diff=target-mon;
+    if(mode==="nn")diff+=14; else if(mode==="next")diff+=7; else if(mode!=="this"&&diff<0)diff+=7; else if(mode==="this"&&diff<0)diff+=7; return plus(diff)};
+  const tail="(?:之前|以前|前|之内|以内|内|左右)?";
+  const pre="(?:\\b(?:by|before|on|at|due|until|for)\\s+)?";
+  const wdNames=Object.keys(ENWD).sort((a,b)=>b.length-a.length).join("|");
+  const monNames=Object.keys(ENMON).sort((a,b)=>b.length-a.length).join("|");
+  const tries=[
+    // Chinese
+    [new RegExp("(今天|今晚|今早|今日)"+tail),()=>plus(0)],
+    [new RegExp("大后天"+tail),()=>plus(3)],
+    [new RegExp("后天"+tail),()=>plus(2)],
+    [new RegExp("(明天|明早|明晚|明日)"+tail),()=>plus(1)],
+    [new RegExp("(\\d{1,2}|[一二三四五六七八九十]{1,3})\\s*(?:天|日)(?:后|之后|内|以内)"),m=>plus(toNum(m[1]))],
+    [new RegExp("(下下|下个?|这个?|本)?(?:周|星期|礼拜)([一二三四五六日天末])"+tail),m=>toWeekday(WDMAP[m[2]],m[1]?(m[1].startsWith("下下")?"nn":m[1].startsWith("下")?"next":"this"):"")],
+    [new RegExp("(\\d{1,2}|[一二三四五六七八九十]{1,3})\\s*月\\s*(\\d{1,2}|[一二三四五六七八九十]{1,3})\\s*[日号]?"+tail),m=>md(toNum(m[1]),toNum(m[2]))],
+    [new RegExp("(\\d{1,2}|[一二三四五六七八九十]{1,3})\\s*号"+tail),m=>{const dd=toNum(m[1]);let d=new Date(Y,M-1,dd);if(d<base)d=new Date(Y,M,dd);return fmt(d)}],
+    [new RegExp("月底"+tail),()=>fmt(new Date(Y,M,0))],
+    [new RegExp("(这周|本周)"+tail),()=>plus((7-base.getDay())%7)],
+    [new RegExp("下周"+tail),()=>plus(((7-base.getDay())%7)+7)],
+    // English
+    [new RegExp(pre+"\\b(?:the\\s+)?day after tomorrow\\b","i"),()=>plus(2)],
+    [new RegExp(pre+"\\b(?:today|tonight|this (?:morning|afternoon|evening))\\b","i"),()=>plus(0)],
+    [new RegExp(pre+"\\b(?:tomorrow|tmr|tmrw)\\b(?:\\s+(?:morning|afternoon|evening|night))?","i"),()=>plus(1)],
+    [new RegExp("\\b(?:in|within)\\s+(\\d{1,2}|one|two|three|four|five|six|seven|eight|nine|ten|a)\\s+days?\\b","i"),m=>plus(/\d/.test(m[1])?+m[1]:ENNUM[m[1].toLowerCase()])],
+    [new RegExp("\\b(?:in|within)\\s+(\\d|one|two|three|a)\\s+weeks?\\b","i"),m=>plus(7*(/\d/.test(m[1])?+m[1]:ENNUM[m[1].toLowerCase()]))],
+    [new RegExp(pre+"\\b(this|next)?\\s*weekend\\b","i"),m=>toWeekday(6,m[1]&&m[1].toLowerCase()==="next"?"next":"")],
+    [new RegExp(pre+"\\b(this|next|coming)?\\s*("+wdNames+")\\b","i"),m=>toWeekday(ENWD[m[2].toLowerCase()],m[1]&&m[1].toLowerCase()==="next"?"next":m[1]&&m[1].toLowerCase()==="this"?"this":"")],
+    [new RegExp(pre+"\\b("+monNames+")\\.?\\s+(\\d{1,2})(?:st|nd|rd|th)?\\b","i"),m=>md(ENMON[m[1].toLowerCase()],+m[2])],
+    [new RegExp(pre+"\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+(?:of\\s+)?("+monNames+")\\b","i"),m=>md(ENMON[m[2].toLowerCase()],+m[1])],
+    [new RegExp(pre+"\\b(\\d{1,2})[/.](\\d{1,2})\\b"+tail),m=>dayFirst?md(+m[2],+m[1]):md(+m[1],+m[2])],
+    [new RegExp(pre+"\\b(?:the\\s+)?end of (?:the\\s+)?month\\b|\\beom\\b","i"),()=>fmt(new Date(Y,M,0))],
+    [new RegExp(pre+"\\b(?:the\\s+)?end of (?:the\\s+)?week\\b|\\bthis week\\b","i"),()=>plus((7-base.getDay())%7)],
+    [new RegExp(pre+"\\bnext week\\b","i"),()=>plus(((7-base.getDay())%7)+7)],
+  ];
+  for(const [re,fn] of tries){const m=text.match(re);if(m){const due=fn(m);if(due&&!/NaN|undefined/.test(due))return {due,rest:text.replace(m[0]," ")}}}
+  return {due:null,rest:text};
+}
+function cleanTitle(t){
+  t=t.replace(/^\s*(?:今年|明年|这个月|本月|下个月|最近|近期|这周|本周|以后|将来)/,"")
+     .replace(/^[\s，,。、:：;；]*(?:我|今天|还)?(?:要|得|需要|记得|别忘了|别忘记|想|打算|准备|计划|必须|一定要)+/,"")
+     .replace(/^(?:去|把)?\s*/,m=>m.trim()==="把"?"":m);
+  t=t.replace(/^\s*(?:and\s+|also\s+|then\s+)?(?:i\s+)?(?:really\s+)?(?:need to|have to|has to|must|should|gotta|got to|want to|wanna|plan to|planning to|remember to|don'?t forget to|try to|will|'ll|am going to|i'm going to|going to)\s+/i,"")
+     .replace(/^\s*(?:to|i)\s+/i,"")
+     .replace(/\s+(?:by|before|on|at|in|due|until|this|next|for)\s*$/i,"");
+  t=t.replace(/[\s，,。、;；!！?？~～.]+$/,"").replace(/\s{2,}/g," ").trim();
+  return /^[a-z]/.test(t)?t[0].toUpperCase()+t.slice(1):t;
+}
+function shopItems(part){
+  return part.split(/[、，,&\/]|和|跟|与|及|以及|\band\b|\bplus\b/i)
+    .map(x=>x.replace(/^\s*(?:一下|点|些|一些|个)/,"")
+      .replace(/^(?:一|两|几)?(?:瓶|包|袋|盒|个|斤|打|箱|罐|卷|点|些)/,"")
+      .replace(/^\s*(?:some|more|a few|a couple of|a|an|the|\d+x?|one|two|three|a bottle of|bottles of|a pack of|packs of|a bag of|bags of|a box of|boxes of|a dozen|a carton of|a loaf of|a tin of|cans? of)\s+/i,"")
+      .replace(/\s+(?:from|at)\s+.*$/i,"")
+      .replace(/[\s，,。!！~～.]+$/,"").trim())
+    .filter(x=>x&&x.length<=30&&!/^(?:超市|东西|stuff|things|groceries|shopping|supermarket)$/i.test(x));
+}
+function ruleParse(text,today,fallback="life",dayFirst=false){
+  const chunks=text.split(/[\n。；;！!？?]+|\.\s+|(?:还有|另外|然后|顺便|再就是)|\b(?:then|also|and then|plus also)\b/i).map(x=>x&&x.trim()).filter(Boolean);
+  const out=[];
+  const addTask=raw=>{
+    const {due,rest}=pickDate(raw,today,dayFirst);
+    const title=cleanTitle(rest); if(!title)return;
+    const s=has(raw,RULES.study), w=has(raw,RULES.work);
+    const space=s>w?"study":w>s?"work":s&&w?"study":fallback;
+    let horizon="inbox";
+    if(due){const diff=Math.round((new Date(due)-new Date(today))/864e5);horizon=diff<=7?"week":diff<=31?"month":"long"}
+    else if(has(raw,RULES.week))horizon="week";
+    else if(has(raw,RULES.month))horizon="month";
+    else if(has(raw,RULES.long))horizon="long";
+    out.push({title:title.slice(0,200),space,horizon,due,note:"",keep:true});
+  };
+  for(const chunk of chunks){
+    const sm=chunk.match(SHOP_RE);
+    const shopTail=sm?pickDate(chunk.slice(sm.index+sm[0].length),today,dayFirst).rest:null;
+    if(sm && !has(shopTail,RULES.study) && !has(shopTail,RULES.work)){
+      // everything before the buy-clause is ordinary tasks; the clause that holds "buy" is just the errand itself
+      const parts=chunk.slice(0,sm.index).split(/[，,]/);
+      const lead=parts.pop();
+      parts.forEach(addTask);
+      if(lead&&(has(lead,RULES.study)||has(lead,RULES.work)))addTask(lead);
+      shopItems(shopTail).forEach(name=>out.push({title:name,space:"shop",horizon:"week",due:null,note:"",keep:true}));
+      continue;
+    }
+    chunk.split(/[，,]\s*(?=\S)/).forEach(addTask);
+  }
+  return out;
+}
+
+/* ---------- daily summary ---------- */
+const dayOf=ts=>ts?ymd(new Date(ts)):null;
+const MOODS=[["great","😄",""],["good","🙂",""],["meh","😐",""],["tired","😮‍💨",""],["down","😢",""]];
+function dayData(d){
+  const doneOn=k=>tasks.filter(t=>t.done&&t.space===k&&dayOf(t.doneAt)===d);
+  const ck=checkins[d]||{}; const hNames=Object.keys(ck).map(id=>(habits.find(h=>h.id===id)||{}).name).filter(Boolean);
+  const live=habits.filter(h=>!h.archived);
+  const trip=trips.filter(t=>t.date===d);
+  const life=doneOn("life"),study=doneOn("study"),work=doneOn("work");
+  const drops=life.length+study.length+work.length+Object.keys(ck).length*2+trip.length;
+  return {hNames,hTotal:live.length,life,study,work,trip,drops};
+}
+function localComment(D){
+  const n=D.life.length+D.study.length+D.work.length;
+  if(!n&&!D.hNames.length)return L("今天好像没留下什么记录。没关系，休息也是生活的一部分。明天挑一件最小的事开始，我在这儿等你浇水。","Nothing recorded for this day, and that's okay. Rest is part of life too. Tomorrow, start with the smallest thing. I'll be here waiting for water.");
+  if(lang==="en"){
+    const b=[];
+    if(D.hNames.length)b.push(`checked in on ${D.hNames.slice(0,3).map(x=>"“"+x+"”").join(", ")}`);
+    if(D.study.length)b.push(`finished ${D.study.length} study ${n_(D.study.length,"task","tasks")}`);
+    if(D.work.length)b.push(`moved ${D.work.length} work ${n_(D.work.length,"task","tasks")} forward`);
+    if(D.life.length)b.push(`sorted out ${D.life.length} life ${n_(D.life.length,"thing","things")}`);
+    const joined=b.length>1?b.slice(0,-1).join(", ")+" and "+b[b.length-1]:b[0];
+    return `You ${joined}, which gave me ${D.drops} ${n_(D.drops,"drop","drops")} of water. Every small thing makes the days a bit better. Remember to rest well.`;
+  }
+  const bits=[];
+  if(D.hNames.length)bits.push(`打卡了「${D.hNames.slice(0,3).join("」「")}」`);
+  if(D.study.length)bits.push(`学习完成了 ${D.study.length} 件`);
+  if(D.work.length)bits.push(`工作推进了 ${D.work.length} 件`);
+  if(D.life.length)bits.push(`生活里搞定了 ${D.life.length} 件`);
+  return `今天你${bits.join("，")}，给我浇了 ${D.drops} 滴水。每一件小事都在让日子变好，记得好好休息。`;
+}
+function journalView(){
+  const d=jDate||todayStr(), t=todayStr(), J=journal[d]||{}, D=dayData(d);
+  const [y,m,dd]=d.split("-").map(Number); const wd=WD[new Date(y,m-1,dd).getDay()];
+  const label=d===t?L("今天","Today"):d===addDays(t,-1)?L("昨天","Yesterday"):L(`${m}月${dd}日`,`${dd} ${MON[m-1]}`);
+  const wdIdx=new Date(y,m-1,dd).getDay();
+  const list=(arr,key)=>arr.length?`<ul>${arr.map(x=>`<li>${esc(key?x[key]:x)}</li>`).join("")}</ul>`:`<span class="none">${L("这天没有完成的","Nothing finished this day")}</span>`;
+  const box=(name,color,inner)=>`<div class="jbox" style="--c:var(${color})"><h4><i style="background:var(${color})"></i>${name}</h4>${inner}</div>`;
+  const lifeInner=list(D.life,"title")+(D.trip.length?`<span class="hint">🛒 ${L(`去了 ${D.trip.length} 趟超市，买了 ${D.trip.reduce((a,b)=>a+(b.items||0),0)} 样`,`${D.trip.length} shopping ${n_(D.trip.length,"trip","trips")}, ${D.trip.reduce((a,b)=>a+(b.items||0),0)} items`)}</span>`:"");
+  const comment=J.comment||"";
+  return `<div class="board" data-k="journal">
+    <div class="jnav"><button data-act="jprev" aria-label="${L("前一天","Previous day")}">‹</button><h2>${L(label+"的小结",label==="Today"||label==="Yesterday"?label+"'s recap":"Recap · "+label)}<small>${L(`${m}月${dd}日 · 周${wd}`,`${WDEN[wdIdx]}, ${dd} ${MON[m-1]}`)}</small></h2><button data-act="jnext" aria-label="${L("后一天","Next day")}" ${d>=t?"disabled":""}>›</button></div>
+    <div class="jstats">
+      <div class="jstat"><b style="color:var(--habit-ink)">${D.hNames.length}<span style="font-size:13px"> / ${D.hTotal}</span></b><span>${L("打卡","Check-in")}</span></div>
+      <div class="jstat"><b style="color:var(--life-ink)">${D.life.length}</b><span>${L("生活","Life")}</span></div>
+      <div class="jstat"><b style="color:var(--study-ink)">${D.study.length}</b><span>${L("学习","Study")}</span></div>
+      <div class="jstat"><b style="color:var(--work-ink)">${D.work.length}</b><span>${L("工作","Work")}</span></div>
+    </div>
+    <div class="jgrid">
+      ${box(L("打卡","Check-in"),"--habit",list(D.hNames))}
+      ${box(L("生活","Life"),"--life",lifeInner)}
+      ${box(L("学习","Study"),"--study",list(D.study,"title"))}
+      ${box(L("工作","Work"),"--work",list(D.work,"title"))}
+    </div>
+    <div class="comment">
+      <div class="mini">${treeSVG(jBusy?"think":"happy",stageOf(waterTotal()),false)}</div>
+      <div class="body">
+        <h4>${L("小芽的评语","Sprout says")} <span class="hint">· ${L(`这天喝了 ${D.drops} 滴水`,`${D.drops} ${n_(D.drops,"drop","drops")} this day`)}</span></h4>
+        <p>${jBusy?L("让我好好想想怎么夸你…","Thinking of nice things to say…"):esc(comment||localComment(D))}</p>
+        <div class="acts">${sample?`<button class="btn primary" data-act="jai" ${jBusy?"disabled":""}>${comment?"✨ 再写一段":"✨ 让小芽认真写评语"}</button>`:""}${comment?`<span class="hint">写于 ${new Date(J.commentAt||Date.now()).toTimeString().slice(0,5)}</span>`:`<span class="hint">${sample?"写好感想再让小芽评，评语会更贴心":L("评语会根据你这天完成的事自动生成","Sprout's note is written from what you finished this day")}</span>`}</div>
+      </div>
+    </div>
+    <div class="reflect">
+      <h4>${L("今日感想","Reflection")} <span class="hint">· ${L("想写就写，不写也可以","Optional, write if you feel like it")}</span></h4>
+      <div class="moods">${MOODS.map(([k,e,n])=>`<button class="mood${J.mood===k?" on":""}" data-act="jmood" data-v="${k}">${e} ${n}</button>`).join("")}</div>
+      <textarea id="jnote-${d}" data-jnote="${d}" placeholder="${L("今天印象最深的一件事？有什么想对明天的自己说的？","What stood out today? Anything to tell tomorrow's you?")}" maxlength="4000">${esc(J.note||"")}</textarea>
+      <span class="saved" id="jsaved">${jSaved}</span>
+    </div>
+  </div>`;
+}
+function saveJournal(d,patch){
+  const ref=db.doc("journal/"+d); const cur=journal[d]||{};
+  const body={...cur,...patch,date:d}; journal[d]=body;
+  return queued(ref.path,()=>ref.set(body));
+}
+async function aiComment(){
+  const d=jDate||todayStr(), D=dayData(d), J=journal[d]||{};
+  jBusy=true; render();
+  const mood=(MOODS.find(m=>m[0]===J.mood)||[])[2];
+  const prompt=`你是「小芽」，Gracy 养在她的人生服务器里的一棵会长大的小树，性格温暖、真诚、有点俏皮。请根据她 ${d} 这一天的记录，写一段给她的小结评语。
+
+打卡（共 ${D.hTotal} 项）：${D.hNames.join("、")||"无"}
+生活完成：${D.life.map(t=>t.title).join("、")||"无"}${D.trip.length?`；去超市 ${D.trip.length} 趟`:""}
+学习完成：${D.study.map(t=>t.title).join("、")||"无"}
+工作完成：${D.work.map(t=>t.title).join("、")||"无"}
+心情：${mood||"没填"}
+她的感想：${J.note||"没写"}
+
+要求：
+- 用中文，第一人称"我"（小芽）对"你"说话，100 到 160 字
+- 点名提到她具体做了的一两件事，夸得具体，不要空泛的套话
+- 如果完成得少或心情不好，温柔接住，不制造愧疚感，可以给一个很小、可行的明天建议
+- 如果她写了感想，要回应她写的内容
+- 最多用 1 到 2 个表情符号，不要用标题或列表
+只输出评语本身。`;
+  try{
+    const r=await sample(prompt,{modelTier:"default"});
+    const text=(r&&r.text||"").trim();
+    if(text)await saveJournal(d,{comment:text.slice(0,1200),commentAt:Date.now()});
+  }catch(e){
+    if(e&&e.code==="not_granted"){sample=null}
+    setStatus(e&&e.code==="rate_limited"?"小芽有点忙，过一会儿再让它写吧。":e&&e.code==="not_granted"?"":"评语没写成，稍后再试一次。");
+  }finally{jBusy=false;render()}
+}
+
+/* ---------- capture & AI parsing ---------- */
+function renderPreview(){
+  const box=$("#preview");
+  if(!pending.length){box.hidden=true;box.innerHTML="";return}
+  box.hidden=false;
+  box.innerHTML=pending.map((p,i)=>`<div class="pv">
+    <input type="checkbox" id="pv-c-${i}" data-pv="keep" data-i="${i}" ${p.keep?"checked":""} aria-label="${L("保留这条","Keep this")}">
+    <div class="pv-body">
+      <input class="pv-title" id="pv-t-${i}" data-pv="title" data-i="${i}" value="${esc(p.title)}" aria-label="${L("任务标题","Task title")}">
+      <div class="chips">
+        ${["life","study","work","shop"].map(s=>`<button class="chip ${s==="shop"?"life":s}${p.space===s?" on":""}" data-pv="space" data-v="${s}" data-i="${i}">${s==="shop"?"🛒 "+SPACE.shop:SPACE[s]}</button>`).join("")}
+        ${p.space==="shop"?"":`<span class="gap"></span>`+HZ.map(h=>`<button class="chip hz${p.horizon===h.k?" on":""}" data-pv="hz" data-v="${h.k}" data-i="${i}">${h.name}</button>`).join("")}
+        ${p.due?`<span class="chip">${L("截止 ","Due ")}${esc(p.due)}</span>`:""}
+      </div>
+    </div></div>`).join("")+
+  `<div class="cap-row"><button class="btn primary" id="saveParsed">${L(`保存选中的 ${pending.filter(p=>p.keep).length} 条`,`Save ${pending.filter(p=>p.keep).length} selected`)}</button><button class="btn" id="cancelParsed">${L("取消","Cancel")}</button></div>`;
+}
+async function parseCapture(){
+  const text=$("#cap").value.trim(); if(!text)return;
+  if(!sample){
+    pending=ruleParse(text,todayStr(),["life","study","work"].includes(tab)?tab:"life",lang==="en");
+    if(pending.length)cheer(L(`分好啦，一共 ${pending.length} 条，看看对不对？`,`Sorted into ${pending.length} ${n_(pending.length,"item","items")}. Look right?`));
+    else $("#capHint").textContent=L("没分出任务，换个说法试试，或者先丢进收件箱。","Couldn't find anything to sort. Try rewording, or put it in the inbox.");
+    renderPreview();return}
+  const btn=$("#parseBtn"); btn.disabled=true; btn.textContent="分拣中…"; thinking=true; renderBuddy();
+  const t=todayStr();
+  const prompt=`你是一个个人任务整理助手。今天是 ${t}（周${WD[new Date().getDay()]}）。
+把用户随手写的一段话拆成独立的待办事项。每条返回：
+- title：简洁的中文动作描述（保留用户原意和专有名词）
+- space："study"（课程、作业、笔记整理、考试复习、刷题、自学新技能）、"work"（求职、实习、工作项目、职业发展目标）、"shop"（要去超市或商店买的具体物品，每样东西单独一条，title 只写物品名，比如"鸡蛋"）或 "life"（其他生活事项和目标：健康、社交、家务、爱好）
+- horizon："week"（7 天内或很快要做）、"month"（一个月内）、"long"（长期目标或没有明确时间的大事）、"inbox"（实在无法判断）
+- due：如果提到具体或相对日期，换算成 YYYY-MM-DD；否则为 null
+- note：用户提到的额外细节，没有则为空字符串
+只返回 JSON 数组，不要其他文字。
+
+用户输入：
+${text}`;
+  try{
+    const out=await sample.json(prompt,{modelTier:"quick"});
+    const arr=Array.isArray(out)?out:(out&&Array.isArray(out.tasks)?out.tasks:[]);
+    pending=arr.filter(x=>x&&x.title).map(x=>({
+      title:String(x.title).slice(0,200),
+      space:["life","shop","study"].includes(x.space)?x.space:"work",
+      horizon:HZNAME[x.horizon]?x.horizon:"inbox",
+      due:/^\d{4}-\d{2}-\d{2}$/.test(x.due||"")?x.due:null,
+      note:String(x.note||"").slice(0,500),keep:true}));
+    thinking=false;
+    if(pending.length)cheer(`分好啦，一共 ${pending.length} 条，看看对不对？`);
+    else $("#capHint").textContent="没分出任务，换个说法试试，或者先丢进收件箱。";
+    renderPreview();
+  }catch(e){
+    $("#capHint").textContent= e&&e.code==="not_granted"?"你没有允许 AI 分拣，可以先丢进收件箱。":e&&e.code==="rate_limited"?"请求太频繁了，过一会儿再试。":"分拣没成功，再试一次或者先丢进收件箱。";
+    if(e&&e.code==="not_granted"){sample=null;$("#parseBtn").hidden=true}
+  }finally{thinking=false;btn.disabled=false;btn.textContent="✨ 自动分拣";renderBuddy()}
+}
+async function addTask(t){
+  const ref=db.collection("tasks").doc();
+  const body={title:t.title,space:t.space,horizon:t.horizon,due:t.due||null,note:t.note||"",done:false,createdAt:Date.now()};
+  return queued(ref.path,()=>ref.set(body));
+}
+async function addInbox(){
+  const text=$("#cap").value.trim(); if(!text||!db)return;
+  const space=["life","study","work"].includes(tab)?tab:"life";
+  await addTask({title:text.slice(0,200),space,horizon:"inbox"});
+  $("#cap").value=""; closeCap(); if(tab==="habit"){tab=space;render()}
+  cheer(L(`收到！放进${SPACE[space]}收件箱了。`,`Got it! Added to the ${SPACE[space].toLowerCase()} inbox.`));
+}
+
+/* ---------- shopping ---------- */
+const norm=x=>x.trim().toLowerCase();
+async function addShop(name){
+  name=name.trim().slice(0,80); if(!name)return;
+  if(shop.some(x=>norm(x.name)===norm(name)&&!x.bought))return;
+  const ref=db.collection("shop").doc();
+  return queued(ref.path,()=>ref.set({name,bought:false,createdAt:Date.now()}));
+}
+async function addStaple(name){
+  name=name.trim().slice(0,40); if(!name||staples.some(x=>norm(x.name)===norm(name)))return;
+  const ref=db.collection("staples").doc();
+  return queued(ref.path,()=>ref.set({name,order:Date.now(),createdAt:Date.now()}));
+}
+const splitItems=t=>t.split(/[,，、;；\n]+/).map(x=>x.trim()).filter(Boolean);
+
+/* ---------- editor sheet ---------- */
+function openEditor(id,preset){
+  const isNew=!id; const t=isNew?null:tasks.find(x=>x.id===id); if(!isNew&&!t)return;
+  const draft=isNew?{title:"",due:"",note:"",space:preset.space,horizon:preset.horizon}:{title:t.title,due:t.due||"",note:t.note||"",space:t.space,horizon:t.horizon};
+  let confirmDel=false;
+  const bg=document.createElement("div"); bg.className="sheet-bg";
+  const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑任务","Edit task")}">
+    <h3>${isNew?L("添加一条","Add a task"):L("改一改","Edit")}</h3>
+    <label class="field"><span>${isNew?L("要做什么？","What needs doing?"):L("标题","Title")}</span><input id="ed-title" value="${esc(draft.title)}" placeholder="${L("比如：整理 Week 6 笔记","e.g. Tidy up week 6 notes")}"></label>
+    <div class="field"><span>${L("时间尺度","Timeframe")}</span><div class="chips">${HZ.map(h=>`<button class="chip hz${draft.horizon===h.k?" on":""}" data-ed="hz" data-v="${h.k}">${h.name}</button>`).join("")}</div></div>
+    <label class="field"><span>${L("截止日期","Due date")}</span><input type="date" id="ed-due" value="${esc(draft.due)}"></label>
+    <label class="field"><span>${L("备注 / 计划细节","Notes / plan details")}</span><textarea id="ed-note">${esc(draft.note)}</textarea></label>
+    <div class="sheet-actions">
+      ${isNew?"<span></span>":`<button class="btn danger" data-ed="del">${confirmDel?L("再点一次确认删除","Tap again to delete"):L("删除","Delete")}</button>`}
+      <span style="display:flex;gap:8px"><button class="btn" data-ed="close">${L("取消","Cancel")}</button><button class="btn primary" data-ed="save">${isNew?L("添加","Add"):L("保存","Save")}</button></span>
+    </div></div>`};
+  const grab=()=>{draft.title=bg.querySelector("#ed-title").value;draft.due=bg.querySelector("#ed-due").value;draft.note=bg.querySelector("#ed-note").value};
+  draw(); document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{
+    if(e.target===bg){bg.remove();return}
+    const b=e.target.closest("[data-ed]"); if(!b)return;
+    const a=b.dataset.ed; grab();
+    if(a==="space"){draft.space=b.dataset.v;draw();return}
+    if(a==="hz"){draft.horizon=b.dataset.v;draw();return}
+    if(a==="close"){bg.remove();return}
+    if(a==="del"){if(!confirmDel){confirmDel=true;draw();return}
+      bg.remove(); const ref=db.doc("tasks/"+id); queued(ref.path,()=>t.done?ref.update({deleted:true}):ref.delete()); return}
+    if(a==="save"){
+      if(isNew){const title=draft.title.trim();if(!title){bg.querySelector("#ed-title").focus();return}
+        bg.remove();addTask({title:title.slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,note:draft.note.slice(0,2000)});cheer(L(`加进${SPACE[draft.space]}的「${HZNAME[draft.horizon]}」了～`,`Added to ${SPACE[draft.space]} · ${HZNAME[draft.horizon]}～`));return}
+      bg.remove();
+      const ref=db.doc("tasks/"+id);
+      queued(ref.path,()=>ref.update({title:(draft.title.trim()||L("未命名","Untitled")).slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,note:draft.note.slice(0,2000)}))}
+  });
+  bg.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="ed-title"){e.preventDefault();bg.querySelector('[data-ed="save"]').click()}if(e.key==="Escape")bg.remove()});
+  bg.querySelector("#ed-title").focus();
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click",async e=>{
+  const tabBtn=e.target.closest(".tab");
+  if(tabBtn){tab=tabBtn.dataset.k;try{localStorage.setItem("los-tab",tab)}catch(_){};render();return}
+  if(e.target.closest("#jbtn")){tab=tab==="journal"?"habit":"journal";if(tab==="journal"){jDate=todayStr();jSaved=""}try{localStorage.setItem("los-tab",tab)}catch(_){};render();window.scrollTo({top:0,behavior:"smooth"});return}
+  const pv=e.target.closest("[data-pv]");
+  if(pv&&pv.tagName==="BUTTON"){const p=pending[+pv.dataset.i];if(pv.dataset.pv==="space")p.space=pv.dataset.v;else p.horizon=pv.dataset.v;renderPreview();return}
+  const id0=e.target.closest("button")?.id;
+  if(id0==="parseBtn")return parseCapture();
+  if(id0==="inboxBtn")return addInbox();
+  if(id0==="cancelParsed"){pending=[];renderPreview();return}
+  if(id0==="saveParsed"){
+    if(!db)return;
+    const keep=pending.filter(p=>p.keep&&p.title.trim()); pending=[];renderPreview();
+    for(const p of keep){if(p.space==="shop")await addShop(p.title);else await addTask(p)}
+    $("#cap").value="";
+    if(keep.length){closeCap();cheer(L(`存好 ${keep.length} 条啦！`,`Saved ${keep.length} ${n_(keep.length,"item","items")}!`));
+      const first=keep[0].space;
+      if(first==="shop"){tab="life";lifeSub="shop"}else if(tab==="habit"||!keep.some(p=>p.space===tab)){tab=first;if(first==="life")lifeSub="goals"}
+      render()}
+    return;
+  }
+  const act=e.target.closest("[data-act]"); if(!act)return;
+  if(act.dataset.act==="jprev"){jDate=addDays(jDate||todayStr(),-1);jSaved="";render();return}
+  if(act.dataset.act==="jnext"){const n=addDays(jDate||todayStr(),1);if(n<=todayStr()){jDate=n;jSaved="";render()}return}
+  if(act.dataset.act==="lifesub"){lifeSub=act.dataset.v;try{localStorage.setItem("los-life",lifeSub)}catch(_){};render();return}
+  if(!db)return;
+  const id=act.dataset.id;
+  if(act.dataset.act==="jai"){aiComment();return}
+  if(act.dataset.act==="newtask"){openEditor(null,{space:act.dataset.space,horizon:act.dataset.hz});return}
+  if(act.dataset.act==="jmood"){const d=jDate||todayStr();const cur=(journal[d]||{}).mood;saveJournal(d,{mood:cur===act.dataset.v?null:act.dataset.v});render();return}
+  if(act.dataset.act==="stpick"){pick.has(id)?pick.delete(id):pick.add(id);render();return}
+  if(act.dataset.act==="stclear"){pick.clear();render();return}
+  if(act.dataset.act==="stedit"){stapleEdit=!stapleEdit;pick.clear();render();return}
+  if(act.dataset.act==="stdel"){const ref=db.doc("staples/"+id);queued(ref.path,()=>ref.delete());return}
+  if(act.dataset.act==="stadd"){const names=staples.filter(x=>pick.has(x.id)).map(x=>x.name);pick.clear();render();for(const n of names)await addShop(n);cheer(L(`放进清单 ${names.length} 样～`,`Added ${names.length} to the list～`));return}
+  if(act.dataset.act==="shopbuy"){const x=shop.find(y=>y.id===id);if(!x)return;const ref=db.doc("shop/"+id);const nb=!x.bought;queued(ref.path,()=>ref.update({bought:nb,boughtAt:nb?Date.now():null}));return}
+  if(act.dataset.act==="shopdel"){const ref=db.doc("shop/"+id);queued(ref.path,()=>ref.delete());return}
+  if(act.dataset.act==="shopstar"){const x=shop.find(y=>y.id===id);if(!x)return;const st=staples.find(y=>norm(y.name)===norm(x.name));
+    if(st){const ref=db.doc("staples/"+st.id);queued(ref.path,()=>ref.delete())}else{await addStaple(x.name);cheer(L(`「${x.name}」加进常买了`,`“${x.name}” saved as a staple`))}return}
+  if(act.dataset.act==="tripdone"){
+    const got=shop.filter(x=>x.bought);
+    const tr=db.collection("trips").doc(); await queued(tr.path,()=>tr.set({date:todayStr(),items:got.length,createdAt:Date.now()}));
+    for(const x of got){const ref=db.doc("shop/"+x.id);await queued(ref.path,()=>ref.delete())}
+    water(act,1);cheer(L(`采购完成，买了 ${got.length} 样！喝 1 滴水～`,`Shopping done, ${got.length} ${n_(got.length,"item","items")}! +1 drop～`));return;
+  }
+  if(act.dataset.act==="toggle"){
+    const t=tasks.find(x=>x.id===id);if(!t)return;const nd=!t.done;
+    if(nd){const r=act.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,[css(t.space==="life"?"--life":"--work"),css("--buddy"),css("--pink")]);water(act,1);cheer(PRAISE[Math.floor(Math.random()*PRAISE.length)]+L(" 浇了 1 滴水"," +1 drop"))}
+    const ref=db.doc("tasks/"+id);queued(ref.path,()=>ref.update({done:nd,doneAt:nd?Date.now():null}))
+  }
+  if(act.dataset.act==="edit")openEditor(id);
+  if(act.dataset.act==="hcheck"){
+    const t=todayStr(); const cur={...(checkins[t]||{})}; const on=!cur[id];
+    if(on)cur[id]=true;else delete cur[id];
+    checkins[t]=cur;
+    if(on){const r=act.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,[css("--habit"),css("--buddy"),css("--pink"),css("--leaf")]);
+      water(act,2);const {live,done}=habitStats(); cheer(done===live.length?L("全部打完卡！我开花啦 🌸","All checked in! I'm blooming 🌸"):L(`打卡成功，咕嘟咕嘟喝了 2 滴水！`,`Checked in! Glug glug, +2 drops!`), done===live.length?"cheer":"happy")}
+    render();
+    const ref=db.doc("checkins/"+t); queued(ref.path,()=>ref.set({date:t,done:cur}));
+  }
+  if(act.dataset.act==="hdel"){
+    if(act.dataset.confirm!=="1"){act.dataset.confirm="1";act.textContent=L("再点一次确认移除","Tap again to remove");return}
+    const ref=db.doc("habits/"+id); queued(ref.path,()=>ref.update({archived:true}));
+  }
+});
+$("#buddy").addEventListener("click",()=>cheer((lang==="en"?["Hehe, that tickles～",`I'm Sprout, ${userName?userName+"'s":"your"} little tree.`,"Keep watering me and I'll grow big and bloom!","Remember to eat well today!"]:["嘿嘿，戳我干嘛～",`我是小芽，${userName||"你"}的小树。`,"多浇水，我会长成大树开花的！","今天也要好好吃饭！"])[Math.floor(Math.random()*4)]));
+document.addEventListener("input",e=>{
+  if(e.target.dataset&&e.target.dataset.jnote&&db){
+    const d=e.target.dataset.jnote, v=e.target.value; jSaved=L("正在保存…","Saving…"); const sv=$("#jsaved"); if(sv)sv.textContent=jSaved;
+    clearTimeout(noteTimer); noteTimer=setTimeout(()=>{saveJournal(d,{note:v}).then(()=>{jSaved=L("已保存 ✓","Saved ✓");const el=$("#jsaved");if(el)el.textContent=jSaved}).catch(()=>{})},900);
+    return;
+  }
+  const pv=e.target.closest("[data-pv]"); if(!pv)return; const p=pending[+pv.dataset.i];
+  if(pv.dataset.pv==="title")p.title=pv.value;
+  if(pv.dataset.pv==="keep"){p.keep=pv.checked;const b=$("#saveParsed");if(b)b.textContent=L(`保存选中的 ${pending.filter(x=>x.keep).length} 条`,`Save ${pending.filter(x=>x.keep).length} selected`)}
+});
+document.addEventListener("submit",async e=>{
+  if(e.target.id==="shopForm"){e.preventDefault();if(!db)return;
+    const names=splitItems($("#shopName").value), st=$("#shopStaple").checked;
+    $("#shopName").value="";
+    for(const n of names){await addShop(n);if(st)await addStaple(n)}
+    $("#shopName").focus();return}
+  if(e.target.id!=="habitForm")return; e.preventDefault();
+  const name=$("#habitName").value.trim(); if(!name||!db)return; $("#habitName").value="";
+  const ref=db.collection("habits").doc();
+  await queued(ref.path,()=>ref.set({name:name.slice(0,40),archived:false,order:Date.now(),createdAt:Date.now()}));
+  cheer(L("新习惯加上啦，我们一起坚持！","New habit added. Let's keep at it together!"));
+});
+$("#cap").addEventListener("keydown",e=>{if(e.key==="Enter"&&(e.metaKey||e.ctrlKey)){e.preventDefault();parseCapture()}});
+
+/* ---------- apply language ---------- */
+function buildStrings(){
+  const hz=L([["收件箱","刚记下，还没安排"],["近期","这周内"],["中期","这个月内"],["长期","慢慢长大的目标"]],
+             [["Inbox","Just captured, not planned yet"],["This week","Within 7 days"],["This month","Within the month"],["Long term","Goals that grow slowly"]]);
+  HZ.forEach((h,i)=>{h.name=hz[i][0];h.sub=hz[i][1];HZNAME[h.k]=h.name});
+  Object.assign(SPACE,L({work:"工作",life:"生活",study:"学习",shop:"购物"},{work:"Work",life:"Life",study:"Study",shop:"Shopping"}));
+  const st=L(["种子","小芽","幼苗","小树苗","小树","大树","开花的树"],["Seed","Sprout","Seedling","Sapling","Young tree","Big tree","Blooming tree"]);
+  STAGES.forEach((x,i)=>x.n=st[i]);
+  PRAISE.splice(0,PRAISE.length,...L(["又搞定一件！","好耶，干得漂亮～","划掉的感觉真好！","你今天很能干嘛！","一步一步来！"],["Another one done!","Yay, nicely done!","Crossing things off feels great!","You're on a roll today!","One step at a time!"]));
+  Object.assign(EMPTY,L({inbox:"",week:"这周还空着，想到要做的就丢上来～",month:"这个月的计划还没有，慢慢来。",long:"长期目标可以大胆一点，我陪你一点点拆。"},
+                        {inbox:"",week:"Nothing for this week yet. Toss things in as they come to mind.",month:"No plans for this month yet. No rush.",long:"Dream big here. We'll break it down together."}));
+  Object.assign(LIFE_HZ,L({week:"近期目标",month:"中期目标",long:"长期目标"},{week:"Short-term goals",month:"Mid-term goals",long:"Long-term goals"}));
+  const md=L(["很棒","不错","一般","有点累","低落"],["Great","Good","Okay","Tired","Down"]); MOODS.forEach((m,i)=>m[2]=md[i]);
+}
+function applyStatic(){
+  document.documentElement.lang=L("zh-CN","en");
+  $("#jbtnTxt").textContent=L("今日小结","Today");
+  $("#gear").setAttribute("aria-label",L("设置","Settings"));
+  $("#dropsLbl").textContent=L("滴水","drops");
+  [["habit","打卡","Habits"],["life","生活","Life"],["study","学习","Study"],["work","工作","Work"]].forEach(([k,zh,en])=>$("#tl-"+k).textContent=L(zh,en));
+  $("#capLbl").textContent=L("想到什么就丢给我","Toss me anything on your mind");
+  $("#cap").placeholder=L("例如：周五前改完简历投三家伦敦的公司；周末买洗衣液和鸡蛋；今年想把雅思口语练到 8",
+                          "e.g. Finish my CV by Friday; buy eggs and milk this weekend; learn to swim this year");
+  $("#parseBtn").textContent=L("✨ 自动分拣","✨ Sort it for me");
+  $("#inboxBtn").textContent=L("先丢进收件箱","Just put it in the inbox");
+  $("#capHint").textContent=L("按规则拆成几条、分到对应板块、换算日期，你确认后才保存。分错了点一下就能改。",
+                              "I'll split it up, pick a board and work out dates. Nothing is saved until you confirm, and you can fix anything with one tap.");
+  $("#capClose").setAttribute("aria-label",L("关闭","Close"));
+  $("#fab").setAttribute("aria-label",L("记下一个想法","Capture an idea"));
+  $("#fab").title=L("想到什么就丢给小芽","Toss your ideas to Sprout");
+  $("#today").textContent=fmtToday();
+}
+function setLang(l){
+  lang=l; try{localStorage.setItem("lifeos-lang",l)}catch(_){}
+  buildStrings(); applyStatic(); applyName(); lastBuddy=""; render(); renderPreview();
+}
+
+/* ---------- capture sheet ---------- */
+function openCap(){$("#capWrap").hidden=false;setTimeout(()=>$("#cap").focus(),50)}
+function closeCap(){$("#capWrap").hidden=true}
+$("#fab").addEventListener("click",openCap);
+$("#capClose").addEventListener("click",closeCap);
+$("#capWrap").addEventListener("click",e=>{if(e.target.id==="capWrap")closeCap()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#capWrap").hidden)closeCap()});
+
+/* ---------- boot ---------- */
+// daytime 7:00–17:59 uses the light sky blue, otherwise the deep night blue (an explicit theme choice in Claude still wins)
+function applyTod(){const h=new Date().getHours();document.documentElement.dataset.tod=(h>=7&&h<18)?"day":"night"}
+applyTod();
+buildStrings();
+$("#today").textContent=fmtToday();
+render();
+let lastDay=todayStr();
+setInterval(()=>{applyTod();if(todayStr()!==lastDay){lastDay=todayStr();$("#today").textContent=fmtToday()}renderBuddy();if(tab==="habit")render()},60000);
+
+/* ---------- local storage (this browser only) ---------- */
+const LS_KEY="lifeos-data-v1", NAME_KEY="lifeos-name";
+let userName=""; try{userName=localStorage.getItem(NAME_KEY)||""}catch(e){}
+function applyName(){const t=userName?L(`${userName} 的人生服务器`,`${userName}'s Life Server`):L("我的人生服务器","My Life Server");$("#appName").textContent=t;document.title=t.replace(" 的","的")}
+function makeLocalDB(){
+  let data={}, firstRun=false;
+  try{const raw=localStorage.getItem(LS_KEY);if(raw)data=JSON.parse(raw);else firstRun=true}catch(e){firstRun=true}
+  const listeners=[];
+  const save=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify(data))}catch(e){setStatus(L("浏览器存储满了，先导出备份再清理一些已完成的内容。","Browser storage is full. Export a backup, then clear out some finished items."))}};
+  const meta={fromCache:false,hasPendingWrites:false};
+  const snap=col=>{const c=data[col]||{};const docs=Object.keys(c).map(id=>({id,exists:true,data:()=>c[id],metadata:meta}));return {docs,size:docs.length,empty:!docs.length,metadata:meta,docChanges:()=>[]}};
+  const emit=col=>listeners.filter(l=>l.col===col).forEach(l=>l.cb(snap(col)));
+  const emitAll=()=>[...new Set(listeners.map(l=>l.col))].forEach(emit);
+  const rid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+  const clone=x=>JSON.parse(JSON.stringify(x));
+  const docRef=(col,id)=>({id,path:col+"/"+id,
+    async get(){const v=(data[col]||{})[id];return {id,exists:!!v,data:()=>v,metadata:meta}},
+    async set(b){(data[col]=data[col]||{})[id]=clone(b);save();emit(col)},
+    async update(b){const c=data[col]||{};if(!c[id])throw {code:"invalid_argument"};c[id]={...c[id],...clone(b)};save();emit(col)},
+    async delete(){if(data[col])delete data[col][id];save();emit(col)}});
+  const colRef=col=>{const q={path:col,doc:id=>docRef(col,id||rid()),orderBy:()=>q,limit:()=>q,
+    onSnapshot(cb){const l={col,cb};listeners.push(l);setTimeout(()=>cb(snap(col)),0);return ()=>{const i=listeners.indexOf(l);if(i>=0)listeners.splice(i,1)}}};return q};
+  // keep two open tabs in step
+  window.addEventListener("storage",e=>{if(e.key===LS_KEY){try{data=JSON.parse(e.newValue||"{}")}catch(_){data={}}emitAll()}});
+  return {firstRun,doc:p=>{const [c,i]=p.split("/");return docRef(c,i)},collection:colRef,
+    dump:()=>clone(data),replace:d=>{data=clone(d);save();emitAll()}};
+}
+function seed(){
+  const now=Date.now(), w=(c,id,b)=>db.doc(c+"/"+id).set(b);
+  (lang==="en"?[["Eggs",1],["Milk",2],["Bread",3],["Fruit",4],["Tissues",5],["Laundry detergent",6]]:[["鸡蛋",1],["牛奶",2],["面包",3],["水果",4],["纸巾",5],["洗衣液",6]]).forEach(([n,o])=>w("staples","st"+o,{name:n,order:o,createdAt:now}));
+  w("habits","ex1",{name:L("（示例）背 30 个单词","(Example) Read for 30 minutes"),archived:false,order:1,createdAt:now});
+  w("habits","ex2",{name:L("（示例）运动 20 分钟","(Example) Move for 20 minutes"),archived:false,order:2,createdAt:now});
+  w("tasks","ex1",{title:L("（示例）整理这周的课堂笔记","(Example) Tidy up this week's lecture notes"),space:"study",horizon:"week",due:null,note:L("示例任务，点开可以删除","Example task, tap to delete"),done:false,createdAt:now});
+  w("tasks","ex2",{title:L("（示例）养成每周运动 3 次的习惯","(Example) Work out 3 times a week"),space:"life",horizon:"long",due:null,note:"",done:false,createdAt:now});
+  w("tasks","ex3",{title:L("（示例）更新一版简历","(Example) Update my CV"),space:"work",horizon:"month",due:null,note:"",done:false,createdAt:now});
+}
+
+/* ---------- settings: name, backup, restore ---------- */
+function langChips(attr="data-set"){return [["zh","中文"],["en","English"]].map(([k,n])=>`<button class="chip hz${lang===k?" on":""}" ${attr}="lang" data-v="${k}">${n}</button>`).join("")}
+function openSettings(){
+  let confirmWipe=false;
+  const bg=document.createElement("div"); bg.className="sheet-bg";
+  const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("设置","Settings")}">
+    <h3>${L("设置","Settings")}</h3>
+    <div class="field"><span>${L("语言","Language")}</span><div class="chips">${langChips()}</div></div>
+    <label class="field"><span>${L("你的名字","Your name")}</span><input id="set-name" value="${esc(userName)}" maxlength="20" placeholder="${L("比如：Gracy","e.g. Gracy")}"></label>
+    <div class="field"><span>${L("备份","Backup")}</span>
+      <p class="hint" style="margin:0">${L("数据只存在这个浏览器里。换手机、换浏览器或清理浏览器数据之前，先导出一份备份。","Your data lives only in this browser. Export a backup before switching phones or browsers, or clearing browser data.")}</p>
+      <div class="cap-row"><button class="btn" data-set="export">${L("导出备份","Export backup")}</button><label class="btn" style="cursor:pointer">${L("导入备份","Import backup")}<input type="file" id="set-import" accept="application/json,.json" hidden></label></div>
+      <span class="saved" id="set-msg"></span>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn danger" data-set="wipe">${confirmWipe?L("再点一次，清空全部数据","Tap again to erase everything"):L("清空全部数据","Erase all data")}</button>
+      <span style="display:flex;gap:8px"><button class="btn" data-set="close">${L("取消","Cancel")}</button><button class="btn primary" data-set="save">${L("保存","Save")}</button></span>
+    </div></div>`};
+  draw(); document.body.appendChild(bg);
+  const msg=t=>{const el=bg.querySelector("#set-msg");if(el)el.textContent=t};
+  bg.addEventListener("click",e=>{
+    if(e.target===bg){bg.remove();return}
+    const b=e.target.closest("[data-set]"); if(!b)return; const a=b.dataset.set;
+    if(a==="lang"){const n=bg.querySelector("#set-name").value;setLang(b.dataset.v);draw();bg.querySelector("#set-name").value=n;return}
+    if(a==="close"){bg.remove();return}
+    if(a==="save"){const n=bg.querySelector("#set-name").value.trim();if(n){userName=n;try{localStorage.setItem(NAME_KEY,n)}catch(_){};applyName()}bg.remove();return}
+    if(a==="export"){
+      const blob=new Blob([JSON.stringify({app:"lifeos",version:1,name:userName,exportedAt:new Date().toISOString(),data:db.dump()},null,2)],{type:"application/json"});
+      const url=URL.createObjectURL(blob); const link=document.createElement("a");
+      link.href=url; link.download=L(`人生服务器备份-${todayStr()}.json`,`life-server-backup-${todayStr()}.json`); document.body.appendChild(link); link.click(); link.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),2000); msg(L("已导出 ✓","Exported ✓"));return}
+    if(a==="wipe"){if(!confirmWipe){confirmWipe=true;draw();return}db.replace({});bg.remove();cheer(L("数据清空了，我们重新开始吧 🌱","All cleared. Let's start fresh 🌱"));return}
+  });
+  bg.addEventListener("change",e=>{
+    if(e.target.id!=="set-import")return; const f=e.target.files[0]; if(!f)return;
+    const r=new FileReader();
+    r.onload=()=>{try{const j=JSON.parse(r.result);if(!j||j.app!=="lifeos"||typeof j.data!=="object")throw 0;
+      db.replace(j.data); if(j.name){userName=j.name;try{localStorage.setItem(NAME_KEY,j.name)}catch(_){};applyName()}
+      bg.remove(); cheer(L("备份导入好啦，东西都回来了！","Backup restored, everything's back!"))}catch(_){msg(L("这个文件不是人生服务器的备份，换一个试试。","That file isn't a Life Server backup. Try another one."))}};
+    r.readAsText(f);
+  });
+}
+$("#gear").addEventListener("click",openSettings);
+
+/* ---------- first visit: say hi and ask a name ---------- */
+function openWelcome(){
+  const bg=document.createElement("div"); bg.className="sheet-bg";
+  const draw=()=>{const keepName=bg.querySelector("#wel-name")?.value||"";bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("欢迎","Welcome")}">
+    <div class="chips" style="justify-content:flex-end">${langChips("data-w")}</div>
+    <div style="display:flex;gap:12px;align-items:center"><div style="width:76px;height:76px;flex:none">${treeSVG("happy",1,false)}</div>
+      <div><h3>${L("你好呀，我是小芽 🌱","Hi, I'm Sprout 🌱")}</h3><p class="hint" style="margin:4px 0 0">${L("这是你自己的人生服务器。完成任务、打卡就是给我浇水，我会慢慢长成一棵开花的大树。","This is your own Life Server. Finishing tasks and checking in waters me, and I'll slowly grow into a blooming tree.")}</p></div></div>
+    <label class="field"><span>${L("我该怎么称呼你？","What should I call you?")}</span><input id="wel-name" maxlength="20" placeholder="${L("你的名字或昵称","Your name or nickname")}"></label>
+    <p class="hint" style="margin:0">${L("你的数据只存在这个浏览器里，别人看不到。名字以后可以在右上角 ⚙️ 里改。","Your data stays in this browser and no one else can see it. You can change your name later in ⚙️ at the top.")}</p>
+    <div class="sheet-actions"><button class="btn" data-w="skip">${L("先跳过","Skip for now")}</button><button class="btn primary" data-w="ok">${L("开始种树","Start growing")}</button></div>
+  </div>`;bg.querySelector("#wel-name").value=keepName};
+  draw();
+  document.body.appendChild(bg);
+  const done=()=>{try{localStorage.setItem("lifeos-welcomed","1")}catch(_){};bg.remove()};
+  const ok=()=>{const n=bg.querySelector("#wel-name").value.trim();if(n){userName=n;try{localStorage.setItem(NAME_KEY,n)}catch(_){};applyName();cheer(L(`${n}，很高兴认识你！`,`Nice to meet you, ${n}!`))}done()};
+  bg.addEventListener("click",e=>{const b=e.target.closest("[data-w]");if(!b)return;if(b.dataset.w==="lang"){setLang(b.dataset.v);draw();bg.querySelector("#wel-name").focus();return}b.dataset.w==="ok"?ok():done()});
+  bg.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();ok()}});
+  setTimeout(()=>bg.querySelector("#wel-name").focus(),50);
+}
+
+(()=>{
+  buildStrings(); applyStatic(); applyName();
+  db=makeLocalDB(); sample=null;
+  if(db.firstRun)seed();
+  let welcomed=false; try{welcomed=!!localStorage.getItem("lifeos-welcomed")}catch(_){}
+  if(!userName&&!welcomed)openWelcome();
+  const ok=()=>{}, fail=()=>{};
+  db.collection("tasks").onSnapshot(s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));if(!s.metadata.fromCache)loaded.t=true;render();ok()},fail);
+  db.collection("habits").onSnapshot(s=>{habits=s.docs.map(d=>({id:d.id,...d.data()}));if(!s.metadata.fromCache)loaded.h=true;render();ok()},fail);
+  db.collection("shop").onSnapshot(s=>{shop=s.docs.map(d=>({id:d.id,...d.data()}));if(!s.metadata.fromCache)loaded.s=true;render()},fail);
+  db.collection("staples").onSnapshot(s=>{staples=s.docs.map(d=>({id:d.id,...d.data()}));render()},fail);
+  db.collection("trips").onSnapshot(s=>{trips=s.docs.map(d=>({id:d.id,...d.data()}));render()},fail);
+  db.collection("journal").orderBy("date","desc").limit(400).onSnapshot(s=>{const m={};s.docs.forEach(d=>{const x=d.data();m[x.date||d.id]=x});
+    // keep a note that is still being typed instead of the older stored copy
+    const el=document.activeElement; if(el&&el.dataset&&el.dataset.jnote&&m[el.dataset.jnote])m[el.dataset.jnote]={...m[el.dataset.jnote],note:el.value};
+    journal=m;render()},fail);
+  db.collection("checkins").orderBy("date","desc").limit(400).onSnapshot(s=>{const m={};s.docs.forEach(d=>{const x=d.data();m[x.date||d.id]=x.done||{}});checkins=m;if(!s.metadata.fromCache)loaded.c=true;render();ok()},fail);
+})();
+</script>
+</body>
+</html>
