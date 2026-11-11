@@ -13,6 +13,7 @@ My "life server": a bilingual (中文 / English) task and habit tracker with a s
 - **Shopping list**: save staples you buy often, add them in one tap and tick items off at the shop.
 - **Daily recap with a calendar**: see what you finished each day, pick a Sprout face for your mood, write a reflection, and tap any day in the calendar to read it again.
 - **Moments worth remembering**: note the big and small things, like a job offer or your first home-cooked dinner. They light up in gold on the calendar and gather in one list.
+- **Weekly and yearly recaps**: the first time you open it in a new week (Monday to Sunday) or a new year, Sprout sums up what you did, says a few kind words and leaves space for your thoughts. You can also open them anytime from the calendar.
 - **Light and dark**: light sky blue during the day, deep blue at night.
 - **Bilingual**: switch between 中文 and English in ⚙️ settings.
 - **Only the boards you need**: turn Habits, Life, the shopping list, Study or Work on and off in ⚙️ settings. Nothing is deleted.
@@ -30,6 +31,7 @@ Everything is stored in your own browser (localStorage). Nothing is uploaded and
 - 生活板块里有购物清单，常买的东西点一下就加进去
 - 今日小结汇总当天完成的事，小芽会写一段鼓励，你也可以选心情、写感想；用月历点任意一天就能回看
 - 可以记下「值得记住的大小事」（比如拿到 offer、第一次自己做饭），日历上那天会变成金色，所有大小事也会汇总在一起
+- 每周一后第一次打开会弹出「上周小记」，新年第一次打开会弹出「年度总结」，汇总完成的事、小芽说一段话、留一个写感想的框；也可以随时在日历下面回看
 - 用不到的板块可以在 ⚙️ 里关掉，数据不会删除
 - 数据只存在你自己的浏览器里，换设备前记得在 ⚙️ 里导出备份
 

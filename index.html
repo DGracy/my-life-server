@@ -252,6 +252,32 @@ details.done-box .list{margin-top:8px}
 .ms-row-d{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 .fmode button{display:flex;align-items:center;gap:4px}
 .fmode svg{width:18px;height:18px;flex:none}
+.rc-btns{display:flex;flex-wrap:wrap;gap:6px;border-top:2px dashed var(--line);padding-top:10px}
+.rc-btns .btn{font-size:13px;padding:5px 12px}
+.rc-sheet{gap:14px;max-width:600px}
+.rc-head{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:center}
+.rc-head h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:22px}
+.rc-head .x{border:none;background:var(--surface-2);border-radius:50%;width:34px;height:34px;font-size:18px;color:var(--muted);align-self:start}
+.rc-buddy{width:72px;height:72px}.rc-buddy svg{width:100%;height:100%}
+.rc-stats{grid-template-columns:repeat(auto-fit,minmax(70px,1fr))!important}
+.rc-stats .jstat{box-shadow:none;background:var(--bg-2)}
+.rc-sheet .rc-comment{display:block;box-shadow:none;background:var(--bg-2)}
+.rc-sec{display:flex;flex-direction:column;gap:6px}
+.rc-sec h4{margin:0;display:flex;align-items:center;gap:7px;font-family:var(--f-display);font-weight:400;font-size:17px}
+.rc-sec h4 i{width:10px;height:10px;border-radius:50%}
+.rc-sec h4 .msface{width:22px;height:22px}
+.rc-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:3px;font-size:14px}
+.rc-list li{display:flex;gap:6px;overflow-wrap:anywhere}
+.rc-list li::before{content:"✓";color:var(--muted);font-weight:700}
+.rc-list.plain li::before{content:"★";color:var(--habit)}
+.rc-sec textarea{width:100%;min-height:96px;resize:vertical;border:2px solid var(--line);border-radius:16px;background:var(--bg-2);padding:10px 14px;line-height:1.6}
+.rc-sec textarea:focus{border-color:var(--brand);outline:none}
+.rc-bars{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;height:90px;align-items:end}
+.rc-bar{display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end}
+.rc-bar i{width:100%;min-height:3px;border-radius:6px 6px 3px 3px;background:linear-gradient(180deg,var(--brand),var(--water))}
+.rc-bar span{font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.rc-trees{display:flex;flex-wrap:wrap;gap:4px}.rc-trees>div{width:64px;height:64px}.rc-trees svg{width:100%;height:100%}
+.ms-row.static{cursor:default}
 .cal-legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--muted)}
 .cal-legend span{display:flex;align-items:center;gap:5px}
 .cal-legend i{width:9px;height:9px;border-radius:3px}
@@ -577,7 +603,7 @@ function miniBuddy(){return `<svg viewBox="0 0 120 120" style="${themeStyle(curT
 let db=null, sample=null;
 let tasks=[], habits=[], checkins={}, shop=[], staples=[], trips=[], journal={};
 let jDate=null, jBusy=false, jSaved="", noteTimer=null;
-let tab="habit", loaded={t:false,h:false,c:false,s:false,f:false};
+let tab="habit", loaded={t:false,h:false,c:false,s:false,f:false,w:false,y:false,m:false};
 let pending=[], flash=null, flashTimer=null, thinking=false, lifeSub="shop", pick=new Set(), stapleEdit=false;
 try{const s=localStorage.getItem("los-tab");if(s&&["work","life","study","habit","journal","forest"].includes(s))tab=s;const l=localStorage.getItem("los-life");if(l==="goals"||l==="shop")lifeSub=l}catch(e){}
 
@@ -706,6 +732,7 @@ function render(){
   for(const k in keep){const el=document.getElementById(k);if(el)el.value=keep[k]}
   if(fid){const el=document.getElementById(fid);if(el){el.focus();try{if(ss!=null)el.setSelectionRange(ss,se)}catch(_){}}}
   renderBuddy();
+  setTimeout(maybeRecap,0);
 }
 function emptyBox(text){return `<div class="empty">${miniBuddy()}<span>${text}</span></div>`}
 function taskRow(t){
@@ -976,6 +1003,140 @@ function milestoneWall(){
 }
 const ICON_MEADOW=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 21c4-4 8-5 11-5s7 1 11 5z" fill="var(--leaf)"/><path d="M12 9V6" stroke="var(--leaf-2)" stroke-width="1.6" stroke-linecap="round"/><path d="M12 7c-2.3 0-3.6-1.3-3.6-3.2 2.3 0 3.4 1.3 3.6 3.2z" fill="var(--leaf)"/><path d="M12 7c2.3 0 3.6-1.3 3.6-3.2-2.3 0-3.4 1.3-3.6 3.2z" fill="var(--leaf-2)"/><ellipse cx="12" cy="13" rx="5.6" ry="4.6" fill="var(--buddy)"/><circle cx="10" cy="12.6" r=".9" fill="var(--buddy-ink)"/><circle cx="14" cy="12.6" r=".9" fill="var(--buddy-ink)"/><path d="M10.8 14.6q1.2 1 2.4 0" stroke="var(--buddy-ink)" stroke-width=".9" fill="none" stroke-linecap="round"/></svg>`;
 const ICON_MAP=`<svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="21.5" rx="5" ry="1.4" fill="var(--leaf)" opacity=".7"/><path d="M12 22c-4-5-7-8-7-12a7 7 0 0 1 14 0c0 4-3 7-7 12z" fill="var(--brand)"/><path d="M12 6.4V4.6" stroke="var(--leaf-2)" stroke-width="1.4" stroke-linecap="round"/><path d="M12 5.2c-1.8 0-2.8-1-2.8-2.5 1.8 0 2.6 1 2.8 2.5z" fill="var(--leaf)"/><circle cx="12" cy="10.4" r="4.3" fill="var(--buddy)"/><circle cx="10.5" cy="10" r=".8" fill="var(--buddy-ink)"/><circle cx="13.5" cy="10" r=".8" fill="var(--buddy-ink)"/><path d="M11 11.6q1 .8 2 0" stroke="var(--buddy-ink)" stroke-width=".8" fill="none" stroke-linecap="round"/></svg>`;
+/* ---------- weekly and yearly recaps ---------- */
+let weekly={}, yearly={}, recapChecked=false, recapBusy=false;
+const weekStart=d=>{const [y,m,dd]=d.split("-").map(Number);const x=new Date(y,m-1,dd);x.setDate(x.getDate()-((x.getDay()+6)%7));return ymd(x)};
+function rangeData(a,b){
+  const inR=d=>!!d&&d>=a&&d<=b;
+  const done=tasks.filter(t=>t.done&&inR(dayOf(t.doneAt)));
+  const by={life:[],study:[],work:[]}; done.forEach(t=>{if(by[t.space])by[t.space].push(t)});
+  let ck=0; const perHabit={}, perMonth=Array(12).fill(0), active=new Set();
+  done.forEach(t=>{const d=dayOf(t.doneAt);active.add(d);perMonth[+d.slice(5,7)-1]++});
+  for(const d in checkins)if(inR(d)){const n=Object.keys(checkins[d]||{}).length;if(n){active.add(d);ck+=n;perMonth[+d.slice(5,7)-1]+=n}for(const id in checkins[d])perHabit[id]=(perHabit[id]||0)+1}
+  const trip=trips.filter(t=>inR(t.date));
+  const ms=milestones.filter(m=>inR(m.date)).sort((x,y)=>x.date<y.date?-1:x.date>y.date?1:(x.createdAt||0)-(y.createdAt||0));
+  const trees=forest.filter(f=>inR(dayOf(f.grownAt)));
+  return {by,ck,perHabit,perMonth,trip,ms,trees,days:active.size,total:done.length,drops:done.length+ck*2+trip.length};
+}
+const hasData=R=>R.total+R.ck+R.ms.length>0;
+const BOARD_NAME=k=>({habit:L("打卡","Habits"),life:L("生活","Life"),study:L("学习","Study"),work:L("工作","Work")})[k];
+function fmtRange(a,b){const f=d=>{const [,m,dd]=d.split("-").map(Number);return L(`${m}月${dd}日`,`${dd} ${MON[m-1]}`)};return `${f(a)} – ${f(b)}`}
+function recapComment(kind,R,id){
+  const seed=(+String(id).replace(/\D/g,"").slice(-3))||0;
+  if(!hasData(R))return kind==="week"?L("上周好像比较安静。没关系，休息也是在充电。这周我们从一件小事开始吧 🌱","Last week was a quiet one, and that's fine. Rest is recharging too. Let's start this week with one small thing 🌱")
+                                   :L("这一年的记录不多，但你愿意打开我，就已经很好了。新的一年，我们慢慢来 🌱","Not much on record this year, but you came back, and that matters. Let's take the new year slowly 🌱");
+  const top=["study","work","life"].filter(on).map(k=>[k,R.by[k].length]).sort((x,y)=>y[1]-x[1])[0];
+  if(kind==="week"){
+    let t=L(`上周你有 ${R.days} 天在行动，完成了 ${R.total} 件事，打卡 ${R.ck} 次，一共给我浇了 ${R.drops} 滴水。`,`Last week you showed up on ${R.days} ${n_(R.days,"day","days")}, finished ${R.total} ${n_(R.total,"thing","things")}, checked in ${R.ck} ${n_(R.ck,"time","times")} and gave me ${R.drops} ${n_(R.drops,"drop","drops")} of water.`);
+    if(top&&top[1])t+=L(`${BOARD_NAME(top[0])}最用心，做完了 ${top[1]} 件。`,` ${BOARD_NAME(top[0])} got the most love: ${top[1]} done.`);
+    if(R.ms.length)t+=L(`还记下了「${R.ms[0].title}」，真为你开心！`,` You also noted “${R.ms[0].title}”. I'm so happy for you!`);
+    t+=" "+L(["这周也慢慢来，我陪着你。","新的一周，继续一起长大吧 🌱","累了就歇一歇，我会一直在这里。"],["Take this week at your own pace, I'm right here.","New week, let's keep growing together 🌱","Rest when you need to. I'll be here."])[seed%3];
+    return t;
+  }
+  const bestM=R.perMonth.indexOf(Math.max(...R.perMonth));
+  let t=L(`这一年你完成了 ${R.total} 件事，打卡 ${R.ck} 次，一共浇了 ${R.drops} 滴水${R.trees.length?`，种出了 ${R.trees.length} 棵开花的树`:""}。`,`This year you finished ${R.total} ${n_(R.total,"thing","things")}, checked in ${R.ck} ${n_(R.ck,"time","times")} and poured ${R.drops} ${n_(R.drops,"drop","drops")} of water${R.trees.length?`, growing ${R.trees.length} blooming ${n_(R.trees.length,"tree","trees")}`:""}.`);
+  if(Math.max(...R.perMonth)>0)t+=L(`最努力的是 ${bestM+1} 月。`,` ${MONFULL[bestM]} was your busiest month.`);
+  if(R.ms.length)t+=L(`你还记下了 ${R.ms.length} 件值得记住的大小事。`,` You kept ${R.ms.length} ${n_(R.ms.length,"moment","moments")} worth remembering.`);
+  return t+" "+L("谢谢你这一年认真生活。新的一年，我们继续一起长大 🌱","Thank you for living this year with care. Let's keep growing together next year 🌱");
+}
+function saveRecap(kind,id,patch){
+  if(!db)return Promise.resolve();
+  const store=kind==="week"?weekly:yearly, cur=store[id]||{};
+  const body={...cur,...patch,id:String(id)}; store[id]=body;
+  const ref=db.doc((kind==="week"?"weekly/":"yearly/")+id); return queued(ref.path,()=>ref.set(body));
+}
+async function aiRecap(kind,id,R,bg,draw){
+  recapBusy=true; draw();
+  const doc=(kind==="week"?weekly:yearly)[id]||{};
+  const list=k=>R.by[k].map(t=>t.title).slice(0,20).join("、")||L("无","none");
+  const prompt=`${L("你是「小芽」，用户养在她的人生服务器里的一棵会长大的小树，性格温暖、真诚、有点俏皮。","You are Sprout, a little tree that grows in the user's life server. You are warm, sincere and a bit playful.")}
+${kind==="week"?L(`这是她 ${id} 开始那一周的记录`,`Here is her week starting ${id}`):L(`这是她 ${id} 年的记录`,`Here is her year ${id}`)}:
+${L("行动天数","Active days")}: ${R.days}; ${L("打卡次数","Check-ins")}: ${R.ck}; ${L("浇水","Drops")}: ${R.drops}
+${L("学习完成","Study done")}: ${list("study")}
+${L("工作完成","Work done")}: ${list("work")}
+${L("生活完成","Life done")}: ${list("life")}
+${L("值得记住的大小事","Moments worth remembering")}: ${R.ms.map(m=>m.title).join("、")||L("无","none")}
+${L("她写的感想","Her reflection")}: ${doc.note||L("没写","none")}
+${L(`请用中文、第一人称"我"对"你"说一段 ${kind==="week"?"120 到 180":"180 到 260"} 字的${kind==="week"?"周":"年度"}小结评语：点名夸一两件具体的事，完成得少时温柔接住、不制造愧疚感，给一个很小的下${kind==="week"?"周":"一年"}建议；如果她写了感想要回应；最多 2 个表情符号，不要标题或列表。只输出评语本身。`,
+   `Write a ${kind==="week"?"90 to 140":"140 to 200"} word ${kind==="week"?"weekly":"yearly"} note in English, speaking as "I" to "you": praise one or two specific things, be gentle if little got done and never guilt-trip, offer one tiny suggestion for the ${kind==="week"?"week":"year"} ahead, respond to her reflection if there is one, at most 2 emoji, no headings or lists. Output only the note.`)}`;
+  try{const r=await sample(prompt,{modelTier:"default"});const text=(r&&r.text||"").trim();if(text)await saveRecap(kind,id,{comment:text.slice(0,1600)})}
+  catch(e){if(e&&e.code==="not_granted")sample=null}
+  finally{recapBusy=false;if(document.body.contains(bg))draw()}
+}
+function openRecap(kind,id,opts={}){
+  const isWeek=kind==="week", t=todayStr();
+  const a=isWeek?id:`${id}-01-01`, b=isWeek?addDays(id,6):`${id}-12-31`;
+  const partial=b>t, R=rangeData(a,partial?t:b);
+  const title=isWeek?(a===weekStart(t)?L("本周到现在","This week so far"):a===addDays(weekStart(t),-7)?L("上周小记","Last week"):L("周小记","Week in review"))
+                    :(partial?L(`${id} 年到目前为止`,`${id} so far`):L(`${id} 年总结`,`Your ${id}`));
+  const sub=isWeek?fmtRange(a,b):(partial?fmtRange(a,t):L("1月1日 – 12月31日","1 Jan – 31 Dec"));
+  const bg=document.createElement("div"); bg.className="sheet-bg rc-bg";
+  const keys=["study","work","life"].filter(on);
+  const draw=()=>{
+    const doc=(isWeek?weekly:yearly)[id]||{};
+    const prevNote=bg.querySelector("textarea")?.value;
+    const stat=(n,label,c)=>`<div class="jstat"><b style="color:var(${c})">${n}</b><span>${label}</span></div>`;
+    const stats=[stat(R.days,L("行动天数","Active days"),"--brand-ink"),stat(R.drops,L("滴水","Drops"),"--water"),
+      ...(on("habit")?[stat(R.ck,L("打卡","Check-ins"),"--habit-ink")]:[]),
+      ...keys.map(k=>stat(R.by[k].length,BOARD_NAME(k),`--${k}-ink`))].join("");
+    const lists=keys.filter(k=>R.by[k].length).map(k=>{const arr=R.by[k], cap=isWeek?8:6;
+      return `<div class="rc-sec"><h4><i style="background:var(--${k})"></i>${BOARD_NAME(k)} · ${arr.length}</h4><ul class="rc-list">${arr.slice(0,cap).map(x=>`<li>${esc(x.title)}</li>`).join("")}</ul>${arr.length>cap?`<span class="hint">${L(`还有 ${arr.length-cap} 件`,`and ${arr.length-cap} more`)}</span>`:""}</div>`}).join("");
+    const habitTop=on("habit")?Object.entries(R.perHabit).map(([id,n])=>[(habits.find(h=>h.id===id)||{}).name,n]).filter(x=>x[0]).sort((x,y)=>y[1]-x[1]).slice(0,3):[];
+    const max=Math.max(1,...R.perMonth);
+    const months=!isWeek?`<div class="rc-sec"><h4>${L("每个月的努力","Month by month")}</h4><div class="rc-bars">${R.perMonth.map((n,i)=>`<div class="rc-bar" title="${n}"><i style="height:${Math.round(n/max*100)}%"></i><span>${L(i+1,MON[i].slice(0,1))}</span></div>`).join("")}</div></div>`:"";
+    const trees=!isWeek&&R.trees.length?`<div class="rc-sec"><h4>${L(`这一年种出的树 · ${R.trees.length}`,`Trees grown this year · ${R.trees.length}`)}</h4><div class="rc-trees">${R.trees.map(f=>`<div>${treeSVG("happy",STAGES.length-1,false,f.theme)}</div>`).join("")}</div></div>`:"";
+    const habitsSec=habitTop.length?`<div class="rc-sec"><h4>${L("坚持最多的习惯","Most kept habits")}</h4><ul class="rc-list plain">${habitTop.map(([n,c])=>`<li>${esc(n)} <span class="hint">· ${L(`${c} 天`,`${c} ${n_(c,"day","days")}`)}</span></li>`).join("")}</ul></div>`:"";
+    const msSec=R.ms.length?`<div class="rc-sec"><h4>${milestoneFace()}${L("值得记住的大小事","Moments worth remembering")}</h4>${R.ms.map(x=>`<div class="ms-row static">${milestoneFace()}<span class="ms-row-t">${esc(x.title)}</span><span class="ms-row-d">${fmtRange(x.date,x.date).split(" – ")[0]}</span></div>`).join("")}</div>`:"";
+    const comment=doc.comment||recapComment(kind,R,id);
+    bg.innerHTML=`<div class="sheet rc-sheet" role="dialog" aria-label="${title}">
+      <div class="rc-head"><div class="rc-buddy">${treeSVG(recapBusy?"think":"cheer",stageOf(curWater()),false,curTheme)}</div><div><h3>${title}</h3><span class="hint">${sub}</span></div><button class="x" data-rc="close" aria-label="${L("关闭","Close")}">×</button></div>
+      <div class="jstats rc-stats">${stats}</div>
+      <div class="comment rc-comment"><div class="body"><h4>${L("小芽想对你说","A note from Sprout")}</h4><p>${recapBusy?L("让我好好想想…","Let me think…"):esc(comment)}</p>
+        ${sample&&!partial?`<div class="acts"><button class="btn primary" data-rc="ai" ${recapBusy?"disabled":""}>${doc.comment?L("✨ 再写一段","✨ Write another"):L("✨ 让小芽认真写","✨ Ask Sprout to write one")}</button></div>`:""}</div></div>
+      ${msSec}${months}${lists}${habitsSec}${trees}
+      ${hasData(R)?"":`<p class="hint">${L("这段时间还没有完成的记录。","Nothing finished in this period yet.")}</p>`}
+      <div class="rc-sec"><h4>${isWeek?L("这一周的感想","Thoughts on the week"):L("这一年的感想","Thoughts on the year")}</h4>
+        <textarea id="rc-note-${kind}-${id}" maxlength="6000" placeholder="${isWeek?L("这周最开心的是什么？有什么想对下周的自己说？","What made you happiest this week? Anything for next week's you?"):L("这一年你最骄傲的是什么？想对明年的自己说什么？","What are you proudest of this year? What would you tell next year's you?")}">${esc(doc.note||"")}</textarea>
+        <span class="saved" id="rc-saved"></span></div>
+      <div class="sheet-actions"><span></span><button class="btn primary" data-rc="close">${L("收好了","All done")}</button></div>
+    </div>`;
+    if(prevNote!=null)bg.querySelector("textarea").value=prevNote;
+  };
+  draw(); document.body.appendChild(bg);
+  let tmr=null;
+  const close=()=>{const ta=bg.querySelector("textarea");clearTimeout(tmr);
+    const patch={seen:true}; if(ta&&ta.value!==(((isWeek?weekly:yearly)[id]||{}).note||""))patch.note=ta.value;
+    if(!partial)saveRecap(kind,id,patch); else if(patch.note!==undefined)saveRecap(kind,id,{note:patch.note});
+    bg.remove(); if(opts.then)opts.then()};
+  bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg)return close();const b=e.target.closest("[data-rc]");if(!b)return;
+    if(b.dataset.rc==="close")close(); else if(b.dataset.rc==="ai"&&!recapBusy){const ta=bg.querySelector("textarea");if(ta&&ta.value)saveRecap(kind,id,{note:ta.value});aiRecap(kind,id,R,bg,draw)}});
+  bg.addEventListener("input",e=>{if(e.target.tagName!=="TEXTAREA")return;const v=e.target.value;const sv=bg.querySelector("#rc-saved");if(sv)sv.textContent=L("正在保存…","Saving…");
+    clearTimeout(tmr);tmr=setTimeout(()=>saveRecap(kind,id,{note:v}).then(()=>{const el=bg.querySelector("#rc-saved");if(el)el.textContent=L("已保存 ✓","Saved ✓")}).catch(()=>{}),900)});
+  bg.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+}
+// on the first visit of a new week (or year), show what happened in the one that just ended
+function maybeRecap(){
+  if(recapChecked||!db)return;
+  if(!(loaded.t&&loaded.c&&loaded.f&&loaded.w&&loaded.y&&loaded.m))return;
+  if(document.querySelector(".sheet-bg"))return;
+  recapChecked=true;
+  const t=todayStr(), py=+t.slice(0,4)-1, lw=addDays(weekStart(t),-7);
+  const wantWeek=!(weekly[lw]||{}).seen&&hasData(rangeData(lw,addDays(lw,6)));
+  const showWeek=()=>{if(wantWeek)openRecap("week",lw)};
+  if(!(yearly[py]||{}).seen&&hasData(rangeData(`${py}-01-01`,`${py}-12-31`)))openRecap("year",py,{then:showWeek});
+  else showWeek();
+}
+function recapButtons(){
+  const t=todayStr(), y=+t.slice(0,4), lw=addDays(weekStart(t),-7);
+  const pastYears=[...new Set([...tasks.filter(x=>x.done&&x.doneAt).map(x=>+dayOf(x.doneAt).slice(0,4)),...Object.keys(checkins).map(d=>+d.slice(0,4))])].filter(v=>v&&v<y).sort((a,b)=>b-a);
+  return `<div class="rc-btns">
+    <button class="btn" data-act="recap" data-kind="week" data-v="${lw}">📖 ${L("上周小记","Last week")}</button>
+    <button class="btn" data-act="recap" data-kind="week" data-v="${weekStart(t)}">${L("本周到现在","This week so far")}</button>
+    <button class="btn" data-act="recap" data-kind="year" data-v="${y}">🎉 ${L(`${y} 年到现在`,`${y} so far`)}</button>
+    ${pastYears.map(v=>`<button class="btn" data-act="recap" data-kind="year" data-v="${v}">${L(`${v} 年总结`,`Your ${v}`)}</button>`).join("")}
+  </div>`;
+}
+
 /* ---------- calendar of past days ---------- */
 const MONFULL=["January","February","March","April","May","June","July","August","September","October","November","December"];
 let calMonth=null;
@@ -1005,6 +1166,7 @@ function calendarCard(sel){
     <div class="cal-grid">${wd.map(w=>`<span class="cal-wd">${w}</span>`).join("")}${cells}</div>
     <div class="cal-legend">${keys.map(k=>`<span><i style="background:var(--${k})"></i>${name[k]}</span>`).join("")}<span>✎ ${L("写了感想","Reflection")}</span><span>${milestoneFace()}${L("值得记住","Moment")}</span><span>${L("点一天看详情","Tap a day for details")}</span></div>
     ${milestoneWall()}
+    ${recapButtons()}
   </div>`;
 }
 function shiftMonth(n){const [y,m]=(calMonth||(jDate||todayStr()).slice(0,7)).split("-").map(Number);const d=new Date(y,m-1+n,1);calMonth=`${d.getFullYear()}-${pad(d.getMonth()+1)}`;render()}
@@ -1406,6 +1568,7 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="jday"){jDate=act.dataset.v;jSaved="";render();const j=document.querySelector(".jnav");if(j)j.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});return}
   if(act.dataset.act==="fmode"){forestMode=act.dataset.v;try{localStorage.setItem("los-fmode",forestMode)}catch(_){};render();return}
   if(act.dataset.act==="ftree"){const v=act.dataset.v==="cur"?"cur":+act.dataset.v;forestSel=forestSel===v?null:v;render();return}
+  if(act.dataset.act==="recap"){openRecap(act.dataset.kind,act.dataset.kind==="year"?+act.dataset.v:act.dataset.v);return}
   if(act.dataset.act==="calprev"){shiftMonth(-1);return}
   if(act.dataset.act==="calnext"){shiftMonth(1);return}
   if(act.dataset.act==="jprev"){jDate=addDays(jDate||todayStr(),-1);calMonth=null;jSaved="";render();return}
@@ -1670,7 +1833,9 @@ function openWelcome(){
   db.collection("shop").onSnapshot(s=>{shop=s.docs.map(d=>({id:d.id,...d.data()}));if(!s.metadata.fromCache)loaded.s=true;render()},fail);
   db.collection("staples").onSnapshot(s=>{staples=s.docs.map(d=>({id:d.id,...d.data()}));render()},fail);
   db.collection("trips").onSnapshot(s=>{trips=s.docs.map(d=>({id:d.id,...d.data()}));render()},fail);
-  db.collection("milestones").onSnapshot(s=>{milestones=s.docs.map(d=>({id:d.id,...d.data()}));render()},fail);
+  db.collection("milestones").onSnapshot(s=>{milestones=s.docs.map(d=>({id:d.id,...d.data()}));if(!s.metadata.fromCache)loaded.m=true;render()},fail);
+  db.collection("weekly").onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());weekly=m;if(!s.metadata.fromCache)loaded.w=true;render()},fail);
+  db.collection("yearly").onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());yearly=m;if(!s.metadata.fromCache)loaded.y=true;render()},fail);
   db.collection("forest").onSnapshot(s=>{forest=s.docs.map(d=>({id:d.id,...d.data()}));if(!s.metadata.fromCache)loaded.f=true;render()},fail);
   db.collection("garden").onSnapshot(s=>{const g=s.docs.find(d=>d.id==="current");if(g&&THEMES[g.data().theme])curTheme=g.data().theme;render()},fail);
   db.collection("journal").orderBy("date","desc").limit(400).onSnapshot(s=>{const m={};s.docs.forEach(d=>{const x=d.data();m[x.date||d.id]=x});
