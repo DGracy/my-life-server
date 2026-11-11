@@ -21,7 +21,9 @@ My "life server": a bilingual (中文 / English) task and habit tracker with a s
 
 ## Your data
 
-Everything is stored in your own browser (localStorage). Nothing is uploaded and no account is needed. Use ⚙️ → Export backup before switching phones or browsers, or clearing browser data.
+Without signing in, everything stays in your own browser (localStorage) and no account is needed. Sign in with Google or email to sync your phone and computer: data is stored in Firebase under your own account, and security rules let only you read or write it. Records you made on a device before signing in are merged into your account. Use ⚙️ → Export backup any time you want a copy.
+
+Firebase isn't reachable from mainland China, so there the app keeps working in local mode.
 
 ## 中文说明
 
@@ -35,7 +37,7 @@ Everything is stored in your own browser (localStorage). Nothing is uploaded and
 - 可以记下「值得记住的大小事」（比如拿到 offer、第一次自己做饭），日历上那天会变成金色，所有大小事也会汇总在一起
 - 每周一后第一次打开会弹出「上周小记」，新年第一次打开会弹出「年度总结」，汇总完成的事、小芽说一段话、留一个写感想的框；也可以随时在日历下面回看
 - 用不到的板块可以在 ⚙️ 里关掉，数据不会删除
-- 数据只存在你自己的浏览器里，换设备前记得在 ⚙️ 里导出备份
+- 不登录时数据只存在你自己的浏览器里；用 Google 或邮箱登录后，手机和电脑自动同步，只有你自己能看到（中国大陆无法使用同步，会自动保持本地模式）
 
 ## Run it yourself
 

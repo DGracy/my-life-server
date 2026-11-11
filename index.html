@@ -50,6 +50,10 @@ body{margin:0}
 [hidden]{display:none!important}
 .gear{border:none;background:var(--surface);border-radius:50%;width:34px;height:34px;font-size:16px;box-shadow:0 3px 0 var(--line);padding:0}
 .title-row .jbtn{margin-left:auto}
+.gear.sync{display:grid;place-items:center}.gear.sync svg{width:22px;height:22px}
+.google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:10px;background:var(--surface);font-weight:600}
+.au-or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12.5px}.au-or::before,.au-or::after{content:"";flex:1;height:2px;background:var(--line)}
+.au-err{margin:0;color:var(--danger);font-size:13.5px}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.55;
   background-image:radial-gradient(circle at 10% 6%,var(--bg-2) 0 130px,transparent 131px),radial-gradient(circle at 90% 18%,var(--bg-2) 0 90px,transparent 91px),radial-gradient(circle at 80% 70%,var(--bg-2) 0 110px,transparent 111px);background-attachment:fixed;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -529,7 +533,7 @@ details.done-box .list{margin-top:8px}
 <body>
 
 <div class="wrap">
-  <div class="title-row"><h1 id="appName">我的人生服务器</h1><span class="today" id="today"></span><button class="jbtn" id="jbtn" aria-pressed="false">📔 <span id="jbtnTxt">今日小结</span></button><button class="gear" id="gear" aria-label="设置">⚙️</button></div>
+  <div class="title-row"><h1 id="appName">我的人生服务器</h1><span class="today" id="today"></span><button class="jbtn" id="jbtn" aria-pressed="false">📔 <span id="jbtnTxt">今日小结</span></button><button class="gear sync" id="syncBtn" hidden></button><button class="gear" id="gear" aria-label="设置">⚙️</button></div>
   <section class="garden" aria-label="小芽的成长">
     <div class="buddy" id="buddy" role="img" aria-label="小芽"></div>
     <div class="g-text">
@@ -1773,6 +1777,7 @@ function openEditor(id,preset){
 document.addEventListener("click",async e=>{
   const tabBtn=e.target.closest(".tab");
   if(tabBtn){tab=tabBtn.dataset.k;try{localStorage.setItem("los-tab",tab)}catch(_){};render();return}
+  if(e.target.closest("#syncBtn")){cloudState==="signedout"&&fb?openSignIn():openSettings();return}
   if(e.target.closest("#forestBtn")){tab=tab==="forest"?"habit":"forest";try{localStorage.setItem("los-tab",tab)}catch(_){};render();window.scrollTo({top:0,behavior:"smooth"});return}
   if(e.target.closest("#plantBtn")){openPlant();return}
   if(e.target.closest("#jbtn")){tab=tab==="journal"?"habit":"journal";if(tab==="journal"){jDate=todayStr();jSaved="";calMonth=null}try{localStorage.setItem("los-tab",tab)}catch(_){};render();window.scrollTo({top:0,behavior:"smooth"});return}
@@ -1996,6 +2001,7 @@ function openSettings(){
   const bg=document.createElement("div"); bg.className="sheet-bg";
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("设置","Settings")}">
     <h3>${L("设置","Settings")}</h3>
+    ${syncSection()}
     <div class="field"><span>${L("语言","Language")}</span><div class="chips">${langChips()}</div></div>
     <div class="field"><span>${L("板块","Boards")}</span><div class="chips">${boardChips()}</div>
       <p class="hint" style="margin:0">${L("关掉用不到的板块，里面的数据不会删除，随时可以再打开。","Turn off what you don't need. Nothing inside is deleted, and you can turn it back on anytime.")}</p>
@@ -2015,6 +2021,8 @@ function openSettings(){
   bg.addEventListener("click",e=>{
     if(e.target===bg){bg.remove();return}
     const b=e.target.closest("[data-set]"); if(!b)return; const a=b.dataset.set;
+    if(a==="signin"){bg.remove();openSignIn();return}
+    if(a==="signout"){bg.remove();if(fb)fb.auth.signOut();return}
     if(a==="board"){
       const k=b.dataset.v, mains=["habit","life","study","work"].filter(x=>boards[x]);
       if(k!=="shop"&&k!=="wish"&&boards[k]&&mains.length===1){const el=bg.querySelector("#board-msg");if(el)el.textContent=L("至少要保留一个板块哦。","Keep at least one board on.");return}
@@ -2022,12 +2030,14 @@ function openSettings(){
       const n=bg.querySelector("#set-name").value; draw(); bg.querySelector("#set-name").value=n; render(); return}
     if(a==="lang"){const n=bg.querySelector("#set-name").value;setLang(b.dataset.v);draw();bg.querySelector("#set-name").value=n;return}
     if(a==="close"){bg.remove();return}
-    if(a==="save"){const n=bg.querySelector("#set-name").value.trim();if(n){userName=n;try{localStorage.setItem(NAME_KEY,n)}catch(_){};applyName()}bg.remove();return}
+    if(a==="save"){const n=bg.querySelector("#set-name").value.trim();if(n){userName=n;try{localStorage.setItem(NAME_KEY,n)}catch(_){};applyName();if(db&&db.meta)db.meta.set({name:n},{merge:true}).catch(()=>{})}bg.remove();return}
     if(a==="export"){
-      const blob=new Blob([JSON.stringify({app:"lifeos",version:1,name:userName,exportedAt:new Date().toISOString(),data:db.dump()},null,2)],{type:"application/json"});
-      const url=URL.createObjectURL(blob); const link=document.createElement("a");
-      link.href=url; link.download=L(`人生服务器备份-${todayStr()}.json`,`life-server-backup-${todayStr()}.json`); document.body.appendChild(link); link.click(); link.remove();
-      setTimeout(()=>URL.revokeObjectURL(url),2000); msg(L("已导出 ✓","Exported ✓"));return}
+      msg(L("正在导出…","Exporting…"));
+      Promise.resolve(db.dump()).then(data=>{
+        const blob=new Blob([JSON.stringify({app:"lifeos",version:1,name:userName,exportedAt:new Date().toISOString(),data},null,2)],{type:"application/json"});
+        const url=URL.createObjectURL(blob); const link=document.createElement("a");
+        link.href=url; link.download=L(`人生服务器备份-${todayStr()}.json`,`life-server-backup-${todayStr()}.json`); document.body.appendChild(link); link.click(); link.remove();
+        setTimeout(()=>URL.revokeObjectURL(url),2000); msg(L("已导出 ✓","Exported ✓"))}).catch(()=>msg(L("导出没成功，稍后再试。","Export failed. Try again in a moment.")));return}
     if(a==="wipe"){if(!confirmWipe){confirmWipe=true;draw();return}db.replace({});bg.remove();cheer(L("数据清空了，我们重新开始吧 🌱","All cleared. Let's start fresh 🌱"));return}
   });
   bg.addEventListener("change",e=>{
@@ -2049,41 +2059,222 @@ function openWelcome(){
     <div style="display:flex;gap:12px;align-items:center"><div style="width:76px;height:76px;flex:none">${treeSVG("happy",1,false)}</div>
       <div><h3>${L("你好呀，我是小芽 🌱","Hi, I'm Sprout 🌱")}</h3><p class="hint" style="margin:4px 0 0">${L("这是你自己的人生服务器。完成任务、打卡就是给我浇水，我会慢慢长成一棵开花的大树。","This is your own Life Server. Finishing tasks and checking in waters me, and I'll slowly grow into a blooming tree.")}</p></div></div>
     <label class="field"><span>${L("我该怎么称呼你？","What should I call you?")}</span><input id="wel-name" maxlength="20" placeholder="${L("你的名字或昵称","Your name or nickname")}"></label>
-    <p class="hint" style="margin:0">${L("你的数据只存在这个浏览器里，别人看不到。名字以后可以在右上角 ⚙️ 里改。","Your data stays in this browser and no one else can see it. You can change your name later in ⚙️ at the top.")}</p>
+    <p class="hint" style="margin:0">${FIREBASE_CONFIG?L("不登录时数据只存在这个浏览器里；登录后手机和电脑会自动同步。别人都看不到你的数据。","Without signing in, your data stays in this browser. Sign in to sync your devices. No one else can see your data."):L("你的数据只存在这个浏览器里，别人看不到。名字以后可以在右上角 ⚙️ 里改。","Your data stays in this browser and no one else can see it. You can change your name later in ⚙️ at the top.")}</p>
+    ${FIREBASE_CONFIG?`<p class="hint" style="margin:0">${L("已经在别的设备上用过？","Used it on another device?")} <button class="link" data-w="signin">${L("登录同步","Sign in to sync")}</button></p>`:""}
     <div class="sheet-actions"><button class="btn" data-w="skip">${L("先跳过","Skip for now")}</button><button class="btn primary" data-w="ok">${L("开始种树","Start growing")}</button></div>
   </div>`;bg.querySelector("#wel-name").value=keepName};
   draw();
   document.body.appendChild(bg);
   const done=()=>{try{localStorage.setItem("lifeos-welcomed","1")}catch(_){};bg.remove()};
   const ok=()=>{const n=bg.querySelector("#wel-name").value.trim();if(n){userName=n;try{localStorage.setItem(NAME_KEY,n)}catch(_){};applyName();cheer(L(`${n}，很高兴认识你！`,`Nice to meet you, ${n}!`))}done()};
-  bg.addEventListener("click",e=>{const b=e.target.closest("[data-w]");if(!b)return;if(b.dataset.w==="lang"){setLang(b.dataset.v);draw();bg.querySelector("#wel-name").focus();return}b.dataset.w==="ok"?ok():done()});
+  bg.addEventListener("click",e=>{const b=e.target.closest("[data-w]");if(!b)return;if(b.dataset.w==="lang"){setLang(b.dataset.v);draw();bg.querySelector("#wel-name").focus();return}if(b.dataset.w==="signin"){done();if(fb)openSignIn();else openSettings();return}b.dataset.w==="ok"?ok():done()});
   bg.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();ok()}});
   setTimeout(()=>bg.querySelector("#wel-name").focus(),50);
 }
 
+/* ---------- cloud sync (Firebase): sign in once, phone and computer share one copy ---------- */
+// Paste the firebaseConfig from the Firebase console here. Leave null to run in local-only mode.
+const FIREBASE_CONFIG={
+  apiKey:"AIzaSyBMFPcwlaSn4pj47qcIaPzGQXA8-8yqr9M",
+  authDomain:"my-life-server.firebaseapp.com",
+  projectId:"my-life-server",
+  storageBucket:"my-life-server.firebasestorage.app",
+  messagingSenderId:"1053547899054",
+  appId:"1:1053547899054:web:49caab221ae4f4171c253f"
+};
+const FB_VER="10.12.2";
+const COLS=["tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes"];
+const CLOUD_KEY="lifeos-cloud-uid";
+let fb=null, cloudUser=null, cloudState=FIREBASE_CONFIG?"loading":"off"; // off | loading | unavailable | signedout | signedin
+let localDB=null, unsubs=[];
+const clone=x=>JSON.parse(JSON.stringify(x));
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement("script");s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
+async function loadFirebase(){
+  const base=`https://www.gstatic.com/firebasejs/${FB_VER}/`;
+  const t=new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),9000));
+  await Promise.race([(async()=>{await loadScript(base+"firebase-app-compat.js");await Promise.all([loadScript(base+"firebase-auth-compat.js"),loadScript(base+"firebase-firestore-compat.js")])})(),t]);
+  const app=firebase.initializeApp(FIREBASE_CONFIG);
+  const fs=firebase.firestore();
+  try{await fs.enablePersistence({synchronizeTabs:true})}catch(e){}
+  return {app,auth:firebase.auth(),fs};
+}
+// same shape as the local store, so the rest of the page doesn't care where data lives
+function makeCloudDB(uid){
+  const root=fb.fs.collection("users").doc(uid);
+  const wrapDoc=r=>({id:r.id,path:r.path,
+    get:async()=>{const s=await r.get();return {id:s.id,exists:s.exists,data:()=>s.data(),metadata:s.metadata}},
+    set:b=>r.set(clone(b)), update:b=>r.update(clone(b)), delete:()=>r.delete()});
+  const wrapQuery=q=>({orderBy:(f,d)=>wrapQuery(q.orderBy(f,d)),limit:n=>wrapQuery(q.limit(n)),get:()=>q.get(),
+    onSnapshot:(cb,err)=>q.onSnapshot({includeMetadataChanges:false},cb,err)});
+  return {cloud:true,
+    doc:p=>{const [c,i]=p.split("/");return wrapDoc(root.collection(c).doc(i))},
+    collection:c=>{const col=root.collection(c);return {...wrapQuery(col),path:col.path,doc:id=>wrapDoc(id?col.doc(id):col.doc())}},
+    dump:async()=>{const out={};for(const c of COLS){const s=await root.collection(c).get();if(!s.empty){out[c]={};s.forEach(d=>out[c][d.id]=d.data())}}return out},
+    replace:async data=>{
+      const writes=[];
+      for(const c of COLS){const s=await root.collection(c).get();s.forEach(d=>writes.push(["del",d.ref]))}
+      for(const c in data||{})for(const id in data[c])writes.push(["set",root.collection(c).doc(id),data[c][id]]);
+      for(let i=0;i<writes.length;i+=400){const b=fb.fs.batch();writes.slice(i,i+400).forEach(([op,ref,v])=>op==="del"?b.delete(ref):b.set(ref,clone(v)));await b.commit()}
+    },
+    merge:async data=>{
+      const writes=[];for(const c in data||{})if(COLS.includes(c))for(const id in data[c])writes.push([root.collection(c).doc(id),data[c][id]]);
+      for(let i=0;i<writes.length;i+=400){const b=fb.fs.batch();writes.slice(i,i+400).forEach(([ref,v])=>b.set(ref,clone(v),{merge:true}));await b.commit()}
+    },
+    meta:root.collection("meta").doc("profile")};
+}
+// switch the whole page over to a different store (local <-> cloud)
+function startData(store){
+  unsubs.forEach(u=>{try{u()}catch(_){}}); unsubs=[];
+  db=store;
+  tasks=[];habits=[];checkins={};shop=[];staples=[];trips=[];journal={};milestones=[];weekly={};yearly={};wishes=[];forest=[];curTheme="lemon";
+  for(const k in loaded)loaded[k]=false; recapChecked=false; lastStage=null; lastBuddy="";
+  const fail=e=>{if(e&&e.code==="permission-denied")setStatus(L("没有权限读取数据，请重新登录。","No permission to read your data. Please sign in again."))};
+  const sub=(c,fn,q)=>unsubs.push((q||db.collection(c)).onSnapshot(fn,fail));
+  const ok=s=>!s.metadata.fromCache||!s.empty;
+  sub("tasks",s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.t=true;render()});
+  sub("habits",s=>{habits=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.h=true;render()});
+  sub("shop",s=>{shop=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.s=true;render()});
+  sub("staples",s=>{staples=s.docs.map(d=>({id:d.id,...d.data()}));render()});
+  sub("trips",s=>{trips=s.docs.map(d=>({id:d.id,...d.data()}));render()});
+  sub("milestones",s=>{milestones=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.m=true;render()});
+  sub("weekly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());weekly=m;if(ok(s))loaded.w=true;render()});
+  sub("yearly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());yearly=m;if(ok(s))loaded.y=true;render()});
+  sub("wishes",s=>{wishes=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.wi=true;render()});
+  sub("forest",s=>{forest=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.f=true;render()});
+  sub("garden",s=>{const g=s.docs.find(d=>d.id==="current");if(g&&THEMES[g.data().theme])curTheme=g.data().theme;render()});
+  sub("journal",s=>{const m={};s.docs.forEach(d=>{const x=d.data();m[x.date||d.id]=x});
+    const el=document.activeElement; if(el&&el.dataset&&el.dataset.jnote&&m[el.dataset.jnote])m[el.dataset.jnote]={...m[el.dataset.jnote],note:el.value};
+    journal=m;render()},db.collection("journal").orderBy("date","desc").limit(400));
+  sub("checkins",s=>{const m={};s.docs.forEach(d=>{const x=d.data();m[x.date||d.id]=x.done||{}});checkins=m;if(ok(s))loaded.c=true;render()},db.collection("checkins").orderBy("date","desc").limit(400));
+  // offline with nothing cached yet: stop waiting after a few seconds
+  setTimeout(()=>{if(db===store){let ch=false;for(const k in loaded)if(!loaded[k]){loaded[k]=true;ch=true}if(ch)render()}},4000);
+  render(); renderSync();
+}
+const realLocalCount=d=>{let n=0;for(const c of ["tasks","checkins","journal","milestones","wishes","shop","forest","trips"])for(const id in (d[c]||{}))if(!/^ex\d/.test(id))n++;return n};
+async function onSignedIn(user){
+  cloudUser=user; cloudState="signedin";
+  try{localStorage.setItem(CLOUD_KEY,user.uid)}catch(_){}
+  const store=makeCloudDB(user.uid);
+  let meta=null; try{meta=await store.meta.get()}catch(_){}
+  const fresh=!meta||!meta.exists;
+  const localData=localDB.dump(), n=realLocalCount(localData);
+  let asked=false; try{asked=localStorage.getItem("lifeos-merged-"+user.uid)==="1"}catch(_){}
+  if(fresh){
+    if(n)await store.merge(localData); else{const prev=db;db=store;seed();db=prev}
+    try{await store.meta.set({createdAt:Date.now(),name:userName||user.displayName||""})}catch(_){}
+    try{localStorage.setItem("lifeos-merged-"+user.uid,"1")}catch(_){}
+    startData(store);
+    cheer(n?L(`登录成功！这台设备上的 ${n} 条记录已经存进你的账号，以后手机和电脑会自动同步 ☁️`,`Signed in! ${n} records from this device are now in your account and will sync everywhere ☁️`)
+           :L("登录成功！以后手机和电脑会自动同步 ☁️","Signed in! Your phone and computer will now stay in sync ☁️"),"cheer");
+  }else{
+    const m=meta.data()||{}; if(m.name&&!userName){userName=m.name;try{localStorage.setItem(NAME_KEY,m.name)}catch(_){};applyName()}
+    startData(store);
+    if(n&&!asked)openMergeAsk(store,localData,n,user.uid);
+  }
+}
+function openMergeAsk(store,localData,n,uid){
+  const bg=document.createElement("div"); bg.className="sheet-bg";
+  bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("合并数据","Merge data")}">
+    <div style="display:flex;gap:12px;align-items:center"><div style="width:64px;height:64px;flex:none">${sproutIcon("wish")}</div>
+    <div><h3>${L("这台设备上还有一些记录","This device has some records of its own")}</h3><p class="hint" style="margin:4px 0 0">${L(`这台设备上有 ${n} 条没登录时记下的内容。要把它们合并到你的账号里吗？`,`There are ${n} records saved here before you signed in. Merge them into your account?`)}</p></div></div>
+    <div class="sheet-actions"><button class="btn" data-m="no">${L("不用了","No thanks")}</button><button class="btn primary" data-m="yes">${L("合并到账号","Merge them")}</button></div></div>`;
+  document.body.appendChild(bg);
+  bg.addEventListener("click",async e=>{e.stopPropagation();const b=e.target.closest("[data-m]");if(!b&&e.target!==bg)return;
+    try{localStorage.setItem("lifeos-merged-"+uid,"1")}catch(_){}
+    bg.remove(); if(b&&b.dataset.m==="yes"){await store.merge(localData);cheer(L("合并好了，所有记录都在账号里了 ☁️","Merged. Everything is in your account now ☁️"))}});
+}
+async function signInGoogle(){
+  if(!fb)return;
+  const p=new firebase.auth.GoogleAuthProvider();
+  try{await fb.auth.signInWithPopup(p)}
+  catch(e){if(e&&/popup|operation-not-supported/.test(e.code||""))await fb.auth.signInWithRedirect(p);else throw e}
+}
+function authErr(e){const c=(e&&e.code)||"";
+  if(/invalid-credential|wrong-password|user-not-found|invalid-login/.test(c))return L("邮箱或密码不对，再试一次。","That email or password isn't right. Try again.");
+  if(/email-already-in-use/.test(c))return L("这个邮箱已经注册过了，直接登录就行。","This email already has an account. Just sign in.");
+  if(/weak-password/.test(c))return L("密码至少要 6 位。","Use at least 6 characters for the password.");
+  if(/invalid-email/.test(c))return L("邮箱格式不对。","That doesn't look like an email address.");
+  if(/network/.test(c))return L("网络连不上，检查一下再试。","Can't reach the network. Check your connection and try again.");
+  if(/popup-closed|cancelled-popup/.test(c))return "";
+  if(/unauthorized-domain/.test(c))return L("这个网址还没加进 Firebase 的授权域名。","This site isn't on Firebase's list of authorised domains yet.");
+  return L("登录没成功，稍后再试。","Couldn't sign in. Try again in a moment.")}
+function openSignIn(){
+  if(!fb)return;
+  let mode="in", err="";
+  const bg=document.createElement("div"); bg.className="sheet-bg";
+  const draw=()=>{const em=bg.querySelector("#au-email")?.value||"";bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("登录同步","Sign in to sync")}">
+    <div style="display:flex;gap:12px;align-items:center"><div style="width:60px;height:60px;flex:none">${sproutIcon("go")}</div>
+      <div><h3>${L("登录，让手机和电脑同步","Sign in to sync your devices")}</h3><p class="hint" style="margin:4px 0 0">${L("登录后数据存进你自己的账号，只有你能看到。","Your data goes into your own account. Only you can see it.")}</p></div></div>
+    <button class="btn google-btn" data-au="google"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.3c0-.8-.1-1.5-.2-2.3H12v4.3h5.9a5 5 0 0 1-2.2 3.3v2.7h3.6c2.1-1.9 3.2-4.8 3.2-8z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.6-2.7c-1 .7-2.2 1.1-3.7 1.1-2.9 0-5.3-1.9-6.2-4.5H2.1v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.8 14.2a6.6 6.6 0 0 1 0-4.3V7.1H2.1a11 11 0 0 0 0 9.9z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2A11 11 0 0 0 2.1 7.1l3.7 2.8C6.7 7.3 9.1 5.4 12 5.4z"/></svg>${L("用 Google 账号登录","Continue with Google")}</button>
+    <div class="au-or"><span>${L("或者用邮箱","or use email")}</span></div>
+    <label class="field"><span>${L("邮箱","Email")}</span><input id="au-email" type="email" autocomplete="email" value="${esc(em)}"></label>
+    <label class="field"><span>${L("密码","Password")}</span><input id="au-pass" type="password" autocomplete="${mode==="in"?"current-password":"new-password"}" placeholder="${mode==="up"?L("至少 6 位","At least 6 characters"):""}"></label>
+    ${err?`<p class="au-err">${err}</p>`:""}
+    <div class="sheet-actions"><span style="display:flex;gap:4px;flex-wrap:wrap">
+      <button class="link" data-au="mode">${mode==="in"?L("还没有账号？注册一个","No account yet? Create one"):L("已经有账号？去登录","Have an account? Sign in")}</button>
+      ${mode==="in"?`<button class="link" data-au="reset">${L("忘记密码","Forgot password")}</button>`:""}</span>
+      <span style="display:flex;gap:8px"><button class="btn" data-au="close">${L("取消","Cancel")}</button><button class="btn primary" data-au="email">${mode==="in"?L("登录","Sign in"):L("注册并登录","Create account")}</button></span></div>
+  </div>`};
+  draw(); document.body.appendChild(bg);
+  bg.addEventListener("click",async e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}
+    const b=e.target.closest("[data-au]"); if(!b)return; const a=b.dataset.au;
+    const email=bg.querySelector("#au-email").value.trim(), pass=bg.querySelector("#au-pass").value;
+    if(a==="close"){bg.remove();return}
+    if(a==="mode"){mode=mode==="in"?"up":"in";err="";draw();return}
+    try{
+      if(a==="google"){await signInGoogle();bg.remove();return}
+      if(a==="reset"){if(!email){err=L("先在上面填好邮箱。","Enter your email above first.");draw();return}await fb.auth.sendPasswordResetEmail(email);err=L("重置密码的邮件已经发出，去邮箱看看。","A reset email is on its way. Check your inbox.");draw();return}
+      if(a==="email"){if(!email||!pass){err=L("邮箱和密码都要填。","Enter both email and password.");draw();return}
+        b.disabled=true; if(mode==="in")await fb.auth.signInWithEmailAndPassword(email,pass); else await fb.auth.createUserWithEmailAndPassword(email,pass); bg.remove()}
+    }catch(ex){err=authErr(ex);draw()}
+  });
+  bg.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.tagName==="INPUT"){e.preventDefault();bg.querySelector('[data-au="email"]').click()}if(e.key==="Escape")bg.remove()});
+}
+function syncSection(){
+  if(cloudState==="off")return "";
+  let body;
+  if(cloudState==="signedin")body=`<p class="hint" style="margin:0">☁️ ${L("已登录","Signed in as")} <b>${esc(cloudUser.email||cloudUser.displayName||"")}</b>${L("，手机和电脑会自动同步。",". Your devices stay in sync.")}</p><div class="cap-row"><button class="btn" data-set="signout">${L("退出登录","Sign out")}</button></div>`;
+  else if(cloudState==="unavailable")body=`<p class="hint" style="margin:0">${L("现在连不上同步服务（比如在中国大陆），先用这台设备上的本地数据。","The sync service can't be reached right now (for example in mainland China), so you're using this device's data.")}</p>`;
+  else if(cloudState==="loading")body=`<p class="hint" style="margin:0">${L("正在连接同步服务…","Connecting to sync…")}</p>`;
+  else body=`<p class="hint" style="margin:0">${L("现在数据只存在这台设备上。登录后，手机和电脑会自动同步。","Right now your data lives only on this device. Sign in to sync your phone and computer.")}</p><div class="cap-row"><button class="btn primary" data-set="signin">${L("登录同步","Sign in to sync")}</button></div>`;
+  return `<div class="field"><span>${L("同步","Sync")}</span>${body}</div>`;
+}
+function renderSync(){
+  const b=document.getElementById("syncBtn"); if(!b)return;
+  b.hidden=cloudState==="off";
+  const on=cloudState==="signedin";
+  b.classList.toggle("on",on);
+  b.title=on?L("已同步","Synced"):L("登录同步","Sign in to sync");
+  b.setAttribute("aria-label",b.title);
+  b.innerHTML=on?`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .6-8A6 6 0 0 0 6 9.2 4.4 4.4 0 0 0 7 18z" fill="var(--water)"/><path d="M9 13.5l2 2 4-4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+                :`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .6-8A6 6 0 0 0 6 9.2 4.4 4.4 0 0 0 7 18z" fill="none" stroke="var(--muted)" stroke-width="1.8"/><path d="M12 10.5v5M9.5 13h5" stroke="var(--muted)" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+}
+async function startCloud(){
+  if(!FIREBASE_CONFIG)return;
+  let waited=false; try{waited=!!localStorage.getItem(CLOUD_KEY)}catch(_){}
+  renderSync();
+  try{fb=await loadFirebase()}catch(e){cloudState="unavailable";renderSync();if(!db){startData(localDB);setStatus("")}return}
+  fb.auth.getRedirectResult().catch(()=>{});
+  fb.auth.onAuthStateChanged(user=>{
+    if(user){if(!cloudUser||cloudUser.uid!==user.uid){setStatus("");onSignedIn(user)}}
+    else{const was=cloudState==="signedin";cloudUser=null;cloudState="signedout";try{localStorage.removeItem(CLOUD_KEY)}catch(_){}
+      if(was||!db)startData(localDB); setStatus(""); renderSync();
+      if(was)cheer(L("已退出登录，现在显示的是这台设备上的本地数据。","Signed out. You're now seeing this device's own data."))}
+  });
+}
+
 (()=>{
   buildStrings(); applyStatic(); applyName();
-  db=makeLocalDB(); sample=null;
-  if(db.firstRun)seed();
+  sample=null;
+  localDB=makeLocalDB();
+  if(localDB.firstRun){db=localDB;seed();db=null}
   let welcomed=false; try{welcomed=!!localStorage.getItem("lifeos-welcomed")}catch(_){}
   if(!userName&&!welcomed)openWelcome();
-  const ok=()=>{}, fail=()=>{};
-  db.collection("tasks").onSnapshot(s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));if(!s.metadata.fromCache)loaded.t=true;render();ok()},fail);
-  db.collection("habits").onSnapshot(s=>{habits=s.docs.map(d=>({id:d.id,...d.data()}));if(!s.metadata.fromCache)loaded.h=true;render();ok()},fail);
-  db.collection("shop").onSnapshot(s=>{shop=s.docs.map(d=>({id:d.id,...d.data()}));if(!s.metadata.fromCache)loaded.s=true;render()},fail);
-  db.collection("staples").onSnapshot(s=>{staples=s.docs.map(d=>({id:d.id,...d.data()}));render()},fail);
-  db.collection("trips").onSnapshot(s=>{trips=s.docs.map(d=>({id:d.id,...d.data()}));render()},fail);
-  db.collection("milestones").onSnapshot(s=>{milestones=s.docs.map(d=>({id:d.id,...d.data()}));if(!s.metadata.fromCache)loaded.m=true;render()},fail);
-  db.collection("weekly").onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());weekly=m;if(!s.metadata.fromCache)loaded.w=true;render()},fail);
-  db.collection("yearly").onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());yearly=m;if(!s.metadata.fromCache)loaded.y=true;render()},fail);
-  db.collection("wishes").onSnapshot(s=>{wishes=s.docs.map(d=>({id:d.id,...d.data()}));if(!s.metadata.fromCache)loaded.wi=true;render()},fail);
-  db.collection("forest").onSnapshot(s=>{forest=s.docs.map(d=>({id:d.id,...d.data()}));if(!s.metadata.fromCache)loaded.f=true;render()},fail);
-  db.collection("garden").onSnapshot(s=>{const g=s.docs.find(d=>d.id==="current");if(g&&THEMES[g.data().theme])curTheme=g.data().theme;render()},fail);
-  db.collection("journal").orderBy("date","desc").limit(400).onSnapshot(s=>{const m={};s.docs.forEach(d=>{const x=d.data();m[x.date||d.id]=x});
-    // keep a note that is still being typed instead of the older stored copy
-    const el=document.activeElement; if(el&&el.dataset&&el.dataset.jnote&&m[el.dataset.jnote])m[el.dataset.jnote]={...m[el.dataset.jnote],note:el.value};
-    journal=m;render()},fail);
-  db.collection("checkins").orderBy("date","desc").limit(400).onSnapshot(s=>{const m={};s.docs.forEach(d=>{const x=d.data();m[x.date||d.id]=x.done||{}});checkins=m;if(!s.metadata.fromCache)loaded.c=true;render();ok()},fail);
+  let waited=false; try{waited=!!FIREBASE_CONFIG&&!!localStorage.getItem(CLOUD_KEY)}catch(_){}
+  // signed in here before: wait a moment for the account instead of flashing this device's copy
+  if(waited){setStatus(L("正在同步你的数据…","Syncing your data…"));setTimeout(()=>{if(!db){startData(localDB);setStatus(L("同步服务暂时连不上，先显示这台设备上的数据。","Can't reach sync right now, so this is the data on this device."))}},8000)}
+  else startData(localDB);
+  startCloud();
 })();
 </script>
 </body>
