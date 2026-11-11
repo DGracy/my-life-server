@@ -11,6 +11,7 @@ My "life server": a bilingual (中文 / English) task and habit tracker with a s
 - **Your forest**: plant each blooming tree on your own meadow (tap a tree to see when it bloomed), or switch to a map of the whole island once the forest gets big, then start a new seed in a colour you pick: Lemon, Sakura, Mint, Sky, Lavender or Maple.
 - **Quick capture**: tap Sprout in the corner and type something like "Finish my CV by Friday; buy eggs and milk this weekend". It splits the text into tasks, picks a board and works out the dates. Nothing is saved until you confirm.
 - **Shopping list**: save staples you buy often, add them in one tap and tick items off at the shop.
+- **Wishlist**: things to buy, places to go and things to do someday. Track how much you've saved toward a purchase, and when a wish comes true it's added to that day's moments.
 - **Daily recap with a calendar**: see what you finished each day, pick a Sprout face for your mood, write a reflection, and tap any day in the calendar to read it again.
 - **Moments worth remembering**: note the big and small things, like a job offer or your first home-cooked dinner. They light up in gold on the calendar and gather in one list.
 - **Weekly and yearly recaps**: the first time you open it in a new week (Monday to Sunday) or a new year, Sprout sums up what you did, says a few kind words and leaves space for your thoughts. You can also open them anytime from the calendar.
@@ -29,6 +30,7 @@ Everything is stored in your own browser (localStorage). Nothing is uploaded and
 - 打卡、生活、学习、工作四个板块分开管理，每个板块按收件箱、近期、中期、长期分组
 - 点右下角的小芽随手记，自动拆成几条任务、分到对应板块、换算日期，确认后才保存
 - 生活板块里有购物清单，常买的东西点一下就加进去
+- 还有愿望清单：想买的、想去的、想做的都可以放进去，想买的东西能记攒钱进度；愿望实现时会自动记进当天值得记住的大小事
 - 今日小结汇总当天完成的事，小芽会写一段鼓励，你也可以选心情、写感想；用月历点任意一天就能回看
 - 可以记下「值得记住的大小事」（比如拿到 offer、第一次自己做饭），日历上那天会变成金色，所有大小事也会汇总在一起
 - 每周一后第一次打开会弹出「上周小记」，新年第一次打开会弹出「年度总结」，汇总完成的事、小芽说一段话、留一个写感想的框；也可以随时在日历下面回看
