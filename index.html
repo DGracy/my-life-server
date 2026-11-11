@@ -225,6 +225,33 @@ details.done-box .list{margin-top:8px}
 .cal-note{font-size:11px;color:var(--brand)}
 .pills{display:grid;grid-template-columns:1fr 1fr;gap:2px}
 .pill{font-style:normal;font-family:var(--f-num);font-weight:600;font-size:10px;line-height:15px;text-align:center;border-radius:6px;background:var(--s);color:var(--c);font-variant-numeric:tabular-nums}
+.cal-day{position:relative}
+.cal-day.ms{background:color-mix(in srgb,#ffd34d 32%,var(--bg-2));border-color:#ffd34d}
+.cal-day.ms.sel{border-color:var(--brand)}
+.cal-ms{position:absolute;right:-5px;top:-7px;width:20px;height:20px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.15))}
+.cal-ms .msface{width:100%;height:100%;display:block}
+.cal-legend .msface{width:14px;height:14px}
+.ms-card{background:var(--surface);border-radius:22px;padding:14px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.ms-card.has{background:linear-gradient(135deg,color-mix(in srgb,#ffd34d 24%,var(--surface)),var(--surface) 65%)}
+.ms-card .card-head .msface{width:30px;height:30px}
+.ms-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.ms-list li{display:flex;align-items:center;gap:8px;background:#fff3c4;color:#5a4400;border-radius:14px;padding:8px 10px 8px 14px;font-weight:600}
+.ms-list .ms-t{flex:1;min-width:0;overflow-wrap:anywhere}
+.ms-list .del{border:none;background:none;color:#a07a00;font-size:18px;padding:0 4px;line-height:1}
+.ms-add{display:flex;gap:8px}
+.ms-add input{flex:1;min-width:0;border:2px solid var(--line);border-radius:999px;background:var(--bg-2);padding:8px 16px}
+.ms-add input:focus{border-color:#f2a20c;outline:none}
+.ms-btn{background:#ffd34d;border-color:#ffd34d;color:#5a4400;box-shadow:0 3px 0 #e0a800}
+.ms-wall{display:flex;flex-direction:column;gap:6px;border-top:2px dashed var(--line);padding-top:10px}
+.ms-wall-head{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--muted)}
+.ms-wall-head b{font-family:var(--f-display);font-weight:400;font-size:17px;color:var(--fg)}
+.ms-row{display:grid;grid-template-columns:26px 1fr auto;gap:8px;align-items:center;border:none;background:var(--bg-2);border-radius:12px;padding:6px 10px 6px 6px;text-align:left}
+.ms-row:hover{background:var(--surface-2)}
+.ms-row .msface{width:26px;height:26px}
+.ms-row-t{font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ms-row-d{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.fmode button{display:flex;align-items:center;gap:4px}
+.fmode svg{width:18px;height:18px;flex:none}
 .cal-legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--muted)}
 .cal-legend span{display:flex;align-items:center;gap:5px}
 .cal-legend i{width:9px;height:9px;border-radius:3px}
@@ -920,6 +947,35 @@ function moodFace(k){
 }
 
 document.addEventListener("keydown",e=>{const t=e.target.closest&&e.target.closest(".fs-tree,.fm-dot,.fm-cur");if(t&&(e.key==="Enter"||e.key===" ")){e.preventDefault();t.dispatchEvent(new MouseEvent("click",{bubbles:true}))}});
+/* ---------- milestones ---------- */
+let milestones=[];
+// Sprout with star eyes and a gold badge, for the days that really count
+function milestoneFace(){
+  return `<svg class="msface" viewBox="0 0 40 40" aria-hidden="true" style="${themeStyle(curTheme)}"><circle cx="20" cy="21" r="18.5" fill="#ffd34d"/><circle cx="20" cy="21" r="16" fill="#fff3c4"/>
+    <path d="M20 13V9" stroke="var(--leaf-2)" stroke-width="2" stroke-linecap="round"/><path d="M20 10.5c-3 0-5-1.7-5-4.2 3 0 4.7 1.7 5 4.2z" fill="var(--leaf)"/><path d="M20 10.5c3 0 5-1.7 5-4.2-3 0-4.7 1.7-5 4.2z" fill="var(--leaf-2)"/>
+    <path d="M20 13c7.4 0 12.4 4.8 12.4 11S27.4 34.6 20 34.6 7.6 30.2 7.6 24 12.6 13 20 13z" fill="var(--buddy)"/>
+    <path d="M14.5 19.6l1 2.2 2.4.3-1.8 1.6.5 2.4-2.1-1.2-2.1 1.2.5-2.4-1.8-1.6 2.4-.3z" fill="#f2a20c"/><path d="M25.5 19.6l1 2.2 2.4.3-1.8 1.6.5 2.4-2.1-1.2-2.1 1.2.5-2.4-1.8-1.6 2.4-.3z" fill="#f2a20c"/>
+    <path d="M16 27.4q4 5.4 8 0z" fill="var(--buddy-ink)"/><ellipse cx="11" cy="28" rx="2.2" ry="1.4" fill="var(--pink)" opacity=".8"/><ellipse cx="29" cy="28" rx="2.2" ry="1.4" fill="var(--pink)" opacity=".8"/>
+    <path d="M34.5 6.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z" fill="#f2a20c"/></svg>`;
+}
+const msOn=d=>milestones.filter(x=>x.date===d).sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
+function milestoneCard(d){
+  const list=msOn(d);
+  return `<div class="ms-card${list.length?" has":""}">
+    <div class="card-head">${milestoneFace()}<h3>${L("里程碑","Milestones")}</h3><span class="sub">${L("值得记住的大事","The big moments worth remembering")}</span></div>
+    ${list.length?`<ul class="ms-list">${list.map(x=>`<li><span class="ms-t">${esc(x.title)}</span><button class="del" data-act="msdel" data-id="${x.id}" aria-label="${L("删除这个里程碑","Delete this milestone")}">×</button></li>`).join("")}</ul>`:""}
+    <form class="ms-add" id="msForm" data-date="${d}"><input type="text" id="ms-input-${d}" maxlength="80" placeholder="${L("比如：拿到第一个 offer 了！","e.g. Got my first job offer!")}" aria-label="${L("里程碑","Milestone")}"><button class="btn ms-btn" type="submit">${L("记下来","Add")}</button></form>
+  </div>`;
+}
+function milestoneWall(){
+  if(!milestones.length)return "";
+  const recent=[...milestones].sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:(b.createdAt||0)-(a.createdAt||0)).slice(0,5);
+  const fmt=d=>{const [y,m,dd]=d.split("-").map(Number);return L(`${y===+todayStr().slice(0,4)?"":y+"年"}${m}月${dd}日`,`${dd} ${MON[m-1]}${y===+todayStr().slice(0,4)?"":" "+y}`)};
+  return `<div class="ms-wall"><div class="ms-wall-head"><b>${L("里程碑墙","Milestone wall")}</b><span>${L(`一共 ${milestones.length} 个`,`${milestones.length} in total`)}</span></div>
+    ${recent.map(x=>`<button class="ms-row" data-act="jday" data-v="${x.date}">${milestoneFace()}<span class="ms-row-t">${esc(x.title)}</span><span class="ms-row-d">${fmt(x.date)}</span></button>`).join("")}</div>`;
+}
+const ICON_MEADOW=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 21c4-4 8-5 11-5s7 1 11 5z" fill="var(--leaf)"/><path d="M12 9V6" stroke="var(--leaf-2)" stroke-width="1.6" stroke-linecap="round"/><path d="M12 7c-2.3 0-3.6-1.3-3.6-3.2 2.3 0 3.4 1.3 3.6 3.2z" fill="var(--leaf)"/><path d="M12 7c2.3 0 3.6-1.3 3.6-3.2-2.3 0-3.4 1.3-3.6 3.2z" fill="var(--leaf-2)"/><ellipse cx="12" cy="13" rx="5.6" ry="4.6" fill="var(--buddy)"/><circle cx="10" cy="12.6" r=".9" fill="var(--buddy-ink)"/><circle cx="14" cy="12.6" r=".9" fill="var(--buddy-ink)"/><path d="M10.8 14.6q1.2 1 2.4 0" stroke="var(--buddy-ink)" stroke-width=".9" fill="none" stroke-linecap="round"/></svg>`;
+const ICON_MAP=`<svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="21.5" rx="5" ry="1.4" fill="var(--leaf)" opacity=".7"/><path d="M12 22c-4-5-7-8-7-12a7 7 0 0 1 14 0c0 4-3 7-7 12z" fill="var(--brand)"/><path d="M12 6.4V4.6" stroke="var(--leaf-2)" stroke-width="1.4" stroke-linecap="round"/><path d="M12 5.2c-1.8 0-2.8-1-2.8-2.5 1.8 0 2.6 1 2.8 2.5z" fill="var(--leaf)"/><circle cx="12" cy="10.4" r="4.3" fill="var(--buddy)"/><circle cx="10.5" cy="10" r=".8" fill="var(--buddy-ink)"/><circle cx="13.5" cy="10" r=".8" fill="var(--buddy-ink)"/><path d="M11 11.6q1 .8 2 0" stroke="var(--buddy-ink)" stroke-width=".8" fill="none" stroke-linecap="round"/></svg>`;
 /* ---------- calendar of past days ---------- */
 const MONFULL=["January","February","March","April","May","June","July","August","September","October","November","December"];
 let calMonth=null;
@@ -937,16 +993,18 @@ function calendarCard(sel){
     const d=`${cm}-${pad(dd)}`, c=cnt[d], J=journal[d]||{}, future=d>t;
     const mood=MOODS.some(x=>x[0]===J.mood)?moodFace(J.mood):"";
     const pills=c?keys.filter(k=>c[k]).map(k=>`<i class="pill" style="--c:var(--${k}-ink);--s:var(--${k}-soft)" title="${name[k]} ${c[k]}">${c[k]}</i>`).join(""):"";
-    const lbl=L(`${m}月${dd}日`,`${dd} ${MON[m-1]}`)+(c?" · "+keys.filter(k=>c[k]).map(k=>`${name[k]} ${c[k]}`).join(", "):"")+(J.note?" · "+L("有感想","has a reflection"):"");
-    cells+=`<button class="cal-day${d===sel?" sel":""}${d===t?" today":""}" data-act="jday" data-v="${d}" ${future?"disabled":""} aria-label="${lbl}" aria-pressed="${d===sel}">
-      <span class="cal-top"><b>${dd}</b>${mood?`<span class="cal-mood">${mood}</span>`:J.note?`<span class="cal-note">✎</span>`:""}</span>
+    const lbl=L(`${m}月${dd}日`,`${dd} ${MON[m-1]}`)+(c?" · "+keys.filter(k=>c[k]).map(k=>`${name[k]} ${c[k]}`).join(", "):"")+(J.note?" · "+L("有感想","has a reflection"):"")+(msOn(d).length?" · "+L("里程碑：","Milestone: ")+msOn(d).map(x=>x.title).join(", "):"");
+    const msN=msOn(d).length;
+    cells+=`<button class="cal-day${d===sel?" sel":""}${d===t?" today":""}${msN?" ms":""}" data-act="jday" data-v="${d}" ${future?"disabled":""} aria-label="${lbl}" aria-pressed="${d===sel}">
+      ${msN?`<span class="cal-ms">${milestoneFace()}</span>`:""}<span class="cal-top"><b>${dd}</b>${mood?`<span class="cal-mood">${mood}</span>`:J.note?`<span class="cal-note">✎</span>`:""}</span>
       <span class="pills">${pills}</span></button>`;
   }
   const wd=L(["一","二","三","四","五","六","日"],["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]);
   return `<div class="cal">
     <div class="cal-head"><button data-act="calprev" aria-label="${L("上个月","Previous month")}">‹</button><h3>${L(`${y}年${m}月`,`${MONFULL[m-1]} ${y}`)}</h3><button data-act="calnext" aria-label="${L("下个月","Next month")}" ${cm>=t.slice(0,7)?"disabled":""}>›</button></div>
     <div class="cal-grid">${wd.map(w=>`<span class="cal-wd">${w}</span>`).join("")}${cells}</div>
-    <div class="cal-legend">${keys.map(k=>`<span><i style="background:var(--${k})"></i>${name[k]}</span>`).join("")}<span>✎ ${L("写了感想","Reflection")}</span><span>${L("点一天看详情","Tap a day for details")}</span></div>
+    <div class="cal-legend">${keys.map(k=>`<span><i style="background:var(--${k})"></i>${name[k]}</span>`).join("")}<span>✎ ${L("写了感想","Reflection")}</span><span>${milestoneFace()}${L("里程碑","Milestone")}</span><span>${L("点一天看详情","Tap a day for details")}</span></div>
+    ${milestoneWall()}
   </div>`;
 }
 function shiftMonth(n){const [y,m]=(calMonth||(jDate||todayStr()).slice(0,7)).split("-").map(Number);const d=new Date(y,m-1+n,1);calMonth=`${d.getFullYear()}-${pad(d.getMonth()+1)}`;render()}
@@ -1049,7 +1107,7 @@ function forestView(){
   return `<div class="board" data-k="forest">
     <div class="forest-card">
       <div class="card-head"><h3>${L("我的森林","My forest")}</h3><span class="sub">${trees.length?L(`${trees.length} 棵开花的树`,`${trees.length} blooming ${n_(trees.length,"tree","trees")}`):L("还没有种出来的树","No trees planted yet")}</span>
-        <span class="right fmode" role="group" aria-label="${L("森林视图","Forest view")}"><button data-act="fmode" data-v="scene" aria-pressed="${mode==="scene"}">🌄 ${L("草地","Meadow")}</button><button data-act="fmode" data-v="map" aria-pressed="${mode==="map"}">🗺️ ${L("地图","Map")}</button></span></div>
+        <span class="right fmode" role="group" aria-label="${L("森林视图","Forest view")}"><button data-act="fmode" data-v="scene" aria-pressed="${mode==="scene"}">${ICON_MEADOW}${L("草地","Meadow")}</button><button data-act="fmode" data-v="map" aria-pressed="${mode==="map"}">${ICON_MAP}${L("地图","Map")}</button></span></div>
       <div class="meadow-wrap">${mode==="map"?forestMap(trees,st):meadowScene(trees,st)}</div>
       <p class="forest-cap">${cap}</p>
     </div>
@@ -1132,6 +1190,7 @@ function journalView(){
   return `<div class="board" data-k="journal">
     ${calendarCard(d)}
     <div class="jnav"><button data-act="jprev" aria-label="${L("前一天","Previous day")}">‹</button><h2>${L(label+"的小结",label==="Today"||label==="Yesterday"?label+"'s recap":"Recap · "+label)}<small>${L(`${m}月${dd}日 · 周${wd}`,`${WDEN[wdIdx]}, ${dd} ${MON[m-1]}`)}</small></h2><button data-act="jnext" aria-label="${L("后一天","Next day")}" ${d>=t?"disabled":""}>›</button></div>
+    ${milestoneCard(d)}
     <div class="jstats" style="grid-template-columns:repeat(${Math.min(["habit","life","study","work"].filter(on).length,4)},1fr)">
       ${on("habit")?`<div class="jstat"><b style="color:var(--habit-ink)">${D.hNames.length}<span style="font-size:13px"> / ${D.hTotal}</span></b><span>${L("打卡","Check-in")}</span></div>`:""}
       ${on("life")?`<div class="jstat"><b style="color:var(--life-ink)">${D.life.length}</b><span>${L("生活","Life")}</span></div>`:""}
@@ -1355,6 +1414,9 @@ document.addEventListener("click",async e=>{
   if(!db)return;
   const id=act.dataset.id;
   if(act.dataset.act==="jai"){aiComment();return}
+  if(act.dataset.act==="msdel"){
+    if(act.dataset.confirm!=="1"){act.dataset.confirm="1";act.textContent=L("删除？","Delete?");act.style.fontSize="12px";return}
+    const ref=db.doc("milestones/"+id);queued(ref.path,()=>ref.delete());return}
   if(act.dataset.act==="settheme"){setTheme(act.dataset.v);return}
   if(act.dataset.act==="newtask"){openEditor(null,{space:act.dataset.space,horizon:act.dataset.hz});return}
   if(act.dataset.act==="jmood"){const d=jDate||todayStr();const cur=(journal[d]||{}).mood;saveJournal(d,{mood:cur===act.dataset.v?null:act.dataset.v});render();return}
@@ -1405,6 +1467,13 @@ document.addEventListener("input",e=>{
   if(pv.dataset.pv==="keep"){p.keep=pv.checked;const b=$("#saveParsed");if(b)b.textContent=L(`保存选中的 ${pending.filter(x=>x.keep).length} 条`,`Save ${pending.filter(x=>x.keep).length} selected`)}
 });
 document.addEventListener("submit",async e=>{
+  if(e.target.id==="msForm"){e.preventDefault();if(!db)return;
+    const d=e.target.dataset.date, inp=e.target.querySelector("input"), title=inp.value.trim(); if(!title)return;
+    inp.value="";
+    const ref=db.collection("milestones").doc();
+    await queued(ref.path,()=>ref.set({date:d,title:title.slice(0,80),createdAt:Date.now()}));
+    const r=e.target.getBoundingClientRect(); burst(r.left+r.width/2,r.top,["#ffd34d","#f2a20c",css("--pink"),css("--leaf")]); setTimeout(()=>burst(r.left+r.width/3,r.top,["#ffd34d","#fff3c4",css("--water")]),200);
+    cheer(L(`太厉害了！「${title}」，我替你记下来了 🏆`,`Amazing! “${title}” is on the wall now 🏆`),"cheer");return}
   if(e.target.id==="shopForm"){e.preventDefault();if(!db)return;
     const names=splitItems($("#shopName").value), st=$("#shopStaple").checked;
     $("#shopName").value="";
@@ -1601,6 +1670,7 @@ function openWelcome(){
   db.collection("shop").onSnapshot(s=>{shop=s.docs.map(d=>({id:d.id,...d.data()}));if(!s.metadata.fromCache)loaded.s=true;render()},fail);
   db.collection("staples").onSnapshot(s=>{staples=s.docs.map(d=>({id:d.id,...d.data()}));render()},fail);
   db.collection("trips").onSnapshot(s=>{trips=s.docs.map(d=>({id:d.id,...d.data()}));render()},fail);
+  db.collection("milestones").onSnapshot(s=>{milestones=s.docs.map(d=>({id:d.id,...d.data()}));render()},fail);
   db.collection("forest").onSnapshot(s=>{forest=s.docs.map(d=>({id:d.id,...d.data()}));if(!s.metadata.fromCache)loaded.f=true;render()},fail);
   db.collection("garden").onSnapshot(s=>{const g=s.docs.find(d=>d.id==="current");if(g&&THEMES[g.data().theme])curTheme=g.data().theme;render()},fail);
   db.collection("journal").orderBy("date","desc").limit(400).onSnapshot(s=>{const m={};s.docs.forEach(d=>{const x=d.data();m[x.date||d.id]=x});

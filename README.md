@@ -2,7 +2,7 @@
 
 My "life server": a bilingual (中文 / English) task and habit tracker with a sprout that grows as you get things done. Built with AI in one night.
 
-**Try it:** https://dgracy.github.io/my-life-server/
+**Try it:** https://my-life-is-mine.netlify.app/
 
 ## What it does
 
@@ -12,6 +12,7 @@ My "life server": a bilingual (中文 / English) task and habit tracker with a s
 - **Quick capture**: tap Sprout in the corner and type something like "Finish my CV by Friday; buy eggs and milk this weekend". It splits the text into tasks, picks a board and works out the dates. Nothing is saved until you confirm.
 - **Shopping list**: save staples you buy often, add them in one tap and tick items off at the shop.
 - **Daily recap with a calendar**: see what you finished each day, pick a Sprout face for your mood, write a reflection, and tap any day in the calendar to read it again.
+- **Milestones**: mark the big days, like a job offer, and they light up in gold on the calendar and on your milestone wall.
 - **Light and dark**: light sky blue during the day, deep blue at night.
 - **Bilingual**: switch between 中文 and English in ⚙️ settings.
 - **Only the boards you need**: turn Habits, Life, the shopping list, Study or Work on and off in ⚙️ settings. Nothing is deleted.
@@ -28,9 +29,10 @@ Everything is stored in your own browser (localStorage). Nothing is uploaded and
 - 点右下角的小芽随手记，自动拆成几条任务、分到对应板块、换算日期，确认后才保存
 - 生活板块里有购物清单，常买的东西点一下就加进去
 - 今日小结汇总当天完成的事，小芽会写一段鼓励，你也可以选心情、写感想；用月历点任意一天就能回看
+- 可以给重要的日子记一个里程碑（比如拿到 offer），日历上那天会变成金色，还会出现在里程碑墙上
 - 用不到的板块可以在 ⚙️ 里关掉，数据不会删除
 - 数据只存在你自己的浏览器里，换设备前记得在 ⚙️ 里导出备份
 
 ## Run it yourself
 
-It's a single `index.html` file with no build step. Open it in a browser, or host it anywhere that serves static files.
+It's a single `index.html` file with no build step. Open it in a browser, or host it anywhere that serves static files. The live version runs on Netlify.
