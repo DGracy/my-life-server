@@ -962,16 +962,16 @@ const msOn=d=>milestones.filter(x=>x.date===d).sort((a,b)=>(a.createdAt||0)-(b.c
 function milestoneCard(d){
   const list=msOn(d);
   return `<div class="ms-card${list.length?" has":""}">
-    <div class="card-head">${milestoneFace()}<h3>${L("里程碑","Milestones")}</h3><span class="sub">${L("值得记住的大事","The big moments worth remembering")}</span></div>
-    ${list.length?`<ul class="ms-list">${list.map(x=>`<li><span class="ms-t">${esc(x.title)}</span><button class="del" data-act="msdel" data-id="${x.id}" aria-label="${L("删除这个里程碑","Delete this milestone")}">×</button></li>`).join("")}</ul>`:""}
-    <form class="ms-add" id="msForm" data-date="${d}"><input type="text" id="ms-input-${d}" maxlength="80" placeholder="${L("比如：拿到第一个 offer 了！","e.g. Got my first job offer!")}" aria-label="${L("里程碑","Milestone")}"><button class="btn ms-btn" type="submit">${L("记下来","Add")}</button></form>
+    <div class="card-head">${milestoneFace()}<h3>${L("值得记住的大小事","Moments worth remembering")}</h3></div>
+    ${list.length?`<ul class="ms-list">${list.map(x=>`<li><span class="ms-t">${esc(x.title)}</span><button class="del" data-act="msdel" data-id="${x.id}" aria-label="${L("删除这件事","Delete this moment")}">×</button></li>`).join("")}</ul>`:""}
+    <form class="ms-add" id="msForm" data-date="${d}"><input type="text" id="ms-input-${d}" maxlength="80" placeholder="${L("比如：拿到第一个 offer 了！或者：第一次自己做了红烧肉","e.g. Got my first job offer! Or: cooked my first proper dinner")}" aria-label="${L("值得记住的事","A moment worth remembering")}"><button class="btn ms-btn" type="submit">${L("记下来","Add")}</button></form>
   </div>`;
 }
 function milestoneWall(){
   if(!milestones.length)return "";
   const recent=[...milestones].sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:(b.createdAt||0)-(a.createdAt||0)).slice(0,5);
   const fmt=d=>{const [y,m,dd]=d.split("-").map(Number);return L(`${y===+todayStr().slice(0,4)?"":y+"年"}${m}月${dd}日`,`${dd} ${MON[m-1]}${y===+todayStr().slice(0,4)?"":" "+y}`)};
-  return `<div class="ms-wall"><div class="ms-wall-head"><b>${L("里程碑墙","Milestone wall")}</b><span>${L(`一共 ${milestones.length} 个`,`${milestones.length} in total`)}</span></div>
+  return `<div class="ms-wall"><div class="ms-wall-head"><b>${L("值得记住的大小事","Moments worth remembering")}</b><span>${L(`一共 ${milestones.length} 件`,`${milestones.length} in total`)}</span></div>
     ${recent.map(x=>`<button class="ms-row" data-act="jday" data-v="${x.date}">${milestoneFace()}<span class="ms-row-t">${esc(x.title)}</span><span class="ms-row-d">${fmt(x.date)}</span></button>`).join("")}</div>`;
 }
 const ICON_MEADOW=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 21c4-4 8-5 11-5s7 1 11 5z" fill="var(--leaf)"/><path d="M12 9V6" stroke="var(--leaf-2)" stroke-width="1.6" stroke-linecap="round"/><path d="M12 7c-2.3 0-3.6-1.3-3.6-3.2 2.3 0 3.4 1.3 3.6 3.2z" fill="var(--leaf)"/><path d="M12 7c2.3 0 3.6-1.3 3.6-3.2-2.3 0-3.4 1.3-3.6 3.2z" fill="var(--leaf-2)"/><ellipse cx="12" cy="13" rx="5.6" ry="4.6" fill="var(--buddy)"/><circle cx="10" cy="12.6" r=".9" fill="var(--buddy-ink)"/><circle cx="14" cy="12.6" r=".9" fill="var(--buddy-ink)"/><path d="M10.8 14.6q1.2 1 2.4 0" stroke="var(--buddy-ink)" stroke-width=".9" fill="none" stroke-linecap="round"/></svg>`;
@@ -993,7 +993,7 @@ function calendarCard(sel){
     const d=`${cm}-${pad(dd)}`, c=cnt[d], J=journal[d]||{}, future=d>t;
     const mood=MOODS.some(x=>x[0]===J.mood)?moodFace(J.mood):"";
     const pills=c?keys.filter(k=>c[k]).map(k=>`<i class="pill" style="--c:var(--${k}-ink);--s:var(--${k}-soft)" title="${name[k]} ${c[k]}">${c[k]}</i>`).join(""):"";
-    const lbl=L(`${m}月${dd}日`,`${dd} ${MON[m-1]}`)+(c?" · "+keys.filter(k=>c[k]).map(k=>`${name[k]} ${c[k]}`).join(", "):"")+(J.note?" · "+L("有感想","has a reflection"):"")+(msOn(d).length?" · "+L("里程碑：","Milestone: ")+msOn(d).map(x=>x.title).join(", "):"");
+    const lbl=L(`${m}月${dd}日`,`${dd} ${MON[m-1]}`)+(c?" · "+keys.filter(k=>c[k]).map(k=>`${name[k]} ${c[k]}`).join(", "):"")+(J.note?" · "+L("有感想","has a reflection"):"")+(msOn(d).length?" · "+L("值得记住：","Moment: ")+msOn(d).map(x=>x.title).join(", "):"");
     const msN=msOn(d).length;
     cells+=`<button class="cal-day${d===sel?" sel":""}${d===t?" today":""}${msN?" ms":""}" data-act="jday" data-v="${d}" ${future?"disabled":""} aria-label="${lbl}" aria-pressed="${d===sel}">
       ${msN?`<span class="cal-ms">${milestoneFace()}</span>`:""}<span class="cal-top"><b>${dd}</b>${mood?`<span class="cal-mood">${mood}</span>`:J.note?`<span class="cal-note">✎</span>`:""}</span>
@@ -1003,7 +1003,7 @@ function calendarCard(sel){
   return `<div class="cal">
     <div class="cal-head"><button data-act="calprev" aria-label="${L("上个月","Previous month")}">‹</button><h3>${L(`${y}年${m}月`,`${MONFULL[m-1]} ${y}`)}</h3><button data-act="calnext" aria-label="${L("下个月","Next month")}" ${cm>=t.slice(0,7)?"disabled":""}>›</button></div>
     <div class="cal-grid">${wd.map(w=>`<span class="cal-wd">${w}</span>`).join("")}${cells}</div>
-    <div class="cal-legend">${keys.map(k=>`<span><i style="background:var(--${k})"></i>${name[k]}</span>`).join("")}<span>✎ ${L("写了感想","Reflection")}</span><span>${milestoneFace()}${L("里程碑","Milestone")}</span><span>${L("点一天看详情","Tap a day for details")}</span></div>
+    <div class="cal-legend">${keys.map(k=>`<span><i style="background:var(--${k})"></i>${name[k]}</span>`).join("")}<span>✎ ${L("写了感想","Reflection")}</span><span>${milestoneFace()}${L("值得记住","Moment")}</span><span>${L("点一天看详情","Tap a day for details")}</span></div>
     ${milestoneWall()}
   </div>`;
 }
@@ -1473,7 +1473,7 @@ document.addEventListener("submit",async e=>{
     const ref=db.collection("milestones").doc();
     await queued(ref.path,()=>ref.set({date:d,title:title.slice(0,80),createdAt:Date.now()}));
     const r=e.target.getBoundingClientRect(); burst(r.left+r.width/2,r.top,["#ffd34d","#f2a20c",css("--pink"),css("--leaf")]); setTimeout(()=>burst(r.left+r.width/3,r.top,["#ffd34d","#fff3c4",css("--water")]),200);
-    cheer(L(`太厉害了！「${title}」，我替你记下来了 🏆`,`Amazing! “${title}” is on the wall now 🏆`),"cheer");return}
+    cheer(L(`「${title}」，我替你记下来了 🌟`,`“${title}”, I'll remember it for you 🌟`),"cheer");return}
   if(e.target.id==="shopForm"){e.preventDefault();if(!db)return;
     const names=splitItems($("#shopName").value), st=$("#shopStaple").checked;
     $("#shopName").value="";
