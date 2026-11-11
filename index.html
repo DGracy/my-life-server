@@ -205,6 +205,30 @@ details.done-box .list{margin-top:8px}
 .shop-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
 
 /* daily summary */
+.mood{gap:5px!important;padding:3px 11px 3px 6px!important}
+.mood .mface{width:28px;height:28px;flex:none;margin-block:-3px}
+.cal-mood .mface{width:17px;height:17px;display:block}
+.cal{background:var(--surface);border-radius:22px;padding:12px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cal-head h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:19px}
+.cal-head button{border:none;background:var(--surface-2);border-radius:999px;width:34px;height:34px;font-size:17px;color:var(--muted)}
+.cal-head button:disabled{opacity:.35;cursor:default}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cal-wd{text-align:center;font-size:11.5px;color:var(--muted);padding-bottom:2px}
+.cal-day{min-height:60px;border:2px solid transparent;background:var(--bg-2);border-radius:12px;padding:3px 3px 4px;display:flex;flex-direction:column;gap:3px;text-align:left;min-width:0;transition:transform .12s}
+.cal-day:hover:not(:disabled){transform:translateY(-1px)}
+.cal-day:disabled{opacity:.35;cursor:default}
+.cal-day.sel{border-color:var(--brand);background:var(--surface-2)}
+.cal-top{display:flex;justify-content:space-between;align-items:center;gap:2px;min-height:16px}
+.cal-top b{font-family:var(--f-num);font-weight:600;font-size:12.5px;font-variant-numeric:tabular-nums;padding-left:2px}
+.cal-day.today .cal-top b{color:#fff;background:var(--brand);border-radius:999px;padding:0 5px}
+.cal-note{font-size:11px;color:var(--brand)}
+.pills{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.pill{font-style:normal;font-family:var(--f-num);font-weight:600;font-size:10px;line-height:15px;text-align:center;border-radius:6px;background:var(--s);color:var(--c);font-variant-numeric:tabular-nums}
+.cal-legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--muted)}
+.cal-legend span{display:flex;align-items:center;gap:5px}
+.cal-legend i{width:9px;height:9px;border-radius:3px}
+.jnav{scroll-margin-top:72px}
 .title-row .jbtn{margin-left:auto;border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 14px;font-weight:500;font-size:14px;box-shadow:0 3px 0 var(--line);transition:transform .12s}
 .title-row .jbtn:hover{transform:translateY(-1px)}
 .title-row .jbtn[aria-pressed=true]{background:var(--brand);color:#fff;border-color:var(--brand);box-shadow:0 3px 0 var(--brand-ink)}
@@ -796,6 +820,50 @@ function ruleParse(text,today,fallback="life",dayFirst=false){
   return out;
 }
 
+/* ---------- Sprout faces for moods ---------- */
+function moodFace(k){
+  const ink="var(--buddy-ink)";
+  const F={
+    great:`<path d="M11 22q3-4 6 0M23 22q3-4 6 0" stroke="${ink}" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M15 27q5 7 10 0z" fill="${ink}"/><path d="M17.5 29.5q2.5 2 5 0" fill="var(--pink)"/><path d="M34 9l1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1z" fill="var(--habit)"/>`,
+    good:`<circle cx="14" cy="22" r="2.3" fill="${ink}"/><circle cx="26" cy="22" r="2.3" fill="${ink}"/><circle cx="14.8" cy="21.2" r=".8" fill="#fff"/><circle cx="26.8" cy="21.2" r=".8" fill="#fff"/><path d="M16 27q4 4 8 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    meh:`<circle cx="14" cy="22.5" r="2.1" fill="${ink}"/><circle cx="26" cy="22.5" r="2.1" fill="${ink}"/><path d="M16.5 28.5h7" stroke="${ink}" stroke-width="2" stroke-linecap="round"/>`,
+    tired:`<path d="M11 23h6M23 23h6" stroke="${ink}" stroke-width="2.2" stroke-linecap="round"/><ellipse cx="20" cy="29" rx="2" ry="1.6" fill="${ink}"/><path d="M33 14q2 3 0 4.4q-2-1.4 0-4.4z" fill="var(--water)"/>`,
+    down:`<path d="M11 19.5l5 1.6M29 19.5l-5 1.6" stroke="${ink}" stroke-width="1.8" stroke-linecap="round"/><circle cx="14" cy="23.5" r="2" fill="${ink}"/><circle cx="26" cy="23.5" r="2" fill="${ink}"/><path d="M16 30q4-3.5 8 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M13 26.5q1.4 2.2 0 3.2q-1.4-1 0-3.2z" fill="var(--water)"/>`
+  };
+  return `<svg class="mface" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 12V7" stroke="var(--leaf-2)" stroke-width="2" stroke-linecap="round"/><path d="M20 9c-3.6 0-6-2-6-5 3.6 0 5.6 2 6 5z" fill="var(--leaf)"/><path d="M20 12c9 0 15 6 15 13.5S29 37 20 37 5 33 5 25.5 11 12 20 12z" fill="var(--buddy)"/><ellipse cx="10" cy="27" rx="2.6" ry="1.7" fill="var(--pink)" opacity=".75"/><ellipse cx="30" cy="27" rx="2.6" ry="1.7" fill="var(--pink)" opacity=".75"/>${F[k]||F.good}</svg>`;
+}
+
+/* ---------- calendar of past days ---------- */
+const MONFULL=["January","February","March","April","May","June","July","August","September","October","November","December"];
+let calMonth=null;
+function calendarCard(sel){
+  const t=todayStr(), cm=calMonth||sel.slice(0,7), [y,m]=cm.split("-").map(Number);
+  const days=new Date(y,m,0).getDate(), lead=(new Date(y,m-1,1).getDay()+6)%7;
+  const keys=["habit","life","study","work"].filter(on);
+  const cnt={}, bump=(d,k)=>{(cnt[d]=cnt[d]||{habit:0,life:0,study:0,work:0})[k]++};
+  for(const x of tasks)if(x.done&&x.doneAt&&cnt!==null&&["life","study","work"].includes(x.space)){const d=ymd(new Date(x.doneAt));if(d.startsWith(cm))bump(d,x.space)}
+  for(const d in checkins)if(d.startsWith(cm))for(const id in checkins[d])bump(d,"habit");
+  const name={habit:L("打卡","Habits"),life:L("生活","Life"),study:L("学习","Study"),work:L("工作","Work")};
+  let cells="";
+  for(let i=0;i<lead;i++)cells+=`<span></span>`;
+  for(let dd=1;dd<=days;dd++){
+    const d=`${cm}-${pad(dd)}`, c=cnt[d], J=journal[d]||{}, future=d>t;
+    const mood=MOODS.some(x=>x[0]===J.mood)?moodFace(J.mood):"";
+    const pills=c?keys.filter(k=>c[k]).map(k=>`<i class="pill" style="--c:var(--${k}-ink);--s:var(--${k}-soft)" title="${name[k]} ${c[k]}">${c[k]}</i>`).join(""):"";
+    const lbl=L(`${m}月${dd}日`,`${dd} ${MON[m-1]}`)+(c?" · "+keys.filter(k=>c[k]).map(k=>`${name[k]} ${c[k]}`).join(", "):"")+(J.note?" · "+L("有感想","has a reflection"):"");
+    cells+=`<button class="cal-day${d===sel?" sel":""}${d===t?" today":""}" data-act="jday" data-v="${d}" ${future?"disabled":""} aria-label="${lbl}" aria-pressed="${d===sel}">
+      <span class="cal-top"><b>${dd}</b>${mood?`<span class="cal-mood">${mood}</span>`:J.note?`<span class="cal-note">✎</span>`:""}</span>
+      <span class="pills">${pills}</span></button>`;
+  }
+  const wd=L(["一","二","三","四","五","六","日"],["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]);
+  return `<div class="cal">
+    <div class="cal-head"><button data-act="calprev" aria-label="${L("上个月","Previous month")}">‹</button><h3>${L(`${y}年${m}月`,`${MONFULL[m-1]} ${y}`)}</h3><button data-act="calnext" aria-label="${L("下个月","Next month")}" ${cm>=t.slice(0,7)?"disabled":""}>›</button></div>
+    <div class="cal-grid">${wd.map(w=>`<span class="cal-wd">${w}</span>`).join("")}${cells}</div>
+    <div class="cal-legend">${keys.map(k=>`<span><i style="background:var(--${k})"></i>${name[k]}</span>`).join("")}<span>✎ ${L("写了感想","Reflection")}</span><span>${L("点一天看详情","Tap a day for details")}</span></div>
+  </div>`;
+}
+function shiftMonth(n){const [y,m]=(calMonth||(jDate||todayStr()).slice(0,7)).split("-").map(Number);const d=new Date(y,m-1+n,1);calMonth=`${d.getFullYear()}-${pad(d.getMonth()+1)}`;render()}
+
 /* ---------- daily summary ---------- */
 const dayOf=ts=>ts?ymd(new Date(ts)):null;
 const MOODS=[["great","😄",""],["good","🙂",""],["meh","😐",""],["tired","😮‍💨",""],["down","😢",""]];
@@ -837,6 +905,7 @@ function journalView(){
   const lifeInner=list(D.life,"title")+(D.trip.length?`<span class="hint">🛒 ${L(`去了 ${D.trip.length} 趟超市，买了 ${D.trip.reduce((a,b)=>a+(b.items||0),0)} 样`,`${D.trip.length} shopping ${n_(D.trip.length,"trip","trips")}, ${D.trip.reduce((a,b)=>a+(b.items||0),0)} items`)}</span>`:"");
   const comment=J.comment||"";
   return `<div class="board" data-k="journal">
+    ${calendarCard(d)}
     <div class="jnav"><button data-act="jprev" aria-label="${L("前一天","Previous day")}">‹</button><h2>${L(label+"的小结",label==="Today"||label==="Yesterday"?label+"'s recap":"Recap · "+label)}<small>${L(`${m}月${dd}日 · 周${wd}`,`${WDEN[wdIdx]}, ${dd} ${MON[m-1]}`)}</small></h2><button data-act="jnext" aria-label="${L("后一天","Next day")}" ${d>=t?"disabled":""}>›</button></div>
     <div class="jstats" style="grid-template-columns:repeat(${Math.min(["habit","life","study","work"].filter(on).length,4)},1fr)">
       ${on("habit")?`<div class="jstat"><b style="color:var(--habit-ink)">${D.hNames.length}<span style="font-size:13px"> / ${D.hTotal}</span></b><span>${L("打卡","Check-in")}</span></div>`:""}
@@ -860,7 +929,7 @@ function journalView(){
     </div>
     <div class="reflect">
       <h4>${L("今日感想","Reflection")} <span class="hint">· ${L("想写就写，不写也可以","Optional, write if you feel like it")}</span></h4>
-      <div class="moods">${MOODS.map(([k,e,n])=>`<button class="mood${J.mood===k?" on":""}" data-act="jmood" data-v="${k}">${e} ${n}</button>`).join("")}</div>
+      <div class="moods">${MOODS.map(([k,e,n])=>`<button class="mood${J.mood===k?" on":""}" data-act="jmood" data-v="${k}" aria-pressed="${J.mood===k}">${moodFace(k)}<span>${n}</span></button>`).join("")}</div>
       <textarea id="jnote-${d}" data-jnote="${d}" placeholder="${L("今天印象最深的一件事？有什么想对明天的自己说的？","What stood out today? Anything to tell tomorrow's you?")}" maxlength="4000">${esc(J.note||"")}</textarea>
       <span class="saved" id="jsaved">${jSaved}</span>
     </div>
@@ -1029,7 +1098,7 @@ function openEditor(id,preset){
 document.addEventListener("click",async e=>{
   const tabBtn=e.target.closest(".tab");
   if(tabBtn){tab=tabBtn.dataset.k;try{localStorage.setItem("los-tab",tab)}catch(_){};render();return}
-  if(e.target.closest("#jbtn")){tab=tab==="journal"?"habit":"journal";if(tab==="journal"){jDate=todayStr();jSaved=""}try{localStorage.setItem("los-tab",tab)}catch(_){};render();window.scrollTo({top:0,behavior:"smooth"});return}
+  if(e.target.closest("#jbtn")){tab=tab==="journal"?"habit":"journal";if(tab==="journal"){jDate=todayStr();jSaved="";calMonth=null}try{localStorage.setItem("los-tab",tab)}catch(_){};render();window.scrollTo({top:0,behavior:"smooth"});return}
   const pv=e.target.closest("[data-pv]");
   if(pv&&pv.tagName==="BUTTON"){const p=pending[+pv.dataset.i];if(pv.dataset.pv==="space")p.space=pv.dataset.v;else p.horizon=pv.dataset.v;renderPreview();return}
   const id0=e.target.closest("button")?.id;
@@ -1048,8 +1117,11 @@ document.addEventListener("click",async e=>{
     return;
   }
   const act=e.target.closest("[data-act]"); if(!act)return;
-  if(act.dataset.act==="jprev"){jDate=addDays(jDate||todayStr(),-1);jSaved="";render();return}
-  if(act.dataset.act==="jnext"){const n=addDays(jDate||todayStr(),1);if(n<=todayStr()){jDate=n;jSaved="";render()}return}
+  if(act.dataset.act==="jday"){jDate=act.dataset.v;jSaved="";render();const j=document.querySelector(".jnav");if(j)j.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});return}
+  if(act.dataset.act==="calprev"){shiftMonth(-1);return}
+  if(act.dataset.act==="calnext"){shiftMonth(1);return}
+  if(act.dataset.act==="jprev"){jDate=addDays(jDate||todayStr(),-1);calMonth=null;jSaved="";render();return}
+  if(act.dataset.act==="jnext"){const n=addDays(jDate||todayStr(),1);if(n<=todayStr()){jDate=n;calMonth=null;jSaved="";render()}return}
   if(act.dataset.act==="lifesub"){lifeSub=act.dataset.v;try{localStorage.setItem("los-life",lifeSub)}catch(_){};render();return}
   if(!db)return;
   const id=act.dataset.id;

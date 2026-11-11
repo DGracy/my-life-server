@@ -10,7 +10,7 @@ My "life server": a bilingual (中文 / English) task and habit tracker with a s
 - **Sprout grows with you**: every finished task waters it with 1 drop and every check-in with 2. It grows from a seed into a blooming tree over seven stages, and flowers on days you finish every check-in.
 - **Quick capture**: tap Sprout in the corner and type something like "Finish my CV by Friday; buy eggs and milk this weekend". It splits the text into tasks, picks a board and works out the dates. Nothing is saved until you confirm.
 - **Shopping list**: save staples you buy often, add them in one tap and tick items off at the shop.
-- **Daily recap**: see what you finished today, read a note from Sprout and write a reflection if you like.
+- **Daily recap with a calendar**: see what you finished each day, pick a Sprout face for your mood, write a reflection, and tap any day in the calendar to read it again.
 - **Light and dark**: light sky blue during the day, deep blue at night.
 - **Bilingual**: switch between 中文 and English in ⚙️ settings.
 - **Only the boards you need**: turn Habits, Life, the shopping list, Study or Work on and off in ⚙️ settings. Nothing is deleted.
@@ -26,7 +26,7 @@ Everything is stored in your own browser (localStorage). Nothing is uploaded and
 - 打卡、生活、学习、工作四个板块分开管理，每个板块按收件箱、近期、中期、长期分组
 - 点右下角的小芽随手记，自动拆成几条任务、分到对应板块、换算日期，确认后才保存
 - 生活板块里有购物清单，常买的东西点一下就加进去
-- 今日小结汇总当天完成的事，小芽会写一段鼓励，你也可以写感想
+- 今日小结汇总当天完成的事，小芽会写一段鼓励，你也可以选心情、写感想；用月历点任意一天就能回看
 - 用不到的板块可以在 ⚙️ 里关掉，数据不会删除
 - 数据只存在你自己的浏览器里，换设备前记得在 ⚙️ 里导出备份
 
