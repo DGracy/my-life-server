@@ -271,8 +271,14 @@ details.done-box .list{margin-top:8px}
 .forest-btn .fn{font-family:var(--f-num);font-variant-numeric:tabular-nums}
 .forest-btn[aria-pressed=true]{border-color:var(--leaf-2);background:color-mix(in srgb,var(--leaf) 18%,transparent)}
 #plantBtn{width:fit-content;padding:5px 14px}
-.forest-card{background:linear-gradient(180deg,var(--surface) 0 62%,color-mix(in srgb,var(--leaf) 18%,var(--surface)) 100%);border-radius:22px;padding:14px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
-.grove{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px 6px}
+.forest-card{position:relative;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,var(--water) 14%,var(--surface)) 0,var(--surface) 38%,color-mix(in srgb,var(--leaf) 16%,var(--surface)) 70%,color-mix(in srgb,var(--leaf) 30%,var(--surface)) 100%);border-radius:22px;padding:14px 16px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.forest-card::before,.forest-card::after{content:"";position:absolute;background:var(--surface);border-radius:999px;opacity:.85;pointer-events:none}
+.forest-card::before{width:70px;height:20px;top:46px;right:28px;box-shadow:16px -10px 0 2px var(--surface)}
+.forest-card::after{width:52px;height:16px;top:70px;left:38%;box-shadow:12px -8px 0 1px var(--surface);opacity:.6}
+.forest-card>*{position:relative;z-index:1}
+.grove{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:4px 4px;position:relative}
+.grove .ftree:nth-child(3n+2){transform:translateY(10px)}
+.grove .ftree:nth-child(3n){transform:translateY(4px)}
 .ftree{display:flex;flex-direction:column;align-items:center;gap:1px;text-align:center;min-width:0}
 .ftree svg{width:100%;max-width:124px;aspect-ratio:1;height:auto}
 .ftree b{font-family:var(--f-display);font-weight:400;font-size:15px}
@@ -280,7 +286,7 @@ details.done-box .list{margin-top:8px}
 .ftree.growing b{color:var(--leaf-2)}
 .swatches{display:flex;flex-wrap:wrap;gap:7px}
 .sw{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 11px 3px 4px;font-size:13.5px;display:flex;gap:7px;align-items:center}
-.sw .dot{width:22px;height:22px;border-radius:50%;background:var(--buddy);box-shadow:inset 0 -6px 0 var(--leaf),0 0 0 2px var(--pink)}
+.sw .dot{width:22px;height:22px;border-radius:50%;background:var(--buddy);box-shadow:inset 0 -6px 0 var(--leaf),0 0 0 2px var(--flower),0 0 0 3px var(--line)}
 .sw.on{border-color:var(--brand);background:var(--surface-2)}
 
 /* habits */
@@ -433,20 +439,20 @@ const FLAME='<svg viewBox="0 0 24 24"><path d="M12 22c-4 0-6.5-2.7-6.5-6.2 0-3.3
 
 /* ---------- the growing buddy (original mascot) ---------- */
 const STAGES=[
-  {n:"种子",w:0},{n:"发芽",w:5},{n:"小芽",w:12},{n:"幼苗",w:22},{n:"小树苗",w:35},{n:"小树",w:52},{n:"树",w:75},{n:"大树",w:105},{n:"结花苞",w:145},{n:"开花的树",w:200}
+  {n:"种子",w:0},{n:"发芽",w:6},{n:"小芽",w:16},{n:"幼苗",w:32},{n:"小树",w:60},{n:"大树",w:120},{n:"开花的树",w:200}
 ];
 const MAXW=STAGES[STAGES.length-1].w;
 function stageOf(w){let i=0;STAGES.forEach((s,j)=>{if(w>=s.w)i=j});return i}
 /* each grown tree keeps its own colours */
 const THEMES={
-  lemon:{zh:"柠檬黄",en:"Lemon",body:"#ffe08a",leaf:"#5cc98f",leaf2:"#3faa74",flower:"#ff8fb1"},
+  lemon:{zh:"柠檬黄",en:"Lemon",body:"#ffe08a",leaf:"#5cc98f",leaf2:"#3faa74",flower:"#ffffff"},
   sakura:{zh:"樱花粉",en:"Sakura",body:"#ffc6d8",leaf:"#6fcf97",leaf2:"#4fb07c",flower:"#ff7fa8"},
   mint:{zh:"薄荷绿",en:"Mint",body:"#bdf0d6",leaf:"#3fbf86",leaf2:"#2a9d6a",flower:"#ffe27a"},
   sky:{zh:"天空蓝",en:"Sky",body:"#c4e2ff",leaf:"#4cc3b0",leaf2:"#2fa595",flower:"#7fb2ff"},
   lavender:{zh:"薰衣草",en:"Lavender",body:"#e0d3ff",leaf:"#7ccf9a",leaf2:"#58b07c",flower:"#b493ff"},
   maple:{zh:"秋枫橙",en:"Maple",body:"#ffd3ae",leaf:"#ff9f5a",leaf2:"#ea7a3a",flower:"#ffd34d"},
 };
-const themeStyle=k=>{const t=THEMES[k]||THEMES.lemon;return `--buddy:${t.body};--leaf:${t.leaf};--leaf-2:${t.leaf2};--pink:${t.flower}`};
+const themeStyle=k=>{const t=THEMES[k]||THEMES.lemon;return `--buddy:${t.body};--leaf:${t.leaf};--leaf-2:${t.leaf2};--flower:${t.flower}`};
 function face(mood,x,y,k){
   const ink="var(--buddy-ink)";let e,m,ex="";
   if(mood==="sleepy"){e=`<path d="M-18 0q5 4 10 0M8 0q5 4 10 0" stroke="${ink}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`;m=`<ellipse cx="0" cy="12" rx="3.5" ry="2.8" fill="${ink}"/>`}
@@ -456,9 +462,10 @@ function face(mood,x,y,k){
   ex=`<ellipse cx="-21" cy="9" rx="6" ry="4" fill="var(--pink)" opacity=".75"/><ellipse cx="21" cy="9" rx="6" ry="4" fill="var(--pink)" opacity=".75"/>`;
   return `<g transform="translate(${x} ${y}) scale(${k})">${ex}${e}${m}</g>`;
 }
-const flower=(x,y,r,c="var(--pink)")=>`<g transform="translate(${x} ${y})">${[0,72,144,216,288].map(a=>`<ellipse cx="0" cy="${-r}" rx="${r*.62}" ry="${r*.85}" fill="${c}" transform="rotate(${a})"/>`).join("")}<circle r="${r*.55}" fill="var(--buddy)"/></g>`;
+const flower=(x,y,r,c="var(--flower,var(--pink))")=>`<g transform="translate(${x} ${y})">${[0,72,144,216,288].map(a=>`<ellipse cx="0" cy="${-r}" rx="${r*.62}" ry="${r*.85}" fill="${c}" transform="rotate(${a})"/>`).join("")}<circle r="${r*.55}" fill="var(--buddy)"/></g>`;
 const leaf=(x,y,rot,len,c="var(--leaf)")=>`<path d="M0 0C${len*.35} ${-len*.45} ${len*.8} ${-len*.4} ${len} 0C${len*.8} ${len*.4} ${len*.35} ${len*.45} 0 0Z" fill="${c}" transform="translate(${x} ${y}) rotate(${rot})"/>`;
-function treeSVG(mood,stage,bloom,theme){
+function treeSVG(mood,level,bloom,theme){
+  const stage=[0,1,2,3,5,7,9][level]??level;
   let body="",top=100,fx=80,fy=122,fk=1;
   const blob=(cy,rx,ry)=>`<ellipse cx="80" cy="${cy}" rx="${rx}" ry="${ry}" fill="var(--buddy)"/><path d="M${80-rx*.6} ${cy-ry*.45}q${rx*.2} ${-ry*.35} ${rx*.55} ${-ry*.45}" stroke="#fff" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".7"/>`;
   const canopy=cs=>cs.map(([x,y,r],i)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${i%2?"var(--leaf-2)":"var(--leaf)"}"/>`).join("")+cs.slice(0,1).map(([x,y,r])=>`<path d="M${x-r*.6} ${y-r*.35}q${r*.25} ${-r*.4} ${r*.65} ${-r*.45}" stroke="#fff" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".45"/>`).join("");
@@ -489,7 +496,7 @@ function treeSVG(mood,stage,bloom,theme){
       body+=[[74,44],[104,46],[52,58]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="4.5" fill="var(--danger)"/><path d="M${x} ${y-4}l1.5 -3" stroke="var(--leaf-2)" stroke-width="1.6" stroke-linecap="round"/>`).join("");
     }else if(stage===8){
       // little buds about to open
-      body+=[[58,44],[98,32],[112,62],[72,26],[44,70],[88,60],[120,76]].map(([x,y])=>`<ellipse cx="${x}" cy="${y}" rx="3.2" ry="4.2" fill="var(--pink)"/><path d="M${x-2.6} ${y+2.4}q2.6 2.6 5.2 0" fill="var(--leaf-2)"/>`).join("");
+      body+=[[58,44],[98,32],[112,62],[72,26],[44,70],[88,60],[120,76]].map(([x,y])=>`<ellipse cx="${x}" cy="${y}" rx="3.2" ry="4.2" fill="var(--flower,var(--pink))"/><path d="M${x-2.6} ${y+2.4}q2.6 2.6 5.2 0" fill="var(--leaf-2)"/>`).join("");
       if(bloom)body+=[[64,40],[96,46]].map(([x,y])=>flower(x,y,5.5)).join("");
     }else if(bloom){
       body+=[[64,40],[96,46],[80,30]].map(([x,y])=>flower(x,y,5.5)).join("");
@@ -1293,7 +1300,7 @@ function buildStrings(){
              [["Inbox","Just captured, not planned yet"],["This week","Within 7 days"],["This month","Within the month"],["Long term","Goals that grow slowly"]]);
   HZ.forEach((h,i)=>{h.name=hz[i][0];h.sub=hz[i][1];HZNAME[h.k]=h.name});
   Object.assign(SPACE,L({work:"工作",life:"生活",study:"学习",shop:"购物"},{work:"Work",life:"Life",study:"Study",shop:"Shopping"}));
-  const st=L(["种子","发芽","小芽","幼苗","小树苗","小树","树","大树","结花苞","开花的树"],["Seed","Sprouting","Sprout","Seedling","Sapling","Young tree","Tree","Big tree","Budding tree","Blooming tree"]);
+  const st=L(["种子","发芽","小芽","幼苗","小树","大树","开花的树"],["Seed","Sprouting","Sprout","Seedling","Young tree","Big tree","Blooming tree"]);
   STAGES.forEach((x,i)=>x.n=st[i]);
   PRAISE.splice(0,PRAISE.length,...L(["又搞定一件！","好耶，干得漂亮～","划掉的感觉真好！","你今天很能干嘛！","一步一步来！"],["Another one done!","Yay, nicely done!","Crossing things off feels great!","You're on a roll today!","One step at a time!"]));
   Object.assign(EMPTY,L({inbox:"",week:"这周还空着，想到要做的就丢上来～",month:"这个月的计划还没有，慢慢来。",long:"长期目标可以大胆一点，我陪你一点点拆。"},

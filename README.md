@@ -7,7 +7,7 @@ My "life server": a bilingual (中文 / English) task and habit tracker with a s
 ## What it does
 
 - **Four boards, kept apart**: Habits, Life, Study and Work. Each task sits in Inbox, This week, This month or Long term.
-- **Sprout grows with you**: every finished task waters it with 1 drop and every check-in with 2. It grows from a seed into a blooming tree over ten stages (200 drops), and flowers on days you finish every check-in.
+- **Sprout grows with you**: every finished task waters it with 1 drop and every check-in with 2. It grows from a seed into a blooming tree over seven stages (200 drops), and flowers on days you finish every check-in.
 - **Your forest**: plant each blooming tree in your forest, then start a new seed in a colour you pick: Lemon, Sakura, Mint, Sky, Lavender or Maple.
 - **Quick capture**: tap Sprout in the corner and type something like "Finish my CV by Friday; buy eggs and milk this weekend". It splits the text into tasks, picks a board and works out the dates. Nothing is saved until you confirm.
 - **Shopping list**: save staples you buy often, add them in one tap and tick items off at the shop.
@@ -22,7 +22,7 @@ Everything is stored in your own browser (localStorage). Nothing is uploaded and
 
 ## 中文说明
 
-一个会长大的个人任务和打卡工具。完成任务、打卡就是给小芽浇水，它会从一颗种子经过十个阶段慢慢长成开花的大树。开花后可以把它种进森林，再选一个颜色种下一颗新种子。
+一个会长大的个人任务和打卡工具。完成任务、打卡就是给小芽浇水，它会从一颗种子经过七个阶段慢慢长成开花的大树。开花后可以把它种进森林，再选一个颜色种下一颗新种子。
 
 - 打卡、生活、学习、工作四个板块分开管理，每个板块按收件箱、近期、中期、长期分组
 - 点右下角的小芽随手记，自动拆成几条任务、分到对应板块、换算日期，确认后才保存
