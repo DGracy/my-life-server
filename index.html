@@ -473,6 +473,17 @@ details.done-box .list{margin-top:8px}
 .w-done:hover{background:var(--study);color:#fff;border-style:solid}
 .wish.done{background:color-mix(in srgb,#ffd34d 16%,var(--surface));box-shadow:none}
 .w-star{width:34px;height:34px}.w-star .msface{width:100%;height:100%}
+.task{grid-template-columns:auto 1fr auto auto}
+.pri{width:30px;height:30px;border:none;background:none;padding:0;display:grid;place-items:center;transition:transform .15s}
+.pri svg{width:28px;height:28px}
+.pri:hover{transform:scale(1.12) rotate(-6deg)}
+.task.done .pri{opacity:.35;filter:grayscale(1)}
+.task.p3{box-shadow:inset 3px 0 0 #ef5d6e,var(--shadow)}
+.task.done.p3{box-shadow:none}
+@media (prefers-reduced-motion:no-preference){.task:not(.done) .pri.p3 svg{animation:nudge 2.6s ease-in-out infinite;transform-origin:50% 90%}}
+@keyframes nudge{0%,82%,100%{transform:rotate(0)}86%{transform:rotate(-12deg)}90%{transform:rotate(10deg)}94%{transform:rotate(-6deg)}}
+.chip .psvg{width:18px;height:18px;display:inline-block;vertical-align:-4px;margin-right:2px}
+.chip .psvg svg{width:100%;height:100%}
 /* habits */
 .daycard{display:grid;grid-template-columns:1fr auto;gap:6px 14px;align-items:center;background:var(--surface);border-radius:22px;padding:14px 16px;box-shadow:var(--shadow)}
 .daycard h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:19px}
@@ -736,6 +747,8 @@ function buddyState(){
   const urgent=tasks.filter(t=>!t.done&&!t.deleted&&t.due&&t.due<=todayStr()).length;
   if(h<5)return {...base,mood:"sleepy",say:L(`已经凌晨 ${h} 点啦，记完就去睡吧，事情明天还在～`,`It's ${h} a.m. already. Jot it down and get some sleep, it'll all still be here tomorrow.`)};
   if(bloom)return {...base,mood:"cheer",say:L("今天的打卡全部完成！我开花啦 🌸","All check-ins done today! I'm blooming 🌸")};
+  const hot=tasks.filter(t=>!t.done&&!t.deleted&&+t.pri===3&&on(t.space)).length;
+  if(!urgent&&hot&&h>=5)return {...base,mood:"idle",say:L(`有 ${hot} 件高优先级的事，先挑最红的那个开始吧！`,`${hot} high-priority ${n_(hot,"task is","tasks are")} waiting. Start with a red one!`)};
   if(urgent)return {...base,mood:"idle",say:L(`有 ${urgent} 件今天到期或已经过期，先看看它们？`,`${urgent} ${n_(urgent,"thing is","things are")} due today or overdue. Take a look first?`)};
   if(h<11)return {...base,mood:"happy",say:L("早上好！完成一件事就能给我浇一滴水哦。","Good morning! Every task you finish gives me a drop of water.")};
   if(h<18)return {...base,mood:"idle",say:!on("habit")?L("下午好！完成一件事就能给我浇一滴水哦。","Good afternoon! Every task you finish gives me a drop of water."):done?L(`今天打卡 ${done} 个了，喝饱了～`,`${done} check-in${done===1?"":"s"} today, I'm nicely watered～`):L("下午好，打个卡给我浇点水？","Good afternoon! Check in to give me some water?")};
@@ -829,18 +842,27 @@ function render(){
   setTimeout(maybeRecap,0);
 }
 function emptyBox(text){return `<div class="empty">${miniBuddy()}<span>${text}</span></div>`}
+/* ---------- priority: a little speech bubble on the right of a task ---------- */
+const PRI_NAMES=()=>[L("无","None"),L("低","Low"),L("中","Medium"),L("高","High")];
+function priIcon(p){
+  const c=["","#7fb2ff","#ff9a3d","#ef5d6e"][p], mark=p===1?`<text x="12" y="15.4" font-size="9.5" font-weight="700" text-anchor="middle" fill="#fff" font-family="Fredoka,sans-serif">z</text>`:`<path d="M12 7.4v5" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="15.6" r="1.35" fill="#fff"/>`;
+  return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.6V2.4" stroke="var(--leaf-2)" stroke-width="1.5" stroke-linecap="round"/><path d="M12 3.4c-1.9 0-3-1-3-2.6 1.9 0 2.9 1 3 2.6z" fill="var(--leaf)"/><path d="M12 4.2c4.9 0 8.4 3.2 8.4 7.4s-3.5 7.2-8.4 7.2c-.9 0-1.8-.1-2.6-.3l-3.6 2.3.9-3.6C4.9 15.9 3.6 13.9 3.6 11.6 3.6 7.4 7.1 4.2 12 4.2z" fill="${c}"/>${mark}</svg>`;
+}
+const priLabel=p=>L(["","低优先级","中优先级","高优先级"][p],["","Low priority","Medium priority","High priority"][p]);
 function taskRow(t){
-  const d=dueLabel(t.due);
-  return `<div class="task${t.done?" done":""}">
+  const d=dueLabel(t.due), pr=+t.pri||0;
+  return `<div class="task${t.done?" done":""}${pr?" p"+pr:""}">
     <button class="check${t.done?" on":""}" data-act="toggle" data-id="${t.id}" aria-label="${t.done?L("标记为未完成","Mark as not done"):L("标记为完成","Mark as done")}">${CHECK}</button>
     <button class="t-main" data-act="edit" data-id="${t.id}">
       <span class="t-title">${esc(t.title)}</span>
       ${t.note?`<span class="t-note">${esc(t.note)}</span>`:""}
     </button>
     ${d?`<span class="due ${d.cls}">${d.txt}</span>`:"<span></span>"}
+    ${pr?`<button class="pri p${pr}" data-act="pricycle" data-id="${t.id}" title="${priLabel(pr)}" aria-label="${priLabel(pr)}${L("，点一下换档",", tap to change")}">${priIcon(pr)}</button>`:"<span></span>"}
   </div>`;
 }
 function sortTasks(a,b){
+  const pa=+a.pri||0, pb=+b.pri||0; if(pa!==pb)return pb-pa;
   if(a.due&&b.due)return a.due<b.due?-1:a.due>b.due?1:0;
   if(a.due)return -1; if(b.due)return 1;
   return (b.createdAt||0)-(a.createdAt||0);
@@ -1028,7 +1050,8 @@ function ruleParse(text,today,fallback="life",dayFirst=false){
     else if(has(raw,RULES.week))horizon="week";
     else if(has(raw,RULES.month))horizon="month";
     else if(has(raw,RULES.long))horizon="long";
-    out.push({title:title.slice(0,200),space,horizon,due,note:"",keep:true});
+    const pri=/(紧急|很急|急！|急!|特别重要|非常重要|重要|马上|!!|！！|\burgent\b|\bimportant\b|\basap\b|\bcritical\b|\bpriority\b)/i.test(raw)?3:/(不急|不着急|有空再|随便|\bno rush\b|\bwhenever\b|\bsomeday\b|\blow priority\b)/i.test(raw)?1:0;
+    out.push({title:title.replace(/^(?:紧急|重要)[:：\s]*/,"").replace(/\s*(?:!!|！！)\s*$/,"").replace(/^(?:urgent|important)[:\s]+/i,"").slice(0,200)||title.slice(0,200),space,horizon,due,note:"",pri,keep:true});
   };
   const isTaskish=x=>has(x,RULES.study)||has(x,RULES.work);
   for(const chunk of chunks){
@@ -1546,7 +1569,7 @@ function renderPreview(){
       <div class="chips">
         ${["life","study","work","shop"].filter(on).map(s=>`<button class="chip ${s==="shop"?"life":s}${p.space===s?" on":""}" data-pv="space" data-v="${s}" data-i="${i}">${s==="shop"?"🛒 "+SPACE.shop:SPACE[s]}</button>`).join("")}
         ${p.space==="shop"?"":`<span class="gap"></span>`+HZ.map(h=>`<button class="chip hz${p.horizon===h.k?" on":""}" data-pv="hz" data-v="${h.k}" data-i="${i}">${h.name}</button>`).join("")}
-        ${p.due?`<span class="chip">${L("截止 ","Due ")}${esc(p.due)}</span>`:""}
+        ${p.due?`<span class="chip">${L("截止 ","Due ")}${esc(p.due)}</span>`:""}${p.pri&&p.space!=="shop"?`<button class="chip" data-pv="pri" data-i="${i}" title="${priLabel(p.pri)}"><span class="psvg">${priIcon(p.pri)}</span>${PRI_NAMES()[p.pri]}</button>`:""}
       </div>
     </div></div>`).join("")+
   `<div class="cap-row"><button class="btn primary" id="saveParsed">${L(`保存选中的 ${pending.filter(p=>p.keep).length} 条`,`Save ${pending.filter(p=>p.keep).length} selected`)}</button><button class="btn" id="cancelParsed">${L("取消","Cancel")}</button></div>`;
@@ -1570,6 +1593,7 @@ async function parseCapture(){
 - horizon："week"（7 天内或很快要做）、"month"（一个月内）、"long"（长期目标或没有明确时间的大事）、"inbox"（实在无法判断）
 - due：如果提到具体或相对日期，换算成 YYYY-MM-DD；否则为 null
 - note：用户提到的额外细节，没有则为空字符串
+- pri：优先级，3=高（提到紧急、重要、马上、急、!!、urgent、important），2=中，1=低（提到不急、有空再说、随便），没提到就是 0
 只返回 JSON 数组，不要其他文字。
 
 用户输入：
@@ -1582,7 +1606,7 @@ ${text}`;
       space:["life","shop","study"].includes(x.space)?x.space:"work",
       horizon:HZNAME[x.horizon]?x.horizon:"inbox",
       due:/^\d{4}-\d{2}-\d{2}$/.test(x.due||"")?x.due:null,
-      note:String(x.note||"").slice(0,500),keep:true}));
+      note:String(x.note||"").slice(0,500),pri:[0,1,2,3].includes(+x.pri)?+x.pri:0,keep:true}));
     thinking=false;
     if(pending.length)cheer(`分好啦，一共 ${pending.length} 条，看看对不对？`);
     else $("#capHint").textContent="没分出任务，换个说法试试，或者先丢进收件箱。";
@@ -1594,7 +1618,7 @@ ${text}`;
 }
 async function addTask(t){
   const ref=db.collection("tasks").doc();
-  const body={title:t.title,space:t.space,horizon:t.horizon,due:t.due||null,note:t.note||"",done:false,createdAt:Date.now()};
+  const body={title:t.title,space:t.space,horizon:t.horizon,due:t.due||null,note:t.note||"",pri:+t.pri||0,done:false,createdAt:Date.now()};
   return queued(ref.path,()=>ref.set(body));
 }
 async function addInbox(){
@@ -1738,13 +1762,14 @@ async function wishCameTrue(id,el){
 /* ---------- editor sheet ---------- */
 function openEditor(id,preset){
   const isNew=!id; const t=isNew?null:tasks.find(x=>x.id===id); if(!isNew&&!t)return;
-  const draft=isNew?{title:"",due:"",note:"",space:preset.space,horizon:preset.horizon}:{title:t.title,due:t.due||"",note:t.note||"",space:t.space,horizon:t.horizon};
+  const draft=isNew?{title:"",due:"",note:"",space:preset.space,horizon:preset.horizon,pri:0}:{title:t.title,due:t.due||"",note:t.note||"",space:t.space,horizon:t.horizon,pri:+t.pri||0};
   let confirmDel=false;
   const bg=document.createElement("div"); bg.className="sheet-bg";
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑任务","Edit task")}">
     <h3>${isNew?L("添加一条","Add a task"):L("改一改","Edit")}</h3>
     <label class="field"><span>${isNew?L("要做什么？","What needs doing?"):L("标题","Title")}</span><input id="ed-title" value="${esc(draft.title)}" placeholder="${L("比如：整理 Week 6 笔记","e.g. Tidy up week 6 notes")}"></label>
     <div class="field"><span>${L("时间尺度","Timeframe")}</span><div class="chips">${HZ.map(h=>`<button class="chip hz${draft.horizon===h.k?" on":""}" data-ed="hz" data-v="${h.k}">${h.name}</button>`).join("")}</div></div>
+    <div class="field"><span>${L("优先级","Priority")}</span><div class="chips">${[0,3,2,1].map(v=>`<button class="chip hz${draft.pri===v?" on":""}" data-ed="pri" data-v="${v}">${v?`<span class="psvg">${priIcon(v)}</span>`:""}${PRI_NAMES()[v]}</button>`).join("")}</div></div>
     <label class="field"><span>${L("截止日期","Due date")}</span><input type="date" id="ed-due" value="${esc(draft.due)}"></label>
     <label class="field"><span>${L("备注 / 计划细节","Notes / plan details")}</span><textarea id="ed-note">${esc(draft.note)}</textarea></label>
     <div class="sheet-actions">
@@ -1759,15 +1784,16 @@ function openEditor(id,preset){
     const a=b.dataset.ed; grab();
     if(a==="space"){draft.space=b.dataset.v;draw();return}
     if(a==="hz"){draft.horizon=b.dataset.v;draw();return}
+    if(a==="pri"){draft.pri=+b.dataset.v;draw();return}
     if(a==="close"){bg.remove();return}
     if(a==="del"){if(!confirmDel){confirmDel=true;draw();return}
       bg.remove(); const ref=db.doc("tasks/"+id); queued(ref.path,()=>t.done?ref.update({deleted:true}):ref.delete()); return}
     if(a==="save"){
       if(isNew){const title=draft.title.trim();if(!title){bg.querySelector("#ed-title").focus();return}
-        bg.remove();addTask({title:title.slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,note:draft.note.slice(0,2000)});cheer(L(`加进${SPACE[draft.space]}的「${HZNAME[draft.horizon]}」了～`,`Added to ${SPACE[draft.space]} · ${HZNAME[draft.horizon]}～`));return}
+        bg.remove();addTask({title:title.slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,note:draft.note.slice(0,2000),pri:draft.pri});cheer(L(`加进${SPACE[draft.space]}的「${HZNAME[draft.horizon]}」了～`,`Added to ${SPACE[draft.space]} · ${HZNAME[draft.horizon]}～`));return}
       bg.remove();
       const ref=db.doc("tasks/"+id);
-      queued(ref.path,()=>ref.update({title:(draft.title.trim()||L("未命名","Untitled")).slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,note:draft.note.slice(0,2000)}))}
+      queued(ref.path,()=>ref.update({title:(draft.title.trim()||L("未命名","Untitled")).slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,note:draft.note.slice(0,2000),pri:draft.pri}))}
   });
   bg.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="ed-title"){e.preventDefault();bg.querySelector('[data-ed="save"]').click()}if(e.key==="Escape")bg.remove()});
   bg.querySelector("#ed-title").focus();
@@ -1782,7 +1808,7 @@ document.addEventListener("click",async e=>{
   if(e.target.closest("#plantBtn")){openPlant();return}
   if(e.target.closest("#jbtn")){tab=tab==="journal"?"habit":"journal";if(tab==="journal"){jDate=todayStr();jSaved="";calMonth=null}try{localStorage.setItem("los-tab",tab)}catch(_){};render();window.scrollTo({top:0,behavior:"smooth"});return}
   const pv=e.target.closest("[data-pv]");
-  if(pv&&pv.tagName==="BUTTON"){const p=pending[+pv.dataset.i];if(pv.dataset.pv==="space")p.space=pv.dataset.v;else p.horizon=pv.dataset.v;renderPreview();return}
+  if(pv&&pv.tagName==="BUTTON"){const p=pending[+pv.dataset.i];if(pv.dataset.pv==="space")p.space=pv.dataset.v;else if(pv.dataset.pv==="pri")p.pri={3:2,2:1,1:0}[p.pri]??0;else p.horizon=pv.dataset.v;renderPreview();return}
   const id0=e.target.closest("button")?.id;
   if(id0==="parseBtn")return parseCapture();
   if(id0==="inboxBtn")return addInbox();
@@ -1811,6 +1837,7 @@ document.addEventListener("click",async e=>{
   if(!db)return;
   const id=act.dataset.id;
   if(act.dataset.act==="jai"){aiComment();return}
+  if(act.dataset.act==="pricycle"){const t=tasks.find(x=>x.id===id);if(!t)return;const np={3:2,2:1,1:3}[+t.pri||3];t.pri=np;render();const ref=db.doc("tasks/"+id);queued(ref.path,()=>ref.update({pri:np}));return}
   if(act.dataset.act==="wishkind"){wishKind=act.dataset.v;render();const el=document.getElementById("wishTitle");if(el)el.focus();return}
   if(act.dataset.act==="wishedit"){openWish(id);return}
   if(act.dataset.act==="wishdone"){wishCameTrue(id,act);return}
