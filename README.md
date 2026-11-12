@@ -12,7 +12,7 @@ My "life server": a bilingual (中文 / English) task and habit tracker with a s
 - **Priorities**: mark a task high, medium or low with a little Sprout speech bubble. High ones float to the top, and tapping the bubble changes the level.
 - **Quick capture**: tap Sprout in the corner and type something like "Finish my CV by Friday; buy eggs and milk this weekend". It splits the text into tasks, picks a board and works out the dates. Nothing is saved until you confirm.
 - **Shopping list**: save staples you buy often, add them in one tap and tick items off at the shop.
-- **Notes**: small reusable checklists, like what to pack for a day out. Tick things off, then start over next time with one tap. Pin the ones you use often.
+- **Notes**: small reusable checklists, like what to pack for a day out. Add sub-items under any line, drag to reorder, tick things off, then start over next time with one tap. Pin the ones you use often.
 - **Wishlist**: things to buy, places to go and things to do someday. Track how much you've saved toward a purchase, and when a wish comes true it's added to that day's moments.
 - **Daily recap with a calendar**: see what you finished each day, pick a Sprout face for your mood, write a reflection, and tap any day in the calendar to read it again.
 - **Moments worth remembering**: note the big and small things, like a job offer or your first home-cooked dinner. They light up in gold on the calendar and gather in one list.
