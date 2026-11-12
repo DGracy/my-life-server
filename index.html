@@ -526,7 +526,12 @@ details.done-box .list{margin-top:8px}
 .memo-text{width:100%;min-height:180px;resize:vertical;border:2px solid var(--line);border-radius:14px;background:var(--bg-2);padding:12px 14px;line-height:1.7;font-size:15px}
 .memo-text:focus{outline:none;border-color:var(--habit)}
 .memo.text{background-image:none}
-.memo-title.ph{color:var(--faint);font-family:var(--f-body);font-size:15px}
+.memo-tt{flex:1;min-width:0;border:none;background:transparent;padding:2px 0;font-family:var(--f-display);font-size:19px;color:var(--fg)}
+.memo-tt::placeholder{color:var(--faint)}
+.memo-tt:focus{outline:none;border-bottom:2px solid var(--habit)}
+.memo-del{border:none;background:none;width:28px;height:28px;padding:4px;color:var(--faint);border-radius:8px}
+.memo-del:hover{color:var(--danger)}
+.memo-del.arm{color:#fff;background:var(--danger)}
 .memo-reset{align-self:flex-start;color:var(--habit-ink);padding:0;font-size:13px}
 .grip{border:none;background:none;width:20px;height:28px;padding:0;color:var(--faint);cursor:grab;touch-action:none;display:grid;place-items:center;flex:none}
 .grip svg{width:10px;height:15px}
@@ -1146,6 +1151,7 @@ function moodFace(k){
   return `<svg class="mface" viewBox="0 0 40 40" aria-hidden="true" style="${themeStyle(curTheme)}"><path d="M20 12V7" stroke="var(--leaf-2)" stroke-width="2" stroke-linecap="round"/><path d="M20 9c-3.6 0-6-2-6-5 3.6 0 5.6 2 6 5z" fill="var(--leaf)"/><path d="M20 12c9 0 15 6 15 13.5S29 37 20 37 5 33 5 25.5 11 12 20 12z" fill="var(--buddy)"/><ellipse cx="10" cy="27" rx="2.6" ry="1.7" fill="var(--pink)" opacity=".75"/><ellipse cx="30" cy="27" rx="2.6" ry="1.7" fill="var(--pink)" opacity=".75"/>${F[k]||F.good}</svg>`;
 }
 
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.dataset&&e.target.dataset.memoTitle){e.preventDefault();const tx=document.getElementById("memo-tx-"+e.target.dataset.memoTitle);if(tx)tx.focus();return}});
 document.addEventListener("keydown",e=>{const t=e.target.closest&&e.target.closest(".fs-tree,.fm-dot,.fm-cur");if(t&&(e.key==="Enter"||e.key===" ")){e.preventDefault();t.dispatchEvent(new MouseEvent("click",{bubbles:true}))}});
 /* ---------- milestones ---------- */
 let milestones=[];
@@ -1888,7 +1894,8 @@ const cloneItems=items=>(items||[]).map(x=>({...x,sub:(x.sub||[]).map(y=>({...y}
 function memoCard(m){
   if(m.kind==="text")return `<div class="memo text${m.pinned?" pinned":""}">
     <div class="memo-head">
-      <button class="memo-title${m.title?"":" ph"}" data-act="memoedit" data-id="${m.id}">${esc(m.title||L("点这里起个标题","Tap to add a title"))}</button>
+      <input class="memo-tt" id="memo-tt-${m.id}" data-memo-title="${m.id}" maxlength="60" value="${esc(m.title||"")}" placeholder="${L("标题","Title")}" aria-label="${L("标题","Title")}">
+      <button class="memo-del" data-act="memodelete" data-id="${m.id}" aria-label="${L("删除这张备忘","Delete this note")}" title="${L("删除","Delete")}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <button class="memo-pin${m.pinned?" on":""}" data-act="memopin" data-id="${m.id}" aria-label="${m.pinned?L("取消置顶","Unpin"):L("置顶","Pin")}" title="${m.pinned?L("取消置顶","Unpin"):L("置顶","Pin")}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3z" fill="currentColor"/><path d="M12 14v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     </div>
     <textarea class="memo-text" id="memo-tx-${m.id}" data-memo-text="${m.id}" maxlength="10000" placeholder="${L("想写什么就写什么……","Write whatever you like…")}" aria-label="${L("备忘内容","Note text")}">${esc(m.body||"")}</textarea>
@@ -1929,7 +1936,7 @@ async function memoNew(kind){
   const ref=db.collection("memos").doc();
   await queued(ref.path,()=>ref.set(kind==="blank"?{kind:"text",title:"",body:"",pinned:false,createdAt:Date.now(),updatedAt:Date.now()}
     :{title:t[1],items:t[2].map(x=>({t:x,done:false,sub:[]})),note:"",pinned:false,createdAt:Date.now(),updatedAt:Date.now()}));
-  setTimeout(()=>{const el=document.getElementById((kind==="blank"?"memo-tx-":"memo-in-")+ref.id);if(el)el.focus()},120);
+  setTimeout(()=>{const el=document.getElementById((kind==="blank"?"memo-tt-":"memo-in-")+ref.id);if(el)el.focus()},120);
 }
 function memoUpdate(id,patch){
   const m=memos.find(x=>x.id===id); if(!m||!db)return;
@@ -2039,6 +2046,9 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="pricycle"){const t=tasks.find(x=>x.id===id);if(!t)return;const np={3:2,2:1,1:3}[+t.pri||3];t.pri=np;render();const ref=db.doc("tasks/"+id);queued(ref.path,()=>ref.update({pri:np}));return}
   if(act.dataset.act==="memonew"){memoNew(act.dataset.v);return}
   if(act.dataset.act==="memoedit"){openMemo(id);return}
+  if(act.dataset.act==="memodelete"){
+    if(act.dataset.confirm!=="1"){act.dataset.confirm="1";act.classList.add("arm");act.title=L("再点一次删除","Tap again to delete");setTimeout(()=>{if(document.body.contains(act)){act.dataset.confirm="";act.classList.remove("arm")}},2500);return}
+    const ref=db.doc("memos/"+id);queued(ref.path,()=>ref.delete());return}
   if(act.dataset.act==="memopin"){const m=memos.find(x=>x.id===id);if(m)memoUpdate(id,{pinned:!m.pinned});return}
   if(act.dataset.act==="memoitem"||act.dataset.act==="memoitemdel"){const m=memos.find(x=>x.id===id);if(!m)return;const items=cloneItems(m.items),i=+act.dataset.i;
     if(act.dataset.act==="memoitem")items[i].done=!items[i].done;else items.splice(i,1);
@@ -2101,6 +2111,10 @@ $("#buddy").addEventListener("click",()=>cheer((lang==="en"?["Hehe, that tickles
 document.addEventListener("change",e=>{if(e.target.id==="wishCur"){wishCur=e.target.value;try{localStorage.setItem("los-cur",wishCur)}catch(_){}}});
 let memoTxTimer={};
 document.addEventListener("input",e=>{
+  if(e.target.dataset&&e.target.dataset.memoTitle&&db){const id=e.target.dataset.memoTitle, v=e.target.value, m=memos.find(x=>x.id===id); if(m)m.title=v;
+    const sv=document.getElementById("memo-sv-"+id); if(sv)sv.textContent=L("正在保存…","Saving…");
+    clearTimeout(memoTxTimer["t"+id]); memoTxTimer["t"+id]=setTimeout(()=>{const ref=db.doc("memos/"+id);queued(ref.path,()=>ref.update({title:v.trim().slice(0,60),updatedAt:Date.now()})).then(()=>{const el=document.getElementById("memo-sv-"+id);if(el)el.textContent=L("已保存 ✓","Saved ✓")}).catch(()=>{})},700);
+    return}
   if(e.target.dataset&&e.target.dataset.memoText&&db){const id=e.target.dataset.memoText, v=e.target.value, m=memos.find(x=>x.id===id); if(m)m.body=v;
     const sv=document.getElementById("memo-sv-"+id); if(sv)sv.textContent=L("正在保存…","Saving…");
     clearTimeout(memoTxTimer[id]); memoTxTimer[id]=setTimeout(()=>{const ref=db.doc("memos/"+id);queued(ref.path,()=>ref.update({body:v.slice(0,10000),updatedAt:Date.now()})).then(()=>{const el=document.getElementById("memo-sv-"+id);if(el)el.textContent=L("已保存 ✓","Saved ✓")}).catch(()=>{})},700);
