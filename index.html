@@ -497,8 +497,12 @@ details.done-box .list{margin-top:8px}
 .memo-items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
 .memo-items li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:6px 0;border-top:1px dashed var(--line)}
 .memo-items li:first-child{border-top:none}
-.memo-items li span{overflow-wrap:anywhere;min-width:0}
-.memo-items li.done span{color:var(--faint);text-decoration:line-through}
+.mi-text,.item .nm{border:none;background:none;padding:2px 0;text-align:left;font:inherit;color:inherit;overflow-wrap:anywhere;min-width:0;cursor:text;border-radius:6px}
+.mi-text:hover,.item .nm:hover{background:var(--bg-2)}
+.memo-items li.done .mi-text{color:var(--faint);text-decoration:line-through}
+.inline-edit{width:100%;min-width:0;border:2px solid var(--brand);border-radius:8px;background:var(--surface);padding:3px 8px;font:inherit;color:var(--fg)}
+.inline-edit:focus{outline:none}
+
 .mi-check{width:22px;height:22px;border-radius:7px;border:2px solid var(--habit);background:transparent;padding:0;display:grid;place-items:center}
 .memo-items li.done .mi-check{background:var(--habit)}
 .mi-check svg{width:12px;height:12px;stroke:#fff;stroke-width:3.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
@@ -848,6 +852,7 @@ function setStatus(t){const el=$("#status");el.textContent=t||"";el.hidden=!t}
 
 /* ---------- rendering ---------- */
 function render(){
+  if(inlineEditing){renderPending=true;return}
   applyBoards();
   document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.k===tab)));
   const open=k=>tasks.filter(t=>t.space===k&&!t.done&&!t.deleted).length;
@@ -910,7 +915,7 @@ function shopBoard(){
   const got=shop.filter(x=>x.bought).sort((a,b)=>(a.boughtAt||0)-(b.boughtAt||0));
   const row=x=>`<div class="item${x.bought?" got":""}">
       <button class="check${x.bought?" on":""}" data-act="shopbuy" data-id="${x.id}" aria-label="${x.bought?L("标记为没买","Mark as not bought"):L("标记为已买","Mark as bought")}">${CHECK}</button>
-      <span class="nm">${esc(x.name)}</span>
+      <button class="nm" data-act="shopedittext" data-id="${x.id}" title="${L("点一下修改","Tap to edit")}">${esc(x.name)}</button>
       <button class="star${stapleNames.has(x.name.trim().toLowerCase())?" on":""}" data-act="shopstar" data-id="${x.id}" aria-label="${L("设为常买","Save as a staple")}">★</button>
       <button class="del" data-act="shopdel" data-id="${x.id}" aria-label="${L("从清单删除","Remove from list")}">×</button></div>`;
   return `<div class="card">
@@ -1787,6 +1792,19 @@ async function wishCameTrue(id,el){
   cheer(L(`「${w.title}」实现啦！我把它记进了今天值得记住的大小事 🌟`,`“${w.title}” came true! I've saved it as one of today's moments 🌟`),"cheer");
 }
 
+/* ---------- edit a line of text in place ---------- */
+let inlineEditing=false, renderPending=false;
+function inlineEdit(el,value,onSave){
+  if(inlineEditing)return;
+  inlineEditing=true;
+  const inp=document.createElement("input"); inp.type="text"; inp.className="inline-edit"; inp.value=value; inp.maxLength=80;
+  el.replaceWith(inp); inp.focus(); inp.select();
+  let done=false;
+  const finish=save=>{if(done)return;done=true;inlineEditing=false;const v=inp.value.trim();
+    if(save&&v&&v!==value)onSave(v.slice(0,80)); renderPending=false; render()};
+  inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();finish(true)}else if(e.key==="Escape"){e.preventDefault();finish(false)}});
+  inp.addEventListener("blur",()=>finish(true));
+}
 /* ---------- memos: small reusable checklists and notes ---------- */
 let memos=[];
 const MEMO_TEMPLATES=()=>[
@@ -1802,7 +1820,7 @@ function memoCard(m){
       ${items.length?`<span class="memo-count${done===items.length?" all":""}">${done}/${items.length}</span>`:""}
       <button class="memo-pin${m.pinned?" on":""}" data-act="memopin" data-id="${m.id}" aria-label="${m.pinned?L("取消置顶","Unpin"):L("置顶","Pin")}" title="${m.pinned?L("取消置顶","Unpin"):L("置顶","Pin")}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3z" fill="currentColor"/><path d="M12 14v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     </div>
-    ${items.length?`<ul class="memo-items">${items.map((x,i)=>`<li class="${x.done?"done":""}"><button class="mi-check" data-act="memoitem" data-id="${m.id}" data-i="${i}" aria-label="${x.done?L("取消勾选","Untick"):L("勾选","Tick")}">${x.done?CHECK:""}</button><span>${esc(x.t)}</span><button class="mi-del" data-act="memoitemdel" data-id="${m.id}" data-i="${i}" aria-label="${L("删掉这一条","Remove this item")}">×</button></li>`).join("")}</ul>`:""}
+    ${items.length?`<ul class="memo-items">${items.map((x,i)=>`<li class="${x.done?"done":""}"><button class="mi-check" data-act="memoitem" data-id="${m.id}" data-i="${i}" aria-label="${x.done?L("取消勾选","Untick"):L("勾选","Tick")}">${x.done?CHECK:""}</button><button class="mi-text" data-act="memoedittext" data-id="${m.id}" data-i="${i}" title="${L("点一下修改","Tap to edit")}">${esc(x.t)}</button><button class="mi-del" data-act="memoitemdel" data-id="${m.id}" data-i="${i}" aria-label="${L("删掉这一条","Remove this item")}">×</button></li>`).join("")}</ul>`:""}
     <form class="memo-add" data-memo="${m.id}"><input type="text" id="memo-in-${m.id}" maxlength="80" placeholder="${L("加一条，回车保存","Add an item, press Enter")}" aria-label="${L("新条目","New item")}"></form>
     ${m.note?`<p class="memo-note">${esc(m.note)}</p>`:""}
     ${done?`<button class="link memo-reset" data-act="memoreset" data-id="${m.id}">↺ ${L("全部重来（取消所有勾选）","Start over (untick all)")}</button>`:""}
@@ -1935,6 +1953,10 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="memoitem"||act.dataset.act==="memoitemdel"){const m=memos.find(x=>x.id===id);if(!m)return;const items=(m.items||[]).map(x=>({...x})),i=+act.dataset.i;
     if(act.dataset.act==="memoitem")items[i].done=!items[i].done;else items.splice(i,1);
     memoUpdate(id,{items});if(act.dataset.act==="memoitem"&&items.length&&items.every(x=>x.done))cheer(L(`「${m.title||"备忘"}」都准备好啦！`,`“${m.title||"Note"}” is all set!`));return}
+  if(act.dataset.act==="memoedittext"){const m=memos.find(x=>x.id===id);if(!m)return;const i=+act.dataset.i;
+    inlineEdit(act,(m.items[i]||{}).t||"",v=>{const items=(m.items||[]).map(x=>({...x}));if(items[i]){items[i].t=v;memoUpdate(id,{items})}});return}
+  if(act.dataset.act==="shopedittext"){const x=shop.find(y=>y.id===id);if(!x)return;
+    inlineEdit(act,x.name,v=>{x.name=v;const ref=db.doc("shop/"+id);queued(ref.path,()=>ref.update({name:v}))});return}
   if(act.dataset.act==="memoreset"){const m=memos.find(x=>x.id===id);if(m)memoUpdate(id,{items:(m.items||[]).map(x=>({...x,done:false}))});return}
   if(act.dataset.act==="wishkind"){wishKind=act.dataset.v;render();const el=document.getElementById("wishTitle");if(el)el.focus();return}
   if(act.dataset.act==="wishedit"){openWish(id);return}
