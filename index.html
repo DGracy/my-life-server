@@ -523,6 +523,10 @@ details.done-box .list{margin-top:8px}
 .memo-add input{width:100%;border:none;border-bottom:2px dashed var(--line);background:transparent;padding:6px 2px;font-size:14px}
 .memo-add input:focus{outline:none;border-bottom-color:var(--habit)}
 .memo-note{margin:0;font-size:13.5px;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere;background:var(--bg-2);border-radius:12px;padding:8px 10px}
+.memo-text{width:100%;min-height:180px;resize:vertical;border:2px solid var(--line);border-radius:14px;background:var(--bg-2);padding:12px 14px;line-height:1.7;font-size:15px}
+.memo-text:focus{outline:none;border-color:var(--habit)}
+.memo.text{background-image:none}
+.memo-title.ph{color:var(--faint);font-family:var(--f-body);font-size:15px}
 .memo-reset{align-self:flex-start;color:var(--habit-ink);padding:0;font-size:13px}
 .grip{border:none;background:none;width:20px;height:28px;padding:0;color:var(--faint);cursor:grab;touch-action:none;display:grid;place-items:center;flex:none}
 .grip svg{width:10px;height:15px}
@@ -1882,6 +1886,14 @@ const MEMO_TEMPLATES=()=>[
 let memoSubOpen=null; // "memoId:index" of the item whose sub-item box is open
 const cloneItems=items=>(items||[]).map(x=>({...x,sub:(x.sub||[]).map(y=>({...y}))}));
 function memoCard(m){
+  if(m.kind==="text")return `<div class="memo text${m.pinned?" pinned":""}">
+    <div class="memo-head">
+      <button class="memo-title${m.title?"":" ph"}" data-act="memoedit" data-id="${m.id}">${esc(m.title||L("点这里起个标题","Tap to add a title"))}</button>
+      <button class="memo-pin${m.pinned?" on":""}" data-act="memopin" data-id="${m.id}" aria-label="${m.pinned?L("取消置顶","Unpin"):L("置顶","Pin")}" title="${m.pinned?L("取消置顶","Unpin"):L("置顶","Pin")}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3z" fill="currentColor"/><path d="M12 14v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+    <textarea class="memo-text" id="memo-tx-${m.id}" data-memo-text="${m.id}" maxlength="10000" placeholder="${L("想写什么就写什么……","Write whatever you like…")}" aria-label="${L("备忘内容","Note text")}">${esc(m.body||"")}</textarea>
+    <span class="saved" id="memo-sv-${m.id}"></span>
+  </div>`;
   const items=m.items||[];
   let total=0, done=0; items.forEach(x=>{total++;if(x.done)done++;(x.sub||[]).forEach(y=>{total++;if(y.done)done++})});
   const row=(x,i)=>{
@@ -1906,7 +1918,7 @@ function memoCard(m){
 function memoBoard(){
   const list=[...memos].sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.updatedAt||b.createdAt||0)-(a.updatedAt||a.createdAt||0));
   return `<div class="card memo-top">
-      <div class="card-head"><h3>${L("备忘录","Notes")}</h3><span class="sub">${L("出门要带的、临时要记的，都放这里，下次还能接着用","Packing lists and little things to remember, ready to reuse next time")}</span></div>
+      <div class="card-head"><h3>${L("备忘录","Notes")}</h3></div>
       <div class="memo-new"><span class="hint">${L("新建：","New:")}</span>${MEMO_TEMPLATES().map(([k,n])=>`<button class="chip hz" data-act="memonew" data-v="${k}">＋ ${n}</button>`).join("")}</div>
     </div>
     ${list.length?`<div class="memo-grid">${list.map(memoCard).join("")}</div>`:emptyBox(L("还没有备忘。点上面的「出门清单」试试，常带的东西已经帮你列好了。","No notes yet. Try “Heading out” above; the usual things are already listed for you."))}`;
@@ -1915,8 +1927,9 @@ async function memoNew(kind){
   if(!db)return;
   const t=MEMO_TEMPLATES().find(x=>x[0]===kind)||MEMO_TEMPLATES()[2];
   const ref=db.collection("memos").doc();
-  await queued(ref.path,()=>ref.set({title:kind==="blank"?"":t[1],items:t[2].map(x=>({t:x,done:false})),note:"",pinned:false,createdAt:Date.now(),updatedAt:Date.now()}));
-  setTimeout(()=>{const el=document.getElementById("memo-in-"+ref.id);if(kind==="blank")openMemo(ref.id);else if(el)el.focus()},120);
+  await queued(ref.path,()=>ref.set(kind==="blank"?{kind:"text",title:"",body:"",pinned:false,createdAt:Date.now(),updatedAt:Date.now()}
+    :{title:t[1],items:t[2].map(x=>({t:x,done:false,sub:[]})),note:"",pinned:false,createdAt:Date.now(),updatedAt:Date.now()}));
+  setTimeout(()=>{const el=document.getElementById((kind==="blank"?"memo-tx-":"memo-in-")+ref.id);if(el)el.focus()},120);
 }
 function memoUpdate(id,patch){
   const m=memos.find(x=>x.id===id); if(!m||!db)return;
@@ -1931,7 +1944,7 @@ function openMemo(id){
     bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑备忘","Edit note")}">
     <h3>${L("改一改这张备忘","Edit this note")}</h3>
     <label class="field"><span>${L("标题","Title")}</span><input id="me-title" maxlength="60" placeholder="${L("比如：周六去 Brighton","e.g. Saturday in Brighton")}"></label>
-    <label class="field"><span>${L("备注","Notes")}</span><textarea id="me-note" maxlength="2000" placeholder="${L("地址、集合时间、要提醒自己的话……","An address, a meeting time, a reminder to yourself…")}"></textarea></label>
+    <label class="field"${m.kind==="text"?" hidden":""}><span>${L("备注","Notes")}</span><textarea id="me-note" maxlength="2000" placeholder="${L("地址、集合时间、要提醒自己的话……","An address, a meeting time, a reminder to yourself…")}"></textarea></label>
     <div class="sheet-actions"><button class="btn danger" data-me="del">${confirmDel?L("再点一次确认删除","Tap again to delete"):L("删除这张备忘","Delete note")}</button>
       <span style="display:flex;gap:8px"><button class="btn" data-me="close">${L("取消","Cancel")}</button><button class="btn primary" data-me="save">${L("保存","Save")}</button></span></div></div>`;
     bg.querySelector("#me-title").value=tv; bg.querySelector("#me-note").value=nv};
@@ -1940,7 +1953,7 @@ function openMemo(id){
     const b=e.target.closest("[data-me]"); if(!b)return; const a=b.dataset.me;
     if(a==="close"){bg.remove();return}
     if(a==="del"){if(!confirmDel){confirmDel=true;draw();return}bg.remove();const ref=db.doc("memos/"+id);queued(ref.path,()=>ref.delete());return}
-    if(a==="save"){const title=bg.querySelector("#me-title").value.trim().slice(0,60), note=bg.querySelector("#me-note").value.slice(0,2000);bg.remove();memoUpdate(id,{title,note})}});
+    if(a==="save"){const title=bg.querySelector("#me-title").value.trim().slice(0,60), note=bg.querySelector("#me-note").value.slice(0,2000);bg.remove();memoUpdate(id,m.kind==="text"?{title}:{title,note})}});
   bg.addEventListener("keydown",e=>{if(e.key==="Escape")bg.remove();if(e.key==="Enter"&&e.target.id==="me-title"){e.preventDefault();bg.querySelector('[data-me="save"]').click()}});
   bg.querySelector("#me-title").focus();
 }
@@ -2086,7 +2099,12 @@ document.addEventListener("click",async e=>{
 });
 $("#buddy").addEventListener("click",()=>cheer((lang==="en"?["Hehe, that tickles～",`I'm Sprout, ${userName?userName+"'s":"your"} little tree.`,"Keep watering me and I'll grow big and bloom!","Remember to eat well today!"]:["嘿嘿，戳我干嘛～",`我是小芽，${userName||"你"}的小树。`,"多浇水，我会长成大树开花的！","今天也要好好吃饭！"])[Math.floor(Math.random()*4)]));
 document.addEventListener("change",e=>{if(e.target.id==="wishCur"){wishCur=e.target.value;try{localStorage.setItem("los-cur",wishCur)}catch(_){}}});
+let memoTxTimer={};
 document.addEventListener("input",e=>{
+  if(e.target.dataset&&e.target.dataset.memoText&&db){const id=e.target.dataset.memoText, v=e.target.value, m=memos.find(x=>x.id===id); if(m)m.body=v;
+    const sv=document.getElementById("memo-sv-"+id); if(sv)sv.textContent=L("正在保存…","Saving…");
+    clearTimeout(memoTxTimer[id]); memoTxTimer[id]=setTimeout(()=>{const ref=db.doc("memos/"+id);queued(ref.path,()=>ref.update({body:v.slice(0,10000),updatedAt:Date.now()})).then(()=>{const el=document.getElementById("memo-sv-"+id);if(el)el.textContent=L("已保存 ✓","Saved ✓")}).catch(()=>{})},700);
+    return}
   if(e.target.dataset&&e.target.dataset.jnote&&db){
     const d=e.target.dataset.jnote, v=e.target.value; jSaved=L("正在保存…","Saving…"); const sv=$("#jsaved"); if(sv)sv.textContent=jSaved;
     clearTimeout(noteTimer); noteTimer=setTimeout(()=>{saveJournal(d,{note:v}).then(()=>{jSaved=L("已保存 ✓","Saved ✓");const el=$("#jsaved");if(el)el.textContent=jSaved}).catch(()=>{})},900);
