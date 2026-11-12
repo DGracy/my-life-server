@@ -484,6 +484,30 @@ details.done-box .list{margin-top:8px}
 @keyframes nudge{0%,82%,100%{transform:rotate(0)}86%{transform:rotate(-12deg)}90%{transform:rotate(10deg)}94%{transform:rotate(-6deg)}}
 .chip .psvg{width:18px;height:18px;display:inline-block;vertical-align:-4px;margin-right:2px}
 .chip .psvg svg{width:100%;height:100%}
+.memo-new{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.memo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.memo{background:var(--surface);border-radius:20px;padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;min-width:0;background-image:linear-gradient(180deg,color-mix(in srgb,var(--habit) 10%,var(--surface)) 0 46px,transparent 46px)}
+.memo.pinned{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--habit) 55%,transparent),var(--shadow)}
+.memo-head{display:flex;align-items:center;gap:8px;min-height:24px}
+.memo-title{flex:1;min-width:0;border:none;background:none;padding:0;text-align:left;font-family:var(--f-display);font-size:18px;overflow-wrap:anywhere}
+.memo-count{font-family:var(--f-num);font-size:12.5px;background:var(--surface-2);border-radius:999px;padding:0 8px;color:var(--muted)}
+.memo-count.all{background:var(--life-soft);color:var(--life-ink)}
+.memo-pin{border:none;background:none;width:28px;height:28px;padding:4px;color:var(--faint);transform:rotate(30deg)}
+.memo-pin.on{color:var(--habit-ink);transform:none}
+.memo-items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.memo-items li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:6px 0;border-top:1px dashed var(--line)}
+.memo-items li:first-child{border-top:none}
+.memo-items li span{overflow-wrap:anywhere;min-width:0}
+.memo-items li.done span{color:var(--faint);text-decoration:line-through}
+.mi-check{width:22px;height:22px;border-radius:7px;border:2px solid var(--habit);background:transparent;padding:0;display:grid;place-items:center}
+.memo-items li.done .mi-check{background:var(--habit)}
+.mi-check svg{width:12px;height:12px;stroke:#fff;stroke-width:3.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.mi-del{border:none;background:none;color:var(--faint);font-size:17px;padding:0 4px;line-height:1;opacity:.6}
+.mi-del:hover{color:var(--danger);opacity:1}
+.memo-add input{width:100%;border:none;border-bottom:2px dashed var(--line);background:transparent;padding:6px 2px;font-size:14px}
+.memo-add input:focus{outline:none;border-bottom-color:var(--habit)}
+.memo-note{margin:0;font-size:13.5px;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere;background:var(--bg-2);border-radius:12px;padding:8px 10px}
+.memo-reset{align-self:flex-start;color:var(--habit-ink);padding:0;font-size:13px}
 /* habits */
 .daycard{display:grid;grid-template-columns:1fr auto;gap:6px 14px;align-items:center;background:var(--surface);border-radius:22px;padding:14px 16px;box-shadow:var(--shadow)}
 .daycard h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:19px}
@@ -603,9 +627,9 @@ const L=(zh,en)=>lang==="en"?en:zh;
 
 /* ---------- which boards are switched on (per browser) ---------- */
 const BOARDS_KEY="lifeos-boards";
-const boards={habit:true,life:true,study:true,work:true,shop:true,wish:true};
+const boards={habit:true,life:true,study:true,work:true,shop:true,wish:true,memo:true};
 try{Object.assign(boards,JSON.parse(localStorage.getItem(BOARDS_KEY)||"{}"))}catch(e){}
-const on=k=>k==="shop"||k==="wish"?boards.life&&boards[k]:!!boards[k];
+const on=k=>k==="shop"||k==="wish"||k==="memo"?boards.life&&boards[k]:!!boards[k];
 const taskSpaces=()=>["life","study","work"].filter(on);
 const pickSpace=()=>taskSpaces().includes(tab)?tab:taskSpaces()[0];
 function applyBoards(){
@@ -613,7 +637,7 @@ function applyBoards(){
   document.querySelectorAll(".tab").forEach(b=>b.hidden=!on(b.dataset.k));
   const nav=document.querySelector("nav.tabs"); if(nav)nav.style.gridTemplateColumns=`repeat(${order.length},1fr)`;
   if(tab!=="journal"&&tab!=="forest"&&!on(tab))tab=order[0];
-  if((lifeSub==="shop"||lifeSub==="wish")&&!on(lifeSub))lifeSub="goals";
+  if(lifeSub!=="goals"&&!on(lifeSub))lifeSub="goals";
   const fab=document.getElementById("fab"); if(fab)fab.hidden=!taskSpaces().length;
 }
 const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -708,9 +732,9 @@ function miniBuddy(){return `<svg viewBox="0 0 120 120" style="${themeStyle(curT
 let db=null, sample=null;
 let tasks=[], habits=[], checkins={}, shop=[], staples=[], trips=[], journal={};
 let jDate=null, jBusy=false, jSaved="", noteTimer=null;
-let tab="habit", loaded={t:false,h:false,c:false,s:false,f:false,w:false,y:false,m:false,wi:false};
+let tab="habit", loaded={t:false,h:false,c:false,s:false,f:false,w:false,y:false,m:false,wi:false,me:false};
 let pending=[], flash=null, flashTimer=null, thinking=false, lifeSub="shop", pick=new Set(), stapleEdit=false;
-try{const s=localStorage.getItem("los-tab");if(s&&["work","life","study","habit","journal","forest"].includes(s))tab=s;const l=localStorage.getItem("los-life");if(l==="goals"||l==="shop"||l==="wish")lifeSub=l}catch(e){}
+try{const s=localStorage.getItem("los-tab");if(s&&["work","life","study","habit","journal","forest"].includes(s))tab=s;const l=localStorage.getItem("los-life");if(l==="goals"||l==="shop"||l==="wish"||l==="memo")lifeSub=l}catch(e){}
 
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -870,7 +894,7 @@ function sortTasks(a,b){
 const EMPTY={};
 const LIFE_HZ={};
 function lifeSeg(){
-  const subs=[["shop",sproutIcon("shop"),L("购物清单","Shopping"),shop.filter(x=>!x.bought).length],["goals",sproutIcon("goals"),L("目标","Goals"),tasks.filter(t=>t.space==="life"&&!t.done&&!t.deleted).length],["wish",sproutIcon("wish"),L("愿望清单","Wishlist"),wishes.filter(w=>!w.done).length]].filter(x=>x[0]==="goals"||on(x[0]));
+  const subs=[["shop",sproutIcon("shop"),L("购物","Shop"),shop.filter(x=>!x.bought).length],["memo",sproutIcon("memo"),L("备忘","Notes"),memos.length],["goals",sproutIcon("goals"),L("目标","Goals"),tasks.filter(t=>t.space==="life"&&!t.done&&!t.deleted).length],["wish",sproutIcon("wish"),L("愿望","Wishes"),wishes.filter(w=>!w.done).length]].filter(x=>x[0]==="goals"||on(x[0]));
   if(subs.length<2)return "";
   return `<div class="seg" role="group" aria-label="${L("生活分区","Life sections")}" style="grid-template-columns:repeat(${subs.length},1fr)">
     ${subs.map(([k,ic,n,c])=>`<button data-act="lifesub" data-v="${k}" aria-pressed="${lifeSub===k}">${ic}${n} <span class="n">${c}</span></button>`).join("")}</div>`;
@@ -908,6 +932,7 @@ function shopBoard(){
     <p class="hint">${L("每完成一趟采购，小芽喝 1 滴水。","Each finished shopping trip gives Sprout 1 drop of water.")}</p>`;
 }
 function taskBoard(k){
+  if(k==="life"&&lifeSub==="memo")return `<div class="board" data-k="life">${lifeSeg()}${loaded.me?memoBoard():emptyBox(L("正在读取备忘录…","Loading your notes…"))}</div>`;
   if(k==="life"&&lifeSub==="wish")return `<div class="board" data-k="life">${lifeSeg()}${loaded.wi?wishBoard():emptyBox(L("正在读取愿望清单…","Loading your wishlist…"))}</div>`;
   if(k==="life"&&lifeSub==="shop")return `<div class="board" data-k="life">${lifeSeg()}${loaded.s?shopBoard():emptyBox(L("正在读取购物清单…","Loading your shopping list…"))}</div>`;
   if(!loaded.t)return `<div class="board" data-k="${k}">${emptyBox(L("正在读取"+SPACE[k]+"任务…","Loading "+SPACE[k].toLowerCase()+" tasks…"))}</div>`;
@@ -1661,6 +1686,9 @@ function sproutIcon(kind){
   }else if(kind==="wish"){ // eyes closed, making a wish under a shooting star
     face=`<path d="M11 22q3 3 6 0M23 22q3 3 6 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M18 28q2 1.6 4 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
     front=`<path d="M25 9l8-6" stroke="#ffd34d" stroke-width="1.6" stroke-linecap="round" opacity=".8"/><path d="M34 2.2l1 2.4 2.5.4-1.9 1.7.5 2.5-2.1-1.3-2.2 1.2.6-2.5-1.8-1.8 2.5-.3z" fill="#f2b705"/>`;
+  }else if(kind==="memo"){ // hugging a little notepad, pencil ready
+    face=dots+`<path d="M17 27.6q3 2.4 6 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+    front=`<rect x="22" y="25" width="13" height="14" rx="2" fill="#fff" stroke="var(--line)" stroke-width="1"/><path d="M24.5 29h8M24.5 32h8M24.5 35h5" stroke="var(--study)" stroke-width="1.3" stroke-linecap="round"/><path d="M36.5 20.5l-6 6" stroke="var(--habit)" stroke-width="2.6" stroke-linecap="round"/><path d="M30.5 26.5l-1 1.6 1.6-1" stroke="var(--buddy-ink)" stroke-width="1.2" stroke-linecap="round"/>`;
   }else if(kind==="buy"){ // heart eyes and a shopping bag
     face=heart(14,21)+heart(26,21)+smile;
     front=`<path d="M28 28.5q0-4 3.5-4t3.5 4" stroke="var(--buddy-ink)" stroke-width="1.4" fill="none"/><rect x="26" y="28" width="11" height="10" rx="2" fill="var(--pink)"/><path d="M29 31.5h5" stroke="#fff" stroke-width="1.2" stroke-linecap="round" opacity=".7"/>`;
@@ -1759,6 +1787,69 @@ async function wishCameTrue(id,el){
   cheer(L(`「${w.title}」实现啦！我把它记进了今天值得记住的大小事 🌟`,`“${w.title}” came true! I've saved it as one of today's moments 🌟`),"cheer");
 }
 
+/* ---------- memos: small reusable checklists and notes ---------- */
+let memos=[];
+const MEMO_TEMPLATES=()=>[
+  ["out",L("出门清单","Heading out"),L(["钥匙","手机","学生卡 / Oyster 卡","耳机","充电宝","雨伞"],["Keys","Phone","Student card / Oyster","Headphones","Power bank","Umbrella"])],
+  ["trip",L("旅行打包","Trip packing"),L(["护照 / 签证","充电器和转换插头","换洗衣服","洗漱包","常用药","银行卡和一点现金"],["Passport / visa","Chargers and adapter","Change of clothes","Toiletries","Medicine","Cards and some cash"])],
+  ["blank",L("空白","Blank"),[]],
+];
+function memoCard(m){
+  const items=m.items||[], done=items.filter(x=>x.done).length;
+  return `<div class="memo${m.pinned?" pinned":""}">
+    <div class="memo-head">
+      <button class="memo-title" data-act="memoedit" data-id="${m.id}">${esc(m.title||L("未命名备忘","Untitled note"))}</button>
+      ${items.length?`<span class="memo-count${done===items.length?" all":""}">${done}/${items.length}</span>`:""}
+      <button class="memo-pin${m.pinned?" on":""}" data-act="memopin" data-id="${m.id}" aria-label="${m.pinned?L("取消置顶","Unpin"):L("置顶","Pin")}" title="${m.pinned?L("取消置顶","Unpin"):L("置顶","Pin")}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3z" fill="currentColor"/><path d="M12 14v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+    ${items.length?`<ul class="memo-items">${items.map((x,i)=>`<li class="${x.done?"done":""}"><button class="mi-check" data-act="memoitem" data-id="${m.id}" data-i="${i}" aria-label="${x.done?L("取消勾选","Untick"):L("勾选","Tick")}">${x.done?CHECK:""}</button><span>${esc(x.t)}</span><button class="mi-del" data-act="memoitemdel" data-id="${m.id}" data-i="${i}" aria-label="${L("删掉这一条","Remove this item")}">×</button></li>`).join("")}</ul>`:""}
+    <form class="memo-add" data-memo="${m.id}"><input type="text" id="memo-in-${m.id}" maxlength="80" placeholder="${L("加一条，回车保存","Add an item, press Enter")}" aria-label="${L("新条目","New item")}"></form>
+    ${m.note?`<p class="memo-note">${esc(m.note)}</p>`:""}
+    ${done?`<button class="link memo-reset" data-act="memoreset" data-id="${m.id}">↺ ${L("全部重来（取消所有勾选）","Start over (untick all)")}</button>`:""}
+  </div>`;
+}
+function memoBoard(){
+  const list=[...memos].sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.updatedAt||b.createdAt||0)-(a.updatedAt||a.createdAt||0));
+  return `<div class="card memo-top">
+      <div class="card-head"><h3>${L("备忘录","Notes")}</h3><span class="sub">${L("出门要带的、临时要记的，都放这里，下次还能接着用","Packing lists and little things to remember, ready to reuse next time")}</span></div>
+      <div class="memo-new"><span class="hint">${L("新建：","New:")}</span>${MEMO_TEMPLATES().map(([k,n])=>`<button class="chip hz" data-act="memonew" data-v="${k}">＋ ${n}</button>`).join("")}</div>
+    </div>
+    ${list.length?`<div class="memo-grid">${list.map(memoCard).join("")}</div>`:emptyBox(L("还没有备忘。点上面的「出门清单」试试，常带的东西已经帮你列好了。","No notes yet. Try “Heading out” above; the usual things are already listed for you."))}`;
+}
+async function memoNew(kind){
+  if(!db)return;
+  const t=MEMO_TEMPLATES().find(x=>x[0]===kind)||MEMO_TEMPLATES()[2];
+  const ref=db.collection("memos").doc();
+  await queued(ref.path,()=>ref.set({title:kind==="blank"?"":t[1],items:t[2].map(x=>({t:x,done:false})),note:"",pinned:false,createdAt:Date.now(),updatedAt:Date.now()}));
+  setTimeout(()=>{const el=document.getElementById("memo-in-"+ref.id);if(kind==="blank")openMemo(ref.id);else if(el)el.focus()},120);
+}
+function memoUpdate(id,patch){
+  const m=memos.find(x=>x.id===id); if(!m||!db)return;
+  Object.assign(m,patch); render();
+  const ref=db.doc("memos/"+id); return queued(ref.path,()=>ref.update({...patch,updatedAt:Date.now()}));
+}
+function openMemo(id){
+  const m=memos.find(x=>x.id===id); if(!m||!db)return;
+  let confirmDel=false;
+  const bg=document.createElement("div"); bg.className="sheet-bg";
+  const draw=()=>{const tv=bg.querySelector("#me-title")?.value??m.title??"", nv=bg.querySelector("#me-note")?.value??m.note??"";
+    bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑备忘","Edit note")}">
+    <h3>${L("改一改这张备忘","Edit this note")}</h3>
+    <label class="field"><span>${L("标题","Title")}</span><input id="me-title" maxlength="60" placeholder="${L("比如：周六去 Brighton","e.g. Saturday in Brighton")}"></label>
+    <label class="field"><span>${L("备注","Notes")}</span><textarea id="me-note" maxlength="2000" placeholder="${L("地址、集合时间、要提醒自己的话……","An address, a meeting time, a reminder to yourself…")}"></textarea></label>
+    <div class="sheet-actions"><button class="btn danger" data-me="del">${confirmDel?L("再点一次确认删除","Tap again to delete"):L("删除这张备忘","Delete note")}</button>
+      <span style="display:flex;gap:8px"><button class="btn" data-me="close">${L("取消","Cancel")}</button><button class="btn primary" data-me="save">${L("保存","Save")}</button></span></div></div>`;
+    bg.querySelector("#me-title").value=tv; bg.querySelector("#me-note").value=nv};
+  draw(); document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}
+    const b=e.target.closest("[data-me]"); if(!b)return; const a=b.dataset.me;
+    if(a==="close"){bg.remove();return}
+    if(a==="del"){if(!confirmDel){confirmDel=true;draw();return}bg.remove();const ref=db.doc("memos/"+id);queued(ref.path,()=>ref.delete());return}
+    if(a==="save"){const title=bg.querySelector("#me-title").value.trim().slice(0,60), note=bg.querySelector("#me-note").value.slice(0,2000);bg.remove();memoUpdate(id,{title,note})}});
+  bg.addEventListener("keydown",e=>{if(e.key==="Escape")bg.remove();if(e.key==="Enter"&&e.target.id==="me-title"){e.preventDefault();bg.querySelector('[data-me="save"]').click()}});
+  bg.querySelector("#me-title").focus();
+}
+
 /* ---------- editor sheet ---------- */
 function openEditor(id,preset){
   const isNew=!id; const t=isNew?null:tasks.find(x=>x.id===id); if(!isNew&&!t)return;
@@ -1838,6 +1929,13 @@ document.addEventListener("click",async e=>{
   const id=act.dataset.id;
   if(act.dataset.act==="jai"){aiComment();return}
   if(act.dataset.act==="pricycle"){const t=tasks.find(x=>x.id===id);if(!t)return;const np={3:2,2:1,1:3}[+t.pri||3];t.pri=np;render();const ref=db.doc("tasks/"+id);queued(ref.path,()=>ref.update({pri:np}));return}
+  if(act.dataset.act==="memonew"){memoNew(act.dataset.v);return}
+  if(act.dataset.act==="memoedit"){openMemo(id);return}
+  if(act.dataset.act==="memopin"){const m=memos.find(x=>x.id===id);if(m)memoUpdate(id,{pinned:!m.pinned});return}
+  if(act.dataset.act==="memoitem"||act.dataset.act==="memoitemdel"){const m=memos.find(x=>x.id===id);if(!m)return;const items=(m.items||[]).map(x=>({...x})),i=+act.dataset.i;
+    if(act.dataset.act==="memoitem")items[i].done=!items[i].done;else items.splice(i,1);
+    memoUpdate(id,{items});if(act.dataset.act==="memoitem"&&items.length&&items.every(x=>x.done))cheer(L(`「${m.title||"备忘"}」都准备好啦！`,`“${m.title||"Note"}” is all set!`));return}
+  if(act.dataset.act==="memoreset"){const m=memos.find(x=>x.id===id);if(m)memoUpdate(id,{items:(m.items||[]).map(x=>({...x,done:false}))});return}
   if(act.dataset.act==="wishkind"){wishKind=act.dataset.v;render();const el=document.getElementById("wishTitle");if(el)el.focus();return}
   if(act.dataset.act==="wishedit"){openWish(id);return}
   if(act.dataset.act==="wishdone"){wishCameTrue(id,act);return}
@@ -1895,6 +1993,9 @@ document.addEventListener("input",e=>{
   if(pv.dataset.pv==="keep"){p.keep=pv.checked;const b=$("#saveParsed");if(b)b.textContent=L(`保存选中的 ${pending.filter(x=>x.keep).length} 条`,`Save ${pending.filter(x=>x.keep).length} selected`)}
 });
 document.addEventListener("submit",async e=>{
+  if(e.target.dataset&&e.target.dataset.memo){e.preventDefault();const id=e.target.dataset.memo, inp=e.target.querySelector("input"), t=inp.value.trim(); if(!t)return;
+    const m=memos.find(x=>x.id===id); if(!m)return; inp.value="";
+    memoUpdate(id,{items:[...(m.items||[]).map(x=>({...x})),{t:t.slice(0,80),done:false}]}); setTimeout(()=>{const el=document.getElementById("memo-in-"+id);if(el)el.focus()},30); return}
   if(e.target.id==="wishForm"){e.preventDefault();if(!db)return;
     const title=$("#wishTitle").value.trim(); if(!title){$("#wishTitle").focus();return}
     const pr=$("#wishPrice"), price=wishKind==="buy"&&pr&&pr.value!==""?Math.max(0,+pr.value):null;
@@ -2018,8 +2119,8 @@ function seed(){
 
 /* ---------- settings: name, backup, restore ---------- */
 function boardChips(){
-  return [["habit","打卡","Habits"],["life","生活","Life"],["shop","🛒 购物清单","🛒 Shopping list"],["wish","✨ 愿望清单","✨ Wishlist"],["study","学习","Study"],["work","工作","Work"]]
-    .map(([k,zh,en])=>{const off=(k==="shop"||k==="wish")&&!boards.life;
+  return [["habit","打卡","Habits"],["life","生活","Life"],["shop","🛒 购物清单","🛒 Shopping list"],["memo","📝 备忘录","📝 Notes"],["wish","✨ 愿望清单","✨ Wishlist"],["study","学习","Study"],["work","工作","Work"]]
+    .map(([k,zh,en])=>{const off=(k==="shop"||k==="wish"||k==="memo")&&!boards.life;
       return `<button class="chip hz${boards[k]&&!off?" on":""}" data-set="board" data-v="${k}" ${off?'disabled style="opacity:.45"':""} aria-pressed="${boards[k]&&!off}">${boards[k]&&!off?"✓ ":""}${L(zh,en)}</button>`}).join("");
 }
 function langChips(attr="data-set"){return [["zh","中文"],["en","English"]].map(([k,n])=>`<button class="chip hz${lang===k?" on":""}" ${attr}="lang" data-v="${k}">${n}</button>`).join("")}
@@ -2052,7 +2153,7 @@ function openSettings(){
     if(a==="signout"){bg.remove();if(fb)fb.auth.signOut();return}
     if(a==="board"){
       const k=b.dataset.v, mains=["habit","life","study","work"].filter(x=>boards[x]);
-      if(k!=="shop"&&k!=="wish"&&boards[k]&&mains.length===1){const el=bg.querySelector("#board-msg");if(el)el.textContent=L("至少要保留一个板块哦。","Keep at least one board on.");return}
+      if(!["shop","wish","memo"].includes(k)&&boards[k]&&mains.length===1){const el=bg.querySelector("#board-msg");if(el)el.textContent=L("至少要保留一个板块哦。","Keep at least one board on.");return}
       boards[k]=!boards[k]; try{localStorage.setItem(BOARDS_KEY,JSON.stringify(boards))}catch(_){}
       const n=bg.querySelector("#set-name").value; draw(); bg.querySelector("#set-name").value=n; render(); return}
     if(a==="lang"){const n=bg.querySelector("#set-name").value;setLang(b.dataset.v);draw();bg.querySelector("#set-name").value=n;return}
@@ -2110,7 +2211,7 @@ const FIREBASE_CONFIG={
   appId:"1:1053547899054:web:49caab221ae4f4171c253f"
 };
 const FB_VER="10.12.2";
-const COLS=["tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes"];
+const COLS=["tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","memos"];
 const CLOUD_KEY="lifeos-cloud-uid";
 let fb=null, cloudUser=null, cloudState=FIREBASE_CONFIG?"loading":"off"; // off | loading | unavailable | signedout | signedin
 let localDB=null, unsubs=[];
@@ -2153,7 +2254,7 @@ function makeCloudDB(uid){
 function startData(store){
   unsubs.forEach(u=>{try{u()}catch(_){}}); unsubs=[];
   db=store;
-  tasks=[];habits=[];checkins={};shop=[];staples=[];trips=[];journal={};milestones=[];weekly={};yearly={};wishes=[];forest=[];curTheme="lemon";
+  tasks=[];habits=[];checkins={};shop=[];staples=[];trips=[];journal={};milestones=[];weekly={};yearly={};wishes=[];memos=[];forest=[];curTheme="lemon";
   for(const k in loaded)loaded[k]=false; recapChecked=false; lastStage=null; lastBuddy="";
   const fail=e=>{if(e&&e.code==="permission-denied")setStatus(L("没有权限读取数据，请重新登录。","No permission to read your data. Please sign in again."))};
   const sub=(c,fn,q)=>unsubs.push((q||db.collection(c)).onSnapshot(fn,fail));
@@ -2166,6 +2267,7 @@ function startData(store){
   sub("milestones",s=>{milestones=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.m=true;render()});
   sub("weekly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());weekly=m;if(ok(s))loaded.w=true;render()});
   sub("yearly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());yearly=m;if(ok(s))loaded.y=true;render()});
+  sub("memos",s=>{memos=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.me=true;render()});
   sub("wishes",s=>{wishes=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.wi=true;render()});
   sub("forest",s=>{forest=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.f=true;render()});
   sub("garden",s=>{const g=s.docs.find(d=>d.id==="current");if(g&&THEMES[g.data().theme])curTheme=g.data().theme;render()});
@@ -2177,7 +2279,7 @@ function startData(store){
   setTimeout(()=>{if(db===store){let ch=false;for(const k in loaded)if(!loaded[k]){loaded[k]=true;ch=true}if(ch)render()}},4000);
   render(); renderSync();
 }
-const realLocalCount=d=>{let n=0;for(const c of ["tasks","checkins","journal","milestones","wishes","shop","forest","trips"])for(const id in (d[c]||{}))if(!/^ex\d/.test(id))n++;return n};
+const realLocalCount=d=>{let n=0;for(const c of ["tasks","checkins","journal","milestones","wishes","shop","forest","trips","memos"])for(const id in (d[c]||{}))if(!/^ex\d/.test(id))n++;return n};
 async function onSignedIn(user){
   cloudUser=user; cloudState="signedin";
   try{localStorage.setItem(CLOUD_KEY,user.uid)}catch(_){}

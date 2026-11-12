@@ -12,6 +12,7 @@ My "life server": a bilingual (中文 / English) task and habit tracker with a s
 - **Priorities**: mark a task high, medium or low with a little Sprout speech bubble. High ones float to the top, and tapping the bubble changes the level.
 - **Quick capture**: tap Sprout in the corner and type something like "Finish my CV by Friday; buy eggs and milk this weekend". It splits the text into tasks, picks a board and works out the dates. Nothing is saved until you confirm.
 - **Shopping list**: save staples you buy often, add them in one tap and tick items off at the shop.
+- **Notes**: small reusable checklists, like what to pack for a day out. Tick things off, then start over next time with one tap. Pin the ones you use often.
 - **Wishlist**: things to buy, places to go and things to do someday. Track how much you've saved toward a purchase, and when a wish comes true it's added to that day's moments.
 - **Daily recap with a calendar**: see what you finished each day, pick a Sprout face for your mood, write a reflection, and tap any day in the calendar to read it again.
 - **Moments worth remembering**: note the big and small things, like a job offer or your first home-cooked dinner. They light up in gold on the calendar and gather in one list.
@@ -34,6 +35,7 @@ Firebase isn't reachable from mainland China, so there the app keeps working in 
 - 任务可以设高、中、低优先级，用小芽气泡标在右边，高优先级自动排在最前面
 - 点右下角的小芽随手记，自动拆成几条任务、分到对应板块、换算日期，确认后才保存
 - 生活板块里有购物清单，常买的东西点一下就加进去
+- 还有备忘录：可以反复使用的小清单，比如出门要带的东西，勾完一键重来，常用的可以置顶
 - 还有愿望清单：想买的、想去的、想做的都可以放进去，想买的东西能记攒钱进度；愿望实现时会自动记进当天值得记住的大小事
 - 今日小结汇总当天完成的事，小芽会写一段鼓励，你也可以选心情、写感想；用月历点任意一天就能回看
 - 可以记下「值得记住的大小事」（比如拿到 offer、第一次自己做饭），日历上那天会变成金色，所有大小事也会汇总在一起
