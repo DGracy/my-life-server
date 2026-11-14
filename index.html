@@ -558,6 +558,20 @@ details.done-box .list{margin-top:8px}
 .dots{display:flex;gap:4px;flex-wrap:wrap}
 .dot{width:13px;height:13px;border-radius:50%;background:var(--surface-2)}
 .dot.on{background:var(--habit)}
+.hday{display:flex;align-items:center;gap:8px;background:var(--surface);border-radius:18px;padding:6px 8px;box-shadow:var(--shadow);flex-wrap:wrap}
+.hday>button:not(.hd-today){border:none;background:var(--surface-2);border-radius:999px;width:34px;height:34px;font-size:17px;color:var(--muted);padding:0}
+.hday>button:disabled{opacity:.35;cursor:default}
+.hd-name{flex:1;text-align:center;font-size:14px;color:var(--muted)}
+.hd-name b{font-family:var(--f-display);font-weight:400;font-size:18px;color:var(--fg);margin-right:4px}
+.hd-today{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:13px;color:var(--habit-ink)}
+.hd-note{margin:-6px 4px 0;font-size:13px;color:var(--habit-ink)}
+.daycard.past{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--habit) 45%,transparent),var(--shadow)}
+.dot{border:none;padding:0;cursor:pointer;width:13px;height:13px;flex:none;appearance:none;-webkit-appearance:none;font:inherit;line-height:0}
+.habit .dots{gap:3px;flex-wrap:nowrap}
+.dot:hover{transform:scale(1.25)}
+.dot.sel{box-shadow:inset 0 0 0 2.5px var(--habit-ink)}
+.habit .dot.today{box-shadow:inset 0 0 0 2px var(--habit)}
+.habit .dot.today.on{box-shadow:inset 0 0 0 2px var(--habit-ink)}
 .dot.today{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--habit)}
 .streak{display:flex;flex-direction:column;align-items:center;min-width:48px}
 .streak b{font-family:var(--f-num);font-weight:600;font-size:22px;font-variant-numeric:tabular-nums;line-height:1;color:var(--habit-ink)}
@@ -988,24 +1002,37 @@ function streakOf(id){
   while((checkins[d]||{})[id]){n++;d=addDays(d,-1)}
   return n;
 }
+let hDay=null; // the day the stamps check in for; null means today
+const BACKFILL_DAYS=30;
 function habitBoard(){
-  const t=todayStr(); const td=checkins[t]||{};
-  const {live,done}=habitStats(); live.sort((a,b)=>(a.order||0)-(b.order||0));
+  const t=todayStr(); if(hDay&&(hDay>t||hDay<addDays(t,-BACKFILL_DAYS)))hDay=null;
+  const day=hDay||t, past=day!==t, td=checkins[day]||{};
+  const {live}=habitStats(); live.sort((a,b)=>(a.order||0)-(b.order||0));
+  const done=live.filter(h=>td[h.id]).length;
   const pct=live.length?Math.round(done/live.length*100):0;
+  const [,dm,dd]=day.split("-").map(Number), wdi=new Date(day+"T12:00:00").getDay();
+  const dayName=day===t?L("今天","Today"):day===addDays(t,-1)?L("昨天","Yesterday"):day===addDays(t,-2)?L("前天","2 days ago"):L(`周${WD[wdi]}`,WDEN[wdi]);
   const days=[...Array(14)].map((_,i)=>addDays(t,i-13));
   const rows=live.map(h=>{
     const s=streakOf(h.id);
     return `<div class="habit">
-      <button class="stamp${td[h.id]?" on":""}" data-act="hcheck" data-id="${h.id}" aria-label="${esc(h.name)} ${L("今日打卡","check in today")}">${STAR}</button>
+      <button class="stamp${td[h.id]?" on":""}" data-act="hcheck" data-id="${h.id}" aria-label="${esc(h.name)} ${past?L(`补 ${dm}月${dd}日的打卡`,`check in for ${dd} ${MON[dm-1]}`):L("今日打卡","check in today")}">${STAR}</button>
       <div class="h-main">
         <span class="h-name">${esc(h.name)}</span>
-        <div class="dots" aria-label="${L("最近 14 天","Last 14 days")}">${days.map(d=>`<span class="dot${(checkins[d]||{})[h.id]?" on":""}${d===t?" today":""}" title="${d}"></span>`).join("")}</div>
+        <div class="dots" aria-label="${L("最近 14 天","Last 14 days")}">${days.map(d=>`<button class="dot${(checkins[d]||{})[h.id]?" on":""}${d===t?" today":""}${past&&d===day?" sel":""}" data-act="hdot" data-id="${h.id}" data-v="${d}" title="${d}" aria-label="${esc(h.name)} ${d}${(checkins[d]||{})[h.id]?L(" 已打卡"," checked in"):""}"></button>`).join("")}</div>
         <button class="h-del" data-act="hdel" data-id="${h.id}">${L("移除","Remove")}</button>
       </div>
       <div class="streak">${s?FLAME:""}<b>${s}</b><small>${L("连续天","day streak")}</small></div>
     </div>`}).join("");
   return `<div class="board" data-k="habit">
-    <div class="daycard"><h3>${L("今天的能量","Today's energy")}</h3><span class="big">${done}<span style="font-size:16px;color:var(--muted)"> / ${live.length}</span></span><div class="bar"><i style="width:${pct}%"></i></div></div>
+    <div class="hday" role="group" aria-label="${L("选择打卡日期","Pick a day to check in")}">
+      <button data-act="hday" data-v="-1" ${day<=addDays(t,-BACKFILL_DAYS)?"disabled":""} aria-label="${L("前一天","Previous day")}">‹</button>
+      <span class="hd-name"><b>${dayName}</b> ${L(`${dm}月${dd}日`,`${dd} ${MON[dm-1]}`)}</span>
+      <button data-act="hday" data-v="1" ${past?"":"disabled"} aria-label="${L("后一天","Next day")}">›</button>
+      ${past?`<button class="hd-today" data-act="hday" data-v="0">${L("回到今天","Back to today")}</button>`:""}
+    </div>
+    ${past?`<p class="hd-note">${L(`正在给 ${dm}月${dd}日补打卡。补的打卡一样算进连续天数，也会给小芽浇水。`,`Checking in for ${dd} ${MON[dm-1]}. Late check-ins still count toward your streak and water Sprout.`)}</p>`:""}
+    <div class="daycard${past?" past":""}"><h3>${past?L(`${dayName}的打卡`,`${dayName}'s check-ins`):L("今天的能量","Today's energy")}</h3><span class="big">${done}<span style="font-size:16px;color:var(--muted)"> / ${live.length}</span></span><div class="bar"><i style="width:${pct}%"></i></div></div>
     <div class="list">${!loaded.h?emptyBox(L("正在读取打卡项…","Loading check-ins…")):rows||emptyBox(L('还没有打卡项。加一个每天想坚持的小习惯，比如"背 30 个单词"。','No check-ins yet. Add a small daily habit, like "30 minutes of reading".'))}</div>
     <form class="habit-add" id="habitForm"><input id="habitName" placeholder="${L("新的每日小习惯","New daily habit")}" maxlength="40" aria-label="${L("新的每日小习惯","New daily habit")}"><button class="btn" type="submit">${L("添加","Add")}</button></form>
     <p class="hint">${L("完成一件任务浇 1 滴水，打一次卡浇 2 滴水，水攒够了小芽就会长大。当天打卡全部完成，它会开花。","Each finished task is 1 drop of water and each check-in is 2. Sprout grows as the water adds up, and blooms on days you finish every check-in.")}</p>
@@ -2037,6 +2064,7 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="recap"){openRecap(act.dataset.kind,act.dataset.kind==="year"?+act.dataset.v:act.dataset.v);return}
   if(act.dataset.act==="calprev"){shiftMonth(-1);return}
   if(act.dataset.act==="calnext"){shiftMonth(1);return}
+  if(act.dataset.act==="hday"){const v=+act.dataset.v;hDay=v===0?null:addDays(hDay||todayStr(),v);if(hDay===todayStr())hDay=null;render();return}
   if(act.dataset.act==="jprev"){jDate=addDays(jDate||todayStr(),-1);calMonth=null;jSaved="";render();return}
   if(act.dataset.act==="jnext"){const n=addDays(jDate||todayStr(),1);if(n<=todayStr()){jDate=n;calMonth=null;jSaved="";render()}return}
   if(act.dataset.act==="lifesub"){lifeSub=act.dataset.v;try{localStorage.setItem("los-life",lifeSub)}catch(_){};render();return}
@@ -2093,12 +2121,13 @@ document.addEventListener("click",async e=>{
     const ref=db.doc("tasks/"+id);queued(ref.path,()=>ref.update({done:nd,doneAt:nd?Date.now():null}))
   }
   if(act.dataset.act==="edit")openEditor(id);
-  if(act.dataset.act==="hcheck"){
-    const t=todayStr(); const cur={...(checkins[t]||{})}; const on=!cur[id];
+  if(act.dataset.act==="hcheck"||act.dataset.act==="hdot"){
+    const t=act.dataset.act==="hdot"?act.dataset.v:(hDay||todayStr()); if(t>todayStr())return;
+    const late=t!==todayStr(); const cur={...(checkins[t]||{})}; const on=!cur[id];
     if(on)cur[id]=true;else delete cur[id];
     checkins[t]=cur;
     if(on){const r=act.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,[css("--habit"),css("--buddy"),css("--pink"),css("--leaf")]);
-      water(act,2);const {live,done}=habitStats(); cheer(done===live.length?L("全部打完卡！我开花啦 🌸","All checked in! I'm blooming 🌸"):L(`打卡成功，咕嘟咕嘟喝了 2 滴水！`,`Checked in! Glug glug, +2 drops!`), done===live.length?"cheer":"happy")}
+      water(act,2);const {live,done}=habitStats(); if(late){const hn=(habits.find(h=>h.id===id)||{}).name||"";const [,lm,ld]=t.split("-").map(Number);cheer(L(`补上了！${lm}月${ld}日的「${hn}」，+2 滴水`,`Done! “${hn}” for ${ld} ${MON[lm-1]} is in, +2 drops`),"happy")}else cheer(done===live.length?L("全部打完卡！我开花啦 🌸","All checked in! I'm blooming 🌸"):L(`打卡成功，咕嘟咕嘟喝了 2 滴水！`,`Checked in! Glug glug, +2 drops!`), done===live.length?"cheer":"happy")}
     render();
     const ref=db.doc("checkins/"+t); queued(ref.path,()=>ref.set({date:t,done:cur}));
   }
