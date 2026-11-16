@@ -3003,8 +3003,8 @@ function journalView(){
   const comment=J.comment||"";
   return `<div class="board" data-k="journal">
     ${calendarCard(d)}
-    <div class="jnav"><button data-act="jprev" aria-label="${L("前一天","Previous day")}">‹</button><h2>${L(label+"的小结",label==="Today"||label==="Yesterday"?label+"'s recap":"Recap · "+label)}<small>${L(`${m}月${dd}日 · 周${wd}`,`${WDEN[wdIdx]}, ${dd} ${MON[m-1]}`)}</small></h2><button data-act="jnext" aria-label="${L("后一天","Next day")}" ${d>=t?"disabled":""}>›</button></div>
     ${milestoneCard(d)}
+    <div class="jnav"><button data-act="jprev" aria-label="${L("前一天","Previous day")}">‹</button><h2>${L(label+"的小结",label==="Today"||label==="Yesterday"?label+"'s recap":"Recap · "+label)}<small>${L(`${m}月${dd}日 · 周${wd}`,`${WDEN[wdIdx]}, ${dd} ${MON[m-1]}`)}</small></h2><button data-act="jnext" aria-label="${L("后一天","Next day")}" ${d>=t?"disabled":""}>›</button></div>
     <div class="jstats" style="grid-template-columns:repeat(${Math.min(["habit","life","study","work"].filter(on).length,4)},1fr)">
       ${on("habit")?`<div class="jstat"><b style="color:var(--habit-ink)">${D.hNames.length}<span style="font-size:13px"> / ${D.hTotal}</span></b><span>${L("打卡","Check-in")}</span></div>`:""}
       ${on("life")?`<div class="jstat"><b style="color:var(--life-ink)">${D.life.length}</b><span>${L("生活","Life")}</span></div>`:""}
