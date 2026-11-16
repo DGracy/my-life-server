@@ -409,7 +409,13 @@ body.pomo-open{overflow:hidden}
 .fadd{display:flex;gap:8px;flex-wrap:wrap}.fadd input{flex:1 1 180px}
 .when{display:inline-flex;align-items:center;gap:4px;border:2px solid var(--line);background:var(--surface);color:var(--fg);border-radius:14px;padding:7px 10px;font:inherit;font-size:14px;white-space:nowrap;cursor:pointer}
 @media(max-width:520px){.fridge .fadd input{flex:1 1 100%}.fridge .fadd .btn{flex:1}}
-.fi .fx.minus{font-family:var(--f-num);font-size:12.5px;font-weight:700;color:var(--life-ink);padding:4px 7px}
+.fi .cnt{display:inline-grid;place-items:center;min-width:20px;height:20px;box-sizing:border-box;border-radius:999px;background:var(--surface-2);color:var(--fg);font-family:var(--f-num);font-size:12px;font-weight:700;padding:0 6px;align-self:center}
+.fi.open{box-shadow:inset 0 0 0 2px var(--life)}
+.fpop{display:flex;align-items:center;gap:8px;background:var(--surface-2);border-radius:14px;padding:6px 10px;flex-wrap:wrap}.fpop>b{font-size:14px}
+.stp{display:inline-flex;align-items:center;border:2px solid var(--line);border-radius:999px;overflow:hidden}.stp button{border:none;background:none;color:var(--fg);font:inherit;font-size:16px;width:32px;height:30px;cursor:pointer}.stp>b,.stp>span{min-width:44px;text-align:center;font-size:14px;font-weight:700}
+.fpop .done{border:2px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:3px 12px;font:inherit;font-size:13px}.fpop .lk{border:none;background:none;font:inherit;font-size:13px;color:var(--brand);padding:4px 6px}.wq{font-size:13px;font-weight:700;color:var(--life-ink)}
+.fprev{display:flex;flex-direction:column;gap:6px}.fprev .lbl{font-size:12px;color:var(--muted)}.pv{display:flex;gap:6px;flex-wrap:wrap}.pv .pc{display:inline-flex;align-items:center;gap:8px;background:var(--bg-2);border:2px dashed var(--line);border-radius:12px;padding:3px 4px 3px 10px;font-size:13.5px}
+.pv .stp{border:none;gap:2px}.pv .stp button{background:var(--surface-2);border-radius:8px;width:26px;height:26px;font-size:14px}.pv .stp>span{min-width:36px;font-size:12.5px;color:var(--life-ink)}.pv .wq{padding-right:6px}
 .when.frz.on{border-color:#6cc4ff;background:color-mix(in srgb,#6cc4ff 18%,var(--surface));color:var(--fg)}
 .titlein{border:none;border-bottom:2px solid var(--line);background:none;font-family:var(--f-display);font-size:22px;color:var(--fg);padding:2px 0 6px;width:100%;outline:none}.titlein:focus{border-bottom-color:var(--brand)}
 .shelfset{display:flex;flex-direction:column;gap:6px}.shelfset label{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px;color:var(--fg)}.shelfset select{width:auto;min-width:120px;padding:5px 32px 5px 10px;font-size:14px}
@@ -1617,12 +1623,21 @@ function fridgeCard(){
   if(old.length){const names=old.slice(0,2).map(x=>x.name);const dish=meals.find(m=>(m.ing||[]).some(i=>names.some(n=>norm(n)===norm(i))));
     tip=`<div class="ftip">${SF.happy}<span>${L(`${names.map(esc).join("和")}${old.some(x=>fridgeAge(x).cls==="bad")?"该处理一下啦":old.length===1?`放了 ${fridgeAge(old[0]).d} 天啦`:"放了好几天啦"}，${dish?`今天要不要做 <b>${esc(dish.name)}</b>？`:"记得早点吃掉～"}`,`${names.map(esc).join(" and ")} ${names.length>1?"have":"has"} been in a while. ${dish?`How about <b>${esc(dish.name)}</b> today?`:"Try to use them up soon～"}`)}</span></div>`}
   return `<div class="card fridge"><div class="fhd"><span class="fic">${FI.FRIDGE}</span><h3>${L("冰箱里有啥","In the fridge")}</h3><span class="sub">${list.length?L(`${list.length} 样`,`${list.length} ${n_(list.length,"item","items")}`):""}</span></div>
-    ${list.length?`<div class="fitems">${list.map(x=>{const a=fridgeAge(x);return `<span class="fi ${a.cls}"><button class="fn" data-fd="fedit" data-id="${x.id}">${esc(x.name)}${x.qty?`<small>${esc(qtyTxt(x.qty))} ·</small>`:""}<small class="ag">${a.txt}</small></button>${(()=>{const c=qtyCount(x.qty);return c&&c.n>1?`<button class="fx minus" data-fd="fminus" data-id="${x.id}" aria-label="${L(`${x.name} 用掉一${c.u||"个"}`,`Use one ${x.name}`)}">−1</button>`:`<button class="fx" data-fd="fdel" data-id="${x.id}" aria-label="${L(`${x.name} 吃完了`,`Used up ${x.name}`)}">×</button>`})()}</span>`}).join("")}</div>`:`<p class="hint" style="margin:0">${L("买回来的菜放进来，{pet}帮你记着放了几天。","Add what you put in the fridge and {pet} will keep track of how long it's been there.")}</p>`}
+    ${list.length?`<div class="fitems">${list.map(x=>{const a=fridgeAge(x);const qb=x.qty&&String(x.qty)!=="1"?`<span class="cnt">${esc(String(x.qty))}</span>`:"";return `<span class="fi ${a.cls}${fOpen===x.id?" open":""}"><button class="fn" data-fd="fopen" data-id="${x.id}" aria-expanded="${fOpen===x.id}">${esc(x.name)}${qb}<small class="ag">${a.txt}</small></button><button class="fx" data-fd="fdel" data-id="${x.id}" aria-label="${L(`${x.name} 吃完了`,`Used up ${x.name}`)}">×</button></span>`}).join("")}</div>${fPop(list)}`:`<p class="hint" style="margin:0">${L("买回来的菜放进来，{pet}帮你记着放了几天。","Add what you put in the fridge and {pet} will keep track of how long it's been there.")}</p>`}
     ${tip}
-    <form class="fadd" id="fridgeForm"><input id="fridgeIn" maxlength="200" placeholder="${L("放进了什么？比如：西兰花、土豆 2kg","What went in? e.g. broccoli, potatoes 2kg")}" aria-label="${L("放进冰箱的东西","Fridge items")}"><button class="when" type="button" data-fd="fwhen" aria-expanded="${fWhenOpen}">${fDateLabel(fridgeDate)} ▾</button><button class="when frz${fFrozen?" on":""}" type="button" data-fd="ffrozen" aria-pressed="${fFrozen}">${fFrozen?"✓ ":""}${L("冷冻","Frozen")}</button><button class="btn life" type="submit">${L("放进冰箱","Add")}</button></form>
+    <form class="fadd" id="fridgeForm"><input id="fridgeIn" maxlength="200" value="${esc(fInVal)}" placeholder="${L("放进了什么？比如：2盒酸奶、西兰花、土豆 2kg","What went in? e.g. 2 yogurts, broccoli, potatoes 2kg")}" aria-label="${L("放进冰箱的东西","Fridge items")}"><button class="when" type="button" data-fd="fwhen" aria-expanded="${fWhenOpen}">${fDateLabel(fridgeDate)} ▾</button><button class="when frz${fFrozen?" on":""}" type="button" data-fd="ffrozen" aria-pressed="${fFrozen}">${fFrozen?"✓ ":""}${L("冷冻","Frozen")}</button><button class="btn life" type="submit">${L("放进冰箱","Add")}</button></form>
+    <div id="fprev" class="fprev"${fInVal.trim()?"":" hidden"}>${pvHTML()}</div>
     ${fWhenOpen?`<div class="whenpop">${[0,1,2].map(k=>{const d=addDays(todayStr(),-k);return `<button type="button" class="${fridgeDate===d?"on":""}" data-fd="fdate" data-v="${d}">${[L("今天","Today"),L("昨天","Yesterday"),L("前天","2 days ago")][k]}</button>`}).join("")}<label class="pickd${[0,1,2].some(k=>addDays(todayStr(),-k)===fridgeDate)?"":" on"}">${L("选日期","Pick")} <input type="date" id="fridgeDateIn" max="${todayStr()}" value="${fridgeDate}"></label></div>`:""}</div>`;
 }
-let fridgeDate=todayStr(), fWhenOpen=false, fFrozen=false;
+let fridgeDate=todayStr(), fWhenOpen=false, fFrozen=false, fOpen=null, fPvQty={};
+function fPop(list){const x=list.find(y=>y.id===fOpen);if(!x)return "";const c=x.qty?qtyCount(x.qty):{n:1,u:""};
+  return `<div class="fpop"><b>${esc(x.name)}</b>${c?`<span class="stp"><button data-fd="fq" data-id="${x.id}" data-d="-1" aria-label="${L("少一个","One less")}">−</button><b>${c.n}${c.u?" "+esc(c.u):""}</b><button data-fd="fq" data-id="${x.id}" data-d="1" aria-label="${L("多一个","One more")}">＋</button></span>`:`<span class="wq">${esc(String(x.qty))}</span>`}<button class="done" data-fd="fdel" data-id="${x.id}">${L("吃完了","Used up")}</button><button class="lk" data-fd="fedit" data-id="${x.id}">${L("编辑","Edit")}</button></div>`}
+let fInVal="";
+function pvItems(){return fInVal.trim()?parseFridgeInput(fInVal).items:[]}
+function drawPreview(){const box=$("#fprev");if(!box)return;const h=pvHTML();box.innerHTML=h;box.hidden=!h}
+function pvHTML(){const it=pvItems();if(!it.length)return "";
+  return `<div class="lbl">${L("要放进去的","Going in")}</div><div class="pv">${it.map((x,i)=>{const o=fPvQty[x.name];const c=o||(x.qty?qtyCount(x.qty):{n:1,u:""});
+    return `<span class="pc">${esc(x.name)}${c?`<span class="stp"><button type="button" data-fd="pvq" data-v="${esc(x.name)}" data-d="-1" aria-label="${L("少一个","One less")}">−</button><span>${c.n}${c.u?" "+esc(c.u):""}</span><button type="button" data-fd="pvq" data-v="${esc(x.name)}" data-d="1" aria-label="${L("多一个","One more")}">＋</button></span>`:`<span class="wq">${esc(x.qty)}</span>`}</span>`}).join("")}</div>`}
 function fDateLabel(d){const t=todayStr();if(d===t)return L("今天","Today");if(d===addDays(t,-1))return L("昨天","Yesterday");if(d===addDays(t,-2))return L("前天","2 days ago");return md2(d)}
 function parseFridgeInput(txt){
   const t=todayStr(); let date=null, m;
@@ -1642,7 +1657,9 @@ function parseFridgeInput(txt){
 async function addFridge(items,date,frozen){
   const t=date||todayStr();
   for(const it of items){const o=typeof it==="string"?{name:it}:it;const nm=(o.name||"").trim().slice(0,40);if(!nm)continue;const ex=fridge.find(x=>norm(x.name)===norm(nm));
-    if(ex){const r=db.doc("fridge/"+ex.id);queued(r.path,()=>r.update({addedAt:t,...(o.qty?{qty:o.qty}:{})}));continue}
+    if(ex){const c1=ex.qty?qtyCount(ex.qty):{n:1,u:""}, c2=o.qty?qtyCount(o.qty):{n:1,u:""};let q=o.qty||ex.qty||null;
+      if(c1&&c2&&(!c1.u||!c2.u||c1.u===c2.u)){const n=c1.n+c2.n,u=c1.u||c2.u;q=`${n}${u}`}
+      const r=db.doc("fridge/"+ex.id);queued(r.path,()=>r.update({addedAt:t,qty:q}));continue}
     const ref=db.collection("fridge").doc();queued(ref.path,()=>ref.set({name:nm,addedAt:t,qty:o.qty||null,frozen:!!frozen,createdAt:Date.now()}))}
 }
 const NONFOOD=/洗衣|纸巾|卫生纸|洗发|沐浴|牙膏|牙刷|洗洁精|垃圾袋|电池|洗手液|清洁|detergent|tissue|toilet|shampoo|soap|toothpaste|bin bag|batter|cleaner|sponge/i;
@@ -1740,8 +1757,10 @@ function logEat(x){
   cheer(L(`好，${SLOTS().find(y=>y[0]===s)[2]}就${home?"吃":"去"}${x.name}！记进今天的时间轴了。`,`${x.name} it is! Added to today's timeline.`));
   render();
 }
+document.addEventListener("click",e=>{if(fOpen&&!e.target.closest(".fpop,[data-fd=fopen]")){fOpen=null;if(!e.target.closest("[data-fd]"))setTimeout(()=>{if(!fOpen)render()},0)}},true);
+document.addEventListener("input",e=>{if(e.target.id==="fridgeIn"){fInVal=e.target.value;drawPreview()}});
 document.addEventListener("change",e=>{if(e.target.id==="fridgeDateIn"&&e.target.value&&e.target.value<=todayStr()){fridgeDate=e.target.value;fWhenOpen=false;const v=$("#fridgeIn")?.value;render();if($("#fridgeIn"))$("#fridgeIn").value=v||""}});
-document.addEventListener("submit",e=>{if(e.target.id==="fridgeForm"){e.preventDefault();if(!db)return;const v=$("#fridgeIn").value;const p=parseFridgeInput(v);if(!p.items.length)return;const d=p.date||fridgeDate, fz=p.frozen||fFrozen;addFridge(p.items,d,fz);$("#fridgeIn").value="";const nm=p.items.map(x=>x.name);fridgeDate=todayStr();fWhenOpen=false;fFrozen=false;render();cheer(L(`放进冰箱了：${nm.join("、")}${d!==todayStr()?`（记在 ${md2(d)}）`:""}`,`In the fridge: ${nm.join(", ")}${d!==todayStr()?` (from ${md2(d)})`:""}`))}});
+document.addEventListener("submit",e=>{if(e.target.id==="fridgeForm"){e.preventDefault();if(!db)return;const v=$("#fridgeIn").value;const p=parseFridgeInput(v);if(!p.items.length)return;const d=p.date||fridgeDate, fz=p.frozen||fFrozen;p.items.forEach(x=>{const o=fPvQty[x.name];if(o)x.qty=o.n>1||o.u?`${o.n}${o.u}`:null});fPvQty={};addFridge(p.items,d,fz);$("#fridgeIn").value="";fInVal="";const nm=p.items.map(x=>x.name);fridgeDate=todayStr();fWhenOpen=false;fFrozen=false;render();cheer(L(`放进冰箱了：${nm.join("、")}${d!==todayStr()?`（记在 ${md2(d)}）`:""}`,`In the fridge: ${nm.join(", ")}${d!==todayStr()?` (from ${md2(d)})`:""}`))}});
 document.addEventListener("click",e=>{
   const b=e.target.closest("[data-fd]"); if(!b||!db)return; const a=b.dataset.fd, id=b.dataset.id;
   if(a==="slot"){foodSlot=b.dataset.v;foodRes=null;render();return}
@@ -1758,12 +1777,16 @@ document.addEventListener("click",e=>{
   if(a==="restwish"){const s=foodSlot||slotNow();wishes.filter(w=>w.kind==="go"&&!w.done&&!rests.some(r=>norm(r.name)===norm(w.title))).forEach(w=>{const r=db.collection("rests").doc();queued(r.path,()=>r.set({name:w.title.slice(0,40),addr:"",cuisine:"",want:true,slots:["l","d"],visits:0,createdAt:Date.now()}))});cheer(L("从愿望清单导进来了，点店名可以补地址。","Imported. Tap a place to add its address."));return}
   if(a==="seeddish"){const D=L([["b","燕麦粥",["燕麦","牛奶"]],["b","鸡蛋吐司",["鸡蛋","吐司"]],["b","酸奶水果",["酸奶"]],["l","番茄炒蛋",["番茄","鸡蛋"]],["l","咖喱饭",["土豆","胡萝卜","咖喱块"]],["l","牛肉面",["牛肉","面条"]],["l","三明治",["吐司","火腿"]],["d","西兰花炒豆腐",["西兰花","豆腐"]],["d","可乐鸡翅",["鸡翅","可乐"]],["d","青椒肉丝",["青椒","猪肉"]],["d","番茄牛腩",["番茄","牛腩"]]],[["b","Porridge",["oats","milk"]],["b","Eggs on toast",["eggs","bread"]],["b","Yogurt and fruit",["yogurt"]],["l","Pasta",["pasta","tomato"]],["l","Sandwich",["bread","ham"]],["l","Fried rice",["rice","eggs"]],["l","Noodle soup",["noodles"]],["d","Stir-fry",["broccoli","tofu"]],["d","Curry",["potato","carrot"]],["d","Roast chicken",["chicken"]],["d","Salmon and rice",["salmon","rice"]]]);
     D.forEach(([sl,n,ing])=>{const r=db.collection("meals").doc();queued(r.path,()=>r.set({name:n,ing,slot:sl,createdAt:Date.now()}))});return}
-  if(a==="fedit"){openFridgeItem(id);return}
+  if(a==="fedit"){fOpen=null;render();openFridgeItem(id);return}
   if(a==="ffrozen"){fFrozen=!fFrozen;const v=$("#fridgeIn")?.value;render();if($("#fridgeIn"))$("#fridgeIn").value=v||"";return}
   if(a==="fwhen"){fWhenOpen=!fWhenOpen;const v=$("#fridgeIn")?.value;render();if(v&&$("#fridgeIn"))$("#fridgeIn").value=v;return}
   if(a==="fdate"){fridgeDate=b.dataset.v;fWhenOpen=false;const v=$("#fridgeIn")?.value;render();if($("#fridgeIn")){$("#fridgeIn").value=v||"";$("#fridgeIn").focus()}return}
-  if(a==="fminus"){const x=fridge.find(y=>y.id===id);const c=x&&qtyCount(x.qty);if(!c)return;const nq=c.n-1;x.qty=nq+c.u;render();const r=db.doc("fridge/"+id);queued(r.path,()=>r.update({qty:x.qty}));cheer(L(`${x.name}还剩 ${nq}${c.u||" 个"}`,`${x.name}: ${nq} left`));return}
-  if(a==="fdel"){const x=fridge.find(y=>y.id===id);const r=db.doc("fridge/"+id);queued(r.path,()=>r.delete());if(x)cheer(L(`${x.name}吃完啦～`,`${x.name}: all used up～`));return}
+  if(a==="fopen"){fOpen=fOpen===id?null:id;render();return}
+  if(a==="fq"){const x=fridge.find(y=>y.id===id);if(!x)return;const c=x.qty?qtyCount(x.qty):{n:1,u:""};if(!c)return;const n=c.n+(+b.dataset.d);const r=db.doc("fridge/"+id);
+    if(n<=0){fOpen=null;queued(r.path,()=>r.delete());cheer(L(`${x.name}吃完啦～`,`${x.name}: all used up～`));return}
+    x.qty=n>1||c.u?`${n}${c.u}`:null;render();queued(r.path,()=>r.update({qty:x.qty}));return}
+  if(a==="pvq"){const nm=b.dataset.v;const it=pvItems().find(y=>y.name===nm);const c=fPvQty[nm]||(it&&it.qty?qtyCount(it.qty):{n:1,u:""});if(!c)return;fPvQty[nm]={n:Math.max(1,c.n+(+b.dataset.d)),u:c.u};drawPreview();return}
+  if(a==="fdel"){if(fOpen===id)fOpen=null;const x=fridge.find(y=>y.id===id);const r=db.doc("fridge/"+id);queued(r.path,()=>r.delete());if(x)cheer(L(`${x.name}吃完啦～`,`${x.name}: all used up～`));return}
 });
 /* ---------- courses ---------- */
 const CCOLS=["#8b6cf0","#4aa8ff","#2fb38a","#ff9a3d","#ff8fb1","#6c8ef5","#d9a400"];
