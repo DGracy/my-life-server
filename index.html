@@ -436,6 +436,9 @@ body.pomo-open{overflow:hidden}
 .gq{color:var(--muted);font-size:13.5px}
 .gl2{display:flex;gap:10px;align-items:flex-start;border-bottom:2px dashed var(--line);padding:4px 2px}.gl2 i{font-style:normal;color:#e0a100;font-weight:700;width:16px;text-align:center;line-height:1.6;padding-top:5px;flex:none}
 .reflect .gta{flex:1;width:100%;border:none;background:none;font:inherit;color:var(--fg);resize:none;outline:none;line-height:1.6;padding:5px 0;min-height:0;overflow:hidden;border-radius:0}
+.jfoot{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-top:2px}.jfoot .saved{margin-right:auto}.jfoot .jsave{padding:7px 18px}
+.gsh{display:flex;align-items:center;justify-content:space-between;gap:8px}.gsh .lk{border:none;background:none;color:var(--brand);font:inherit;font-size:13px;padding:0;cursor:pointer}
+.gmore.has{color:var(--fg);text-align:left;font-size:14px;background:var(--bg-2);border-radius:12px;padding:8px 12px;align-self:stretch}.gmore.has b{color:var(--life-ink,var(--fg));font-weight:600}
 .gmore{align-self:flex-start;border:none;background:none;color:var(--brand);font:inherit;font-size:14px;padding:2px 0;cursor:pointer}
 .gstepbox{background:var(--bg-2);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}.gstepbox b{font-size:13.5px;color:var(--life-ink,var(--fg))}
 .reflect .gstepbox .gta{border:2px solid var(--line);border-radius:12px;background:var(--surface);padding:6px 10px}.reflect .gstepbox .gta:focus{border-color:var(--brand)}
@@ -1177,7 +1180,7 @@ function render(){
   $("#jbtn").setAttribute("aria-pressed",String(tab==="journal"));
   // keep whatever is being typed when live data re-renders the board
   const ae=document.activeElement, keep={};
-  document.querySelectorAll("#main input[id], #main textarea[id]").forEach(el=>{if(el.type!=="checkbox")keep[el.id]=el.value});
+  document.querySelectorAll("#main input[id], #main textarea[id]").forEach(el=>{if(el.type==="checkbox")return;if((el.classList.contains("gta")||el.dataset.jnote)&&el!==ae)return;keep[el.id]=el.value});
   const fid=ae&&ae.id&&ae.closest("#main")?ae.id:null; let ss=null,se=null; try{ss=ae.selectionStart;se=ae.selectionEnd}catch(_){}
   $("#main").innerHTML= tab==="habit"?habitBoard(): tab==="journal"?journalView(): tab==="forest"?forestView(): taskBoard(tab);
   $("#forestBtn").setAttribute("aria-pressed",String(tab==="forest"));
@@ -3170,7 +3173,7 @@ function journalView(){
     <div class="reflect">
       <div class="dtabs" role="tablist">${[["g",L("感恩日记","Gratitude")],["n",L("今日感想","Reflection")]].map(([k,n])=>`<button class="${jMode===k?"on":""}" data-act="jmode" data-v="${k}" role="tab" aria-selected="${jMode===k}">${n}</button>`).join("")}</div>
       ${jMode==="g"?gratBlock(d,J):`<textarea id="jnote-${d}" data-jnote="${d}" placeholder="${L("今天印象最深的一件事？有什么想对明天的自己说的？","What stood out today? Anything to tell tomorrow's you?")}" maxlength="4000">${esc(J.note||"")}</textarea>`}
-      <span class="saved" id="jsaved">${jSaved}</span>
+      <div class="jfoot"><span class="saved" id="jsaved">${jSaved}</span><button class="btn primary jsave" data-act="jsave">${L("写好了","Done")}</button></div>
     </div>
   </div>`;
 }
@@ -3186,12 +3189,12 @@ function stepSug(d){
   return [...new Set(out)].slice(0,6);
 }
 function gratBlock(d,J){
-  const g=J.grat||[], open=jStepOpen===d||(J.step&&J.step.trim()), sug=open?stepSug(d):[];
+  const g=J.grat||[], open=jStepOpen===d, sug=open?stepSug(d):[], st=(J.step||"").trim();
   return `<small class="gq">${L("今天有哪些小事让你开心，或者想说声谢谢？","What small things made you happy today, or thankful?")}</small>
     ${[0,1,2].map(i=>`<div class="gl2"><i>${i+1}</i><textarea class="gta" rows="1" id="jg-${d}-${i}" data-jg="${d}" maxlength="500" placeholder="${i===0?L("比如：室友给我留了一块蛋糕","e.g. My flatmate saved me a slice of cake"):"……"}">${esc(g[i]||"")}</textarea></div>`).join("")}
-    ${open?`<div class="gstepbox"><b>${L("今天朝目标走的一小步","A small step toward your goals")}</b><textarea class="gta" rows="1" id="jstep-${d}" data-jstep="${d}" maxlength="300" placeholder="${L("写一句，或者从下面挑一个","Write one, or pick below")}">${esc(J.step||"")}</textarea>
+    ${open?`<div class="gstepbox"><div class="gsh"><b>${L("今天朝目标走的一小步","A small step toward your goals")}</b><button class="lk" data-act="jstepclose">${L("收起","Hide")}</button></div><textarea class="gta" rows="1" id="jstep-${d}" data-jstep="${d}" maxlength="300" placeholder="${L("写一句，或者从下面挑一个","Write one, or pick below")}">${esc(J.step||"")}</textarea>
       ${sug.length?`<div class="gsug"><small>${L("今天做完的事","Done today")}</small><div>${sug.map(x=>`<button data-act="jsteppick" data-v="${esc(x)}">${esc(x)}</button>`).join("")}</div></div>`:""}</div>`
-      :`<button class="gmore" data-act="jstepopen">＋ ${L("记一小步","Log a small step")}</button>`}`;
+      :st?`<button class="gmore has" data-act="jstepopen"><b>${L("一小步：","Small step: ")}</b>${esc(st)}</button>`:`<button class="gmore" data-act="jstepopen">＋ ${L("记一小步","Log a small step")}</button>`}`;
 }
 function saveGrat(d){
   const J=journal[d]||{}, p={};
@@ -3762,6 +3765,12 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="newtask"){openEditor(null,{space:act.dataset.space,horizon:act.dataset.hz});return}
   if(act.dataset.act==="jsleep"){const d=jDate||todayStr();const cur=(journal[d]||{}).sleepq;saveJournal(d,{sleepq:cur===act.dataset.v?null:act.dataset.v});render();return}
   if(act.dataset.act==="jmode"){jMode=act.dataset.v;try{localStorage.setItem("lifeos-jmode",jMode)}catch(_){}render();return}
+  if(act.dataset.act==="jstepclose"){const d=jDate||todayStr();clearTimeout(noteTimer);saveGrat(d).catch(()=>{});jStepOpen=null;render();return}
+  if(act.dataset.act==="jsave"){const d=jDate||todayStr();clearTimeout(noteTimer);
+    const nt=document.getElementById("jnote-"+d);const pr=nt?saveJournal(d,{note:nt.value}):saveGrat(d);
+    jSaved=L(`已保存 ✓ ${nowHM()}`,`Saved ✓ ${nowHM()}`);jStepOpen=null;
+    const J=journal[d]||{};cheer(hasJ(J)?L("记下来啦，今天也辛苦了～","Saved. You did well today～"):L("今天还没写东西哦，想写的时候再来～","Nothing written yet. Come back whenever～"),"happy");
+    render();pr.catch(()=>{jSaved=L("没保存上，再点一次试试","Couldn't save, try again");render()});return}
   if(act.dataset.act==="jstepopen"){const d=jDate||todayStr();jStepOpen=d;pendingFocus=`#jstep-${d}`;render();return}
   if(act.dataset.act==="jsteppick"){const d=jDate||todayStr();const el=document.getElementById(`jstep-${d}`);const cur=(el?el.value:(journal[d]||{}).step||"").trim();const v=act.dataset.v;
     if(!cur.includes(v)){const nv=cur?cur+L("；","; ")+v:v;if(el)el.value=nv;saveJournal(d,{step:nv});render()}return}
@@ -3834,7 +3843,8 @@ document.addEventListener("input",e=>{
     return}
   if(e.target.dataset&&(e.target.dataset.jg||e.target.dataset.jstep)&&db){
     autosz(e.target);const d=e.target.dataset.jg||e.target.dataset.jstep;
-    clearTimeout(noteTimer); noteTimer=setTimeout(()=>{saveGrat(d).catch(()=>{})},800);
+    jSaved=L("正在保存…","Saving…");{const sv=$("#jsaved");if(sv)sv.textContent=jSaved}
+    clearTimeout(noteTimer); noteTimer=setTimeout(()=>{saveGrat(d).then(()=>{jSaved=L(`已自动保存 ✓ ${nowHM()}`,`Auto-saved ✓ ${nowHM()}`);const el=$("#jsaved");if(el)el.textContent=jSaved}).catch(()=>{jSaved=L("没保存上，点「写好了」再试一次","Couldn't save. Tap Done to retry");const el=$("#jsaved");if(el)el.textContent=jSaved})},800);
     return}
   if(e.target.dataset&&e.target.dataset.jnote&&db){
     const d=e.target.dataset.jnote, v=e.target.value; jSaved=L("正在保存…","Saving…"); const sv=$("#jsaved"); if(sv)sv.textContent=jSaved;
