@@ -418,6 +418,13 @@ body.pomo-open{overflow:hidden}
 .pv .stp{border:none;gap:2px}.pv .stp button{background:var(--surface-2);border-radius:8px;width:26px;height:26px;font-size:14px}.pv .stp>span{min-width:36px;font-size:12.5px;color:var(--life-ink)}.pv .wq{padding-right:6px}
 .when.frz.on{border-color:#6cc4ff;background:color-mix(in srgb,#6cc4ff 18%,var(--surface));color:var(--fg)}
 .titlein{border:none;border-bottom:2px solid var(--line);background:none;font-family:var(--f-display);font-size:22px;color:var(--fg);padding:2px 0 6px;width:100%;outline:none}.titlein:focus{border-bottom-color:var(--brand)}
+.slp{background:var(--surface);border-radius:20px;padding:12px 14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.slp .h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.slp .h svg{width:40px;height:40px;flex:none}.slp .h b{font-family:var(--f-display);font-weight:400;font-size:18px;flex:1;min-width:0}.slp .h small{color:var(--muted);font-size:12.5px}
+.slp .acts{display:flex;gap:8px}.slp .acts button{flex:1;border:2px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:8px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}.slp .acts .pr{background:#8b6cf0;border-color:#8b6cf0;color:#fff;font-family:inherit}.slp .acts .pr.sun{background:#ffb84d;border-color:#ffb84d;color:#3a2a00}
+.slp .sub{font-size:12.5px;color:var(--muted)}.slp .lk{border:none;background:none;color:var(--brand);font:inherit;font-size:12.5px;padding:0 0 0 4px;cursor:pointer}
+.slp.done{flex-direction:row;align-items:center;padding:8px 14px}.slp.done svg{width:30px;height:30px;flex:none}.slp.done span{flex:1;font-size:14.5px;min-width:0}.slp.done b{font-family:var(--f-num)}.slp.done>button{border:none;background:none;color:var(--brand);font:inherit;font-size:13px;white-space:nowrap;cursor:pointer}
+.sleepq{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--muted)}.sleepq .mood{padding:4px 12px}
+.slbars{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:8px}.slbars>div{display:flex;flex-direction:column;align-items:center;gap:3px}.slbars .c{height:70px;width:100%;max-width:26px;display:flex;align-items:flex-end;background:var(--bg-2);border-radius:999px;overflow:hidden}.slbars .c i{display:block;width:100%;background:#b9a4ff;border-radius:999px}.slbars b{font-family:var(--f-num);font-size:11.5px;font-weight:600}.slbars small{font-size:11px;color:var(--muted)}
 .shelfset{display:flex;flex-direction:column;gap:6px}.shelfset label{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px;color:var(--fg)}.shelfset select{width:auto;min-width:120px;padding:5px 32px 5px 10px;font-size:14px}
 .whenpop{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.whenpop button,.whenpop .pickd{border:2px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:3px 11px;font:inherit;font-size:13px;cursor:pointer}.whenpop button.on,.whenpop .pickd.on{border-color:var(--life);background:var(--life-soft);color:var(--life-ink)}
 .whenpop .pickd{display:inline-flex;align-items:center;gap:6px}.whenpop .pickd input{border:none;background:none;color:inherit;font:inherit;font-size:12.5px;padding:0;width:auto}.fadd input{flex:1;min-width:0;border:2px solid var(--line);border-radius:14px;background:var(--bg-2);padding:8px 12px;font:inherit}
@@ -1058,6 +1065,7 @@ function buddyState(){
   const urgent=tasks.filter(t=>!t.done&&!t.deleted&&t.due&&t.due<=todayStr()).length;
   if(h<5)return {...base,mood:"sleepy",say:L(`已经凌晨 ${h} 点啦，记完就去睡吧，事情明天还在～`,`It's ${h} a.m. already. Jot it down and get some sleep, it'll all still be here tomorrow.`)};
   const bdr=bdReminder(); if(bdr)return {...base,mood:"happy",say:bdr};
+  const bed=bedReminder(); if(bed)return {...base,mood:"sleepy",say:bed};
   if(bloom)return {...base,mood:"cheer",say:L("今天的打卡全部完成！我开花啦 🌸","All check-ins done today! I'm blooming 🌸")};
   const hot=tasks.filter(t=>!t.done&&!t.deleted&&+t.pri===3&&on(t.space)).length;
   if(!urgent&&hot&&h>=5)return {...base,mood:"idle",say:L(`有 ${hot} 件高优先级的事，先挑最红的那个开始吧！`,`${hot} high-priority ${n_(hot,"task is","tasks are")} waiting. Start with a red one!`)};
@@ -1275,7 +1283,7 @@ function habitBoard(){
       </div>
       <div class="streak">${s?FLAME:""}<b>${s}</b><small>${L("连续天","day streak")}</small></div>
     </div>`}).join("");
-  return `<div class="board" data-k="habit">
+  return `<div class="board" data-k="habit">${sleepCard()}
     <div class="hday" role="group" aria-label="${L("选择打卡日期","Pick a day to check in")}">
       <button data-act="hday" data-v="-1" ${day<=addDays(t,-BACKFILL_DAYS)?"disabled":""} aria-label="${L("前一天","Previous day")}">‹</button>
       <span class="hd-name"><b>${dayName}</b> ${L(`${dm}月${dd}日`,`${dd} ${MON[dm-1]}`)}</span>
@@ -1792,6 +1800,65 @@ document.addEventListener("click",e=>{
   if(a==="pvq"){const nm=b.dataset.v;const it=pvItems().find(y=>y.name===nm);const c=fPvQty[nm]||(it&&it.qty?qtyCount(it.qty):{n:1,u:""});if(!c)return;fPvQty[nm]={n:Math.max(1,c.n+(+b.dataset.d)),u:c.u};drawPreview();return}
   if(a==="fdel"){if(fOpen===id)fOpen=null;const x=fridge.find(y=>y.id===id);const r=db.doc("fridge/"+id);queued(r.path,()=>r.delete());if(x)cheer(L(`${x.name}吃完啦～`,`${x.name}: all used up～`));return}
 });
+/* ---------- sleep ---------- */
+let sleeps={};
+const BED_KEY="lifeos-bedtime";
+let bedTime="23:30"; try{const v=localStorage.getItem(BED_KEY);if(v!==null)bedTime=v}catch(_){}
+function setBedTime(v,sync=true){bedTime=v||"";try{localStorage.setItem(BED_KEY,bedTime)}catch(_){};if(sync&&db&&db.meta)db.meta.set({bedTime},{merge:true}).catch(()=>{})}
+const SL_MOON=`<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M28 6a14 14 0 1 0 6 20A11 11 0 0 1 28 6z" fill="#b9a4ff"/><circle cx="16" cy="22" r="1.6" fill="#3a3350"/><circle cx="23" cy="22" r="1.6" fill="#3a3350"/><path d="M17 27q2.5 1.8 5 0" stroke="#3a3350" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M33 8l.8 1.8 1.8.8-1.8.8-.8 1.8-.8-1.8-1.8-.8 1.8-.8z" fill="#ffd34d"/></svg>`;
+const SL_SUN=`<svg viewBox="0 0 40 40" aria-hidden="true"><g stroke="#ffb84d" stroke-width="2.4" stroke-linecap="round"><path d="M20 3v4M20 33v4M3 20h4M33 20h4M8 8l3 3M29 29l3 3M32 8l-3 3M11 29l-3 3"/></g><circle cx="20" cy="20" r="10" fill="#ffe08a"/><circle cx="17" cy="19" r="1.5" fill="#3a3350"/><circle cx="23" cy="19" r="1.5" fill="#3a3350"/><path d="M17.5 23q2.5 2 5 0" stroke="#3a3350" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>`;
+const durTxt=ms=>{const m=Math.round(ms/6e4);return `${Math.floor(m/60)}h${String(m%60).padStart(2,"0")}m`};
+const nowHM=()=>hhmm(Date.now());
+function sleepPhase(){const n=new Date(),h=n.getHours()+n.getMinutes()/60;const bt=bedTime?tmin(bedTime)/60:23.5;const eve=Math.min(21,bt-1);
+  if(h<dayStartH||h>=eve)return "eve"; if(h<14)return "morn"; return "day"}
+const slSkip=(k,kind)=>{try{return !!localStorage.getItem(`lifeos-slpskip-${k}-${kind}`)}catch(_){return false}};
+const slSkipSet=(k,kind)=>{try{localStorage.setItem(`lifeos-slpskip-${k}-${kind}`,"1")}catch(_){}};
+function sleepCard(){
+  const t=todayStr(), y=addDays(t,-1), ph=sleepPhase(), tn=sleeps[t]||{}, ln=sleeps[y]||{};
+  const line=(n,k)=>n.bed&&n.wake?`<div class="slp done">${SL_MOON}<span>${L("昨晚睡了","Slept")} <b>${durTxt(n.wake-n.bed)}</b> · ${hhmm(n.bed)}–${hhmm(n.wake)}</span><button data-sl="edit" data-v="${k}">${L("改","Edit")}</button></div>`
+      :n.wake?`<div class="slp done">${SL_SUN}<span>${L(`今天 ${hhmm(n.wake)} 起床`,`Up at ${hhmm(n.wake)}`)}</span><button data-sl="edit" data-v="${k}">${L("补睡觉时间","Add bedtime")}</button></div>`:"";
+  if(ph==="eve"){
+    if(tn.bed)return `<div class="slp done">${SL_MOON}<span>${L(`${hhmm(tn.bed)} 去睡的 · 晚安～`,`Off to bed at ${hhmm(tn.bed)} · good night～`)}</span><button data-sl="edit" data-v="${t}">${L("改","Edit")}</button></div>`;
+    if(slSkip(t,"bed"))return "";
+    return `<div class="slp"><div class="h">${SL_MOON}<b>${L("准备睡了吗？","Heading to bed?")}</b><small>${L("点一下记下睡觉时间","One tap logs your bedtime")}</small></div>
+      <div class="acts"><button data-sl="skip" data-v="${t}" data-k="bed">${L("还没","Not yet")}</button><button class="pr" data-sl="bed">${L("我去睡啦","Going to bed")} · ${nowHM()}</button></div>
+      <div class="sub">${L("已经躺下一会儿了？","Been lying down a while?")}<button class="lk" data-sl="edit" data-v="${t}">${L("改一下时间","Set the time")}</button></div></div>`}
+  if(ph==="morn"){
+    if(ln.wake)return line(ln,y);
+    if(slSkip(y,"wake"))return "";
+    return `<div class="slp"><div class="h">${SL_SUN}<b>${L("早上好！几点醒的？","Morning! When did you wake up?")}</b><small>${ln.bed?L(`昨晚 ${hhmm(ln.bed)} 睡的`,`Bed at ${hhmm(ln.bed)}`):L("昨晚没记睡觉时间","No bedtime logged")}</small></div>
+      <div class="acts"><button data-sl="edit" data-v="${y}">${L("改时间","Set time")}</button><button class="pr sun" data-sl="wake">${L("我刚醒","Just woke up")} · ${nowHM()}</button></div>
+      ${ln.bed?"":`<div class="sub">${L("只记起床也可以；想得起来的话","Waking time alone is fine, or")}<button class="lk" data-sl="edit" data-v="${y}">${L("补一下昨晚大概几点睡","add roughly when you went to bed")}</button></div>`}</div>`}
+  return line(ln,y);
+}
+function saveSleep(k,patch){sleeps[k]={...(sleeps[k]||{}),...patch};render();const r=db.doc("sleep/"+k);const full={night:k,...sleeps[k]};queued(r.path,()=>r.set(full))}
+function slTs(k,hm,isWake){const [h,m]=hm.split(":").map(Number);const base=new Date(k+"T00:00:00");let d=new Date(base.getFullYear(),base.getMonth(),base.getDate(),h,m);
+  if(isWake||h<12)d=new Date(d.getTime()+864e5);if(isWake&&h>=18)d=new Date(d.getTime()-864e5);return d.getTime()}
+function openSleep(k){
+  const n=sleeps[k]||{};
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("睡眠","Sleep")}"><h3>${L(`${md2(k)} 晚上的睡眠`,`Night of ${md2(k)}`)}</h3>
+    <div class="drow"><label class="field"><span>${L("几点睡的","Bedtime")}</span><input type="time" id="sb" value="${n.bed?hhmm(n.bed):""}"></label><label class="field"><span>${L("几点醒的","Woke up")}</span><input type="time" id="sw" value="${n.wake?hhmm(n.wake):""}"></label></div>
+    <span class="hint">${L("不记得的可以空着。","Leave blank what you don't remember.")}</span>
+    <div class="sheet-actions"><button class="btn" data-s="x">${L("取消","Cancel")}</button><button class="btn primary" data-s="ok">${L("保存","Save")}</button></div></div>`;
+  document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-s]");if(!b)return;if(b.dataset.s==="x"){bg.remove();return}
+    const bv=bg.querySelector("#sb").value, wv=bg.querySelector("#sw").value;bg.remove();
+    let bed=bv?slTs(k,bv,false):null, wake=wv?slTs(k,wv,true):null; if(bed&&wake&&wake<=bed)wake+=864e5;
+    saveSleep(k,{bed,wake})});
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-sl]");if(!b||!db)return;const a=b.dataset.sl,t=todayStr();
+  if(a==="bed"){saveSleep(t,{bed:Date.now()});cheer(L("晚安～明天见！","Good night～ See you tomorrow!"));return}
+  if(a==="wake"){const y=addDays(t,-1);saveSleep(y,{wake:Date.now()});const n=sleeps[y];cheer(n.bed?L(`早上好！昨晚睡了 ${durTxt(n.wake-n.bed)}`,`Morning! You slept ${durTxt(n.wake-n.bed)}`):L("早上好！","Good morning!"));return}
+  if(a==="skip"){slSkipSet(b.dataset.v,b.dataset.k);render();return}
+  if(a==="edit"){openSleep(b.dataset.v);return}});
+function bedReminder(){
+  if(!bedTime)return null;const n=new Date(),h=n.getHours()*60+n.getMinutes(),bt=tmin(bedTime);
+  const late=h>=bt||(h<dayStartH*60&&bt>12*60);
+  if(!late||(sleeps[todayStr()]||{}).bed)return null;
+  return L(`已经 ${nowHM()} 啦，该睡啦～睡前点一下「我去睡啦」。`,`It's ${nowHM()} already. Time for bed～ Tap “Going to bed” first.`);
+}
+setInterval(()=>{const m=bedReminder();if(!m)return;const k="lifeos-bednote-"+todayStr();try{if(localStorage.getItem(k))return;localStorage.setItem(k,"1")}catch(_){return}if(typeof notify==="function")notify(L("该睡啦～","Time for bed～"),L(`已经 ${nowHM()} 了，${petName()}也困了。`,`It's ${nowHM()}. ${petName()} is sleepy too.`),"bed");if(tab==="habit")render()},60000);
 /* ---------- courses ---------- */
 const CCOLS=["#8b6cf0","#4aa8ff","#2fb38a","#ff9a3d","#ff8fb1","#6c8ef5","#d9a400"];
 const tmin=s=>{const [h,m]=(s||"0:0").split(":").map(Number);return h*60+(m||0)};
@@ -1881,12 +1948,15 @@ function timelineItems(d){
   eats.filter(x=>x.day===d).forEach(x=>{const s=SLOTS().find(y=>y[0]===x.slot);it.push({t:x.at,k:"life",txt:`${s?s[2]:L("吃饭","Meal")} · ${esc(x.name)}`,eat:x.id})});
   const base=new Date(d+"T00:00:00");
   coursesOn(d).forEach(c=>{const st=new Date(base.getTime()+tmin(c.start)*6e4).getTime();it.push({t:st,mins:tmin(c.end)-tmin(c.start),k:"grey",txt:L(`上课 · ${esc(c.name)}`,`Class · ${esc(c.name)}`),sub:`${esc(c.start)}–${esc(c.end)}${c.loc?" · "+esc(c.loc):""}`})});
+  {const sn=sleeps[d]||{},ln=sleeps[addDays(d,-1)]||{};
+    if(ln.wake)it.push({t:ln.wake,k:"sleep",txt:L("起床","Woke up"),sub:ln.bed?L(`睡了 ${durTxt(ln.wake-ln.bed)}`,`slept ${durTxt(ln.wake-ln.bed)}`):""});
+    if(sn.bed)it.push({t:sn.bed,k:"sleep",txt:L("去睡觉","Bedtime"),sub:""});}
   tlog.filter(x=>x.day===d).forEach(x=>{const st=new Date(base.getTime()+tmin(x.start)*6e4).getTime();const m=x.end?tmin(x.end)-tmin(x.start):0;it.push({t:st,mins:m>0?m:0,k:x.space||"grey",txt:esc(x.title),sub:m>0?`${esc(x.start)}–${esc(x.end)}`:"",tl:x.id})});
   return it.sort((a,b)=>a.t-b.t);
 }
 function timelineCard(d){
   const it=timelineItems(d);
-  const col=k=>({habit:"var(--habit)",life:"var(--life)",study:"var(--study)",work:"var(--work)",pomo:"#ef5d6e",grey:"#aab6cf"})[k]||"#aab6cf";
+  const col=k=>({sleep:"#b9a4ff",habit:"var(--habit)",life:"var(--life)",study:"var(--study)",work:"var(--work)",pomo:"#ef5d6e",grey:"#aab6cf"})[k]||"#aab6cf";
   return `<div class="tline card"><div class="fhd"><h3>${d===todayStr()?L("今天的时间轴","Today's timeline"):L("这天的时间轴","Timeline")}</h3><button class="cbtn2" data-tl="new" data-d="${d}">＋ ${L("补一条","Add")}</button></div>
     ${it.length?`<div class="tlist">${it.map(x=>{const blk=x.mins>=10;const h=blk?Math.min(120,Math.max(34,Math.round(x.mins*.9))):0;
       return `<div class="tli${blk?" blk":""}"${x.tl?` data-tl="edit" data-id="${x.tl}" role="button" tabindex="0"`:""}><span class="tt">${hhmm(x.t)}</span><span class="tm2"><i style="background:${col(x.k)};${blk?`height:${h}px`:""}"></i></span><span class="tx"><span>${x.txt}</span>${x.sub?`<small>${x.sub}</small>`:""}</span></div>`}).join("")}</div>`
@@ -2720,6 +2790,12 @@ function openRecap(kind,id,opts={}){
         <span class="rc-col stack"><span class="stk" style="height:${x.n?Math.max(14,Math.round(x.n/mx*100)):0}%">${SK.filter(k=>x.parts[k]).map(k=>`<i style="flex:${x.parts[k]};background:var(--${k})"></i>`).join("")}</span></span><b>${x.n||""}</b><small>${wd[i]}</small></div>`).join("")}</div>
         <div class="rc-legend sm">${SK.map(k=>`<span><i style="background:var(--${k})"></i>${BOARD_NAME(k)}</span>`).join("")}</div></div>`;
     }
+    let sleepSec="";
+    {const nights=Object.entries(sleeps).filter(([k,n])=>k>=addDays(a,-1)&&k<=addDays(b,-1)&&n.bed&&n.wake&&n.wake>n.bed);
+      if(nights.length){const avg=nights.reduce((x,[,n])=>x+(n.wake-n.bed),0)/nights.length;const latest=nights.reduce((x,y)=>{const f=([,n])=>{const d=new Date(n.bed);let m=d.getHours()*60+d.getMinutes();if(m<12*60)m+=1440;return m};return f(y)>f(x)?y:x});
+        let bars="";if(isWeek){const per=[...Array(7)].map((_,i)=>{const n=sleeps[addDays(a,i-1)]||{};return n.bed&&n.wake?(n.wake-n.bed)/36e5:0});const mx=Math.max(9,...per);const wd=L(["一","二","三","四","五","六","日"],["M","T","W","T","F","S","S"]);
+          bars=`<div class="slbars">${per.map((h,i)=>`<div><span class="c"><i style="height:${h?Math.max(8,h/mx*100):0}%"></i></span><b>${h?h.toFixed(1):""}</b><small>${wd[i]}</small></div>`).join("")}</div>`}
+        sleepSec=`<div class="rc-sec"><h4>${isWeek?L("这一周睡了多久","Sleep this week"):L("今年的睡眠","Sleep this year")}</h4><div class="fz-sub" style="font-size:14px;color:var(--fg)">${L(`平均每晚 <b>${durTxt(avg)}</b> · 记了 ${nights.length} 晚 · 最晚一次 ${hhmm(latest[1].bed)} 睡`,`Average <b>${durTxt(avg)}</b> a night · ${nights.length} nights logged · latest bedtime ${hhmm(latest[1].bed)}`)}</div>${bars}</div>`}}
     let focusSec="";
     if(R.fMins>=1){const h=Math.floor(Math.round(R.fMins)/60),mi=Math.round(R.fMins)%60;
       const bestD=Object.entries(R.fDay).sort((x,y)=>y[1]-x[1])[0];
@@ -2748,7 +2824,7 @@ function openRecap(kind,id,opts={}){
         <div class="rc-say"><div class="rc-avatar">${moodFace(recapBusy?"meh":"good")}</div>
           <div class="rc-bubble"><span class="who">${L("{pet}想对你说","A note from {pet}")}</span><p>${recapBusy?L("让我好好想想…","Let me think…"):esc(comment)}</p>
           ${sample&&!partial?`<button class="link" data-rc="ai" ${recapBusy?"disabled":""}>${doc.comment?L("✨ 再写一段","✨ Write another"):L("✨ 让{pet}认真写","✨ Ask {pet} to write one")}</button>`:""}</div></div>
-        ${week}${focusSec}${msSec}${months}
+        ${week}${focusSec}${sleepSec}${msSec}${months}
         ${lists?`<div class="rc-sec"><h4>${L("完成的事","What you finished")}</h4>${lists}</div>`:""}
         ${habitsSec}${trees}
         ${hasData(R)?"":`<p class="hint">${L("这段时间还没有完成的记录。","Nothing finished in this period yet.")}</p>`}
@@ -3038,6 +3114,7 @@ function journalView(){
     <div class="reflect">
       <h4>${L("今日感想","Reflection")} <span class="hint">· ${L("想写就写，不写也可以","Optional, write if you feel like it")}</span></h4>
       <div class="moods">${MOODS.map(([k,e,n])=>`<button class="mood${J.mood===k?" on":""}" data-act="jmood" data-v="${k}" aria-pressed="${J.mood===k}">${moodFace(k)}<span>${n}</span></button>`).join("")}</div>
+      <div class="sleepq"><span>${L("昨晚：","Last night:")}</span>${[["good",L("睡饱了","Slept well")],["ok",L("还行","OK")],["bad",L("没睡好","Poorly")],["nightmare",L("做噩梦了","Nightmare")]].map(([k,n])=>`<button class="mood${J.sleepq===k?" on":""}" data-act="jsleep" data-v="${k}" aria-pressed="${J.sleepq===k}">${n}</button>`).join("")}</div>
       <textarea id="jnote-${d}" data-jnote="${d}" placeholder="${L("今天印象最深的一件事？有什么想对明天的自己说的？","What stood out today? Anything to tell tomorrow's you?")}" maxlength="4000">${esc(J.note||"")}</textarea>
       <span class="saved" id="jsaved">${jSaved}</span>
     </div>
@@ -3601,6 +3678,7 @@ document.addEventListener("click",async e=>{
     const ref=db.doc("milestones/"+id);queued(ref.path,()=>ref.delete());return}
   if(act.dataset.act==="settheme"){setTheme(act.dataset.v);return}
   if(act.dataset.act==="newtask"){openEditor(null,{space:act.dataset.space,horizon:act.dataset.hz});return}
+  if(act.dataset.act==="jsleep"){const d=jDate||todayStr();const cur=(journal[d]||{}).sleepq;saveJournal(d,{sleepq:cur===act.dataset.v?null:act.dataset.v});render();return}
   if(act.dataset.act==="jmood"){const d=jDate||todayStr();const cur=(journal[d]||{}).mood;saveJournal(d,{mood:cur===act.dataset.v?null:act.dataset.v});render();return}
   if(act.dataset.act==="stpick"){pick.has(id)?pick.delete(id):pick.add(id);render();return}
   if(act.dataset.act==="stclear"){pick.clear();render();return}
@@ -3804,7 +3882,7 @@ function langChips(attr="data-set"){return [["zh","中文"],["en","English"]].ma
 function openSettings(){
   let confirmWipe=false, kept={};
   const bg=document.createElement("div"); bg.className="sheet-bg";
-  const keep=()=>{const q=id=>bg.querySelector(id);if(q("#set-name"))kept={name:q("#set-name").value,pet:q("#set-pet").value,ds:+q("#set-daystart").value,snd:q("#set-sound").checked,wxOn:q("#set-wx")?q("#set-wx").checked:undefined,city:q("#set-city")?q("#set-city").value:undefined}};
+  const keep=()=>{const q=id=>bg.querySelector(id);if(q("#set-name"))kept={name:q("#set-name").value,pet:q("#set-pet").value,ds:+q("#set-daystart").value,snd:q("#set-sound").checked,bed:q("#set-bed").value,wxOn:q("#set-wx")?q("#set-wx").checked:undefined,city:q("#set-city")?q("#set-city").value:undefined}};
   const draw=()=>{keep();bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("设置","Settings")}">
     <h3>${L("设置","Settings")}</h3>
     ${syncSection()}
@@ -3821,6 +3899,7 @@ function openSettings(){
       <div class="cap-row wx-city"><input id="set-city" placeholder="${L("城市，比如 London","City, e.g. London")}" value="${esc(kept.city??(wx.city||""))}"><button class="btn" data-set="citysearch">${L("搜索","Search")}</button><button class="btn" data-set="cityhere">${L("用当前位置","Use my location")}</button></div>
       <div class="plist tp" id="set-cityres"></div>
       <span class="hint">${wx.lat!=null?L(`现在用的是：${esc(wx.city||"当前位置")}。`,`Using: ${esc(wx.city||"your location")}.`):L("还没有位置。识别得不对的话，在这里搜城市改一下。","No location yet. If it's wrong, search for your city here.")} ${L("位置只存在这台设备上。","Your location stays on this device.")}</span></div>`:""}
+    <div class="field"><span>${L("几点该睡觉","Bedtime")}</span><div class="until-row"><input type="time" id="set-bed" value="${esc(kept.bed??bedTime)}"><button class="chip hz${(kept.bed??bedTime)?"":" on"}" data-set="nobed">${L("不提醒","Off")}</button></div><span class="hint">${L("过了这个时间，{pet}会提醒你该睡啦。","After this time {pet} will remind you to go to bed.")}</span></div>
     <div class="field"><span>${L("冰箱：放多久提醒我","Fridge: remind me after")}</span><div class="shelfset">${SHELF.map(([k,,d,zh,en])=>`<label><span>${L(zh,en)}</span><select data-shelf="${k}">${[1,2,3,4,5,7,10,14,21,30,60,0].map(v=>`<option value="${v}" ${shelfDays(k)===v?"selected":""}>${v?L(v>=30&&v%30===0?`${v/30} 个月`:v>=7&&v%7===0?`${v/7} 周`:`${v} 天`,v>=30&&v%30===0?`${v/30} mo`:v>=7&&v%7===0?`${v/7} wk`:`${v} d`):L("不提醒","Never")}${v===d?L("（默认）"," (default)"):""}</option>`).join("")}</select></label>`).join("")}</div></div>
     <div class="field"><span>${L("功能介绍","Tour")}</span><div><button class="btn" data-set="tour">${L("重新看一遍介绍","Replay the tour")}</button></div></div>
     <label class="field chk"><span>${L("番茄钟提示音","Timer sound")}</span><span class="chkrow"><input type="checkbox" id="set-sound" ${(kept.snd??pset.sound)?"checked":""}> ${L("专注、休息结束时轻轻叮一声（默认关）","A soft ding when focus or a break ends (off by default)")}</span></label>
@@ -3847,6 +3926,7 @@ function openSettings(){
       boards[k]=!boards[k]; try{localStorage.setItem(BOARDS_KEY,JSON.stringify(boards))}catch(_){}
       draw(); render(); return}
     if(a==="lang"){keep();setLang(b.dataset.v);draw();return}
+    if(a==="nobed"){bg.querySelector("#set-bed").value="";return}
     if(a==="tour"){bg.remove();setTimeout(()=>startTour("full"),250);return}
     if(a==="citysearch"){const q=bg.querySelector("#set-city").value.trim();const box=bg.querySelector("#set-cityres");if(!q)return;box.innerHTML=`<span class="hint">${L("搜索中…","Searching…")}</span>`;
       searchCity(q).then(res=>{bg._city=res;box.innerHTML=res.length?res.map((c,i)=>`<button data-set="citypick" data-i="${i}"><span>${esc(c.name)}</span><small>${esc(c.area)}</small></button>`).join(""):`<span class="hint">${L("没找到，换个写法试试（英文城市名更容易找到）","Nothing found. Try another spelling.")}</span>`}).catch(()=>{box.innerHTML=`<span class="hint">${L("搜索失败，检查一下网络","Search failed. Check your connection.")}</span>`});return}
@@ -3856,6 +3936,7 @@ function openSettings(){
     if(a==="save"){
       const pn=bg.querySelector("#set-pet").value.trim(); if(pn!==petNameV)setPetName(pn);
       pset.sound=bg.querySelector("#set-sound").checked;savePset();
+      {const v=bg.querySelector("#set-bed").value;if(v!==bedTime)setBedTime(v)}
       {const o={};bg.querySelectorAll("[data-shelf]").forEach(sel=>{const k=sel.dataset.shelf,e=SHELF.find(x=>x[0]===k);if(+sel.value!==e[2])o[k]=+sel.value});if(JSON.stringify(o)!==JSON.stringify(shelfCustom))setShelf(o)}
       if(IS_WEB&&bg.querySelector("#set-wx")){const o=bg.querySelector("#set-wx").checked;if(o!==wx.on){wx.on=o;saveWx();o?fetchWx(true):renderWx()}}
       const ds=+bg.querySelector("#set-daystart").value; if(ds!==dayStartH){dayStartH=ds;try{localStorage.setItem(DAYSTART_KEY,String(ds))}catch(_){};lastDay=todayStr();$("#today").textContent=fmtToday();render()}
@@ -3928,7 +4009,7 @@ const FIREBASE_CONFIG={
   appId:"1:1053547899054:web:49caab221ae4f4171c253f"
 };
 const FB_VER="10.12.2";
-const COLS=["tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","memos","yearlyDays","pomos","meals","rests","eats","fridge","tlog","courses"];
+const COLS=["tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","memos","yearlyDays","pomos","meals","rests","eats","fridge","tlog","courses","sleep"];
 const CLOUD_KEY="lifeos-cloud-uid";
 let fb=null, cloudUser=null, cloudState=FIREBASE_CONFIG?"loading":"off"; // off | loading | unavailable | signedout | signedin
 let localDB=null, unsubs=[];
@@ -3971,7 +4052,7 @@ function makeCloudDB(uid){
 function startData(store){
   unsubs.forEach(u=>{try{u()}catch(_){}}); unsubs=[];
   db=store;
-  tasks=[];habits=[];checkins={};shop=[];staples=[];trips=[];journal={};milestones=[];yearlyDays=[];pomos=[];meals=[];rests=[];eats=[];fridge=[];tlog=[];courses=[];weekly={};yearly={};wishes=[];memos=[];forest=[];curTheme="lemon";
+  tasks=[];habits=[];checkins={};shop=[];staples=[];trips=[];journal={};milestones=[];yearlyDays=[];pomos=[];meals=[];rests=[];eats=[];fridge=[];tlog=[];courses=[];sleeps={};weekly={};yearly={};wishes=[];memos=[];forest=[];curTheme="lemon";
   for(const k in loaded)loaded[k]=false; recapChecked=false; lastStage=null; lastBuddy="";
   const fail=e=>{if(e&&e.code==="permission-denied")setStatus(L("没有权限读取数据，请重新登录。","No permission to read your data. Please sign in again."))};
   const sub=(c,fn,q)=>unsubs.push((q||db.collection(c)).onSnapshot(fn,fail));
@@ -3981,6 +4062,7 @@ function startData(store){
   sub("shop",s=>{shop=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.s=true;render()});
   sub("staples",s=>{staples=s.docs.map(d=>({id:d.id,...d.data()}));render()});
   sub("trips",s=>{trips=s.docs.map(d=>({id:d.id,...d.data()}));render()});
+  sub("sleep",s=>{const o={};s.docs.forEach(d=>{o[d.id]=d.data()});sleeps=o;render()});
   for(const [c,set] of [["meals",v=>meals=v],["rests",v=>rests=v],["eats",v=>eats=v],["fridge",v=>fridge=v],["tlog",v=>tlog=v],["courses",v=>courses=v]])sub(c,s=>{set(s.docs.map(d=>({id:d.id,...d.data()})));if(!spinning)render()});
   sub("pomos",s=>{pomos=s.docs.map(d=>({id:d.id,...d.data()}));render();if(!pomoBooted){pomoBooted=true;setTimeout(()=>{let w=false;try{w=!!localStorage.getItem("lifeos-welcomed")}catch(_){};if(w||userName)maybeTour("new")},1500);if(P&&(P.phase==="focus"||P.phase==="break"))P.open=P.open!==false;renderPomo()}});
   sub("yearlyDays",s=>{yearlyDays=s.docs.map(d=>({id:d.id,...d.data()}));bdNotify();render()});
@@ -4019,6 +4101,7 @@ async function onSignedIn(user){
     const m=meta.data()||{}; if(m.name&&!userName){userName=m.name;try{localStorage.setItem(NAME_KEY,m.name)}catch(_){};applyName()}
     if(m.petName&&!petNameV)setPetName(m.petName,false);
     if(m.shelf)setShelf(m.shelf,false);
+    if(m.bedTime!=null)setBedTime(m.bedTime,false);
     startData(store);
     if(n&&!asked)openMergeAsk(store,localData,n,user.uid);
   }
