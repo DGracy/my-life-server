@@ -2672,9 +2672,9 @@ function openBd(id){
     const mSel=`<select id="bd-m" aria-label="${L("月","Month")}"><option value="">${L("月","Month")}</option>${[...Array(12)].map((_,i)=>`<option value="${i+1}" ${+st.month===i+1?"selected":""}>${L(`${i+1} 月`,MON[i])}</option>`).join("")}</select>`;
     const dSel=`<select id="bd-d" aria-label="${L("日","Day")}"><option value="">${L("日","Day")}</option>${[...Array(31)].map((_,i)=>`<option value="${i+1}" ${+st.day===i+1?"selected":""}>${L(`${i+1} 日`,i+1)}</option>`).join("")}</select>`;
     bg.innerHTML=`<div class="sheet bd-sheet" role="dialog" aria-label="${L("记住一个日子","Remember a date")}" style="--bc:${col}">
-    ${old?`<input id="bd-name" class="titlein" maxlength="40" value="${esc(st.name||"")}" aria-label="${L("名字","Name")}">`:`<h3>${L("让{pet}记住一个日子","Ask {pet} to remember a date")}</h3>`}
+    <h3>${old?L("改一改这个日子","Edit this date"):L("让{pet}记住一个日子","Ask {pet} to remember a date")}</h3>
     <div class="tchips">${TYPES.map(([k,n])=>`<button type="button" class="tchip${st.type===k?" on":""}" data-b="type" data-v="${k}">${BD_IC[k]}${n}</button>`).join("")}</div>
-    ${old?"":`<label class="field"><span>${st.type==="birthday"?L("是谁的生日？","Whose birthday?"):L("纪念什么？","What's the occasion?")}</span><input id="bd-name" maxlength="40" value="${esc(st.name||"")}" placeholder="${st.type==="birthday"?L("比如：妈妈","e.g. Mum"):L("比如：和 Lily 认识","e.g. Met Lily")}"></label>`}
+    <label class="field"><span>${st.type==="birthday"?L("是谁的生日？","Whose birthday?"):L("纪念什么？","What's the occasion?")}</span><input id="bd-name" maxlength="40" value="${esc(st.name||"")}" placeholder="${st.type==="birthday"?L("比如：妈妈","e.g. Mum"):L("比如：和 Lily 认识","e.g. Met Lily")}"></label>
     <div class="field"><span>${L("日期","Date")}</span><div class="drow">${lang==="en"?mSel+dSel+ySel:ySel+mSel+dSel}</div>
       <span class="hint">${st.type==="birthday"?L("年份可以不填，填了会显示几岁","Year is optional. Add it to show their age"):L("年份可以不填，填了会显示第几周年","Year is optional. Add it to count the years")}</span></div>
     <div class="field"><span>${L("颜色","Colour")}</span><div class="cdots">${BD_COLORS.map(c=>`<button type="button" class="cdot${c===col?" on":""}" data-b="col" data-v="${c}" style="--c:${c}" aria-label="${c}" aria-pressed="${c===col}"></button>`).join("")}</div></div>
