@@ -1202,7 +1202,7 @@ function sortTasks(a,b){
 const EMPTY={};
 const LIFE_HZ={};
 function lifeSeg(){
-  const subs=[["shop",sproutIcon("shop"),L("吃 & 买","Food"),shop.filter(x=>!x.bought).length],["memo",sproutIcon("memo"),L("备忘","Notes"),memos.length],["goals",sproutIcon("goals"),L("任务","Tasks"),tasks.filter(t=>t.space==="life"&&!t.done&&!t.deleted).length],["wish",sproutIcon("wish"),L("愿望","Wishes"),wishes.filter(w=>!w.done).length]].filter(x=>x[0]==="goals"||on(x[0]));
+  const subs=[["shop",sproutIcon("shop"),L("吃 & 买","Food"),shop.filter(x=>!x.bought).length],["memo",sproutIcon("memo"),L("备忘","Notes"),memos.length],["goals",sproutIcon("goals"),L("To Do","To Do"),tasks.filter(t=>t.space==="life"&&!t.done&&!t.deleted).length],["wish",sproutIcon("wish"),L("愿望","Wishes"),wishes.filter(w=>!w.done).length]].filter(x=>x[0]==="goals"||on(x[0]));
   if(subs.length<2)return "";
   return `<div class="seg" role="group" aria-label="${L("生活分区","Life sections")}" style="grid-template-columns:repeat(${subs.length},1fr)">
     ${subs.map(([k,ic,n,c])=>`<button data-act="lifesub" data-v="${k}" aria-pressed="${lifeSub===k}">${ic}<span class="sl">${n}</span> <span class="n${c?"":" z"}">${c}</span></button>`).join("")}</div>`;
