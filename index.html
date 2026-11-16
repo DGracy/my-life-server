@@ -52,7 +52,8 @@
 body{margin:0}
 [hidden]{display:none!important}
 .gear{border:none;background:var(--surface);border-radius:50%;width:34px;height:34px;font-size:16px;box-shadow:0 3px 0 var(--line);padding:0}
-@media(max-width:600px){.title-row{align-items:center;row-gap:8px}.title-row h1{flex-basis:100%}}
+@media(max-width:600px){.title-row{align-items:center;row-gap:8px;column-gap:8px}.title-row h1{flex-basis:100%}.title-row .today,.title-row .wx{align-self:center}.hd-acts{gap:6px}.hd-acts .gear{width:32px;height:32px;font-size:15px}.title-row .jbtn{height:32px;padding:0 10px}}
+@media(max-width:389px){#jbtnTxt{display:none}.title-row .jbtn{width:32px;padding:0;justify-content:center}}
 .hd-acts{margin-left:auto;align-self:center;display:flex;align-items:center;gap:8px}.hd-acts>button{margin:0;flex:none}.hd-acts .gear{display:grid;place-items:center;line-height:1}.hd-acts .gear[hidden]{display:none}
 .gear.sync{display:grid;place-items:center}.gear.sync svg{width:22px;height:22px}
 .google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:10px;background:var(--surface);font-weight:600}
