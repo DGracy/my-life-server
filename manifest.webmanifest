@@ -1,0 +1,16 @@
+{
+  "name": "人生服务器",
+  "short_name": "人生服务器",
+  "description": "打卡、任务、番茄钟和一棵会长大的小芽",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eaf4ff",
+  "theme_color": "#eaf4ff",
+  "lang": "zh-CN",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

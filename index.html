@@ -8,6 +8,9 @@
 <meta name="apple-mobile-web-app-title" content="人生服务器">
 <meta name="theme-color" content="#eaf4ff">
 <title>我的人生服务器</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Fredoka:wght@500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap">
 <style>
@@ -307,6 +310,129 @@ details.done-box .list{margin-top:8px}
 .ticket .tk-t span{flex:1;min-width:0;overflow-wrap:anywhere}
 .ticket::before,.ticket::after{content:"";position:absolute;left:51px;width:14px;height:14px;border-radius:50%;background:var(--surface)}
 .ticket::before{top:-7px}.ticket::after{bottom:-7px}
+.bdi{width:100%;height:100%;display:block}
+.task.hasplay{grid-template-columns:auto 1fr auto auto auto}
+@media(max-width:560px){.task:has(.tagset .fp,.tagset .rep,.tagset .prog){row-gap:6px}
+  .task:has(.tagset .fp,.tagset .rep,.tagset .prog)>.check{grid-column:1;grid-row:1/span 2}
+  .task:has(.tagset .fp,.tagset .rep,.tagset .prog)>.t-main{grid-column:2/4;grid-row:1}
+  .task:has(.tagset .fp,.tagset .rep,.tagset .prog)>.tagset{grid-column:2/-1;grid-row:2;justify-self:start;justify-content:flex-start}
+  .task:has(.tagset .fp,.tagset .rep,.tagset .prog)>.pri{grid-column:4;grid-row:1}
+  .task:has(.tagset .fp,.tagset .rep,.tagset .prog)>.play{grid-column:5;grid-row:1/span 2}}
+.play{width:32px;height:32px;border-radius:50%;border:2px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--tomato,#ef5d6e);font-size:12px;padding:0 0 0 2px;flex:none}
+.play.hot{border-color:#ef5d6e;background:#ffe4e7;box-shadow:0 0 0 4px rgba(239,93,110,.15)}.play.live{background:#ef5d6e;color:#fff;border-color:#ef5d6e}
+.fp{gap:4px;background:#ffe4e7;color:#c44a5a;border-radius:999px;padding:0 8px 0 5px;font-family:var(--f-num);font-size:12px;white-space:nowrap}.mt{width:14px;height:14px;flex:none}
+.focusbar{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;background:var(--surface);border-radius:20px;padding:10px 12px;box-shadow:var(--shadow);margin-bottom:10px}
+.focusbar b{font-family:var(--f-display);font-weight:400;font-size:17px}.focusbar small{display:block;color:var(--muted);font-size:12.5px}
+.focusbar .go{border:none;background:#ef5d6e;color:#fff;border-radius:999px;padding:8px 14px;font:inherit;font-weight:600;box-shadow:0 3px 0 #c64454;white-space:nowrap}
+.pick{background:var(--surface);border:2px dashed #ef5d6e;border-radius:16px;padding:10px 12px;display:grid;grid-template-columns:40px 1fr auto;column-gap:10px;align-items:center;margin-bottom:10px}
+.pick .pt{display:flex;flex-direction:column;gap:2px;min-width:0}.pick b{font-family:var(--f-display);font-weight:400;font-size:16px}.pick .pt span{font-size:12.5px;color:var(--muted)}
+.pf{width:40px;height:40px}.zf{width:22px;height:22px}
+.pick .x{display:flex;align-items:center;gap:4px;border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 10px 3px 4px;font:inherit;font-size:12.5px;color:var(--muted);white-space:nowrap}
+#pomoPill{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:45;border:none;background:#1f3156;color:#fff;border-radius:999px;padding:6px 6px 6px 8px;display:flex;align-items:center;gap:8px;font:inherit;font-size:13px;box-shadow:0 6px 16px rgba(0,0,0,.2);white-space:nowrap}
+#pomoPill .sf{width:26px;height:26px}#pomoPill b{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-size:15px}#pomoPill .bk{background:#fff;color:#1f3156;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600}#pomoPill.brk{background:#1f8a69}
+body.pomo-open{overflow:hidden}
+#pomoPage{position:fixed;inset:0;z-index:55;background:linear-gradient(180deg,#f0ecff,var(--bg) 55%);overflow-y:auto;color:var(--fg)}
+#pomoPage.brk{background:linear-gradient(180deg,#e2f7ed,var(--bg) 60%)}#pomoPage.up{background:linear-gradient(180deg,#e8eeff,var(--bg) 55%)}
+.pp-in{min-height:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;gap:14px;padding:calc(14px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));max-width:440px;margin:0 auto;position:relative}
+.pp-top{width:100%;display:flex;flex-direction:column;gap:8px;align-items:center}
+.pp-back{align-self:flex-start;text-align:left;border:none;background:none;font:inherit;font-size:13px;color:var(--muted);padding:2px 0}.pp-back .wide{display:none}
+.pp-top .pst{font-size:13px;color:var(--muted);text-align:center}
+.chips.c5{justify-content:center;gap:5px;flex-wrap:wrap}.chips.c5 .chip{display:inline-flex;align-items:center;height:28px;box-sizing:border-box;padding:0 10px;font:inherit;font-size:12.5px;line-height:1;color:var(--fg)}
+.chips.c5 .chip.on{border-color:#ef5d6e;color:#ef5d6e;background:#ffe4e7}.chips.c5 .chip.sw.on{border-color:#6c8ef5;color:#3b5fd6;background:#e8eeff}.chips.c5 .chip.pmore{letter-spacing:1px}
+.ringwrap{position:relative;width:min(280px,72vw);aspect-ratio:1;flex:none}.ringwrap svg.ring{position:absolute;inset:0;width:100%;height:100%}
+.ringwrap .pet{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:54%;height:54%}
+.ringwrap .time{position:absolute;left:0;right:0;bottom:12%;text-align:center;font-family:var(--f-num);font-weight:600;font-size:clamp(30px,10vw,40px);color:var(--fg);font-variant-numeric:tabular-nums}
+.ringwrap .time.up{color:#3b5fd6}.ringwrap .time.brk{color:#1f8a69}
+
+.sway{transform-origin:80px 136px;animation:sway 4s ease-in-out infinite}@keyframes sway{0%,100%{transform:rotate(-14deg)}50%{transform:rotate(14deg)}}
+@media (prefers-reduced-motion: reduce){.sway{animation:none}}
+.pp-right{width:100%;display:flex;flex-direction:column;gap:14px;align-items:center}
+#pomoPage .say{background:var(--surface);border-radius:14px;padding:8px 12px;font-size:13.5px;display:flex;align-items:center;gap:8px}#pomoPage .say .sf{width:24px;height:24px;flex:none}
+#pomoPage .what{background:var(--surface);border-radius:16px;padding:10px 14px;width:100%;box-sizing:border-box;display:flex;gap:10px;align-items:center;justify-content:space-between;box-shadow:var(--shadow)}
+#pomoPage .what.center{justify-content:center;color:#2a9d6a;font-size:14px}#pomoPage .what.ok{background:#effaf4;justify-content:flex-start}#pomoPage .what.ok b{text-decoration:line-through;color:var(--faint);display:block}#pomoPage .what.ok i{font-style:normal;font-size:12.5px;color:#2a9d6a}
+#pomoPage .wt{display:flex;gap:10px;align-items:center;border:none;background:none;text-align:left;font:inherit;color:inherit;padding:0;min-width:0}#pomoPage .wt .mt{width:18px;height:18px}
+#pomoPage .wt b{display:block;font-weight:600;overflow-wrap:anywhere}#pomoPage .wt i{font-style:normal;color:var(--muted);font-size:12.5px}
+.donebtn{border:2px solid var(--leaf);color:var(--leaf-2);background:var(--surface);border-radius:999px;padding:5px 12px;font:inherit;font-size:13px;font-weight:600;white-space:nowrap;flex:none}
+.ckd{width:22px;height:22px;border-radius:50%;background:var(--leaf);color:#fff;display:grid;place-items:center;font-size:12px;flex:none}
+#pomoPage .ctrls{display:flex;gap:14px;align-items:center;justify-content:center;width:100%}
+.cbtn{width:56px;height:56px;border-radius:50%;border:none;background:var(--surface);box-shadow:var(--shadow);font-size:18px;color:var(--muted);padding:0}
+.cbtn.main{width:72px;height:72px;background:#ef5d6e;color:#fff;font-size:22px;box-shadow:0 5px 0 #c64454}.cbtn.main.up{background:#6c8ef5;box-shadow:0 5px 0 #3b5fd6}
+.nextbtn{border:none;background:#2fb38a;color:#fff;border-radius:999px;padding:0 30px;height:60px;box-shadow:0 5px 0 #1f8a69;font:inherit;font-size:16px;font-weight:700}
+.pp-top{position:relative}.pmenu{position:absolute;right:0;top:100%;margin-top:6px;background:var(--surface);border-radius:14px;box-shadow:0 10px 26px rgba(31,49,86,.18);padding:6px;z-index:6;display:flex;flex-direction:column;min-width:190px}
+.pmenu button{border:none;background:none;font:inherit;text-align:left;font-size:14px;padding:9px 12px;border-radius:10px;color:var(--fg)}.pmenu button.hl{background:#ffe4e7;color:#ef5d6e}.pmenu small{font-size:11.5px;color:var(--muted);padding:4px 12px 2px}
+.plist.tp button{display:flex;gap:10px;align-items:center;background:var(--bg-2);border:2px solid transparent;border-radius:12px;padding:10px 12px;font:inherit;font-size:14px;text-align:left;color:var(--fg)}.plist.tp button.on{border-color:#ef5d6e}.plist.tp small{margin-left:auto;color:var(--muted);font-size:12px}
+.field>.chkrow,.chkrow{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--fg)}.field .chkrow input{width:18px;height:18px;flex:none;padding:0;border:none;accent-color:var(--brand)}
+@media(min-width:760px){
+  .pp-in{max-width:720px;display:grid;grid-template-columns:280px 1fr;grid-template-rows:auto auto;column-gap:36px;row-gap:28px;align-items:center;align-content:center;padding-top:40px;padding-bottom:40px}
+  .pp-top{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;justify-content:space-between}.pp-top .pst{order:1;text-align:left}.pp-top .chips{order:2}.pp-back{order:3;flex-basis:100%;order:-1}.pp-back .wide{display:inline}
+  .ringwrap{width:280px}.pp-right{align-items:stretch}.pp-right .say{align-self:flex-start}#pomoPage .ctrls{justify-content:flex-start}
+}
+.wx{display:inline-block;position:relative;background:var(--surface);border:none;border-radius:999px;padding:3px 10px 3px 30px;font-family:var(--f-num);font-size:14px;line-height:20px;color:var(--fg);box-shadow:0 2px 0 var(--line);white-space:nowrap}
+.wx svg{position:absolute;left:4px;top:50%;width:24px;height:24px;transform:translateY(-52%)}.wx small{color:var(--muted);font-size:12.5px;font-family:var(--f-body);margin-left:3px}
+@media (max-width:480px){.wx small{display:none}.wx{padding:2px 8px 2px 27px;font-size:13px}.wx svg{width:22px;height:22px}}
+.wx-city input{flex:1;min-width:120px;border:2px solid var(--line);border-radius:14px;background:var(--bg-2);padding:8px 12px}
+.focusline{display:flex;align-items:center;gap:8px;background:var(--surface);border-radius:14px;padding:10px 14px;font-size:14px;color:var(--fg);flex-wrap:wrap}.focusline .mt{width:18px;height:18px}.focusline b{font-family:var(--f-num);font-weight:600}.focusline .fsplit{flex-basis:100%;padding-left:26px;font-size:12.5px;color:var(--muted)}
+.fz{display:flex;flex-direction:column;gap:8px}.fz-big{display:flex;align-items:baseline;gap:4px;flex-wrap:wrap}.fz-big .mt.big{width:26px;height:26px;align-self:center;margin-right:4px}.fz-big b{font-family:var(--f-num);font-weight:600;font-size:34px;line-height:1;color:#ef5d6e}.fz-big span{font-size:14px;color:var(--muted);margin-right:4px}.fz-sub{font-size:12.5px;color:var(--muted)}
+.rc-col.stack .stk{display:flex;flex-direction:column-reverse;width:100%;border-radius:999px;overflow:hidden}.rc-col.stack .stk i{display:block;width:100%;min-height:3px;border-radius:0;background-image:none}
+.rc-legend.sm{margin-top:6px;font-size:12px}
+.tagset{display:inline-flex;align-items:center;gap:6px;justify-self:end;flex-wrap:wrap;justify-content:flex-end}.tagset>span{display:inline-flex;align-items:center;height:24px;line-height:1;box-sizing:border-box}.tagset .due{padding:0 10px}
+.rep{gap:4px;color:var(--study-ink);background:var(--study-soft);border-radius:999px;padding:0 9px 0 7px;font-size:12px;font-weight:600;white-space:nowrap}.rep svg{display:block;flex:none}.rep.pz{color:#8a7bb8;background:#f1edfb}.task.paused{opacity:.6}
+.prog{padding:0 9px;border-radius:999px;background:var(--study-soft);color:var(--study-ink);font-family:var(--f-num);font-size:12px;font-weight:700}
+.rep-chip{display:inline-flex;align-items:center;gap:4px;background:var(--study-soft);color:var(--study-ink);border-color:transparent}.split-chip.on{background:var(--study-soft);color:var(--study-ink);border-color:var(--study)}
+.subwrap{margin:-4px 0 4px 52px;display:flex;flex-direction:column;gap:2px}
+.sub{display:flex;align-items:center;gap:10px;font-size:14px;padding:3px 0}.sub .c{width:20px;height:20px;border-radius:50%;border:2px solid var(--study);background:var(--surface);flex:none;display:grid;place-items:center;font-size:11px;color:#fff;padding:0}.sub.d .c{background:var(--study)}
+.sub.d .tx span{color:var(--faint);text-decoration:line-through}.sub .tx{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-width:0;overflow-wrap:anywhere}.sub .tx em{font-style:normal;font-size:11.5px;color:var(--study-ink);background:var(--study-soft);border-radius:999px;padding:1px 8px;font-weight:600;white-space:nowrap}
+.sub .go{white-space:nowrap;flex:none;margin-left:auto;border:none;background:#ffe4e7;color:#c44a5a;border-radius:999px;padding:3px 10px;font:inherit;font-size:12px;font-weight:600}
+.more,.addsub{border:none;background:none;font:inherit;text-align:left;font-size:13px;color:var(--muted);padding:3px 0 3px 30px}.addsub{color:var(--study-ink)}
+.steps .addsub{padding-left:4px}.subin{margin-left:30px;border:2px solid var(--line);border-radius:10px;background:var(--bg-2);padding:5px 10px;font:inherit;font-size:14px;max-width:calc(100% - 30px)}
+.split{display:inline-flex;align-items:center;gap:4px;height:30px;border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:0 12px 0 6px;font:inherit;font-size:13px;color:var(--study-ink);font-weight:600;white-space:nowrap;flex:none}.split svg{width:22px;height:22px}
+.ed-split{align-self:flex-start}
+.nudge{display:flex;gap:10px;align-items:center;background:var(--surface);border:2px dashed var(--study);border-radius:16px;padding:10px 12px;margin:2px 0 10px;font-size:13.5px}.nudge>svg{width:34px;height:34px;flex:none}
+.nt2{flex:1;display:flex;flex-direction:column;gap:2px;line-height:1.45;min-width:0}.nt2 b{font-weight:600}.nt2 em{font-style:normal;color:var(--muted);font-size:13px}
+.nx-x{border:none;background:none;color:var(--faint);font-size:18px;padding:0 2px;line-height:1;align-self:flex-start}
+@media(max-width:520px){.nudge{flex-wrap:wrap;position:relative;padding-right:30px}.nudge .nt2{flex-basis:calc(100% - 50px)}.nudge .split{margin-left:44px}.nudge .nx-x{position:absolute;right:8px;top:8px}}
+.steps{display:flex;flex-direction:column;gap:6px}.step{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;background:var(--bg-2);border-radius:12px;padding:6px 8px 6px 12px;font-size:14.5px}
+.step input{border:none;background:transparent;font:inherit;color:var(--fg);padding:4px 0;min-width:0;width:100%}.step .x{border:none;background:none;color:var(--faint);font-size:18px;padding:0 4px}
+.step .n{width:22px;height:22px;border-radius:50%;background:var(--study-soft);color:var(--study-ink);font-family:var(--f-num);font-weight:700;font-size:12px;display:grid;place-items:center}
+.step.first{background:color-mix(in srgb,var(--study) 12%,var(--surface));outline:2px solid var(--study)}.step.first .n{background:var(--study);color:#fff}
+.gran{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);flex-wrap:wrap}.say2{display:flex;gap:8px;align-items:center;background:var(--bg-2);border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.5}.say2>svg{width:34px;height:34px;flex:none}
+.wdots{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}.wdot{width:36px;height:36px;border-radius:50%;border:2px solid var(--line);background:var(--surface);font:inherit;font-size:13px;color:var(--muted);padding:0}.wdot.on{background:var(--study);border-color:var(--study);color:#fff;font-weight:600}
+.until-row{display:flex;gap:8px;align-items:center}.until-row input{flex:1;min-width:0}
+.rep-acts{display:flex;gap:8px;flex-wrap:wrap}.rep-acts .btn{display:inline-flex;align-items:center;gap:4px}
+.sheet .opt{display:flex;flex-direction:column;gap:2px;border:2px solid var(--line);border-radius:16px;padding:12px 14px;background:var(--surface);text-align:left;font:inherit;width:100%;color:var(--fg)}.sheet .opt b{font-size:15px}.sheet .opt small{color:var(--muted);font-size:12.5px}.sheet .opt:hover{border-color:var(--study)}
+.plist{display:flex;flex-direction:column;gap:6px}.plist label{display:flex;gap:10px;align-items:center;background:var(--bg-2);border-radius:12px;padding:9px 12px;font-size:14px}.plist input{width:18px;height:18px;accent-color:var(--study);flex:none}.plist small{margin-left:auto;color:var(--muted);font-size:12px;white-space:nowrap}
+.snack{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom,0px));width:min(440px,calc(100% - 32px));box-sizing:border-box;background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:10px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 10px 24px rgba(47,124,246,.18);font-size:14px;z-index:60;animation:snackIn .25s ease-out}
+@media(min-width:900px){.snack{bottom:calc(24px + env(safe-area-inset-bottom,0px))}}
+body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
+@keyframes snackIn{from{opacity:0;transform:translate(-50%,10px)}}
+.snack span{flex:1;min-width:0}.snack b{font-weight:600}.snack small{display:block;color:var(--muted);font-size:12px}.snack svg.f{width:40px;height:40px;flex:none}.snack button{border:2px solid var(--line);background:var(--bg-2);color:var(--brand);border-radius:999px;padding:6px 11px;font:inherit;font-size:13px;font-weight:700;white-space:nowrap}
+.cal-day.bd{background:color-mix(in srgb,var(--bdc) 20%,var(--bg-2))}.cal-day.bd:disabled{opacity:1}.cal-day.bd:disabled .cal-top b{opacity:.45}
+.cal-bd{width:30px;height:30px;align-self:center;margin-top:-2px;max-width:100%}
+.cal-legend .lgi{display:inline-flex;align-items:center;gap:3px}.cal-legend .lgi svg{width:20px;height:20px}
+.upc{display:flex;flex-direction:column;gap:6px;border-top:2px dashed var(--line);padding-top:10px;margin-top:4px}
+.upc-head{display:flex;justify-content:space-between;align-items:center}.upc-head b{font-family:var(--f-display);font-weight:400;font-size:17px}
+.upc-add{border:2px solid var(--line);background:var(--surface);color:var(--brand);border-radius:999px;padding:4px 12px;font:inherit;font-size:13px}
+.upc-row{display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;background:color-mix(in srgb,var(--rc) 13%,var(--surface));border:none;border-radius:14px;padding:8px 12px;text-align:left;font:inherit;color:inherit;width:100%}
+.upc-row .ic{width:38px;height:38px}.upc-row .tx{min-width:0}.upc-row b{font-weight:600;font-size:14.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.upc-row small{display:block;color:var(--muted);font-size:12px}
+.upc-row .in{font-family:var(--f-num);font-size:13px;color:color-mix(in srgb,var(--rc) 65%,var(--fg));font-weight:600;white-space:nowrap}
+.upc-row.today{background:color-mix(in srgb,var(--rc) 24%,var(--surface));box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--rc) 55%,transparent)}
+.upc-empty{margin:0;font-size:13px}.upc-more{align-self:center;font-size:13px}
+.tchips{display:flex;gap:8px;flex-wrap:wrap}.tchip{display:inline-flex;align-items:center;gap:5px;border:2px solid var(--line);border-radius:999px;padding:5px 12px 5px 8px;font:inherit;font-size:14px;background:var(--surface);color:var(--fg)}.tchip.sm{padding:5px 12px}.tchip svg{width:24px;height:24px}
+.tchip.on{border-color:var(--bc,#ff8fb1);background:color-mix(in srgb,var(--bc,#ff8fb1) 16%,var(--surface));color:color-mix(in srgb,var(--bc,#ff8fb1) 55%,var(--fg))}
+.cdots{display:flex;gap:10px;flex-wrap:wrap}.cdot{width:30px;height:30px;border-radius:50%;border:none;padding:0;background:color-mix(in srgb,var(--c) 75%,#fff);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--c) 85%,#000 5%)}.cdot.on{box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--c)}
+.drow{display:flex;gap:8px}.drow>*{flex:1;min-width:0}.drow select{border:2px solid var(--line);border-radius:14px;background:var(--bg-2);padding:8px 10px;font:inherit;color:var(--fg)}.bd-err{color:#d0567a;margin:0}
+.ticket .tk-txt{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.ms-stars{display:inline-flex;gap:1px}.ms-stars i{display:inline-flex;width:15px;height:15px}.ms-stars svg{width:100%;height:100%;fill:none;stroke:#c9b46a;stroke-width:1.6;stroke-linejoin:round}.ms-stars i.on svg{fill:#f0a91c;stroke:#f0a91c}
+.ms-starrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:0 4px}.ms-starrow>span:first-child{font-size:13px;color:var(--fg)}.ms-starrow .hint{flex-basis:100%;font-size:12px;margin:0}
+.ms-pick{display:inline-flex;gap:4px}.ms-pick button{border:none;background:none;padding:2px;width:28px;height:28px;cursor:pointer}.ms-pick.big button{width:40px;height:40px}.ms-pick svg{width:100%;height:100%;fill:none;stroke:#c9b46a;stroke-width:1.6;stroke-linejoin:round}.ms-pick button.on svg{fill:#f0a91c;stroke:#f0a91c}
+.danger-link{color:#d0567a!important;align-self:center}
+.sheet.cel{align-items:center;text-align:center;gap:10px;background:linear-gradient(180deg,#fff7d6,var(--surface) 55%);position:relative;overflow:hidden}
+.sheet.cel>*:not(.conf){position:relative;z-index:1}.sheet.cel .conf{position:absolute;inset:0;pointer-events:none}
+.sheet.cel .party{width:112px;height:112px}.sheet.cel .eyebrow{font-size:13px;color:#b07a00;letter-spacing:.04em}
+.sheet.cel h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:24px}
+.sheet.cel .tk{background:#fff3c4;color:#5a4400;border-radius:14px;padding:12px 16px;box-shadow:0 3px 0 #f0d270;width:100%;box-sizing:border-box;text-align:left}
+.sheet.cel .tk b{font-size:16px;display:block}.sheet.cel .tk small{display:flex;align-items:center;gap:4px;font-size:12px;opacity:.8;font-weight:400;margin-top:4px}
+.sheet.cel .msg{font-size:14px;color:var(--muted);line-height:1.6;margin:0}.sheet.cel textarea{width:100%;box-sizing:border-box;min-height:70px}
 .ticket .del{border:none;background:none;color:#a07a00;font-size:18px;padding:0 4px;line-height:1}
 .tk-btn{border:none;background:none;padding:0;text-align:left;width:100%}
 .tk-btn:hover .ticket{transform:translateY(-1px)}
@@ -445,7 +571,15 @@ details.done-box .list{margin-top:8px}
 .seg button .sic{width:24px;height:24px;flex:none;margin-block:-4px}
 .wa-row select,.wish-sheet-cur{border:2px solid var(--line);background:var(--bg-2);border-radius:999px;padding:7px 10px;font-family:var(--f-num)}
 .seg button{white-space:nowrap;min-width:0;font-size:14px;padding:8px 4px;gap:4px}
-@media(max-width:440px){.seg button{font-size:13px}.seg button .n{padding:0 5px}}
+.petrow{display:flex;gap:8px}.petrow input{flex:1;min-width:0}
+.dice{display:flex;align-items:center;gap:4px;border:2px solid var(--line);background:var(--surface);color:var(--brand);border-radius:14px;padding:0 12px;font:inherit;font-size:14px;white-space:nowrap}
+.dice-ic{width:20px;height:20px}
+@media(max-width:480px){
+  .seg button{flex-direction:column;gap:2px;padding:7px 2px 6px;font-size:13px;position:relative}
+  .seg button .sic{width:30px;height:30px;margin:0}
+  .seg button .n{position:absolute;top:3px;left:calc(50% + 8px);min-width:18px;height:18px;line-height:18px;padding:0 4px;font-size:11px;box-sizing:border-box;text-align:center}
+  .seg button .n.z{display:none}
+}
 .wish-top .card-head .sub{flex-basis:100%;order:3}
 .wish-top .card-head .right{margin-left:auto}
 .wish-top select{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:2px 8px;font-family:var(--f-num)}
@@ -619,7 +753,7 @@ details.done-box .list{margin-top:8px}
   <section class="garden" aria-label="小芽的成长">
     <div class="buddy" id="buddy" role="img" aria-label="小芽"></div>
     <div class="g-text">
-      <div class="stage"><b id="stageName">小芽</b><span class="lv" id="stageLv">Lv.1</span><button class="forest-btn" id="forestBtn" aria-pressed="false">🌳 <span id="forestTxt">森林</span> <span class="fn" id="forestN">0</span></button></div>
+      <div class="stage"><b id="stageName">小芽</b><span class="lv" id="stageLv">Lv.1</span><button class="forest-btn" id="forestBtn" aria-pressed="false">🌳 <span class="fn" id="forestN">0</span></button></div>
       <div class="bubble"><span id="say">正在把你的东西搬过来…</span></div>
       <div class="meter">
         <div class="meter-top"><span>💧 <span class="w" id="water">0</span> <span id="dropsLbl">滴水</span></span><span id="nextTxt"></span></div>
@@ -670,7 +804,9 @@ details.done-box .list{margin-top:8px}
 /* ---------- language ---------- */
 let lang="zh";
 try{lang=localStorage.getItem("lifeos-lang")||((navigator.language||"").toLowerCase().startsWith("zh")?"zh":"en")}catch(e){lang=(navigator.language||"").toLowerCase().startsWith("zh")?"zh":"en"}
-const L=(zh,en)=>lang==="en"?en:zh;
+let petNameV=""; try{petNameV=localStorage.getItem("lifeos-pet")||""}catch(_){}
+const petName=()=>petNameV||(lang==="en"?"Sprout":"小芽");
+const L=(zh,en)=>{const v=lang==="en"?en:zh;return typeof v==="string"&&v.includes("{pet}")?v.replace(/\{pet\}/g,petName()):v};
 
 /* ---------- which boards are switched on (per browser) ---------- */
 const BOARDS_KEY="lifeos-boards";
@@ -705,7 +841,7 @@ const FLAME='<svg viewBox="0 0 24 24"><path d="M12 22c-4 0-6.5-2.7-6.5-6.2 0-3.3
 
 /* ---------- the growing buddy (original mascot) ---------- */
 const STAGES=[
-  {n:"种子",w:0},{n:"发芽",w:6},{n:"小芽",w:16},{n:"幼苗",w:32},{n:"小树",w:60},{n:"大树",w:120},{n:"开花的树",w:200}
+  {n:"种子",w:0},{n:"发芽",w:6},{n:"小芽",w:15},{n:"幼苗",w:30},{n:"小树",w:50},{n:"大树",w:80},{n:"开花的树",w:120}
 ];
 const MAXW=STAGES[STAGES.length-1].w;
 function stageOf(w){let i=0;STAGES.forEach((s,j)=>{if(w>=s.w)i=j});return i}
@@ -735,6 +871,7 @@ function treeSVG(mood,level,bloom,theme){
   let body="",top=100,fx=80,fy=122,fk=1;
   const blob=(cy,rx,ry)=>`<ellipse cx="80" cy="${cy}" rx="${rx}" ry="${ry}" fill="var(--buddy)"/><path d="M${80-rx*.6} ${cy-ry*.45}q${rx*.2} ${-ry*.35} ${rx*.55} ${-ry*.45}" stroke="#fff" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".7"/>`;
   const canopy=cs=>cs.map(([x,y,r],i)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${i%2?"var(--leaf-2)":"var(--leaf)"}"/>`).join("")+cs.slice(0,1).map(([x,y,r])=>`<path d="M${x-r*.6} ${y-r*.35}q${r*.25} ${-r*.4} ${r*.65} ${-r*.45}" stroke="#fff" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".45"/>`).join("");
+  const grass=n=>[[44,150],[118,150],[34,150],[128,150]].slice(0,n).map(([x,y])=>`<path d="M${x} ${y}l-3-8M${x} ${y}l1-10M${x} ${y}l4-7" stroke="var(--leaf)" stroke-width="2.2" stroke-linecap="round"/>`).join("");
   const trunk=(y,w)=>`<path d="M${80-w/2} 150 L${80-w/2+3} ${y+8} Q80 ${y-4} ${80+w/2-3} ${y+8} L${80+w/2} 150Z" fill="var(--bark)"/>`;
   if(stage===0){
     // a seed: a small round body still wearing its seed coat
@@ -744,11 +881,11 @@ function treeSVG(mood,level,bloom,theme){
     body=`<path d="M80 108V98" stroke="var(--leaf-2)" stroke-width="3.5" stroke-linecap="round"/>${leaf(80,100,-40,12)}${blob(128,24,21)}`;
     top=96;fy=130;fk=.78; if(bloom)body+=flower(80,96,5);
   }else if(stage===2){
-    body=`<path d="M80 94V80" stroke="var(--leaf-2)" stroke-width="4" stroke-linecap="round"/>${leaf(80,84,-150,22)}${leaf(80,84,-30,22)}${blob(120,31,28)}`;
-    top=72; if(bloom)body+=flower(80,78,6);
+    body=`${grass(2)}<path d="M80 98V72" stroke="var(--leaf-2)" stroke-width="4.5" stroke-linecap="round"/>${leaf(80,80,-160,34)}${leaf(80,80,-20,34)}${leaf(80,72,-90,14,"var(--leaf-2)")}${blob(122,32,28)}`;
+    top=60;fy=124;fk=.97; if(bloom)body+=flower(80,66,6);
   }else if(stage===3){
-    body=`<path d="M80 94C78 76 83 62 80 46" stroke="var(--leaf-2)" stroke-width="4.5" stroke-linecap="round" fill="none"/>${leaf(79,78,-160,24)}${leaf(80,72,-20,26)}${leaf(81,58,-155,20,"var(--leaf-2)")}${leaf(80,52,-25,22,"var(--leaf-2)")}<circle cx="80" cy="44" r="5" fill="var(--leaf)"/>${blob(120,31,28)}`;
-    top=40; if(bloom)body+=flower(80,42,7);
+    body=`${grass(4)}<path d="M80 94C78 74 83 58 80 40" stroke="var(--leaf-2)" stroke-width="5" stroke-linecap="round" fill="none"/>${leaf(79,80,-165,22)}${leaf(81,74,-15,22)}<circle cx="62" cy="44" r="15" fill="var(--leaf-2)"/><circle cx="98" cy="44" r="15" fill="var(--leaf-2)"/><circle cx="80" cy="32" r="22" fill="var(--leaf)"/><path d="M68 24q6-9 17-9" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none" opacity=".5"/>${blob(118,36,31)}`;
+    top=10;fy=120;fk=1.02; if(bloom)body+=[[66,34],[94,30],[80,18]].map(([x,y])=>flower(x,y,5)).join("");
   }else{
     const big={tw:50,ty:84,cs:[[80,50,40],[44,68,28],[116,68,28],[60,32,22],[100,32,22]],fy:115,fk:1.05,top:8};
     const T={4:{tw:36,ty:92,cs:[[80,62,34],[62,74,18],[98,74,18]],fy:120,fk:.82,top:28},
@@ -787,10 +924,13 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const pad=n=>String(n).padStart(2,"0");
 const ymd=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
-const todayStr=()=>ymd(new Date());
+const DAYSTART_KEY="lifeos-daystart";
+let dayStartH=4; try{const v=localStorage.getItem(DAYSTART_KEY);if(v!==null&&!isNaN(+v))dayStartH=+v}catch(_){}
+const shifted=ts=>new Date((ts??Date.now())-dayStartH*36e5);
+const todayStr=()=>ymd(shifted());
 const addDays=(s,n)=>{const [y,m,d]=s.split("-").map(Number);return ymd(new Date(y,m-1,d+n))};
 const WD=["日","一","二","三","四","五","六"];
-const fmtToday=()=>{const d=new Date();return L(`${d.getMonth()+1}月${d.getDate()}日 · 周${WD[d.getDay()]}`,`${WDEN[d.getDay()]}, ${d.getDate()} ${MON[d.getMonth()]}`)};
+const fmtToday=()=>{const d=shifted();return L(`${d.getMonth()+1}月${d.getDate()}日 · 周${WD[d.getDay()]}`,`${WDEN[d.getDay()]}, ${d.getDate()} ${MON[d.getMonth()]}`)};
 function dueLabel(due){
   if(!due)return null;
   const diff=Math.round((new Date(due)-new Date(todayStr()))/864e5);
@@ -805,7 +945,7 @@ function habitStats(){const td=checkins[todayStr()]||{};const live=on("habit")?h
 function waterTotal(){
   const t=tasks.filter(x=>x.done).length;
   let c=0; for(const d in checkins)c+=Object.keys(checkins[d]||{}).length;
-  return t+c*2+trips.length;
+  return t+c*2+trips.length+pomos.filter(p=>p.tomato).length;
 }
 function buddyState(){
   const {live,done}=habitStats();
@@ -817,6 +957,7 @@ function buddyState(){
   const h=new Date().getHours();
   const urgent=tasks.filter(t=>!t.done&&!t.deleted&&t.due&&t.due<=todayStr()).length;
   if(h<5)return {...base,mood:"sleepy",say:L(`已经凌晨 ${h} 点啦，记完就去睡吧，事情明天还在～`,`It's ${h} a.m. already. Jot it down and get some sleep, it'll all still be here tomorrow.`)};
+  const bdr=bdReminder(); if(bdr)return {...base,mood:"happy",say:bdr};
   if(bloom)return {...base,mood:"cheer",say:L("今天的打卡全部完成！我开花啦 🌸","All check-ins done today! I'm blooming 🌸")};
   const hot=tasks.filter(t=>!t.done&&!t.deleted&&+t.pri===3&&on(t.space)).length;
   if(!urgent&&hot&&h>=5)return {...base,mood:"idle",say:L(`有 ${hot} 件高优先级的事，先挑最红的那个开始吧！`,`${hot} high-priority ${n_(hot,"task is","tasks are")} waiting. Start with a red one!`)};
@@ -826,18 +967,19 @@ function buddyState(){
   if(!(journal[todayStr()]||{}).note)return {...base,mood:"happy",say:L("晚上好，今天辛苦了。点右上角「今日小结」看看你今天做了什么吧。","Good evening, you worked hard today. Tap Today at the top to see what you got done.")};
   return {...base,mood:"happy",say:L("晚上好，今天辛苦了。还有什么想记下来的吗？","Good evening, you worked hard today. Anything else to jot down?")};
 }
+const PET_KEY="lifeos-pet";
 let lastBuddy="", lastStage=null;
 function renderBuddy(){
   const s=buddyState(); const key=s.mood+s.stage+s.bloom+curTheme;
   if(key!==lastBuddy){$("#buddy").innerHTML=treeSVG(s.mood,s.stage,s.bloom);lastBuddy=key}
   $("#say").textContent=s.say;
-  $("#stageName").textContent=L("小芽 · ","Sprout · ")+STAGES[s.stage].n;
+  $("#stageName").textContent=petName();
   $("#stageLv").textContent="Lv."+(s.stage+1);
   $("#water").textContent=s.w;
   const next=STAGES[s.stage+1];
   if(next){const cur=STAGES[s.stage].w;$("#nextTxt").textContent=L(`再浇 ${next.w-s.w} 滴长成「${next.n}」`,`${next.w-s.w} more drops to “${next.n}”`);$("#wbar").style.width=Math.round((s.w-cur)/(next.w-cur)*100)+"%"}
   else{$("#nextTxt").textContent=L("开花啦！可以把它种进森林，再种一颗新的了","In full bloom! Plant it in your forest and start a new seed");$("#wbar").style.width="100%"}
-  $("#forestN").textContent=forest.length;
+  $("#forestN").textContent=forest.length; $("#forestBtn").title=L(`我的森林，${forest.length} 棵树`,`My forest, ${forest.length} ${n_(forest.length,"tree","trees")}`);
   $("#plantBtn").hidden=!(loaded.t&&loaded.f&&s.stage===STAGES.length-1);
   const fs=document.querySelector("#fab svg"); if(fs)fs.setAttribute("style",themeStyle(curTheme));
   if(loaded.t&&loaded.c&&loaded.f){
@@ -912,7 +1054,7 @@ function render(){
   if(fid){const el=document.getElementById(fid);if(el){el.focus();try{if(ss!=null)el.setSelectionRange(ss,se)}catch(_){}}}
   renderBuddy();
   if(pendingFocus){const el=document.querySelector(pendingFocus);pendingFocus=null;if(el)el.focus()}
-  setTimeout(maybeRecap,0);
+  setTimeout(maybeCelebrate,0); setTimeout(maybeRecap,0);
 }
 function emptyBox(text){return `<div class="empty">${miniBuddy()}<span>${text}</span></div>`}
 /* ---------- priority: a little speech bubble on the right of a task ---------- */
@@ -923,16 +1065,25 @@ function priIcon(p){
 }
 const priLabel=p=>L(["","低优先级","中优先级","高优先级"][p],["","Low priority","Medium priority","High priority"][p]);
 function taskRow(t){
-  const d=dueLabel(t.due), pr=+t.pri||0;
-  return `<div class="task${t.done?" done":""}${pr?" p"+pr:""}">
+  const d=dueLabel(t.due), pr=+t.pri||0, pz=!t.done&&isPaused(t), sb=t.subs||[];
+  const tags=[
+    t.repeat&&!t.done?(pz?`<span class="rep pz">${PAUSE_SVG}${L(`暂停到 ${md2(t.repeat.pause)}`,`Paused to ${md2(t.repeat.pause)}`)}</span>`:`<span class="rep">${REP_SVG}${repLabel(t.repeat)}</span>`):"",
+    sb.length&&!t.done?`<span class="prog">${sb.filter(x=>x.done).length}/${sb.length}</span>`:"",
+    d?`<span class="due ${d.cls}">${d.txt}</span>`:""].filter(Boolean);
+  const fm=(t.space==="study"||t.space==="work")?taskMins(t.id):0;
+  if(fm>=1)tags.unshift(`<span class="fp">${TOM_ICON}${fmtMins(fm)}</span>`);
+  const canPlay=!t.done&&(t.space==="study"||t.space==="work");
+  const hot=P&&P.phase==="pick";
+  return `<div class="task${t.done?" done":""}${pr?" p"+pr:""}${pz?" paused":""}${canPlay?" hasplay":""}">
     <button class="check${t.done?" on":""}" data-act="toggle" data-id="${t.id}" aria-label="${t.done?L("标记为未完成","Mark as not done"):L("标记为完成","Mark as done")}">${CHECK}</button>
     <button class="t-main" data-act="edit" data-id="${t.id}">
       <span class="t-title">${esc(t.title)}</span>
       ${t.note?`<span class="t-note">${esc(t.note)}</span>`:""}
     </button>
-    ${d?`<span class="due ${d.cls}">${d.txt}</span>`:"<span></span>"}
+    ${tags.length?`<span class="tagset">${tags.join("")}</span>`:"<span></span>"}
     ${pr?`<button class="pri p${pr}" data-act="pricycle" data-id="${t.id}" title="${priLabel(pr)}" aria-label="${priLabel(pr)}${L("，点一下换档",", tap to change")}">${priIcon(pr)}</button>`:"<span></span>"}
-  </div>`;
+    ${canPlay?`<button class="play${hot?" hot":""}${P&&P.taskId===t.id&&P.phase==="focus"?" live":""}" data-act="focus" data-id="${t.id}" aria-label="${L("开始专注这件事","Focus on this")}">▶</button>`:""}
+  </div>${subsBlock(t)}`;
 }
 function sortTasks(a,b){
   const pa=+a.pri||0, pb=+b.pri||0; if(pa!==pb)return pb-pa;
@@ -943,10 +1094,10 @@ function sortTasks(a,b){
 const EMPTY={};
 const LIFE_HZ={};
 function lifeSeg(){
-  const subs=[["shop",sproutIcon("shop"),L("购物","Shop"),shop.filter(x=>!x.bought).length],["memo",sproutIcon("memo"),L("备忘","Notes"),memos.length],["goals",sproutIcon("goals"),L("目标","Goals"),tasks.filter(t=>t.space==="life"&&!t.done&&!t.deleted).length],["wish",sproutIcon("wish"),L("愿望","Wishes"),wishes.filter(w=>!w.done).length]].filter(x=>x[0]==="goals"||on(x[0]));
+  const subs=[["shop",sproutIcon("shop"),L("购物","Shop"),shop.filter(x=>!x.bought).length],["memo",sproutIcon("memo"),L("备忘","Notes"),memos.length],["goals",sproutIcon("goals"),L("任务","Tasks"),tasks.filter(t=>t.space==="life"&&!t.done&&!t.deleted).length],["wish",sproutIcon("wish"),L("愿望","Wishes"),wishes.filter(w=>!w.done).length]].filter(x=>x[0]==="goals"||on(x[0]));
   if(subs.length<2)return "";
   return `<div class="seg" role="group" aria-label="${L("生活分区","Life sections")}" style="grid-template-columns:repeat(${subs.length},1fr)">
-    ${subs.map(([k,ic,n,c])=>`<button data-act="lifesub" data-v="${k}" aria-pressed="${lifeSub===k}">${ic}${n} <span class="n">${c}</span></button>`).join("")}</div>`;
+    ${subs.map(([k,ic,n,c])=>`<button data-act="lifesub" data-v="${k}" aria-pressed="${lifeSub===k}">${ic}<span class="sl">${n}</span> <span class="n${c?"":" z"}">${c}</span></button>`).join("")}</div>`;
 }
 function shopBoard(){
   const inList=new Set(shop.map(x=>x.name.trim().toLowerCase()));
@@ -979,7 +1130,7 @@ function shopBoard(){
       <div class="items"><div class="items-need" data-sort="shop">${need.map(row).join("")}</div>${need.length?"":(got.length?"":emptyBox(L("想到要买的就记在这里，到了超市一样样勾掉。","Note things down as you think of them, then tick them off at the shop.")))}${got.map(row).join("")}</div>
       ${got.length?`<div class="shop-foot"><span>${L(`已经买了 ${got.length} 样`,`${got.length} bought`)}</span><button class="btn life" data-act="tripdone">${L("这趟买完了 · 清掉已买的","Done shopping · clear bought items")}</button></div>`:""}
     </div>
-    <p class="hint">${L("每完成一趟采购，小芽喝 1 滴水。","Each finished shopping trip gives Sprout 1 drop of water.")}</p>`;
+    <p class="hint">${L("每完成一趟采购，{pet}喝 1 滴水。","Each finished shopping trip gives {pet} 1 drop of water.")}</p>`;
 }
 function taskBoard(k){
   if(k==="life"&&lifeSub==="memo")return `<div class="board" data-k="life">${lifeSeg()}${loaded.me?memoBoard():emptyBox(L("正在读取备忘录…","Loading your notes…"))}</div>`;
@@ -995,7 +1146,7 @@ function taskBoard(k){
   }).join("");
   const done=mine.filter(t=>t.done).sort((a,b)=>(b.doneAt||0)-(a.doneAt||0)).slice(0,50);
   const doneBox=done.length?`<details class="done-box"><summary>${L(`已完成 ${done.length} 件`,`${done.length} done`)}</summary><div class="list">${done.map(taskRow).join("")}</div></details>`:"";
-  return `<div class="board" data-k="${k}">${k==="life"?lifeSeg():""}${groups}${doneBox}</div>`;
+  return `<div class="board" data-k="${k}">${k==="life"?lifeSeg():""}${k==="study"||k==="work"?focusBar(k):""}${nudgeCard(k)}${groups}${doneBox}</div>`;
 }
 function streakOf(id){
   const t=todayStr(); let d=(checkins[t]||{})[id]?t:addDays(t,-1); let n=0;
@@ -1031,11 +1182,10 @@ function habitBoard(){
       <button data-act="hday" data-v="1" ${past?"":"disabled"} aria-label="${L("后一天","Next day")}">›</button>
       ${past?`<button class="hd-today" data-act="hday" data-v="0">${L("回到今天","Back to today")}</button>`:""}
     </div>
-    ${past?`<p class="hd-note">${L(`正在给 ${dm}月${dd}日补打卡。补的打卡一样算进连续天数，也会给小芽浇水。`,`Checking in for ${dd} ${MON[dm-1]}. Late check-ins still count toward your streak and water Sprout.`)}</p>`:""}
-    <div class="daycard${past?" past":""}"><h3>${past?L(`${dayName}的打卡`,`${dayName}'s check-ins`):L("今天的能量","Today's energy")}</h3><span class="big">${done}<span style="font-size:16px;color:var(--muted)"> / ${live.length}</span></span><div class="bar"><i style="width:${pct}%"></i></div></div>
+    ${past?`<p class="hd-note">${L(`正在给 ${dm}月${dd}日补打卡。补的打卡一样算进连续天数，也会给{pet}浇水。`,`Checking in for ${dd} ${MON[dm-1]}. Late check-ins still count toward your streak and water {pet}.`)}</p>`:""}
     <div class="list">${!loaded.h?emptyBox(L("正在读取打卡项…","Loading check-ins…")):rows||emptyBox(L('还没有打卡项。加一个每天想坚持的小习惯，比如"背 30 个单词"。','No check-ins yet. Add a small daily habit, like "30 minutes of reading".'))}</div>
     <form class="habit-add" id="habitForm"><input id="habitName" placeholder="${L("新的每日小习惯","New daily habit")}" maxlength="40" aria-label="${L("新的每日小习惯","New daily habit")}"><button class="btn" type="submit">${L("添加","Add")}</button></form>
-    <p class="hint">${L("完成一件任务浇 1 滴水，打一次卡浇 2 滴水，水攒够了小芽就会长大。当天打卡全部完成，它会开花。","Each finished task is 1 drop of water and each check-in is 2. Sprout grows as the water adds up, and blooms on days you finish every check-in.")}</p>
+    <p class="hint">${L("完成一件任务浇 1 滴水，打一次卡浇 2 滴水，水攒够了{pet}就会长大。当天打卡全部完成，它会开花。","Each finished task is 1 drop of water and each check-in is 2. Sprout grows as the water adds up, and blooms on days you finish every check-in.")}</p>
   </div>`;
 }
 
@@ -1128,18 +1278,21 @@ function shopItems(part){
 function ruleParse(text,today,fallback="life",dayFirst=false){
   const chunks=text.split(/[\n。；;！!？?]+|\.\s+|(?:还有|另外|然后|顺便|再就是)|\b(?:then|also|and then|plus also)\b/i).map(x=>x&&x.trim()).filter(Boolean);
   const out=[];
-  const addTask=raw=>{
-    const {due,rest}=pickDate(raw,today,dayFirst);
+  const addTask=raw0=>{
+    const pr0=pickRepeat(raw0,today), raw=pr0.rest;
+    let {due,rest}=pr0.repeat?{due:null,rest:raw}:pickDate(raw,today,dayFirst);
+    if(pr0.repeat&&!due)due=repFirst(normRepeat(pr0.repeat,today),today);
     const title=cleanTitle(rest); if(!title)return;
     const s=has(raw,RULES.study), w=has(raw,RULES.work);
-    const space=s>w?"study":w>s?"work":s&&w?"study":fallback;
+    let space=s>w?"study":w>s?"work":s&&w?"study":fallback;
     let horizon="inbox";
     if(due){const diff=Math.round((new Date(due)-new Date(today))/864e5);horizon=diff<=7?"week":diff<=31?"month":"long"}
     else if(has(raw,RULES.week))horizon="week";
     else if(has(raw,RULES.month))horizon="month";
     else if(has(raw,RULES.long))horizon="long";
     const pri=/(紧急|很急|急！|急!|特别重要|非常重要|重要|马上|!!|！！|\burgent\b|\bimportant\b|\basap\b|\bcritical\b|\bpriority\b)/i.test(raw)?3:/(不急|不着急|有空再|随便|\bno rush\b|\bwhenever\b|\bsomeday\b|\blow priority\b)/i.test(raw)?1:0;
-    out.push({title:title.replace(/^(?:紧急|重要)[:：\s]*/,"").replace(/\s*(?:!!|！！)\s*$/,"").replace(/^(?:urgent|important)[:\s]+/i,"").slice(0,200)||title.slice(0,200),space,horizon,due,note:"",pri,keep:true});
+    if(pr0.repeat&&/房租|水电|账单|rent|bill/i.test(raw0)&&!s&&!w)space="life";
+    out.push({repeat:pr0.repeat?normRepeat(pr0.repeat,due):null,title:title.replace(/^(?:紧急|重要)[:：\s]*/,"").replace(/\s*(?:!!|！！)\s*$/,"").replace(/^(?:urgent|important)[:\s]+/i,"").slice(0,200)||title.slice(0,200),space,horizon,due,note:"",pri,keep:true});
   };
   const isTaskish=x=>has(x,RULES.study)||has(x,RULES.work);
   for(const chunk of chunks){
@@ -1163,6 +1316,518 @@ function ruleParse(text,today,fallback="life",dayFirst=false){
     chunk.split(/[，,]\s*(?=\S)/).forEach(addTask);
   }
   return out;
+}
+
+/* ---------- weather (web only) ---------- */
+const IS_WEB=true;
+const WX_KEY="lifeos-wx";
+const WX_IC={"sun": "<svg viewBox=\"0 0 48 48\"><g stroke=\"#ffc94a\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M45.2 10.0L47.6 10.0\"/><path d=\"M43.4 14.4L45.1 16.1\"/><path d=\"M39.0 16.2L39.0 18.6\"/><path d=\"M34.6 14.4L32.9 16.1\"/><path d=\"M32.8 10.0L30.4 10.0\"/><path d=\"M34.6 5.6L32.9 3.9\"/><path d=\"M39.0 3.8L39.0 1.4\"/><path d=\"M43.4 5.6L45.1 3.9\"/></g><circle cx=\"39\" cy=\"10\" r=\"4.4\" fill=\"#ffc94a\"/><path d=\"M22 14V9\" stroke=\"#3faa74\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M22 11c-3.6 0-5.4-1.8-5.4-4.3 3.6 0 5.4 1.9 5.4 4.3zM22 11c3.6 0 5.4-1.8 5.4-4.3-3.6 0-5.4 1.9-5.4 4.3z\" fill=\"#5cc98f\"/><ellipse cx=\"22\" cy=\"29\" rx=\"13\" ry=\"11.96\" fill=\"#ffe08a\"/><ellipse cx=\"13.94\" cy=\"32.25\" rx=\"2.34\" ry=\"1.43\" fill=\"#ff8fb1\" opacity=\".85\"/><ellipse cx=\"30.060000000000002\" cy=\"32.25\" rx=\"2.34\" ry=\"1.43\" fill=\"#ff8fb1\" opacity=\".85\"/><path d=\"M11 25.5h22\" stroke=\"#3a3350\" stroke-width=\"1.6\"/><rect x=\"12\" y=\"24.5\" width=\"8.6\" height=\"5.6\" rx=\"2.6\" fill=\"#3a3350\"/><rect x=\"23.4\" y=\"24.5\" width=\"8.6\" height=\"5.6\" rx=\"2.6\" fill=\"#3a3350\"/><path d=\"M14 26l2 0\" stroke=\"#fff\" stroke-width=\"1\" opacity=\".7\"/><path d=\"M19 34q3 2.4 6 0\" stroke=\"#3a3350\" stroke-width=\"1.7\" fill=\"none\" stroke-linecap=\"round\"/></svg>", "cloud": "<svg viewBox=\"0 0 48 48\"><path d=\"M20 14V9\" stroke=\"#3faa74\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M20 11c-3.6 0-5.4-1.8-5.4-4.3 3.6 0 5.4 1.9 5.4 4.3zM20 11c3.6 0 5.4-1.8 5.4-4.3-3.6 0-5.4 1.9-5.4 4.3z\" fill=\"#5cc98f\"/><ellipse cx=\"20\" cy=\"29\" rx=\"13\" ry=\"11.96\" fill=\"#ffe08a\"/><ellipse cx=\"11.94\" cy=\"32.25\" rx=\"2.34\" ry=\"1.43\" fill=\"#ff8fb1\" opacity=\".85\"/><ellipse cx=\"28.060000000000002\" cy=\"32.25\" rx=\"2.34\" ry=\"1.43\" fill=\"#ff8fb1\" opacity=\".85\"/><path d=\"M14 28q2-2.4 4 0M22 28q2-2.4 4 0\" stroke=\"#3a3350\" stroke-width=\"1.7\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M17 33.5q3 2.4 6 0\" stroke=\"#3a3350\" stroke-width=\"1.7\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M30 26a6 6 0 0 1 11.6-1.8A4.6 4.6 0 0 1 42 33.4H31.5A3.7 3.7 0 0 1 30 26z\" fill=\"#fff\" stroke=\"#c9d8ee\" stroke-width=\"1.4\"/></svg>", "rain": "<svg viewBox=\"0 0 48 48\"><path d=\"M8 13a16 11 0 0 1 32 0z\" fill=\"#6cc4ff\"/><path d=\"M14 13q2 2 4 0t4 0 4 0 4 0 4 0\" stroke=\"#fff\" stroke-width=\"1\" fill=\"none\" opacity=\".7\"/><path d=\"M24 3v2\" stroke=\"#3a3350\" stroke-width=\"1.6\" stroke-linecap=\"round\"/><ellipse cx=\"24\" cy=\"30\" rx=\"12\" ry=\"11.040000000000001\" fill=\"#ffe08a\"/><ellipse cx=\"16.560000000000002\" cy=\"33\" rx=\"2.16\" ry=\"1.32\" fill=\"#ff8fb1\" opacity=\".85\"/><ellipse cx=\"31.439999999999998\" cy=\"33\" rx=\"2.16\" ry=\"1.32\" fill=\"#ff8fb1\" opacity=\".85\"/><path d=\"M24 17v2\" stroke=\"#3faa74\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M18 29q2-2.4 4 0M26 29q2-2.4 4 0\" stroke=\"#3a3350\" stroke-width=\"1.7\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M21 34q3 2.4 6 0\" stroke=\"#3a3350\" stroke-width=\"1.7\" fill=\"none\" stroke-linecap=\"round\"/><g fill=\"#4aa8ff\"><path d=\"M6 22q1.6 2.2 1.6 3.2a1.6 1.6 0 0 1-3.2 0q0-1 1.6-3.2z\"/><path d=\"M42 24q1.6 2.2 1.6 3.2a1.6 1.6 0 0 1-3.2 0q0-1 1.6-3.2z\"/><path d=\"M8 34q1.4 2 1.4 2.8a1.4 1.4 0 0 1-2.8 0q0-.8 1.4-2.8z\"/></g></svg>", "snow": "<svg viewBox=\"0 0 48 48\"><path d=\"M24 13V8\" stroke=\"#3faa74\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M24 10c-3.6 0-5.4-1.8-5.4-4.3 3.6 0 5.4 1.9 5.4 4.3zM24 10c3.6 0 5.4-1.8 5.4-4.3-3.6 0-5.4 1.9-5.4 4.3z\" fill=\"#5cc98f\"/><path d=\"M13 20q11-6 22 0v3H13z\" fill=\"#ff8fb1\"/><circle cx=\"24\" cy=\"15\" r=\"2.4\" fill=\"#fff\" stroke=\"#f3c6d3\"/><ellipse cx=\"24\" cy=\"30\" rx=\"12.5\" ry=\"11.5\" fill=\"#ffe08a\"/><ellipse cx=\"16.25\" cy=\"33.125\" rx=\"2.25\" ry=\"1.375\" fill=\"#ff8fb1\" opacity=\".85\"/><ellipse cx=\"31.75\" cy=\"33.125\" rx=\"2.25\" ry=\"1.375\" fill=\"#ff8fb1\" opacity=\".85\"/><path d=\"M18 29q2-2.4 4 0M26 29q2-2.4 4 0\" stroke=\"#3a3350\" stroke-width=\"1.7\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M21 34q3 2.4 6 0\" stroke=\"#3a3350\" stroke-width=\"1.7\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M15 39h18\" stroke=\"#ff8fb1\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><g stroke=\"#8fb4e6\" stroke-width=\"1.3\" stroke-linecap=\"round\"><path d=\"M6 12v6M3 15h6M4 13l4 4M8 13l-4 4\"/><path d=\"M41 22v6M38 25h6M39 23l4 4M43 23l-4 4\"/></g></svg>"};
+let wx={on:true};
+try{wx={...wx,...JSON.parse(localStorage.getItem(WX_KEY)||"{}")}}catch(_){}
+const saveWx=()=>{try{localStorage.setItem(WX_KEY,JSON.stringify(wx))}catch(_){}};
+function wxKind(c){if(c<=1)return "sun";if([71,73,75,77,85,86].includes(c))return "snow";if(c>=51)return "rain";return "cloud"}
+function wxText(c){const T=[[[0],"晴","Clear"],[[1],"晴","Mostly clear"],[[2],"多云","Partly cloudy"],[[3],"阴","Overcast"],[[45,48],"雾","Fog"],[[51,53,55,56,57],"毛毛雨","Drizzle"],[[61,80],"小雨","Light rain"],[[63,81],"雨","Rain"],[[65,82],"大雨","Heavy rain"],[[66,67],"冻雨","Freezing rain"],[[71,85],"小雪","Light snow"],[[73,75,86],"雪","Snow"],[[77],"雪粒","Snow grains"],[[95,96,99],"雷雨","Thunderstorm"]];const r=T.find(x=>x[0].includes(c));return r?L(r[1],r[2]):""}
+function renderWx(){
+  let el=$("#wx"); if(!IS_WEB||!wx.on||!wx.cache){if(el)el.remove();return}
+  if(!el){el=document.createElement("button");el.id="wx";el.className="wx";$("#today").after(el)}
+  const c=wx.cache, tip=`${wx.city||L("当前位置","Your location")} · ${wxText(c.code)} · ${L("最高","High")} ${Math.round(c.max)}° ${L("最低","Low")} ${Math.round(c.min)}°`;
+  el.title=tip; el.setAttribute("aria-label",tip);
+  el.innerHTML=`${WX_IC[wxKind(c.code)]}${Math.round(c.temp)}°<small>${wxText(c.code)}</small>`;
+}
+async function fetchWx(force){
+  if(!IS_WEB||!wx.on)return renderWx();
+  if(wx.lat==null){
+    if(wx.asked||!navigator.geolocation)return renderWx();
+    wx.asked=true;saveWx();
+    navigator.geolocation.getCurrentPosition(p=>{wx.lat=+p.coords.latitude.toFixed(3);wx.lon=+p.coords.longitude.toFixed(3);wx.city="";saveWx();fetchWx(true)},()=>{},{timeout:10000,maximumAge:36e5});
+    return}
+  if(!force&&wx.cache&&Date.now()-wx.cache.at<36e5&&wx.cache.lat===wx.lat)return renderWx();
+  try{
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${wx.lat}&longitude=${wx.lon}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=1`);
+    const j=await r.json();
+    wx.cache={at:Date.now(),lat:wx.lat,temp:j.current.temperature_2m,code:j.current.weather_code,max:j.daily.temperature_2m_max[0],min:j.daily.temperature_2m_min[0]};saveWx();
+  }catch(_){}
+  renderWx();
+}
+async function searchCity(q){
+  const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=6&language=${lang==="en"?"en":"zh"}&format=json`);
+  const j=await r.json(); return (j.results||[]).map(x=>({name:x.name,area:[x.admin1,x.country].filter(Boolean).join(", "),lat:+x.latitude.toFixed(3),lon:+x.longitude.toFixed(3)}));
+}
+if(IS_WEB){setTimeout(()=>fetchWx(false),1200);setInterval(()=>fetchWx(false),10*6e4)}
+/* ---------- pomodoro ---------- */
+let pomos=[];
+const POMO_KEY="lifeos-pomo", PSET_KEY="lifeos-pomoset";
+const PMODES={"15":[15,3],"25":[25,5],"50":[50,10]};
+let pset={mode:"25",custom:{f:35,b:7},longOn:true,sound:false};
+try{pset={...pset,...JSON.parse(localStorage.getItem(PSET_KEY)||"{}")}}catch(_){}
+const savePset=()=>{try{localStorage.setItem(PSET_KEY,JSON.stringify(pset))}catch(_){}};
+let P=null; // live session
+try{P=JSON.parse(localStorage.getItem(POMO_KEY)||"null")}catch(_){P=null}
+const saveP=()=>{try{P?localStorage.setItem(POMO_KEY,JSON.stringify(P)):localStorage.removeItem(POMO_KEY)}catch(_){}};
+const pomoLen=m=>m==="up"?null:m==="custom"?[pset.custom.f,pset.custom.b]:PMODES[m]||PMODES["25"];
+const TOM_ICON=`<svg class="mt" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="11.5" r="6.5" fill="#ef5d6e"/><path d="M10 5c-2 0-3-1-3-2.4 2 0 2.8 1 3 2.4zM10 5c2 0 3-1 3-2.4-2 0-2.8 1-3 2.4z" fill="#5cc98f"/></svg>`;
+const fmtMins=m=>{m=Math.round(m);if(m<60)return `${m}mins`;const h=Math.floor(m/60),r=m%60;return r?`${h}h${r}mins`:`${h}h`};
+const fmtHM=m=>{m=Math.round(m);const h=Math.floor(m/60),r=m%60;return h?L(`${h} 小时${r?` ${r} 分`:""}`,`${h}h${r?` ${r}m`:""}`):L(`${r} 分钟`,`${r} min`)};
+const mmss=ms=>{ms=Math.max(0,ms);const s=Math.floor(ms/1000);const m=Math.floor(s/60);return `${m<10?"0":""}${m}:${String(s%60).padStart(2,"0")}`};
+const taskMins=id=>pomos.filter(p=>p.taskId===id).reduce((a,p)=>a+(+p.mins||0),0);
+const dayPomos=d=>pomos.filter(p=>p.day===d);
+const tomatoesOn=d=>dayPomos(d).filter(p=>p.tomato).length;
+const minsOn=d=>dayPomos(d).reduce((a,p)=>a+(+p.mins||0),0);
+const elapsed=()=>!P?0:((P.pausedAt||Date.now())-P.startAt-(P.pausedTotal||0));
+const remain=()=>{if(!P)return 0;const len=P.phase==="focus"?(P.focusMin?P.focusMin*6e4:null):P.breakMin*6e4;return len==null?null:len-elapsed()};
+/* faces */
+const SF_HEAD=`<path d="M20 14V8" stroke="#3faa74" stroke-width="2.4" stroke-linecap="round"/><path d="M20 11c-4 0-6-2-6-5 4 0 6 2 6 5zM20 11c4 0 6-2 6-5-4 0-6 2-6 5z" fill="#5cc98f"/><ellipse cx="20" cy="26" rx="13" ry="12" fill="#ffe08a"/>`;
+const SF={
+  focus:`<svg class="sf" viewBox="0 0 40 40" aria-hidden="true">${SF_HEAD}<path d="M8 25q0-12 12-12t12 12" stroke="#3a3350" stroke-width="2.2" fill="none"/><rect x="5" y="22" width="5" height="9" rx="2.5" fill="#7f8db0"/><rect x="30" y="22" width="5" height="9" rx="2.5" fill="#7f8db0"/><path d="M14 25h4M22 25h4" stroke="#3a3350" stroke-width="2" stroke-linecap="round"/><path d="M18 30q2 1.6 4 0" stroke="#3a3350" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`,
+  happy:`<svg class="sf" viewBox="0 0 40 40" aria-hidden="true">${SF_HEAD}<path d="M13 25q2.5-3 5 0M22 25q2.5-3 5 0" stroke="#3a3350" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M17 30q3 2.5 6 0" stroke="#3a3350" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="11.5" cy="29" rx="2.4" ry="1.5" fill="#ff8fb1" opacity=".8"/><ellipse cx="28.5" cy="29" rx="2.4" ry="1.5" fill="#ff8fb1" opacity=".8"/></svg>`,
+  star:`<svg class="pf" viewBox="0 0 40 40" aria-hidden="true">${SF_HEAD}<circle cx="15.5" cy="24.5" r="2.6" fill="#3a3350"/><circle cx="24.5" cy="24.5" r="2.6" fill="#3a3350"/><circle cx="16.4" cy="23.6" r=".9" fill="#fff"/><circle cx="25.4" cy="23.6" r=".9" fill="#fff"/><path d="M18 30.5q2 1.6 4 0" stroke="#3a3350" stroke-width="1.8" fill="none" stroke-linecap="round"/><ellipse cx="11.5" cy="29" rx="2.4" ry="1.5" fill="#ff8fb1" opacity=".8"/><ellipse cx="28.5" cy="29" rx="2.4" ry="1.5" fill="#ff8fb1" opacity=".8"/><path d="M33 9l1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1z" fill="#ffc94a"/></svg>`,
+  nap:`<svg class="zf" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 14V9" stroke="#3faa74" stroke-width="2.6" stroke-linecap="round"/><path d="M20 12c-4 0-6-2-6-5 4 0 6 2 6 5z" fill="#5cc98f"/><ellipse cx="20" cy="26" rx="13" ry="12" fill="#ffe08a"/><path d="M13 25q2.5 2 5 0M22 25q2.5 2 5 0" stroke="#3a3350" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="20" cy="31" rx="2" ry="1.6" fill="#3a3350"/><ellipse cx="11.5" cy="29" rx="2.4" ry="1.5" fill="#ff8fb1" opacity=".8"/><ellipse cx="28.5" cy="29" rx="2.4" ry="1.5" fill="#ff8fb1" opacity=".8"/></svg>`};
+const PET_FOCUS=`<svg class="pet" viewBox="0 0 160 160" aria-hidden="true"><ellipse cx="80" cy="146" rx="40" ry="6" fill="#c9b49a"/><path d="M80 70C78 56 82 46 80 34" stroke="#3faa74" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M79 58C69 58 61 52 61 44 71 44 78 50 79 58Z" fill="#5cc98f"/><path d="M80 50C90 50 98 44 98 36 88 36 81 42 80 50Z" fill="#3faa74"/><circle cx="80" cy="33" r="5" fill="#5cc98f"/><ellipse cx="80" cy="108" rx="40" ry="36" fill="#ffe08a"/><path d="M40 104q0-34 40-34t40 34" stroke="#3a3350" stroke-width="5" fill="none"/><rect x="31" y="96" width="14" height="22" rx="7" fill="#7f8db0"/><rect x="115" y="96" width="14" height="22" rx="7" fill="#7f8db0"/><path d="M62 104h10M88 104h10" stroke="#3a3350" stroke-width="3.6" stroke-linecap="round"/><path d="M74 118q6 3 12 0" stroke="#3a3350" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="57" cy="114" rx="6" ry="4" fill="#ff8fb1" opacity=".7"/><ellipse cx="103" cy="114" rx="6" ry="4" fill="#ff8fb1" opacity=".7"/><rect x="56" y="124" width="48" height="20" rx="3" fill="#8b6cf0"/><path d="M80 124v20" stroke="#fff" stroke-width="2"/><path d="M62 130h12M86 130h12M62 136h10M86 136h10" stroke="#fff" stroke-width="1.6" opacity=".7"/></svg>`;
+const PET_YOGA=`<svg class="pet" viewBox="0 0 160 160" aria-hidden="true"><path d="M26 128h108l14 16H12z" fill="#c9b8f5"/><path d="M12 144h136v4q0 2-2 2H14q-2 0-2-2z" fill="#a993ea"/><path d="M34 132h92M28 138h104" stroke="#fff" stroke-width="1.4" opacity=".55" stroke-dasharray="5 6"/><ellipse cx="80" cy="136" rx="34" ry="5" fill="#a993ea" opacity=".45"/><g class="sway"><path d="M50 102Q22 52 80 30Q138 52 110 102" stroke="#f0c85a" stroke-width="11" fill="none" stroke-linecap="round"/><path d="M50 102Q22 52 80 30Q138 52 110 102" stroke="#ffe08a" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="80" cy="30" r="6.5" fill="#ffe08a" stroke="#f0c85a" stroke-width="2"/><path d="M80 72V52" stroke="#3faa74" stroke-width="4" stroke-linecap="round"/><path d="M80 58c-10 0-17-6-17-14 10 0 16 6 17 14zM80 58c10 0 17-6 17-14-10 0-16 6-17 14z" fill="#5cc98f"/><ellipse cx="80" cy="106" rx="36" ry="30" fill="#ffe08a"/><path d="M59 102q6 4 12 0M89 102q6 4 12 0" stroke="#3a3350" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M75 115q5 4 10 0" stroke="#3a3350" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="55" cy="111" rx="6" ry="4" fill="#ff8fb1" opacity=".7"/><ellipse cx="105" cy="111" rx="6" ry="4" fill="#ff8fb1" opacity=".7"/></g><path d="M128 70q5-3 10 0t10 0M132 80q4-2.5 8 0t8 0" stroke="#a993ea" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`;
+const FB_ICON=`<svg viewBox="0 0 40 40" width="44" height="44" aria-hidden="true"><circle cx="20" cy="24" r="14" fill="#ef5d6e"/><path d="M20 10c-4 0-6-2-6-4.5 4 0 5.6 2 6 4.5zM20 10c4 0 6-2 6-4.5-4 0-5.6 2-6 4.5z" fill="#5cc98f"/><circle cx="15.5" cy="23" r="2" fill="#3a3350"/><circle cx="24.5" cy="23" r="2" fill="#3a3350"/><path d="M17 28q3 2.6 6 0" stroke="#3a3350" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`;
+/* alerts */
+const BASE_TITLE=()=>(userName?L(`${userName} 的人生服务器`,`${userName}'s Life Server`):L("我的人生服务器","My Life Server")).replace(" 的","的");
+let flashT=null, flashMsgs=null, flashUntil=0;
+function notify(title,body,tag){
+  if(!IS_WEB||!("Notification" in window)||Notification.permission!=="granted")return;
+  const opt={body:body||"",silent:true,tag:tag||"lifeos",icon:"icon-192.png",badge:"icon-192.png"};
+  try{if(navigator.serviceWorker&&navigator.serviceWorker.controller){navigator.serviceWorker.ready.then(r=>r.showNotification(title,opt)).catch(()=>{try{new Notification(title,opt)}catch(_){}})}else new Notification(title,opt)}catch(_){}
+}
+function askNotify(){if(IS_WEB&&"Notification" in window&&Notification.permission==="default"){try{Notification.requestPermission()}catch(_){}}}
+function ding(){if(!pset.sound)return;try{const C=window.AudioContext||window.webkitAudioContext;const c=new C();const o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.value=880;g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.18,c.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+1.2);o.connect(g).connect(c.destination);o.start();o.stop(c.currentTime+1.3);setTimeout(()=>c.close(),1600)}catch(_){}}
+function buzz(){try{navigator.vibrate&&navigator.vibrate([180,90,180])}catch(_){}}
+let wake=null;
+async function wakeOn(){try{if("wakeLock" in navigator&&!wake&&document.visibilityState==="visible"){wake=await navigator.wakeLock.request("screen");wake.addEventListener("release",()=>{wake=null})}}catch(_){wake=null}}
+function wakeOff(){try{wake&&wake.release()}catch(_){}wake=null}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){if(P&&P.phase==="focus"&&!P.pausedAt)wakeOn();pomoTick()}});
+/* session */
+function curTask(){return P&&P.taskId?tasks.find(t=>t.id===P.taskId):null}
+function defaultTask(space){const list=tasks.filter(t=>t.space===space&&!t.done&&!t.deleted&&!isPaused(t)).sort((a,b)=>{const hz=["week","inbox","month","long"];return hz.indexOf(a.horizon)-hz.indexOf(b.horizon)||sortTasks(a,b)});return list[0]||null}
+function startFocus(taskId,subI){
+  if(!db)return;
+  const t=taskId?tasks.find(x=>x.id===taskId):null;
+  if(P&&P.phase==="focus"){
+    if(taskId!==undefined&&taskId!==P.taskId)switchTask(taskId,subI);
+    else if(subI!=null&&!isNaN(subI))P.subI=subI;
+    P.open=true;saveP();renderPomo();return}
+  const len=pomoLen(pset.mode);
+  P={phase:"focus",mode:pset.mode,focusMin:len?len[0]:null,breakMin:len?len[1]:0,taskId:t?t.id:null,space:t?t.space:(tab==="study"||tab==="work"?tab:null),subI:t&&subI!=null&&!isNaN(subI)?subI:(t&&t.subs&&t.subs.length?t.subs.findIndex(x=>!x.done):null),
+     startAt:Date.now(),pausedAt:null,pausedTotal:0,segs:[],segAt:0,open:true,msg:null};
+  if(P.subI!=null&&P.subI<0)P.subI=null;
+  saveP(); askNotify(); wakeOn(); renderPomo(); render();
+}
+function switchTask(taskId,subI){
+  const e=elapsed(); P.segs.push({taskId:P.taskId,space:P.space,ms:e-P.segAt}); P.segAt=e;
+  const t=taskId?tasks.find(x=>x.id===taskId):null;
+  P.taskId=t?t.id:null; P.space=t?t.space:P.space; P.subI=t&&t.subs&&t.subs.length?(subI!=null&&!isNaN(subI)?subI:t.subs.findIndex(x=>!x.done)):null; if(P.subI<0)P.subI=null;
+  saveP();
+}
+function recordSession(){
+  if(!P||P.phase!=="focus")return {tomato:false,mins:0};
+  const e=elapsed(); const segs=[...(P.segs||[]),{taskId:P.taskId,space:P.space,ms:e-(P.segAt||0)}].filter(s=>s.ms>=3e4);
+  const total=e/6e4, tomato=total>=10, day=dayOf(P.startAt);
+  segs.forEach((s,i)=>{const ref=db.collection("pomos").doc();const doc={taskId:s.taskId||null,space:s.space||null,start:P.startAt,end:Date.now(),mins:Math.round(s.ms/6e3)/10,day,mode:P.mode,tomato:tomato&&i===segs.length-1};
+    pomos.push({id:ref.id,...doc});queued(ref.path,()=>ref.set(doc))});
+  if(tomato&&!segs.length){const ref=db.collection("pomos").doc();const doc={taskId:null,space:P.space||null,start:P.startAt,end:Date.now(),mins:Math.round(total*10)/10,day,mode:P.mode,tomato:true};pomos.push({id:ref.id,...doc});queued(ref.path,()=>ref.set(doc))}
+  return {tomato,mins:total};
+}
+function toBreak(doneTask){
+  const r=recordSession();
+  if(r.tomato){water($("#pomoPage .ringwrap")||null,1)}
+  const n=tomatoesOn(todayStr());
+  const long=r.tomato&&pset.longOn&&n>0&&n%4===0;
+  if(P.mode==="up"){endPomo(r.mins>=1?L(`专注了 ${fmtHM(r.mins)}，辛苦啦`,`Focused ${fmtHM(r.mins)}. Nice work`):null);return}
+  const len=pomoLen(P.mode)||[25,5];
+  P={...P,phase:"break",breakMin:long?15:len[1],long,startAt:Date.now(),pausedAt:null,pausedTotal:0,segs:[],segAt:0,doneTask:doneTask?{title:doneTask.title}:null,tomato:r.tomato,open:P.open,flashed:false};
+  saveP(); wakeOff();
+  if(r.tomato){tflash([L("🎉 番茄完成啦","🎉 Tomato done!")],8000);notify(L("一个番茄完成啦","A tomato done!"),L(`休息 ${P.breakMin} 分钟，起来喝口水。`,`Take ${P.breakMin} minutes. Get up and have some water.`),"pomo");buzz();ding()}
+  renderPomo(); render();
+}
+function endPomo(msg){P=null;saveP();wakeOff();stopFlash();document.title=BASE_TITLE();renderPomo();render();if(msg)cheer(msg)}
+function toPick(ended){
+  const keepSub=P&&P.subI!=null&&P.taskId&&tasks.find(t=>t.id===P.taskId&&!t.done);
+  if(!ended&&keepSub){const tid=P.taskId,si=P.subI;P=null;startFocus(tid,si);return}
+  P={phase:"pick",ended:!!ended,startAt:Date.now()}; saveP(); wakeOff(); renderPomo(); render();
+  if(ended){tflash([L("❗ 休息结束啦","❗ Break's over")],0);notify(L("休息结束啦","Break's over"),L(`${petName()}伸完懒腰了，回来挑下一件要专注的事吧。`,`${petName()} has had a good stretch. Come back and pick what's next.`),"pomo");buzz();ding()}
+}
+function tflash(msgs,ms){flashMsgs=msgs;flashUntil=ms?Date.now()+ms:Infinity}
+function stopFlash(){flashMsgs=null;flashUntil=0}
+function pomoTitle(){
+  if(!P||P.phase==="pick"){if(P&&P.ended&&flashMsgs)return Math.floor(Date.now()/1500)%2?flashMsgs[0]:BASE_TITLE();return BASE_TITLE()}
+  if(flashMsgs&&Date.now()<flashUntil&&Math.floor(Date.now()/1500)%2)return flashMsgs[0];
+  if(P.phase==="break")return `🌱 ${L("休息","Break")} ${mmss(remain())}`;
+  if(P.mode==="up")return `🍅 ${L("专注","Focus")} ${mmss(elapsed())}`;
+  return `${P.pausedAt?"‖":"▶︎"} ${mmss(elapsed())}`;
+}
+let pomoTimer=null;
+function pomoTick(){
+  if(!P||P.phase==="pick"&&!(P.ended&&flashMsgs)){if(document.title!==BASE_TITLE()&&!P)document.title=BASE_TITLE();if(P&&P.phase==="pick")document.title=BASE_TITLE();return}
+  if(P.phase==="focus"&&!P.pausedAt&&P.focusMin&&remain()<=0){toBreak(null);return}
+  if(P.phase==="break"&&!P.pausedAt&&remain()<=0){toPick(true);return}
+  document.title=pomoTitle();
+  const pg=$("#pomoPage");
+  if(pg&&!pg.hidden){const tm=pg.querySelector(".time");if(tm)tm.textContent=P.phase==="focus"&&P.mode==="up"?mmss(elapsed()):mmss(P.phase==="focus"?remain():remain());
+    const arc=pg.querySelector(".arc");if(arc&&P.mode!=="up"||arc&&P.phase==="break"){const len=(P.phase==="focus"?P.focusMin:P.breakMin)*6e4;arc.setAttribute("stroke-dashoffset",String(779*Math.min(1,Math.max(0,elapsed()/len))))}}
+  const pill=$("#pomoPill"); if(pill&&!pill.hidden){const b=pill.querySelector("b");if(b)b.textContent=P.phase==="break"?mmss(remain()):P.mode==="up"?mmss(elapsed()):mmss(remain())}
+}
+setInterval(pomoTick,1000);
+if(IS_WEB&&/^https?:$/.test(location.protocol)&&"serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+/* page */
+function renderPomo(){
+  let pg=$("#pomoPage"), pill=$("#pomoPill");
+  if(!pg){pg=document.createElement("div");pg.id="pomoPage";pg.hidden=true;pg.setAttribute("role","dialog");pg.setAttribute("aria-label",L("番茄专注","Focus timer"));document.body.appendChild(pg)}
+  if(!pill){pill=document.createElement("button");pill.id="pomoPill";pill.hidden=true;document.body.appendChild(pill)}
+  const active=P&&(P.phase==="focus"||P.phase==="break");
+  pill.hidden=!(active&&!P.open);
+  if(!pill.hidden){pill.className=P.phase==="break"?"brk":"";pill.innerHTML=`${P.phase==="break"?SF.happy:SF.focus}<span>${P.phase==="break"?L("休息中","Break"):P.pausedAt?L("暂停中","Paused"):L("专注中","Focusing")}</span><b>${P.phase==="break"?mmss(remain()):P.mode==="up"?mmss(elapsed()):mmss(remain())}</b><span class="bk">${L("回去","Open")} ›</span>`}
+  pg.hidden=!(active&&P.open);
+  document.body.classList.toggle("pomo-open",!pg.hidden);
+  pomoTick();
+  if(pg.hidden){pg.innerHTML="";return}
+  const t=curTask(), brk=P.phase==="break", up=P.mode==="up"&&!brk, n=tomatoesOn(todayStr());
+  const len=brk?P.breakMin*6e4:P.focusMin?P.focusMin*6e4:null;
+  const off=len?779*Math.min(1,elapsed()/len):0;
+  const ring=`<svg class="ring" viewBox="0 0 280 280" aria-hidden="true"><circle cx="140" cy="140" r="124" fill="#fff" opacity=".7"/><circle cx="140" cy="140" r="124" fill="none" stroke="${brk?"#d6f0e4":up?"#e2e9ff":"#f3dfe3"}" stroke-width="14"/>${up?`<g class="spin"><circle cx="140" cy="140" r="124" fill="none" stroke="#6c8ef5" stroke-width="14" stroke-linecap="round" stroke-dasharray="6 18.35"/>${matchMedia("(prefers-reduced-motion: reduce)").matches?"":`<animateTransform attributeName="transform" type="rotate" from="0 140 140" to="360 140 140" dur="24s" repeatCount="indefinite"/>`}</g>`:`<circle class="arc" cx="140" cy="140" r="124" fill="none" stroke="${brk?"#2fb38a":"#ef5d6e"}" stroke-width="14" stroke-linecap="round" stroke-dasharray="779" stroke-dashoffset="${off}" transform="rotate(-90 140 140)"/>`}</svg>`;
+  const status=brk?(P.long?L(`长休息 · 今天第 ${n} 个番茄完成啦`,`Long break · tomato #${n} today done`):P.tomato?L(`休息中 · 第 ${n} 个番茄完成啦`,`Break · tomato #${n} done`):L("休息中","Break")):up?L("不计时 · 想停就停","No timer · stop whenever"):P.pausedAt?L(`暂停中 · 第 ${n+1} 个番茄`,`Paused · tomato #${n+1}`):L(`专注中 · 第 ${n+1} 个番茄`,`Focusing · tomato #${n+1}`);
+  const chips=brk?"":`<div class="chips c5">${[["15","15+3"],["25","25+5"],["50","50+10"],["up",L("不计时","No timer")]].map(([k,n2])=>`<button class="chip${P.mode===k?" on":""}${k==="up"?" sw":""}" data-pm="mode" data-v="${k}">${n2}</button>`).join("")}<button class="chip pmore${P.mode==="custom"?" on":""}" data-pm="menu" aria-label="${L("更多设置","More")}">${P.mode==="custom"?`${pset.custom.f}+${pset.custom.b}`:"⋯"}</button></div>`;
+  const say=P.msg&&Date.now()-P.msg.at<6000?P.msg.t:brk?(P.long?L("已经 4 个番茄啦，好好休息 15 分钟～","That's 4 tomatoes! Take a proper 15-minute break～"):L("在垫子上伸展一下，深呼吸～","Have a stretch on the mat and take a deep breath～")):up?L("不赶时间，做完了点「做完了」就好～","No rush. Tap Done when you're finished～"):P.pausedAt?L("先停一下也没关系，准备好了再继续。","Pausing is fine. Carry on when you're ready."):L("我陪你一起专注，别分心哦。","I'm focusing with you. Stay with it!");
+  const sub=t&&P.subI!=null&&t.subs&&t.subs[P.subI];
+  const what=brk?(P.doneTask?`<div class="what ok"><span class="ckd">✓</span><div><b>${esc(P.doneTask.title)}</b><i>${P.tomato?L("已完成 · 任务 +1 滴水 · 番茄 +1 滴水","Done · task +1 drop · tomato +1 drop"):L("已完成 · +1 滴水","Done · +1 drop")}</i></div></div>`:`<div class="what center">${P.long?L("去走走、喝点水，回来再接着做","Go for a walk, drink some water, then come back"):L("起来动一动、喝口水～","Get up, move a little, have some water～")}</div>`)
+    :`<div class="what"><button class="wt" data-pm="pick">${TOM_ICON}<span><b>${sub?esc(sub.t):t?esc(t.title):L("单纯专注","Just focusing")}</b><i>${sub?L(`${esc(t.title)} · 第 ${P.subI+1} / ${t.subs.length} 步`,`${esc(t.title)} · step ${P.subI+1} of ${t.subs.length}`):(t?SPACE[t.space]+" · ":"")+L("点这里换一件事","Tap to switch")}</i></span></button>${t?`<button class="donebtn" data-pm="done">✓ ${L("做完了","Done")}</button>`:up?`<button class="donebtn" data-pm="stop">✓ ${L("做完了","Done")}</button>`:""}</div>`;
+  const ctrls=brk?`<button class="cbtn" data-pm="stop" aria-label="${L("结束","Stop")}">■</button><button class="nextbtn" data-pm="next">▶ ${L("接着做","Keep going")}</button><button class="cbtn" data-pm="pause" aria-label="${P.pausedAt?L("继续","Resume"):L("暂停","Pause")}">${P.pausedAt?"▶":"❚❚"}</button>`
+    :`<button class="cbtn" data-pm="stop" aria-label="${L("结束","Stop")}">■</button><button class="cbtn main${up?" up":""}" data-pm="pause" aria-label="${P.pausedAt?L("继续","Resume"):L("暂停","Pause")}">${P.pausedAt?"▶":"❚❚"}</button><button class="cbtn" data-pm="restart" aria-label="${L("重新开始","Restart")}">↻</button>`;
+  const tm=brk?mmss(remain()):up?mmss(elapsed()):mmss(remain());
+  pg.className=brk?"brk":up?"up":"";
+  pg.innerHTML=`<div class="pp-in">
+    <div class="pp-top"><button class="pp-back" data-pm="hide">‹ ${L("收起","Hide")}<span class="wide">${L("，回到板块（计时不停）",", back to boards (timer keeps going)")}</span></button><div class="pst">${status}</div>${chips}${pomoMenu?`<div class="pmenu" role="menu"><small>${L("自定义","Custom")}</small><button data-pm="custom" class="${P.mode==="custom"?"hl":""}">${pset.custom.f}+${pset.custom.b} · ${L("上次用的","last used")}</button><button data-pm="customset">${L("专注 ＋ 休息 自己设…","Set focus + break…")}</button><small>${L("长休息","Long break")}</small><button data-pm="long">${L("每 4 个番茄休息 15 分钟","15-min break every 4 tomatoes")} ${pset.longOn?"✓":""}</button></div>`:""}</div>
+    <div class="ringwrap">${ring}${brk?PET_YOGA:PET_FOCUS}<div class="time${up?" up":""}${brk?" brk":""}">${tm}</div></div>
+    <div class="pp-right"><div class="say">${brk?SF.happy:SF.focus}<span>${say}</span></div>${what}<div class="ctrls">${ctrls}</div></div>
+
+  </div>`;
+}
+let pomoMenu=false, pomoBooted=false;
+function openCustom(){
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("自己设时长","Custom length")}"><h3>${L("自己设时长","Custom length")}</h3>
+    <div class="drow"><label class="field"><span>${L("专注（5–90 分钟）","Focus (5–90 min)")}</span><input type="number" id="pc-f" min="5" max="90" value="${pset.custom.f}"></label><label class="field"><span>${L("休息（1–30 分钟）","Break (1–30 min)")}</span><input type="number" id="pc-b" min="1" max="30" value="${pset.custom.b}"></label></div>
+    <div class="sheet-actions"><button class="btn" data-c="x">${L("取消","Cancel")}</button><button class="btn primary" data-c="ok">${L("就用这个","Use it")}</button></div></div>`;
+  document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-c]");if(!b)return;if(b.dataset.c==="ok"){const f=Math.min(90,Math.max(5,Math.round(+bg.querySelector("#pc-f").value||25))),br=Math.min(30,Math.max(1,Math.round(+bg.querySelector("#pc-b").value||5)));pset.custom={f,b:br};setMode("custom")}bg.remove()});
+}
+function setMode(m){pset.mode=m;savePset();if(P&&P.phase==="focus"){const len=pomoLen(m);P.mode=m;P.focusMin=len?len[0]:null;P.breakMin=len?len[1]:0;saveP()}pomoMenu=false;renderPomo()}
+function openTaskPicker(){
+  const list=tasks.filter(t=>(t.space==="study"||t.space==="work")&&on(t.space)&&!t.done&&!t.deleted).sort(sortTasks);
+  const bg=document.createElement("div");bg.className="sheet-bg";bg.style.zIndex=80;
+  bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("换一件事","Switch task")}"><h3>${L("换一件事","Switch task")}</h3><div class="plist tp">${list.map(t=>`<button data-tp="${t.id}" class="${P&&P.taskId===t.id?"on":""}"><span>${esc(t.title)}</span><small>${SPACE[t.space]}</small></button>`).join("")}<button data-tp=""><span>${L("不绑任务，单纯专注","No task, just focus")}</span></button></div></div>`;
+  document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-tp]");if(!b)return;bg.remove();switchTask(b.dataset.tp||null);renderPomo()});
+}
+document.addEventListener("click",e=>{
+  if(e.target.closest("#pomoPill")){if(P){P.open=true;saveP();renderPomo()}return}
+  const b=e.target.closest("#pomoPage [data-pm]"); if(!b){if(pomoMenu&&e.target.closest("#pomoPage")&&!e.target.closest(".pmenu")){pomoMenu=false;renderPomo()}return}
+  const a=b.dataset.pm; if(!P)return;
+  if(a!=="menu"&&a!=="long"&&a!=="custom"&&a!=="customset")pomoMenu=false;
+  if(a==="hide"){P.open=false;saveP();renderPomo();return}
+  if(a==="mode"){setMode(b.dataset.v);return}
+  if(a==="menu"){pomoMenu=!pomoMenu;renderPomo();return}
+  if(a==="custom"){setMode("custom");return}
+  if(a==="customset"){pomoMenu=false;renderPomo();openCustom();return}
+  if(a==="long"){pset.longOn=!pset.longOn;savePset();renderPomo();return}
+  if(a==="pick"){openTaskPicker();return}
+  if(a==="pause"){if(P.pausedAt){P.pausedTotal+=Date.now()-P.pausedAt;P.pausedAt=null;if(P.phase==="focus")wakeOn()}else{P.pausedAt=Date.now();wakeOff()}saveP();renderPomo();return}
+  if(a==="restart"){P.startAt=Date.now();P.pausedAt=null;P.pausedTotal=0;P.segs=[];P.segAt=0;saveP();renderPomo();return}
+  if(a==="stop"){if(P.phase==="focus"){const r=recordSession();if(r.tomato)water($("#buddy"),1);endPomo(r.mins>=1?L(`专注了 ${fmtHM(r.mins)}${r.tomato?"，+1 个番茄":""}`,`Focused ${fmtHM(r.mins)}${r.tomato?", +1 tomato":""}`):null)}else endPomo();return}
+  if(a==="next"){toPick(false);return}
+  if(a==="done"){const t=curTask();if(!t)return;
+    if(P.subI!=null&&t.subs&&t.subs[P.subI]){const subs=t.subs.map(x=>({...x}));subs[P.subI].done=true;const nx=subs.findIndex(x=>!x.done);
+      if(nx>=0){setSubs(t,subs);P.subI=nx;P.msg={t:L("上一步做完啦！接着下一步，计时不停～","Step done! On to the next one, timer keeps going～"),at:Date.now()};saveP();renderPomo();return}
+      t.subs=subs}
+    completeTask(t,b);toBreak(t);return}
+});
+
+function focusBar(k){
+  const td=todayStr(), n=tomatoesOn(td), m=minsOn(td);
+  if(P&&P.phase==="pick")return `<div class="pick">${SF.star}<div class="pt"><b>${P.ended?L("休息结束啦","Break's over"):L("挑下一件要专注的事","Pick what to focus on next")}</b><span>${P.ended?L("挑下一件，点右边的 ▶ 开始","Pick one and tap ▶ to start"):L("点右边的 ▶ 就开始新的番茄","Tap ▶ on a task to start a new tomato")}</span></div><button class="x" data-act="pickrest">${SF.nap}${P.ended?L("再歇会儿","Rest a bit more"):L("先歇会儿","Rest first")}</button></div>`;
+  const live=P&&(P.phase==="focus"||P.phase==="break");
+  return `<div class="focusbar">${FB_ICON}<div><b>${L("番茄专注","Focus")}</b><small>${n||m>=1?L(`今天 ${n} 个番茄 · ${fmtHM(m)}`,`Today: ${n} ${n_(n,"tomato","tomatoes")} · ${fmtHM(m)}`):L("挑一件事，专注一会儿","Pick something and focus for a while")}</small></div>
+    <button class="go" data-act="${live?"pomoopen":"focusstart"}" data-space="${k}">${live?(P.phase==="break"?L("休息中 ›","On break ›"):L("专注中 ›","Focusing ›")):"▶ "+L("开始","Start")}</button></div>`;
+}
+/* ---------- repeat / subtasks / snackbar ---------- */
+const REP_SVG=`<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M5 11a7 7 0 0 1 12-4.6M19 13a7 7 0 0 1-12 4.6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M17.5 2.8v4h-4M6.5 21.2v-4h4" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const PAUSE_SVG=`<svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1.5" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1.5" fill="currentColor"/></svg>`;
+const SNACK_FACE=`<svg class="f" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 18V11" stroke="#3faa74" stroke-width="2.6" stroke-linecap="round"/><path d="M24 14c-5 0-7.5-2.5-7.5-6 5 0 7.5 2.6 7.5 6zM24 14c5 0 7.5-2.5 7.5-6-5 0-7.5 2.6-7.5 6z" fill="#5cc98f"/><ellipse cx="24" cy="30" rx="13" ry="12" fill="#ffe08a"/><ellipse cx="15" cy="33" rx="2.6" ry="1.6" fill="#ff8fb1" opacity=".8"/><ellipse cx="33" cy="33" rx="2.6" ry="1.6" fill="#ff8fb1" opacity=".8"/><path d="M17.8 29.8q2-2.8 4 0M26.2 29.8q2-2.8 4 0" stroke="#3a3350" stroke-width="1.9" fill="none" stroke-linecap="round"/><path d="M21 34q3 2.6 6 0" stroke="#3a3350" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M38 7l1.5 3.5 3.5 1.5-3.5 1.5-1.5 3.5-1.5-3.5-3.5-1.5 3.5-1.5z" fill="#ff8fb1"/></svg>`;
+const IDEA_FACE=`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 18V11" stroke="#3faa74" stroke-width="2.6" stroke-linecap="round"/><path d="M24 14c-5 0-7.5-2.5-7.5-6 5 0 7.5 2.6 7.5 6zM24 14c5 0 7.5-2.5 7.5-6-5 0-7.5 2.6-7.5 6z" fill="#5cc98f"/><ellipse cx="24" cy="30" rx="13" ry="12" fill="#ffe08a"/><ellipse cx="15" cy="33" rx="2.6" ry="1.6" fill="#ff8fb1" opacity=".8"/><ellipse cx="33" cy="33" rx="2.6" ry="1.6" fill="#ff8fb1" opacity=".8"/><circle cx="19.5" cy="29" r="2.7" fill="#3a3350"/><circle cx="28.5" cy="29" r="2.7" fill="#3a3350"/><circle cx="20.4" cy="28" r="1" fill="#fff"/><circle cx="29.4" cy="28" r="1" fill="#fff"/><path d="M21 34q3 2.6 6 0" stroke="#3a3350" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M38 7l1.5 3.5 3.5 1.5-3.5 1.5-1.5 3.5-1.5-3.5-3.5-1.5 3.5-1.5z" fill="#ffc94a"/><path d="M42 19l0.8999999999999999 2.0999999999999996 2.0999999999999996 0.8999999999999999-2.0999999999999996 0.8999999999999999-0.8999999999999999 2.0999999999999996-0.8999999999999999-2.0999999999999996-2.0999999999999996-0.8999999999999999 2.0999999999999996-0.8999999999999999z" fill="#ffc94a"/></svg>`;
+const NTH=["","第一个","第二个","第三个","第四个"], NTH_EN=["","1st","2nd","3rd","4th"];
+const wdOrder=ds=>[...ds].sort((a,b)=>((a+6)%7)-((b+6)%7));
+const md2=d=>{const [,m,dd]=d.split("-").map(Number);return `${m}/${dd}`};
+const mdw=d=>{const [y,m,dd]=d.split("-").map(Number);const w=new Date(y,m-1,dd).getDay();return L(`${m}/${dd} 周${WD[w]}`,`${WDEN[w]} ${dd} ${MON[m-1]}`)};
+function repLabel(r){
+  if(!r)return "";
+  if(r.freq==="day")return L("每天","Daily");
+  if(r.freq==="month")return r.nth?L(`每月${NTH[r.nth]}周${WD[r.wd]}`,`Monthly · ${NTH_EN[r.nth]} ${WDEN[r.wd]}`):L(`每月${r.mday}号`,`Monthly · day ${r.mday}`);
+  const ds=wdOrder(r.days||[]);
+  if(r.freq==="week"&&ds.length===5&&[1,2,3,4,5].every(x=>ds.includes(x)))return L("每个工作日","Weekdays");
+  if(r.freq==="week"&&ds.length===7)return L("每天","Daily");
+  const names=ds.map(d=>L(WD[d],WDEN[d])).join(L("、",", "));
+  return r.freq==="2week"?L(`每两周${names}`,`Every 2 weeks · ${names}`):L(`每周${names}`,`Weekly · ${names}`);
+}
+const dnum=s=>Math.round(new Date(s+"T12:00:00")/864e5);
+function repHit(r,d){
+  const dt=new Date(d+"T12:00:00"), wd=dt.getDay();
+  if(r.freq==="day")return true;
+  if(r.freq==="month"){
+    if(r.nth)return wd===r.wd&&Math.ceil(dt.getDate()/7)===r.nth;
+    const dim=new Date(dt.getFullYear(),dt.getMonth()+1,0).getDate();return dt.getDate()===Math.min(r.mday||1,dim)}
+  if(!(r.days||[]).includes(wd))return false;
+  if(r.freq==="2week"){const wk=s=>Math.floor((dnum(s)-dnum("2024-01-01"))/7);return Math.abs(wk(d)-wk(r.anchor||d))%2===0}
+  return true;
+}
+function repNext(r,after){let d=after;for(let i=0;i<800;i++){d=addDays(d,1);if(repHit(r,d))return d}return null}
+const repFirst=(r,from)=>repHit(r,from)?from:repNext(r,from);
+const isPaused=t=>!!(t.repeat&&t.repeat.pause&&t.repeat.pause>=todayStr());
+function repNextFor(t){
+  const r=t.repeat, y=addDays(todayStr(),-1);
+  let after=t.due&&t.due>y?t.due:y;
+  if(r.pause&&r.pause>after)after=r.pause;
+  const nx=repNext(r,after);
+  return nx&&(!r.until||nx<=r.until)?nx:null;
+}
+function normRepeat(r,due){
+  if(!r||!r.freq)return null;
+  const o={freq:r.freq};
+  const base=due||todayStr(), bw=new Date(base+"T12:00:00").getDay();
+  if(r.freq==="week"||r.freq==="2week"){o.days=(r.days&&r.days.length?[...new Set(r.days)]:[bw]).map(Number);if(r.freq==="2week")o.anchor=r.anchor||base}
+  if(r.freq==="month"){if(r.nth){o.nth=r.nth;o.wd=r.wd}else o.mday=r.mday||+base.slice(8)}
+  if(r.until)o.until=r.until; if(r.pause)o.pause=r.pause;
+  return o;
+}
+function spawnNext(t,nx){
+  const ref=db.collection("tasks").doc();
+  const body={title:t.title,space:t.space,horizon:t.horizon||"week",due:nx,note:t.note||"",pri:+t.pri||0,done:false,createdAt:Date.now(),repeat:{...t.repeat},series:t.series||t.id};
+  if(t.subs&&t.subs.length)body.subs=t.subs.map(s=>({t:s.t,done:false}));
+  queued(ref.path,()=>ref.set(body));
+  return ref.id;
+}
+let snackT=null;
+function snack(title,sub,btn,fn){
+  document.querySelector(".snack")?.remove(); clearTimeout(snackT);
+  const el=document.createElement("div"); el.className="snack"; el.setAttribute("role","status");
+  el.innerHTML=`${SNACK_FACE}<span><b>${title}</b><small>${sub}</small></span>${btn?`<button type="button">${btn}</button>`:""}`;
+  document.body.appendChild(el);
+  if(btn)el.querySelector("button").onclick=()=>{el.remove();clearTimeout(snackT);fn()};
+  snackT=setTimeout(()=>el.remove(),6500);
+}
+const dayLabel=d=>{const [,m,dd]=d.split("-").map(Number);return L(`${m}月${dd}日`,`${dd} ${MON[m-1]}`)};
+const noonOf=d=>{const [y,m,dd]=d.split("-").map(Number);return new Date(y,m-1,dd,12).getTime()};
+function completeTask(t,el){
+  const now=Date.now(), today=todayStr();
+  if(el){const r=el.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,[css(t.space==="life"?"--life":t.space==="study"?"--study":"--work"),css("--buddy"),css("--pink")]);water(el,1)}
+  cheer(PRAISE[Math.floor(Math.random()*PRAISE.length)]+L(" 浇了 1 滴水"," +1 drop"));
+  const ref=db.doc("tasks/"+t.id); const patch={done:true,doneAt:now};
+  let nx=null;
+  if(t.repeat&&!t.done){nx=repNextFor(t);if(nx)patch.nextId=spawnNext(t,nx)}
+  if(t.subs&&t.subs.length)patch.subs=t.subs.map(s=>({...s,done:true}));
+  Object.assign(t,patch); render();
+  queued(ref.path,()=>ref.update(patch));
+  const undo=()=>{const p2={done:false,doneAt:null,nextId:null};if(patch.nextId){const r2=db.doc("tasks/"+patch.nextId);queued(r2.path,()=>r2.delete())}queued(ref.path,()=>ref.update(p2))};
+  if(t.repeat&&t.due&&t.due>today)snack(L("提前完成啦！咕嘟喝了 1 滴水","Done early! Glug, 1 drop of water"),nx?L(`下一次：${mdw(nx)}`,`Next: ${mdw(nx)}`):L("这是最后一次啦","That was the last one"),L("撤销","Undo"),undo);
+  else snack(L("完成啦！咕嘟喝了 1 滴水","Done! Glug, 1 drop of water"),L(`记在今天 · ${dayLabel(today)}`,`Logged today · ${dayLabel(today)}`)+(nx?L(` · 下一次 ${md2(nx)}`,` · next ${md2(nx)}`):""),L("是昨天做的","I did it yesterday"),()=>{
+    const y=addDays(today,-1);queued(ref.path,()=>ref.update({doneAt:noonOf(y)}));cheer(L(`改好啦，记在昨天 · ${dayLabel(y)}`,`Fixed. Logged for yesterday, ${dayLabel(y)}`))});
+}
+function uncompleteTask(t){
+  const ref=db.doc("tasks/"+t.id);
+  if(t.nextId){const n=tasks.find(x=>x.id===t.nextId);if(n&&!n.done){const r2=db.doc("tasks/"+t.nextId);queued(r2.path,()=>r2.delete())}}
+  queued(ref.path,()=>ref.update({done:false,doneAt:null,nextId:null}));
+}
+function skipTask(t){
+  const nx=repNextFor(t);
+  const ref=db.doc("tasks/"+t.id);
+  if(nx){queued(ref.path,()=>ref.update({due:nx}));cheer(L(`跳过这次，下一次是 ${mdw(nx)}`,`Skipped. Next one: ${mdw(nx)}`))}
+  else{queued(ref.path,()=>ref.delete());cheer(L("跳过啦，这个重复已经到最后一次了","Skipped. That was the last one"))}
+}
+function askChoice(title,sub,opts){
+  return new Promise(res=>{
+    const bg=document.createElement("div"); bg.className="sheet-bg";
+    bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${esc(title)}"><h3>${title}</h3>${sub?`<p class="hint" style="margin:0">${sub}</p>`:""}
+      ${opts.map((o,i)=>`<button class="opt" data-o="${i}"><b>${o[0]}</b>${o[1]?`<small>${o[1]}</small>`:""}</button>`).join("")}
+      <button class="link" data-o="x" style="align-self:center">${L("取消","Cancel")}</button></div>`;
+    document.body.appendChild(bg);
+    bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();res(null);return}const b=e.target.closest("[data-o]");if(!b)return;bg.remove();res(b.dataset.o==="x"?null:+b.dataset.o)});
+  });
+}
+function openPause(id){
+  const reps=tasks.filter(x=>!x.done&&!x.deleted&&x.repeat);
+  const sel=new Set([id]); let mode="1w", custom=addDays(todayStr(),14);
+  const bg=document.createElement("div"); bg.className="sheet-bg";
+  const until=()=>mode==="1w"?addDays(todayStr(),7):mode==="2w"?addDays(todayStr(),14):custom;
+  const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("暂停一阵子","Pause for a while")}"><h3>${L("暂停一阵子","Pause for a while")}</h3>
+    <p class="hint" style="margin:0">${L("放假、reading week 的时候用。暂停期间不会出新的，到日子自动恢复。","For holidays or reading week. Nothing new shows up while paused, and it picks up again by itself.")}</p>
+    <div class="chips">${[["1w",L("1 周","1 week")],["2w",L("2 周","2 weeks")],["pick",L("选日期…","Pick a date…")]].map(([k,n])=>`<button class="chip hz${mode===k?" on":""}" data-p="mode" data-v="${k}">${n}</button>`).join("")}</div>
+    ${mode==="pick"?`<label class="field"><span>${L("暂停到哪天（含这天）","Paused until (inclusive)")}</span><input type="date" id="pz-date" min="${todayStr()}" value="${custom}"></label>`:`<p class="hint" style="margin:0">${L(`暂停到 ${md2(until())}`,`Paused until ${md2(until())}`)}</p>`}
+    ${reps.length>1?`<div class="field"><span>${L("一起暂停","Pause these too")}</span><div class="plist">${reps.map(x=>`<label><input type="checkbox" data-p="sel" value="${x.id}" ${sel.has(x.id)?"checked":""}>${esc(x.title)}<small>${repLabel(x.repeat)}</small></label>`).join("")}</div></div>`:""}
+    <div class="sheet-actions"><button class="btn" data-p="close">${L("取消","Cancel")}</button><button class="btn primary" data-p="ok">${L("暂停","Pause")}</button></div></div>`};
+  draw(); document.body.appendChild(bg);
+  bg.addEventListener("change",e=>{if(e.target.dataset.p==="sel"){e.target.checked?sel.add(e.target.value):sel.delete(e.target.value)}if(e.target.id==="pz-date")custom=e.target.value});
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("button[data-p]");if(!b)return;
+    if(b.dataset.p==="mode"){mode=b.dataset.v;draw();return}
+    if(b.dataset.p==="close"){bg.remove();return}
+    if(b.dataset.p==="ok"){const u=until();if(!u||u<todayStr())return;bg.remove();
+      for(const x of reps.filter(x=>sel.has(x.id))){const r={...x.repeat,pause:u};const due=x.due&&x.due>u?x.due:repNext(r,u);const ref=db.doc("tasks/"+x.id);queued(ref.path,()=>ref.update({repeat:r,due:due&&(!r.until||due<=r.until)?due:x.due}))}
+      cheer(L(`好，暂停到 ${md2(u)}，好好休息～`,`Paused until ${md2(u)}. Enjoy the break～`))}
+  });
+}
+function resumeTask(t){
+  const r={...t.repeat}; delete r.pause;
+  const d=repFirst(r,todayStr());
+  const ref=db.doc("tasks/"+t.id); queued(ref.path,()=>ref.update({repeat:r,due:d||t.due}));
+  cheer(L("恢复啦，接着来～","Back on. Let's go～"));
+}
+/* subtasks */
+let subOpen=new Set(), subAdding=null;
+function subsBlock(t){
+  const s=t.subs||[]; if(t.done||!s.length&&subAdding!==t.id)return "";
+  const next=s.findIndex(x=>!x.done);
+  const open=subOpen.has(t.id);
+  const rows=[]; let hidden=0;
+  s.forEach((x,i)=>{
+    if(!x.done&&i!==next&&!open){hidden++;return}
+    rows.push(`<div class="sub${x.done?" d":""}${i===next?" nx":""}"><button class="c" data-act="subtoggle" data-id="${t.id}" data-i="${i}" aria-label="${x.done?L("标记为没做完","Mark as not done"):L("这一步做完了","Mark step done")}">${x.done?"✓":""}</button><span class="tx"><span>${esc(x.t)}</span>${i===next?`<em>${L("下一步","Next")}</em>`:""}</span>${i===next&&typeof startFocus==="function"?`<button class="go" data-act="substart" data-id="${t.id}" data-i="${i}">▶ ${L("开始","Start")}</button>`:""}</div>`)});
+  return `<div class="subwrap">${rows.join("")}
+    ${hidden?`<button class="more" data-act="subopen" data-id="${t.id}">${L(`还有 ${hidden} 步 · 展开`,`${hidden} more ${n_(hidden,"step","steps")} · show`)}</button>`:open&&s.filter(x=>!x.done).length>1?`<button class="more" data-act="subopen" data-id="${t.id}">${L("收起","Show less")}</button>`:""}
+    ${subAdding===t.id?`<input class="subin" id="subin-${t.id}" data-subadd="${t.id}" maxlength="120" placeholder="${L("加一步，回车保存","Add a step, press Enter")}">`:`<button class="addsub" data-act="subadd" data-id="${t.id}">＋ ${L("自己加一步","Add a step")}</button>`}</div>`;
+}
+function setSubs(t,subs){t.subs=subs;render();const ref=db.doc("tasks/"+t.id);queued(ref.path,()=>ref.update({subs}))}
+function toggleSub(t,i,el){
+  const subs=(t.subs||[]).map(x=>({...x})); if(!subs[i])return;
+  subs[i].done=!subs[i].done;
+  if(subs[i].done&&subs.every(x=>x.done)){t.subs=subs;completeTask(t,el);return}
+  setSubs(t,subs);
+  if(subs[i].done){const nx=subs.find(x=>!x.done);cheer(nx?L(`这一步做完啦！下一步：${nx.t}`,`Step done! Next: ${nx.t}`):L("做完一步啦！","Step done!"))}
+}
+/* break it down */
+const SPLIT_T={
+  zh:{
+    essay:[["打开文档，把题目和要求贴进去","列 3 个想写的论点","每个论点找 1–2 条支撑材料","先写最有把握的那一段","把剩下的段落写完，再通读一遍"],["新建文档，写下一句话：这篇想说明什么","把读过的材料按论点分组","搭好提纲：引言、几个主体段、结论","写主体段","补引言和结论，检查引用格式"]],
+    big:[["打开文件夹，把已有的材料放在一起","写下这件事最终要交出什么","把第一部分的提纲列出来","做完这些再拆下一批"]],
+    cv:[["打开简历，把职位描述贴在旁边","圈出 JD 里最重要的 3 个关键词","对照 JD 改最相关的一段经历","检查格式、导出 PDF","填申请表，提交"],["找到申请页面，看清楚要交什么","更新简历里最新的一段经历","写求职信的第一段","通读一遍，提交"]],
+    hw:[["打开题目，先把要求读一遍","做第一题（或第一部分）","把剩下的题做完","检查答案和格式，提交"],["把作业文件和课件放在一起","挑最有把握的一题先做","卡住的题记下来，去翻课件或问同学","整理好，提交"]],
+    read:[["打开文献，先读摘要和小标题","读引言和结论","读正文，边读边标重点","写 3 句话总结"],["只读第一页","把关键概念记下来","读完剩下的部分","写下一个想讨论的问题"]],
+    exam:[["列出要考的章节","挑一章，看一遍笔记","做几道这一章的练习题","把错题和不熟的地方记下来","按清单复习剩下的章节"],["找出往年题或练习题","先做一套，不看答案","对答案，标出薄弱的地方","针对薄弱点复习"]],
+    clean:[["先把桌面上的东西清空","把要洗的衣服放进洗衣篮","把东西归位","擦一下桌面、扫地"],["设个 10 分钟计时，只收拾一个角落","扔掉用不上的东西","把剩下的归位"]],
+    gen:[["花 2 分钟，写下这件事做完是什么样子","把需要的东西都打开、准备好","做最关键的那一部分","收尾，检查一遍"],["写下第一个能马上做的小动作","做完它","接着做最主要的部分","检查，收尾"]]},
+  en:{
+    essay:[["Open the doc and paste in the question and brief","List 3 points you want to make","Find 1–2 sources for each point","Write the paragraph you feel surest about","Finish the rest, then read it through"],["New doc: write one sentence on what this essay argues","Group your reading by point","Outline: intro, body paragraphs, conclusion","Write the body","Add intro and conclusion, check references"]],
+    big:[["Open the folder and gather what you already have","Write down what the final thing you hand in is","Outline the first part","Break down the next batch after these"]],
+    cv:[["Open your CV with the job description next to it","Circle the 3 most important keywords in the JD","Rework your most relevant experience to match","Check the format and export a PDF","Fill in the form and submit"],["Open the application page and see what's needed","Update your most recent experience","Write the first paragraph of the cover letter","Read it through and submit"]],
+    hw:[["Open the questions and read the brief once","Do the first question (or part)","Finish the rest","Check answers and format, then submit"],["Put the sheet and lecture slides side by side","Do the question you're surest about first","Note where you get stuck and check the slides or ask","Tidy up and submit"]],
+    read:[["Open it and read the abstract and headings","Read the intro and conclusion","Read the body, highlighting as you go","Write a 3-sentence summary"],["Read just the first page","Note the key concepts","Read the rest","Write down one question to discuss"]],
+    exam:[["List the topics that will be tested","Pick one and skim your notes","Do a few practice questions on it","Note mistakes and shaky spots","Work through the rest of the list"],["Find past papers or practice questions","Do one set without looking at answers","Mark it and note weak spots","Revise the weak spots"]],
+    clean:[["Clear everything off the desk","Put the laundry in the basket","Put things back where they live","Wipe the desk and sweep"],["Set a 10-minute timer and do one corner","Throw out what you don't use","Put the rest away"]],
+    gen:[["Take 2 minutes to write what done looks like","Open and set up everything you need","Do the most important part","Wrap up and check it"],["Write the first tiny action you can do now","Do it","Move on to the main part","Check and wrap up"]]}
+};
+function splitCat(title){
+  const x=title.toLowerCase();
+  if(/论文|毕业设计|dissertation|thesis|大作业|project|项目/.test(x))return "big";
+  if(/essay|论文|文章|report|报告|写作|paper.*写|write/.test(x))return "essay";
+  if(/简历|申请|投递|求职信|cv\b|resume|résumé|cover letter|apply|application/.test(x))return "cv";
+  if(/作业|lab|习题|homework|problem set|coursework|worksheet|assignment/.test(x))return "hw";
+  if(/阅读|文献|读|reading|read|chapter|article|paper/.test(x))return "read";
+  if(/复习|考试|测验|exam|revis|quiz|test|midterm|final/.test(x))return "exam";
+  if(/打扫|整理|清理|收拾|洗衣|clean|tidy|organi[sz]e|laundry|declutter/.test(x))return "clean";
+  return "gen";
+}
+function splitSteps(title,gran,variant){
+  const cat=splitCat(title), sets=SPLIT_T[lang==="en"?"en":"zh"][cat];
+  let st=[...sets[variant%sets.length]];
+  if(cat==="big")return st;
+  if(gran==="coarse")st=st.length>3?[st[0],st[Math.floor(st.length/2)],st[st.length-1]]:st;
+  else if(gran==="just")st=st.slice(0,4);
+  return st.slice(0,5);
+}
+async function aiSteps(title,note,gran,prev){
+  const n=gran==="coarse"?"2–3":gran==="fine"?"4–5":"3–4";
+  const prompt=`${L("把下面这件事拆成","Break this task into")} ${n} ${L("个小步骤，帮一个有点拖延的人开始。","small steps to help someone who's procrastinating get started.")}
+${L("规则","Rules")}:
+- ${L("第 1 步必须非常小、具体、2 分钟内能做（比如打开文件、贴要求、写一句话）","Step 1 must be tiny, concrete and doable in 2 minutes (open the file, paste the brief, write one sentence)")}
+- ${L("其余每步大约一次坐下 25 分钟能做完，不要拆成碎片","Each other step should fit one 25-minute sitting; don't fragment")}
+- ${L("如果事情很大，只拆前 3 步，最后一步写「做完这些再拆下一批」","If the task is big, only give the first 3 steps and make the last one \"Break down the next batch after these\"")}
+- ${L("每步是一个动作短句，不写时间，不催促","Each step is a short action phrase, no time estimates, no pressure")}
+${prev&&prev.length?L(`- 换一种和这个不同的拆法：${prev.join(" / ")}`,`- Give a different breakdown from: ${prev.join(" / ")}`):""}
+${L("事情","Task")}: ${title}${note?`\n${L("备注","Notes")}: ${note}`:""}
+${L("只返回 JSON 字符串数组。","Return only a JSON array of strings.")}`;
+  const out=await sample.json(prompt,{modelTier:"quick",cache:false});
+  const arr=(Array.isArray(out)?out:(out&&out.steps)||[]).map(x=>String(typeof x==="string"?x:x.t||x.title||"").trim()).filter(Boolean).slice(0,5);
+  if(!arr.length)throw new Error("empty");
+  return arr;
+}
+function openSplit(id){
+  const t=tasks.find(x=>x.id===id); if(!t)return;
+  const keepDone=(t.subs||[]).filter(x=>x.done);
+  let gran="just", variant=0, steps=(t.subs||[]).filter(x=>!x.done).map(x=>x.t), busy=false;
+  if(!steps.length)steps=splitSteps(t.title,gran,0);
+  const bg=document.createElement("div"); bg.className="sheet-bg";
+  const grab=()=>{const ins=[...bg.querySelectorAll(".step input")];if(ins.length)steps=ins.map(i=>i.value)};
+  const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("拆小一点","Break it down")}"><h3>${L(`把「${esc(t.title)}」拆小一点`,`Break “${esc(t.title)}” down`)}</h3>
+    <div class="say2">${IDEA_FACE}<span>${busy?L("{pet}在想怎么拆…","{pet} is thinking…"):L("不用一口气做完～先做第一步就好，做完再看下一步。","No need to do it all at once～ Just start with step one.")}</span></div>
+    <div class="gran"><span>${L("拆得","Size")}</span>${[["coarse",L("粗一点","Bigger")],["just",L("刚刚好","Just right")],["fine",L("细一点","Smaller")]].map(([k,n])=>`<button class="chip hz${gran===k?" on":""}" data-s="gran" data-v="${k}">${n}</button>`).join("")}</div>
+    <div class="steps">${steps.map((x,i)=>`<div class="step${i===0?" first":""}"><span class="n">${i+1}</span><input value="${esc(x)}" maxlength="120" aria-label="${L(`第 ${i+1} 步`,`Step ${i+1}`)}"><button class="x" data-s="del" data-i="${i}" aria-label="${L("删掉这一步","Remove step")}">×</button></div>`).join("")}
+      ${steps.length<8?`<button class="addsub" data-s="add">＋ ${L("加一步","Add a step")}</button>`:""}</div>
+    <p class="hint" style="margin:0">${L("第一步很小，马上就能开始。","Step one is tiny, so you can start right away.")}</p>
+    <div class="sheet-actions"><button class="btn" data-s="again" ${busy?"disabled":""}>${L("换一种拆法","Try another way")}</button><button class="btn primary" data-s="ok" ${busy?"disabled":""}>${L("就这样拆","Use these")}</button></div></div>`};
+  const regen=async()=>{
+    if(sample){busy=true;draw();try{steps=await aiSteps(t.title,t.note,gran,steps)}catch(e){steps=splitSteps(t.title,gran,++variant)}busy=false;draw()}
+    else{steps=splitSteps(t.title,gran,variant);draw()}};
+  draw(); document.body.appendChild(bg);
+  if(sample&&!(t.subs||[]).some(x=>!x.done))regen();
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("button[data-s]");if(!b||busy)return;grab();const a=b.dataset.s;
+    if(a==="gran"){gran=b.dataset.v;regen();return}
+    if(a==="again"){variant++;regen();return}
+    if(a==="del"){steps.splice(+b.dataset.i,1);draw();return}
+    if(a==="add"){steps.push("");draw();const ins=bg.querySelectorAll(".step input");ins[ins.length-1]?.focus();return}
+    if(a==="ok"){const clean=steps.map(x=>x.trim()).filter(Boolean).slice(0,8);bg.remove();
+      const subs=[...keepDone,...clean.map(x=>({t:x.slice(0,120),done:false}))];
+      subOpen.delete(t.id);setSubs(t,subs);try{const off=JSON.parse(localStorage.getItem(NUDGE_KEY)||"[]");off.push(t.id);localStorage.setItem(NUDGE_KEY,JSON.stringify(off.slice(-200)))}catch(_){}
+      cheer(clean.length?L(`拆好啦！先做第一步：${clean[0]}`,`All set! Start with: ${clean[0]}`):L("好的","OK"))}
+  });
+}
+const NUDGE_KEY="lifeos-nudge-off";
+function nudgeCard(k){
+  let off=[];try{off=JSON.parse(localStorage.getItem(NUDGE_KEY)||"[]")}catch(_){}
+  const wk=Date.now()-7*864e5;
+  const c=tasks.filter(t=>t.space===k&&!t.done&&!t.deleted&&!t.repeat&&!(t.subs&&t.subs.length)&&(t.createdAt||0)<wk&&(t.createdAt||0)>0&&!off.includes(t.id)).sort((a,b)=>a.createdAt-b.createdAt)[0];
+  if(!c)return "";
+  const d=Math.floor((Date.now()-c.createdAt)/864e5);
+  return `<div class="nudge">${IDEA_FACE}<span class="nt2"><b>${L(`「${esc(c.title)}」放了 ${d} 天啦，是不是有点难开始？`,`“${esc(c.title)}” has been waiting ${d} days. Hard to get started?`)}</b><em>${L("我帮你拆成几小步吧，第一步只要 2 分钟。","Let me break it into small steps. Step one takes just 2 minutes.")}</em></span><button class="split" data-act="split" data-id="${c.id}">${L("拆一下","Break it down")}</button><button class="nx-x" data-act="nudgeoff" data-id="${c.id}" aria-label="${L("关掉","Dismiss")}">×</button></div>`;
+}
+/* quick-capture repeat parsing */
+function pickRepeat(text,today){
+  let r=null, rest=text, m;
+  const wdList=s=>[...s.matchAll(/[一二三四五六日天]/g)].map(x=>WDMAP[x[0]]);
+  const enWd=s=>[...s.toLowerCase().matchAll(/\b(mon|tue|wed|thu|fri|sat|sun)[a-z]*/g)].map(x=>({sun:0,mon:1,tue:2,wed:3,thu:4,fri:5,sat:6})[x[1]]);
+  const tries=[
+    [/每个?工作日/,()=>({freq:"week",days:[1,2,3,4,5]})],
+    [/每(?:天|日)/,()=>({freq:"day"})],
+    [/每个?月\s*(?:的)?第\s*([一二三四1-4])\s*个?\s*(?:周|星期|礼拜)([一二三四五六日天])/,m=>({freq:"month",nth:toNum(m[1]),wd:WDMAP[m[2]]})],
+    [/每个?月\s*(\d{1,2}|[一二三四五六七八九十]{1,3})\s*[号日]/,m=>({freq:"month",mday:toNum(m[1])})],
+    [/(?:每两周|每隔一周|隔周)\s*(?:的)?\s*(?:周|星期|礼拜)?((?:[一二三四五六日天](?:[、，,和及]\s*(?:周|星期)?)?)+)/,m=>({freq:"2week",days:wdList(m[1])})],
+    [/每\s*(?:个)?(?:周|星期|礼拜)((?:[一二三四五六日天](?:[、，,和及]\s*(?:周|星期)?)?)+)/,m=>({freq:"week",days:wdList(m[1])})],
+    [/\bevery\s+weekday\b|\bweekdays\b/i,()=>({freq:"week",days:[1,2,3,4,5]})],
+    [/\b(?:every\s*day|daily)\b/i,()=>({freq:"day"})],
+    [/\bevery\s+month\s+on\s+the\s+(\d{1,2})(?:st|nd|rd|th)?\b|\bmonthly\s+on\s+the\s+(\d{1,2})(?:st|nd|rd|th)?\b|\bon\s+the\s+(\d{1,2})(?:st|nd|rd|th)?\s+(?:of\s+)?every\s+month\b/i,m=>({freq:"month",mday:+(m[1]||m[2]||m[3])})],
+    [/\b(?:every\s+month|monthly)\b/i,()=>({freq:"month",mday:+today.slice(8)})],
+    [/\bevery\s+(?:other|second|2nd)\s+((?:(?:mon(?:day)?|tues?(?:day)?|wed(?:nesday)?|thu(?:rs?)?(?:day)?|fri(?:day)?|sat(?:urday)?|sun(?:day)?)\b(?:\s*(?:,|and|&)\s*)?)+)/i,m=>({freq:"2week",days:enWd(m[1])})],
+    [/\bevery\s+((?:(?:mon(?:day)?|tues?(?:day)?|wed(?:nesday)?|thu(?:rs?)?(?:day)?|fri(?:day)?|sat(?:urday)?|sun(?:day)?)\b(?:\s*(?:,|and|&)\s*)?)+)/i,m=>({freq:"week",days:enWd(m[1])})],
+    [/\b(?:on\s+)?(?:mondays|tuesdays|wednesdays|thursdays|fridays|saturdays|sundays)\b/i,m=>({freq:"week",days:enWd(m[0])})],
+  ];
+  for(const [re,fn] of tries){m=rest.match(re);if(m){r=fn(m);rest=rest.replace(m[0]," ");break}}
+  if(!r||(r.days&&!r.days.length))return {repeat:null,rest:text};
+  let until=null;
+  if((m=rest.match(/(?:到|直到|截止到)\s*(\d{1,2}|[一二三四五六七八九十]{1,3})\s*月\s*(\d{1,2}|[一二三四五六七八九十]{1,3})\s*[日号]?(?:为止)?/))){const [Y,M]=today.split("-").map(Number);let y=Y;if(toNum(m[1])<M)y++;until=`${y}-${pad(toNum(m[1]))}-${pad(toNum(m[2]))}`;rest=rest.replace(m[0]," ")}
+  else if((m=rest.match(/持续\s*(\d{1,2}|[一二三四五六七八九十]{1,3})\s*(周|个?星期|天|个?月)/))){const n=toNum(m[1]);until=addDays(today,(m[2].includes("天")?n:m[2].includes("月")?n*30:n*7)-1);rest=rest.replace(m[0]," ")}
+  else if((m=rest.match(/\bfor\s+(\d{1,2}|one|two|three|four|five|six)\s+(weeks?|days?|months?)\b/i))){const n=/\d/.test(m[1])?+m[1]:ENNUM[m[1].toLowerCase()];until=addDays(today,(/day/i.test(m[2])?n:/month/i.test(m[2])?n*30:n*7)-1);rest=rest.replace(m[0]," ")}
+  else if((m=rest.match(/\buntil\s+(.+?)$/i))){const pd=pickDate(m[1],today,lang==="en");if(pd.due){until=pd.due;rest=rest.replace(m[0]," ")}}
+  if(until)r.until=until;
+  return {repeat:r,rest};
 }
 
 /* ---------- Sprout faces for moods ---------- */
@@ -1191,14 +1856,166 @@ function milestoneFace(){
     <path d="M16 27.4q4 5.4 8 0z" fill="var(--buddy-ink)"/><ellipse cx="11" cy="28" rx="2.2" ry="1.4" fill="var(--pink)" opacity=".8"/><ellipse cx="29" cy="28" rx="2.2" ry="1.4" fill="var(--pink)" opacity=".8"/>
     <path d="M34.5 6.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z" fill="#f2a20c"/></svg>`;
 }
+let msStarSel=1, celChecked=false;
 const msOn=d=>milestones.filter(x=>x.date===d).sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
 function milestoneCard(d){
   const list=msOn(d);
   return `<div class="ms-card${list.length?" has":""}">
     <div class="card-head">${milestoneFace()}<h3>${L("值得记住的大小事","Moments worth remembering")}</h3></div>
-    ${list.length?`<div class="tickets">${list.map(x=>ticket(x,false,`<button class="del" data-act="msdel" data-id="${x.id}" aria-label="${L("删除这件事","Delete this moment")}">×</button>`)).join("")}</div>`:""}
+    ${list.length?`<div class="tickets">${list.map(x=>`<button class="tk-btn" data-act="msedit" data-id="${x.id}" aria-label="${L("编辑这件事","Edit this moment")}">${ticket(x,false)}</button>`).join("")}</div>`:""}
     <form class="ms-add" id="msForm" data-date="${d}"><input type="text" id="ms-input-${d}" maxlength="80" placeholder="${L("比如：拿到第一个 offer 了！或者：第一次自己做了红烧肉","e.g. Got my first job offer! Or: cooked my first proper dinner")}" aria-label="${L("值得记住的事","A moment worth remembering")}"><button class="btn ms-btn" type="submit">${L("记下来","Add")}</button></form>
+    <div class="ms-starrow"><span>${L("有多重要？","How big is it?")}</span><span class="ms-pick">${[1,2,3].map(i=>`<button type="button" class="${i<=msStarSel?"on":""}" data-act="msstar" data-v="${i}" aria-label="${L(`${i} 颗星`,`${i} ${n_(i,"star","stars")}`)}">${MS_STAR}</button>`).join("")}</span>
+      <span class="hint">${L("三颗星的事，明年今天{pet}会陪你庆祝","Three-star moments get celebrated with {pet} on the same day next year")}</span></div>
   </div>`;
+}
+function openMsEdit(id){
+  const x=milestones.find(m=>m.id===id); if(!x)return;
+  let st=x.stars||1, sure=false;
+  const bg=document.createElement("div"); bg.className="sheet-bg";
+  const draw=()=>{const t=bg.querySelector("#mse-t")?.value??x.title;bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑这件事","Edit this moment")}">
+    <h3>${L("编辑这件事","Edit this moment")}</h3>
+    <label class="field"><span>${L("发生了什么","What happened")}</span><input id="mse-t" maxlength="80" value="${esc(t)}"></label>
+    <div class="field"><span>${L("有多重要？","How big is it?")}</span><span class="ms-pick big">${[1,2,3].map(i=>`<button type="button" class="${i<=st?"on":""}" data-e="star" data-v="${i}" aria-label="${L(`${i} 颗星`,`${i} ${n_(i,"star","stars")}`)}">${MS_STAR}</button>`).join("")}</span>
+      <span class="hint">${L("三颗星：明年今天{pet}会陪你庆祝","Three stars: {pet} celebrates it with you on this day next year")}</span></div>
+    <div class="sheet-actions"><button class="btn" data-e="close">${L("取消","Cancel")}</button><button class="btn primary" data-e="save">${L("保存","Save")}</button></div>
+    <button class="link danger-link" data-e="del">${sure?L("再点一次，确定删除","Tap again to delete"):L("删除这件事","Delete this moment")}</button>
+  </div>`};
+  draw(); document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{
+    if(e.target===bg){bg.remove();return}
+    const b=e.target.closest("[data-e]"); if(!b)return; const a=b.dataset.e;
+    if(a==="star"){st=+b.dataset.v;draw();return}
+    if(a==="close"){bg.remove();return}
+    if(a==="del"){if(!sure){sure=true;draw();return}bg.remove();const ref=db.doc("milestones/"+id);queued(ref.path,()=>ref.delete());return}
+    if(a==="save"){const t=bg.querySelector("#mse-t").value.trim();if(!t){bg.querySelector("#mse-t").focus();return}bg.remove();const ref=db.doc("milestones/"+id);queued(ref.path,()=>ref.update({title:t.slice(0,80),stars:st}))}
+  });
+}
+const PARTY=`<svg class="party" viewBox="0 0 120 120" aria-hidden="true"><path d="M60 44V34" stroke="#3faa74" stroke-width="4" stroke-linecap="round"/><path d="M60 39c-8 0-12-4-12-9.5 8 0 12 4 12 9.5zM60 39c8 0 12-4 12-9.5-8 0-12 4-12 9.5z" fill="#5cc98f"/><path d="M52 26l8-20 8 20z" fill="#8b6cf0"/><path d="M54.5 20h11M57 13.5h6" stroke="#ffe08a" stroke-width="2" stroke-linecap="round"/><circle cx="60" cy="6" r="3" fill="#ff8fb1"/><ellipse cx="60" cy="76" rx="30" ry="27" fill="#ffe08a"/><path d="M45.5 73.5q4-5.4 8 0M66.5 73.5q4-5.4 8 0" stroke="#3a3350" stroke-width="2.8" fill="none" stroke-linecap="round"/><path d="M52 82q8 9 16 0z" fill="#3a3350"/><path d="M55.5 86.2q4.5 2.6 9 0" stroke="#ff8fb1" stroke-width="2.4" fill="none" stroke-linecap="round"/><ellipse cx="41" cy="82" rx="5" ry="3.2" fill="#ff8fb1" opacity=".8"/><ellipse cx="79" cy="82" rx="5" ry="3.2" fill="#ff8fb1" opacity=".8"/><ellipse cx="60" cy="106" rx="24" ry="4" fill="#c9b49a" opacity=".6"/></svg>`;
+const sameMD=(d,t)=>{const md=d.slice(5), tmd=t.slice(5);if(md===tmd)return true;const ty=+t.slice(0,4);return md==="02-29"&&tmd==="02-28"&&!(ty%4===0&&(ty%100!==0||ty%400===0))};
+function maybeCelebrate(){
+  if(celChecked||!db||!loaded.m)return;
+  if(document.querySelector(".sheet-bg"))return;
+  celChecked=true;
+  const t=todayStr(), y=t.slice(0,4);
+  const list=milestones.filter(x=>(x.stars||0)>=3&&x.date<t&&x.date.slice(0,4)<y&&sameMD(x.date,t)&&!(x.celebrated||{})[y]);
+  if(list.length)openCelebrate(list,0);
+}
+function openCelebrate(list,i){
+  const x=list[i], t=todayStr(), y=t.slice(0,4), yrs=+y-+x.date.slice(0,4);
+  const [xy,xm,xd]=x.date.split("-").map(Number);
+  const conf=[...Array(22)].map((_,k)=>{const px=(k*37)%100,py=(k*53)%24;if(px>32&&px<68)return "";const c=["#ff8fb1","#4aa8ff","#ffc94a","#5cc98f","#8b6cf0","#ff9a3d"][k%6];return `<rect x="${px}%" y="${py}%" width="8" height="4" rx="1.5" fill="${c}" transform="rotate(${(k*47)%180})" transform-origin="${px}% ${py}%" opacity=".85"/>`}).join("");
+  let writing=false;
+  const bg=document.createElement("div"); bg.className="sheet-bg";
+  const draw=()=>{bg.innerHTML=`<div class="sheet cel" role="dialog" aria-label="${L("周年庆祝","Anniversary")}"><svg class="conf" width="100%" height="100%" aria-hidden="true">${conf}</svg>${PARTY}
+    <span class="eyebrow">${L(`${yrs===1?"一":yrs+" "}年前的今天 · ${xy}年${xm}月${xd}日`,`${yrs} ${n_(yrs,"year","years")} ago today · ${xd} ${MON[xm-1]} ${xy}`)}</span>
+    <h3>${L("这件事值得再庆祝一次！","This one deserves another celebration!")}</h3>
+    <div class="tk"><b>${esc(x.title)}<small>${msStars(3)} ${L("你给它打了三颗星","You gave it three stars")}</small></b></div>
+    <p class="msg">${L(`${yrs===1?"去年":yrs+" 年前"}的今天，你完成了这件对你特别重要的事。<br>这些日子，你又走了好远。`,`On this day ${yrs===1?"last year":yrs+" years ago"}, you did something that really mattered to you.<br>You've come a long way since.`)}</p>
+    ${writing?`<textarea id="cel-note" maxlength="300" placeholder="${L("写给那时的自己…","A note to your past self…")}">${esc(x.note||"")}</textarea>`:""}
+    <div class="sheet-actions" style="width:100%"><button class="btn" data-c="${writing?"savenote":"write"}">${writing?L("存下来","Save it"):L("写句话给那时的自己","Write to past me")}</button><button class="btn primary" data-c="yay">${L("值得庆祝！","Worth celebrating!")}</button></div></div>`;
+    if(writing)setTimeout(()=>bg.querySelector("#cel-note")?.focus(),30)};
+  draw(); document.body.appendChild(bg);
+  const mark=()=>{const ref=db.doc("milestones/"+x.id);queued(ref.path,()=>ref.update({celebrated:{...(x.celebrated||{}),[y]:Date.now()}}))};
+  const next=()=>{bg.remove();if(i+1<list.length)openCelebrate(list,i+1)};
+  bg.addEventListener("click",e=>{const b=e.target.closest("[data-c]");if(!b)return;
+    if(b.dataset.c==="write"){writing=true;draw();return}
+    if(b.dataset.c==="savenote"){const v=bg.querySelector("#cel-note").value.trim();const ref=db.doc("milestones/"+x.id);if(v)queued(ref.path,()=>ref.update({note:v.slice(0,300)}));writing=false;x.note=v;draw();return}
+    if(b.dataset.c==="yay"){const r=b.getBoundingClientRect();burst(r.left+r.width/2,r.top,[css("--pink"),css("--buddy"),css("--leaf"),"#8b6cf0","#4aa8ff"]);mark();setTimeout(next,350)}
+  });
+}
+
+/* ---------- yearly days: birthdays / anniversaries ---------- */
+let yearlyDays=[], bdAll=false;
+const BD_COLORS=["#ff8fb1","#ff7a5c","#ffd34d","#5cc98f","#6cc4ff","#b9a4ff"];
+const BD_DEF={birthday:"#ff8fb1",anniv:"#b9a4ff",other:"#5cc98f"};
+const BD_IC={birthday:`<svg viewBox="0 0 48 48" class="bdi"><path d="M3 14q4-4 7 0t7 0" stroke="#b9a4ff" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M31 9q3.5-3.5 6.5 0t6.5 0" stroke="#6cc4ff" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M2 25q2.5 3 5 0t5 0" stroke="#ff8fb1" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M38 18q2.5 3 5 0t4 0" stroke="#ffb35c" stroke-width="1.6" fill="none" stroke-linecap="round"/><rect x="9" y="4" width="3.4" height="1.8" rx=".6" fill="#ffd34d" transform="rotate(-25 10.7 4.9)"/><rect x="40" y="25" width="3.4" height="1.8" rx=".6" fill="#5cc98f" transform="rotate(30 41.7 25.9)"/><circle cx="15" cy="9.5" r="1" fill="#ff6f91"/><circle cx="34" cy="3.5" r="1" fill="#5cc98f"/><circle cx="5" cy="20" r=".9" fill="#ffd34d"/><circle cx="44" cy="13" r=".9" fill="#b9a4ff"/><path d="M24 12V6" stroke="#3faa74" stroke-width="2" stroke-linecap="round"/><path d="M24 8.5c-4.2 0-6.3-2.1-6.3-5 4.2 0 6.3 2.2 6.3 5zM24 8.5c4.2 0 6.3-2.1 6.3-5-4.2 0-6.3 2.2-6.3 5z" fill="#5cc98f"/><ellipse cx="24" cy="22" rx="11" ry="10.120000000000001" fill="#ffe08a"/><path d="M17.8 21.4q2-2.6 4 0M26.2 21.4q2-2.6 4 0" stroke="#3a3350" stroke-width="1.7" fill="none" stroke-linecap="round"/><ellipse cx="16.6" cy="24.6" rx="2.2" ry="1.3" fill="#ff8fb1" opacity=".85"/><ellipse cx="31.4" cy="24.6" rx="2.2" ry="1.3" fill="#ff8fb1" opacity=".85"/>
+<path d="M26.5 6.5q1.4 1.5 0 2.8-1.4-1.3 0-2.8z" fill="#ff9a3d" transform="translate(9 14)"/><rect x="34.8" y="23.4" width="1.4" height="3.6" rx=".5" fill="#8b6cf0"/>
+<rect x="8" y="27" width="32" height="7" rx="3.2" fill="#ff8fb1"/><path d="M8.5 31q2.5 3 5 0t5 0 5 0 5 0 5 0 5 0" stroke="#fff" stroke-width="1.5" fill="none"/>
+<rect x="6" y="33" width="36" height="10" rx="3.6" fill="#fff3c4"/><path d="M6.5 37.5h35" stroke="#ffd36b" stroke-width="2"/><circle cx="14" cy="41" r="1" fill="#ff8fb1"/><circle cx="24" cy="41" r="1" fill="#8b6cf0"/><circle cx="34" cy="41" r="1" fill="#4aa8ff"/></svg>`,anniv:`<svg viewBox="0 0 48 48" class="bdi"><path d="M24 14V8" stroke="#3faa74" stroke-width="2" stroke-linecap="round"/><path d="M23.4 9c-1-3.6-6.6-4.4-7.2-.8-.5 2.6 3.1 4.2 7.2 .8z" fill="#ff6f91"/><path d="M24.6 9c1-3.6 6.6-4.4 7.2-.8.5 2.6-3.1 4.2-7.2.8z" fill="#ff6f91"/><ellipse cx="24" cy="28" rx="13" ry="11.96" fill="#ffe08a"/><path d="M17.8 27.4q2-2.6 4 0M26.2 27.4q2-2.6 4 0" stroke="#3a3350" stroke-width="1.7" fill="none" stroke-linecap="round"/><ellipse cx="16.6" cy="30.6" rx="2.2" ry="1.3" fill="#ff8fb1" opacity=".85"/><ellipse cx="31.4" cy="30.6" rx="2.2" ry="1.3" fill="#ff8fb1" opacity=".85"/><path d="M21 33q3 2.4 6 0" stroke="#3a3350" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+<path d="M39 13c-1.6-2.6-5.2-1.6-5 1 .2 2.2 3.2 3.6 5 5 1.8-1.4 4.8-2.8 5-5 .2-2.6-3.4-3.6-5-1z" fill="#ff8fb1" opacity=".9"/><path d="M8 17c-1-1.7-3.4-1-3.3.7.1 1.4 2.1 2.4 3.3 3.3 1.2-.9 3.2-1.9 3.3-3.3.1-1.7-2.3-2.4-3.3-.7z" fill="#ff8fb1" opacity=".6"/></svg>`,other:`<svg viewBox="0 0 48 48" class="bdi"><path d="M24 13V7" stroke="#3faa74" stroke-width="2" stroke-linecap="round"/><path d="M24 9.5c-4.2 0-6.3-2.1-6.3-5 4.2 0 6.3 2.2 6.3 5zM24 9.5c4.2 0 6.3-2.1 6.3-5-4.2 0-6.3 2.2-6.3 5z" fill="#5cc98f"/><ellipse cx="24" cy="28" rx="13" ry="11.96" fill="#ffe08a"/><path d="M17.8 27.4q2-2.6 4 0M26.2 27.4q2-2.6 4 0" stroke="#3a3350" stroke-width="1.7" fill="none" stroke-linecap="round"/><ellipse cx="16.6" cy="30.6" rx="2.2" ry="1.3" fill="#ff8fb1" opacity=".85"/><ellipse cx="31.4" cy="30.6" rx="2.2" ry="1.3" fill="#ff8fb1" opacity=".85"/><path d="M21 33q3 2.4 6 0" stroke="#3a3350" stroke-width="1.7" fill="none" stroke-linecap="round"/><circle cx="39.50" cy="11.14" r="2.52" fill="#ff8fb1"/><circle cx="42.70" cy="13.46" r="2.52" fill="#ff8fb1"/><circle cx="41.47" cy="17.22" r="2.52" fill="#ff8fb1"/><circle cx="37.53" cy="17.22" r="2.52" fill="#ff8fb1"/><circle cx="36.30" cy="13.46" r="2.52" fill="#ff8fb1"/><circle cx="39.5" cy="14.5" r="1.76" fill="#ffd36b"/><circle cx="8.00" cy="15.76" r="1.68" fill="#b9a4ff"/><circle cx="10.13" cy="17.31" r="1.68" fill="#b9a4ff"/><circle cx="9.32" cy="19.81" r="1.68" fill="#b9a4ff"/><circle cx="6.68" cy="19.81" r="1.68" fill="#b9a4ff"/><circle cx="5.87" cy="17.31" r="1.68" fill="#b9a4ff"/><circle cx="8" cy="18" r="1.18" fill="#ffd36b"/></svg>`};
+const bdIcon=x=>BD_IC[x.type]||BD_IC.other;
+const bdCol=x=>x.color||BD_DEF[x.type]||BD_DEF.other;
+const isLeap=y=>y%4===0&&(y%100!==0||y%400===0);
+const bdDayIn=(x,y)=>(+x.month===2&&+x.day===29&&!isLeap(y))?28:+x.day;
+function bdNext(x,from){
+  from=from||todayStr(); const fy=+from.slice(0,4);
+  let y=fy, d=`${y}-${pad(+x.month)}-${pad(bdDayIn(x,y))}`;
+  if(d<from){y++;d=`${y}-${pad(+x.month)}-${pad(bdDayIn(x,y))}`}
+  const days=Math.round((new Date(d+"T12:00:00")-new Date(from+"T12:00:00"))/864e5);
+  return {date:d,days,n:x.year?y-+x.year:null};
+}
+const bdTitle=x=>x.type==="birthday"?L(`${x.name}${/[A-Za-z0-9]$/.test(x.name)?" ":""}的生日`,`${x.name}'s birthday`):x.name;
+function bdDateStr(x){const m=+x.month,d=+x.day;return x.year?L(`${x.year}年${m}月${d}日`,`${MON[m-1]} ${d}, ${x.year}`):L(`${m}月${d}日`,`${MON[m-1]} ${d}`)}
+function bdSub(x,nx){const n=nx.n;let s=bdDateStr(x);if(n!=null&&n>0)s+=" · "+(x.type==="birthday"?L(`${n} 岁`,`turns ${n}`):L(`${n} 周年`,`${n} ${n_(n,"year","years")}`));return s}
+const bdIn=d=>d===0?L("就是今天","Today!"):d===1?L("明天","Tomorrow"):L(`还有 ${d} 天`,`in ${d} days`);
+function bdOnDay(d){const y=+d.slice(0,4),m=+d.slice(5,7),dd=+d.slice(8,10);return yearlyDays.filter(x=>+x.month===m&&bdDayIn(x,y)===dd)}
+function bdSection(){
+  const up=yearlyDays.map(x=>({x,nx:bdNext(x)})).sort((a,b)=>a.nx.days-b.nx.days);
+  const show=bdAll?up:up.slice(0,3);
+  const row=({x,nx})=>`<button class="upc-row${nx.days===0?" today":""}" data-act="bdedit" data-id="${x.id}" style="--rc:${bdCol(x)}" aria-label="${esc(bdTitle(x))}，${bdIn(nx.days)}"><span class="ic">${bdIcon(x)}</span><span class="tx"><b>${esc(bdTitle(x))}</b><small>${bdSub(x,nx)}</small></span><span class="in">${bdIn(nx.days)}</span></button>`;
+  return `<div class="upc"><div class="upc-head"><b>${L("{pet}记着呢","{pet} remembers")}</b><button class="upc-add" data-act="bdnew">＋ ${L("添加","Add")}</button></div>
+    ${up.length?show.map(row).join(""):`<p class="hint upc-empty">${L("家人朋友的生日、纪念日记在这里，{pet}会提前提醒你。","Add birthdays and anniversaries here, and {pet} will remind you ahead of time.")}</p>`}
+    ${up.length>3?`<button class="link upc-more" data-act="bdall">${bdAll?L("收起","Show less"):L(`看全部 ${up.length} 个`,`See all ${up.length}`)}</button>`:""}</div>`;
+}
+function bdReminder(){
+  const t=todayStr();
+  const hits=yearlyDays.map(x=>({x,nx:bdNext(x,t)})).filter(({x,nx})=>nx.days===0||(x.remind&&nx.days===+x.remind)).sort((a,b)=>a.nx.days-b.nx.days);
+  if(!hits.length)return null;
+  const {x,nx}=hits[0], nm=bdTitle(x);
+  if(nx.days===0)return x.type==="birthday"?L(`今天是${nm}，记得说生日快乐～`,`It's ${nm} today. Don't forget to say happy birthday!`):L(`今天是「${nm}」，值得好好过一下～`,`Today is "${nm}". Make it a nice one!`);
+  return x.type==="birthday"?L(`还有 ${nx.days} 天就是${nm}啦，要不要准备礼物？`,`${nm} is in ${nx.days} ${n_(nx.days,"day","days")}. Time to think about a gift?`):L(`还有 ${nx.days} 天就是「${nm}」啦。`,`"${nm}" is in ${nx.days} ${n_(nx.days,"day","days")}.`);
+}
+function openBd(id){
+  const old=id?yearlyDays.find(x=>x.id===id):null;
+  const st=old?{...old}:{type:"birthday",name:"",month:"",day:"",year:"",remind:3,color:""};
+  let sure=false;
+  const bg=document.createElement("div"); bg.className="sheet-bg";
+  const grab=()=>{const q=k=>bg.querySelector(k);if(!q("#bd-name"))return;st.name=q("#bd-name").value;st.month=q("#bd-m").value;st.day=q("#bd-d").value;st.year=q("#bd-y").value.trim()};
+  const TYPES=[["birthday",L("生日","Birthday")],["anniv",L("纪念日","Anniversary")],["other",L("其他","Other")]];
+  const REM=[[0,L("当天","On the day")],[1,L("提前 1 天","1 day before")],[3,L("提前 3 天","3 days before")],[7,L("提前 1 周","1 week before")]];
+  const draw=()=>{grab();const col=st.color||BD_DEF[st.type];
+    const ySel=`<input id="bd-y" inputmode="numeric" maxlength="4" placeholder="${L("年（可不填）","Year (optional)")}" value="${esc(st.year||"")}" aria-label="${L("年","Year")}">`;
+    const mSel=`<select id="bd-m" aria-label="${L("月","Month")}"><option value="">${L("月","Month")}</option>${[...Array(12)].map((_,i)=>`<option value="${i+1}" ${+st.month===i+1?"selected":""}>${L(`${i+1} 月`,MON[i])}</option>`).join("")}</select>`;
+    const dSel=`<select id="bd-d" aria-label="${L("日","Day")}"><option value="">${L("日","Day")}</option>${[...Array(31)].map((_,i)=>`<option value="${i+1}" ${+st.day===i+1?"selected":""}>${L(`${i+1} 日`,i+1)}</option>`).join("")}</select>`;
+    bg.innerHTML=`<div class="sheet bd-sheet" role="dialog" aria-label="${L("记住一个日子","Remember a date")}" style="--bc:${col}">
+    <h3>${old?L("改一改这个日子","Edit this date"):L("让{pet}记住一个日子","Ask {pet} to remember a date")}</h3>
+    <div class="tchips">${TYPES.map(([k,n])=>`<button type="button" class="tchip${st.type===k?" on":""}" data-b="type" data-v="${k}">${BD_IC[k]}${n}</button>`).join("")}</div>
+    <label class="field"><span>${st.type==="birthday"?L("是谁的生日？","Whose birthday?"):L("纪念什么？","What's the occasion?")}</span><input id="bd-name" maxlength="40" value="${esc(st.name||"")}" placeholder="${st.type==="birthday"?L("比如：妈妈","e.g. Mum"):L("比如：和 Lily 认识","e.g. Met Lily")}"></label>
+    <div class="field"><span>${L("日期","Date")}</span><div class="drow">${lang==="en"?mSel+dSel+ySel:ySel+mSel+dSel}</div>
+      <span class="hint">${st.type==="birthday"?L("年份可以不填，填了会显示几岁","Year is optional. Add it to show their age"):L("年份可以不填，填了会显示第几周年","Year is optional. Add it to count the years")}</span></div>
+    <div class="field"><span>${L("颜色","Colour")}</span><div class="cdots">${BD_COLORS.map(c=>`<button type="button" class="cdot${c===col?" on":""}" data-b="col" data-v="${c}" style="--c:${c}" aria-label="${c}" aria-pressed="${c===col}"></button>`).join("")}</div></div>
+    <div class="field"><span>${L("提前提醒我","Remind me")}</span><div class="tchips">${REM.map(([v,n])=>`<button type="button" class="tchip sm${+st.remind===v?" on":""}" data-b="rem" data-v="${v}">${n}</button>`).join("")}</div></div>
+    <p class="hint bd-err" id="bd-err" hidden></p>
+    <div class="sheet-actions"><button class="btn" data-b="close">${L("取消","Cancel")}</button><button class="btn primary" data-b="save">${L("保存","Save")}</button></div>
+    ${old?`<button class="link danger-link" data-b="del">${sure?L("再点一次，确定删除","Tap again to delete"):L("删除这个日子","Delete this date")}</button>`:""}
+  </div>`};
+  draw(); document.body.appendChild(bg); if(!old)setTimeout(()=>bg.querySelector("#bd-name")?.focus(),30);
+  bg.addEventListener("click",e=>{
+    if(e.target===bg){bg.remove();return}
+    const b=e.target.closest("[data-b]"); if(!b)return; const a=b.dataset.b;
+    if(a==="type"){grab();const wasDef=!st.color;st.type=b.dataset.v;if(wasDef)st.color="";draw();return}
+    if(a==="col"){grab();st.color=b.dataset.v;draw();return}
+    if(a==="rem"){grab();st.remind=+b.dataset.v;draw();return}
+    if(a==="close"){bg.remove();return}
+    if(a==="del"){if(!sure){grab();sure=true;draw();return}bg.remove();const ref=db.doc("yearlyDays/"+id);queued(ref.path,()=>ref.delete());return}
+    if(a==="save"){grab();const err=bg.querySelector("#bd-err");const fail=m=>{err.textContent=m;err.hidden=false};
+      const name=(st.name||"").trim(), m=+st.month, d=+st.day, y=st.year?+st.year:null;
+      if(!name)return fail(st.type==="birthday"?L("写一下是谁的生日吧","Who's the birthday for?"):L("写一下纪念什么吧","What's the occasion?"));
+      if(!m||!d)return fail(L("选一下月和日","Pick a month and day"));
+      if(d>[31,29,31,30,31,30,31,31,30,31,30,31][m-1])return fail(L("这个月没有这一天哦","That month doesn't have that day"));
+      if(st.year&&(!(y>=1900&&y<=+todayStr().slice(0,4))))return fail(L("年份好像不太对","That year doesn't look right"));
+      const doc={type:st.type,name:name.slice(0,40),month:m,day:d,year:y,remind:+st.remind||0,color:st.color||BD_DEF[st.type]};
+      bg.remove();
+      const ref=old?db.doc("yearlyDays/"+id):db.collection("yearlyDays").doc();
+      queued(ref.path,()=>old?ref.update(doc):ref.set({...doc,createdAt:Date.now()}));
+    }
+  });
+}
+function bdNotify(){
+  const t=todayStr();
+  for(const x of yearlyDays){const nx=bdNext(x,t);if(!(nx.days===0||(x.remind&&nx.days===+x.remind)))continue;
+    const k=`lifeos-bdn-${x.id}-${t}`;try{if(localStorage.getItem(k))continue;localStorage.setItem(k,"1")}catch(_){continue}
+    if(typeof notify==="function")notify(nx.days===0?L(`今天是${bdTitle(x)}`,`Today: ${bdTitle(x)}`):L(`还有 ${nx.days} 天：${bdTitle(x)}`,`${bdTitle(x)} in ${nx.days} ${n_(nx.days,"day","days")}`),"bd-"+x.id)}
 }
 function milestoneWall(){
   if(!milestones.length)return "";
@@ -1222,7 +2039,10 @@ function rangeData(a,b){
   const trip=trips.filter(t=>inR(t.date));
   const ms=milestones.filter(m=>inR(m.date)).sort((x,y)=>x.date<y.date?-1:x.date>y.date?1:(x.createdAt||0)-(y.createdAt||0));
   const trees=forest.filter(f=>inR(dayOf(f.grownAt)));
-  return {by,ck,perHabit,perMonth,trip,ms,trees,days:active.size,total:done.length,drops:done.length+ck*2+trip.length};
+  const pm=pomos.filter(p=>inR(p.day)); const fBy={study:0,work:0}, fDay={};
+  pm.forEach(p=>{if(fBy[p.space]!=null)fBy[p.space]+=+p.mins||0;fDay[p.day]=(fDay[p.day]||0)+(+p.mins||0)});
+  const tom=pm.filter(p=>p.tomato).length;
+  return {by,ck,perHabit,perMonth,trip,ms,trees,days:active.size,total:done.length,drops:done.length+ck*2+trip.length+tom,fMins:pm.reduce((a,p)=>a+(+p.mins||0),0),fTom:tom,fBy,fDay};
 }
 const hasData=R=>R.total+R.ck+R.ms.length>0;
 const BOARD_NAME=k=>({habit:L("打卡","Habits"),life:L("生活","Life"),study:L("学习","Study"),work:L("工作","Work")})[k];
@@ -1255,7 +2075,7 @@ async function aiRecap(kind,id,R,bg,draw){
   recapBusy=true; draw();
   const doc=(kind==="week"?weekly:yearly)[id]||{};
   const list=k=>R.by[k].map(t=>t.title).slice(0,20).join("、")||L("无","none");
-  const prompt=`${L("你是「小芽」，用户养在她的人生服务器里的一棵会长大的小树，性格温暖、真诚、有点俏皮。","You are Sprout, a little tree that grows in the user's life server. You are warm, sincere and a bit playful.")}
+  const prompt=`${L("你是「{pet}」，用户养在她的人生服务器里的一棵会长大的小树，性格温暖、真诚、有点俏皮。","You are {pet}, a little tree that grows in the user's life server. You are warm, sincere and a bit playful.")}
 ${kind==="week"?L(`这是她 ${id} 开始那一周的记录`,`Here is her week starting ${id}`):L(`这是她 ${id} 年的记录`,`Here is her year ${id}`)}:
 ${L("行动天数","Active days")}: ${R.days}; ${L("打卡次数","Check-ins")}: ${R.ck}; ${L("浇水","Drops")}: ${R.drops}
 ${L("学习完成","Study done")}: ${list("study")}
@@ -1269,9 +2089,11 @@ ${L(`请用中文、第一人称"我"对"你"说一段 ${kind==="week"?"120 到 
   catch(e){if(e&&e.code==="not_granted")sample=null}
   finally{recapBusy=false;if(document.body.contains(bg))draw()}
 }
+const MS_STAR='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L12 16.6l-5.3 2.9 1.1-5.9L3.4 9.5l6-.8z"/></svg>';
+const msStars=(n,big)=>`<span class="ms-stars${big?" big":""}" aria-label="${L(`${n} 颗星`,`${n} ${n_(n,"star","stars")}`)}">${[1,2,3].map(i=>`<i class="${i<=n?"on":""}">${MS_STAR}</i>`).join("")}</span>`;
 function ticket(x,showDate=true,extra=""){
   const [,m,dd]=x.date.split("-").map(Number);
-  return `<div class="ticket${showDate?"":" nodate"}">${showDate?`<div class="stub"><b>${dd}</b><small>${L(m+"月",MON[m-1])}</small></div>`:`<div class="stub icon">${milestoneFace()}</div>`}<div class="tk-t"><span>${esc(x.title)}</span>${extra}</div></div>`;
+  return `<div class="ticket${showDate?"":" nodate"}">${showDate?`<div class="stub"><b>${dd}</b><small>${L(m+"月",MON[m-1])}</small></div>`:`<div class="stub icon">${milestoneFace()}</div>`}<div class="tk-t"><span class="tk-txt">${esc(x.title)}${x.stars?msStars(x.stars):""}</span>${extra}</div></div>`;
 }
 function openRecap(kind,id,opts={}){
   const isWeek=kind==="week", t=todayStr();
@@ -1292,12 +2114,20 @@ function openRecap(kind,id,opts={}){
     // seven little columns for the week, with the mood Sprout on top when one was picked
     let week="";
     if(isWeek){
-      const per=[...Array(7)].map((_,i)=>{const d=addDays(a,i);const n=tasks.filter(x=>x.done&&dayOf(x.doneAt)===d).length+Object.keys(checkins[d]||{}).length;return {d,n,mood:(journal[d]||{}).mood,ms:msOn(d).length}});
+      const SK=["habit","study","work","life"].filter(on);
+      const per=[...Array(7)].map((_,i)=>{const d=addDays(a,i);const parts={habit:Object.keys(checkins[d]||{}).length};["study","work","life"].forEach(k=>parts[k]=tasks.filter(x=>x.done&&x.space===k&&dayOf(x.doneAt)===d).length);const n=SK.reduce((s2,k)=>s2+(parts[k]||0),0);return {d,n,parts,mood:(journal[d]||{}).mood,ms:msOn(d).length}});
       const mx=Math.max(1,...per.map(x=>x.n)), wd=L(["一","二","三","四","五","六","日"],["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]);
       week=`<div class="rc-sec"><h4>${L("这一周的每一天","Day by day")}</h4><div class="rc-days">${per.map((x,i)=>`<div class="rc-day${x.d>t?" future":""}">
         <span class="rc-mood">${x.ms?milestoneFace():MOODS.some(m=>m[0]===x.mood)?moodFace(x.mood):""}</span>
-        <span class="rc-col"><i style="height:${x.n?Math.max(14,Math.round(x.n/mx*100)):0}%"></i></span><b>${x.n||""}</b><small>${wd[i]}</small></div>`).join("")}</div></div>`;
+        <span class="rc-col stack"><span class="stk" style="height:${x.n?Math.max(14,Math.round(x.n/mx*100)):0}%">${SK.filter(k=>x.parts[k]).map(k=>`<i style="flex:${x.parts[k]};background:var(--${k})"></i>`).join("")}</span></span><b>${x.n||""}</b><small>${wd[i]}</small></div>`).join("")}</div>
+        <div class="rc-legend sm">${SK.map(k=>`<span><i style="background:var(--${k})"></i>${BOARD_NAME(k)}</span>`).join("")}</div></div>`;
     }
+    let focusSec="";
+    if(R.fMins>=1){const h=Math.floor(Math.round(R.fMins)/60),mi=Math.round(R.fMins)%60;
+      const bestD=Object.entries(R.fDay).sort((x,y)=>y[1]-x[1])[0];
+      const wdn=d=>{const w=new Date(d+"T12:00:00").getDay();return L("周"+WD[w],WDEN[w])};
+      const subs=[...["study","work"].filter(k=>R.fBy[k]>=1).map(k=>`${BOARD_NAME(k)} ${fmtMins(R.fBy[k])}`),...(isWeek&&bestD&&bestD[1]>=1?[L(`最专注的一天是${wdn(bestD[0])}（${fmtMins(bestD[1])}）`,`Most focused: ${wdn(bestD[0])} (${fmtMins(bestD[1])})`)]:[])];
+      focusSec=`<div class="rc-sec"><h4>${isWeek?L("这一周专注了多久","Focus time this week"):L("今年一共专注了多久","Focus time this year")}</h4><div class="fz"><div class="fz-big">${TOM_ICON.replace('class="mt"','class="mt big"')}${h?`<b>${h}</b><span>${L("小时","h")}</span>`:""}<b>${mi}</b><span>${L(`分 · ${R.fTom} 个番茄`,`m · ${R.fTom} ${n_(R.fTom,"tomato","tomatoes")}`)}</span></div>${subs.length?`<div class="fz-sub">${subs.join(" · ")}</div>`:""}</div></div>`}
     const mx=Math.max(1,...R.perMonth);
     const months=!isWeek?`<div class="rc-sec"><h4>${L("每个月的努力","Month by month")}</h4><div class="rc-bars">${R.perMonth.map((n,i)=>`<div class="rc-bar${n===mx&&n>0?" top":""}" title="${n}"><i style="height:${n?Math.max(6,Math.round(n/mx*100)):0}%"></i><span>${L(i+1,MON[i].slice(0,1))}</span></div>`).join("")}</div></div>`:"";
     const lists=keys.filter(k=>R.by[k].length).map(k=>{const arr=R.by[k], cap=isWeek?12:10;
@@ -1311,16 +2141,16 @@ function openRecap(kind,id,opts={}){
     bg.innerHTML=`<div class="sheet rc-sheet" role="dialog" aria-label="${title}">
       <div class="rc-hero">
         <svg class="rc-spark" viewBox="0 0 200 120" aria-hidden="true">${[[18,24,5],[60,12,3],[150,18,4],[176,70,3],[110,96,3],[34,92,4]].map(([x,y,r])=>`<path d="M${x} ${y-r*2}l${r*.5} ${r*1.5} ${r*1.5} ${r*.5}-${r*1.5} ${r*.5}-${r*.5} ${r*1.5}-${r*.5}-${r*1.5}-${r*1.5}-${r*.5} ${r*1.5}-${r*.5}z"/>`).join("")}</svg>
-        <div class="rc-titles"><span class="rc-eyebrow">${isWeek?L("小芽的周小记","Sprout's weekly notes"):L("小芽的年度总结","Sprout's year in review")}</span><h3>${title}</h3><span class="rc-range">${sub}</span></div>
+        <div class="rc-titles"><span class="rc-eyebrow">${isWeek?L("{pet}的周小记","{pet}'s weekly notes"):L("{pet}的年度总结","{pet}'s year in review")}</span><h3>${title}</h3><span class="rc-range">${sub}</span></div>
         <div class="rc-pet">${moodFace(recapBusy?"meh":"great")}</div>
         <button class="x" data-rc="close" aria-label="${L("关闭","Close")}">×</button>
       </div>
       <div class="rc-body">
         <div class="rc-sum"><div class="rc-big"><span class="drop">💧</span><b>${R.drops}</b><span>${L("滴水","drops")}</span></div><p>${facts}</p>${split}</div>
         <div class="rc-say"><div class="rc-avatar">${moodFace(recapBusy?"meh":"good")}</div>
-          <div class="rc-bubble"><span class="who">${L("小芽想对你说","A note from Sprout")}</span><p>${recapBusy?L("让我好好想想…","Let me think…"):esc(comment)}</p>
-          ${sample&&!partial?`<button class="link" data-rc="ai" ${recapBusy?"disabled":""}>${doc.comment?L("✨ 再写一段","✨ Write another"):L("✨ 让小芽认真写","✨ Ask Sprout to write one")}</button>`:""}</div></div>
-        ${week}${msSec}${months}
+          <div class="rc-bubble"><span class="who">${L("{pet}想对你说","A note from {pet}")}</span><p>${recapBusy?L("让我好好想想…","Let me think…"):esc(comment)}</p>
+          ${sample&&!partial?`<button class="link" data-rc="ai" ${recapBusy?"disabled":""}>${doc.comment?L("✨ 再写一段","✨ Write another"):L("✨ 让{pet}认真写","✨ Ask {pet} to write one")}</button>`:""}</div></div>
+        ${week}${focusSec}${msSec}${months}
         ${lists?`<div class="rc-sec"><h4>${L("完成的事","What you finished")}</h4>${lists}</div>`:""}
         ${habitsSec}${trees}
         ${hasData(R)?"":`<p class="hint">${L("这段时间还没有完成的记录。","Nothing finished in this period yet.")}</p>`}
@@ -1375,7 +2205,7 @@ function calendarCard(sel){
   const days=new Date(y,m,0).getDate(), lead=(new Date(y,m-1,1).getDay()+6)%7;
   const keys=["habit","life","study","work"].filter(on);
   const cnt={}, bump=(d,k)=>{(cnt[d]=cnt[d]||{habit:0,life:0,study:0,work:0})[k]++};
-  for(const x of tasks)if(x.done&&x.doneAt&&cnt!==null&&["life","study","work"].includes(x.space)){const d=ymd(new Date(x.doneAt));if(d.startsWith(cm))bump(d,x.space)}
+  for(const x of tasks)if(x.done&&x.doneAt&&cnt!==null&&["life","study","work"].includes(x.space)){const d=dayOf(x.doneAt);if(d.startsWith(cm))bump(d,x.space)}
   for(const d in checkins)if(d.startsWith(cm))for(const id in checkins[d])bump(d,"habit");
   const name={habit:L("打卡","Habits"),life:L("生活","Life"),study:L("学习","Study"),work:L("工作","Work")};
   let cells="";
@@ -1385,16 +2215,17 @@ function calendarCard(sel){
     const mood=MOODS.some(x=>x[0]===J.mood)?moodFace(J.mood):"";
     const pills=c?keys.filter(k=>c[k]).map(k=>`<i class="pill" style="--c:var(--${k}-ink);--s:var(--${k}-soft)" title="${name[k]} ${c[k]}">${c[k]}</i>`).join(""):"";
     const lbl=L(`${m}月${dd}日`,`${dd} ${MON[m-1]}`)+(c?" · "+keys.filter(k=>c[k]).map(k=>`${name[k]} ${c[k]}`).join(", "):"")+(J.note?" · "+L("有感想","has a reflection"):"")+(msOn(d).length?" · "+L("值得记住：","Moment: ")+msOn(d).map(x=>x.title).join(", "):"");
-    const msN=msOn(d).length;
-    cells+=`<button class="cal-day${d===sel?" sel":""}${d===t?" today":""}${msN?" ms":""}" data-act="jday" data-v="${d}" ${future?"disabled":""} aria-label="${lbl}" aria-pressed="${d===sel}">
+    const msN=msOn(d).length, bd=bdOnDay(d)[0];
+    cells+=`<button class="cal-day${d===sel?" sel":""}${d===t?" today":""}${msN?" ms":""}${bd?" bd":""}" data-act="jday" data-v="${d}" ${future?"disabled":""} aria-label="${lbl}${bd?" · "+esc(bdTitle(bd)):""}" aria-pressed="${d===sel}"${bd?` style="--bdc:${bdCol(bd)}"`:""}>
       ${msN?`<span class="cal-ms">${milestoneFace()}</span>`:""}<span class="cal-top"><b>${dd}</b>${mood?`<span class="cal-mood">${mood}</span>`:J.note?`<span class="cal-note">✎</span>`:""}</span>
-      <span class="pills">${pills}</span></button>`;
+      ${bd?`<span class="cal-bd">${bdIcon(bd)}</span>`:`<span class="pills">${pills}</span>`}</button>`;
   }
   const wd=L(["一","二","三","四","五","六","日"],["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]);
   return `<div class="cal">
-    <div class="cal-head"><button data-act="calprev" aria-label="${L("上个月","Previous month")}">‹</button><h3>${L(`${y}年${m}月`,`${MONFULL[m-1]} ${y}`)}</h3><button data-act="calnext" aria-label="${L("下个月","Next month")}" ${cm>=t.slice(0,7)?"disabled":""}>›</button></div>
+    <div class="cal-head"><button data-act="calprev" aria-label="${L("上个月","Previous month")}">‹</button><h3>${L(`${y}年${m}月`,`${MONFULL[m-1]} ${y}`)}</h3><button data-act="calnext" aria-label="${L("下个月","Next month")}">›</button></div>
     <div class="cal-grid">${wd.map(w=>`<span class="cal-wd">${w}</span>`).join("")}${cells}</div>
-    <div class="cal-legend">${keys.map(k=>`<span><i style="background:var(--${k})"></i>${name[k]}</span>`).join("")}<span>✎ ${L("写了感想","Reflection")}</span><span>${milestoneFace()}${L("值得记住","Moment")}</span><span>${L("点一天看详情","Tap a day for details")}</span></div>
+    <div class="cal-legend">${keys.map(k=>`<span><i style="background:var(--${k})"></i>${name[k]}</span>`).join("")}<span>✎ ${L("写了感想","Reflection")}</span><span>${milestoneFace()}${L("值得记住","Moment")}</span>${["birthday","anniv"].filter(k=>yearlyDays.some(x=>x.type===k)).map(k=>`<span class="lgi">${BD_IC[k]}${k==="birthday"?L("生日","Birthday"):L("纪念日","Anniversary")}</span>`).join("")}<span>${L("点一天看详情","Tap a day for details")}</span></div>
+    ${bdSection()}
     ${milestoneWall()}
     ${recapButtons()}
   </div>`;
@@ -1403,7 +2234,7 @@ function shiftMonth(n){const [y,m]=(calMonth||(jDate||todayStr()).slice(0,7)).sp
 
 /* ---------- forest of grown trees ---------- */
 let forest=[], curTheme="lemon";
-const curWater=()=>Math.max(0,waterTotal()-forest.reduce((a,f)=>a+(f.drops||MAXW),0));
+const curWater=()=>Math.max(0,waterTotal()-forest.reduce((a,f)=>a+(f.drops||200),0));
 const tName=k=>{const t=THEMES[k]||THEMES.lemon;return L(t.zh,t.en)};
 function swatches(sel,act){return Object.keys(THEMES).map(k=>`<button class="sw${sel===k?" on":""}" data-act="${act}" data-v="${k}" aria-pressed="${sel===k}" style="${themeStyle(k)}"><span class="dot"></span>${tName(k)}</button>`).join("")}
 let forestSel=null, forestMode=null;
@@ -1448,7 +2279,7 @@ function meadowScene(trees,st){
     ${[[40,164,"fs-f1"],[132,196,"fs-f2"],[214,172,"fs-f1"],[300,186,"fs-f3"],[60,230,"fs-f2"],[250,246,"fs-f1"],[350,226,"fs-f2"],[188,140,"fs-f3"]].map(([x,y,c])=>bloom(x,y,c)).join("")}
     ${items.map(it=>{
       const glow=forestSel===it.i?`<ellipse cx="${it.spot.cx}" cy="${it.spot.b}" rx="${it.spot.s*.42}" ry="${it.spot.s*.09}" class="fs-glow"/>`:"";
-      return glow+placeTree(it.svg,it.spot,`class="fs-tree${forestSel===it.i?" sel":""}" data-act="ftree" data-v="${it.i}" role="button" tabindex="0" aria-label="${it.i==="cur"?L("正在长的小芽","The sprout growing now"):L(`第 ${it.i+1} 棵`,`Tree ${it.i+1}`)}"`)}).join("")}
+      return glow+placeTree(it.svg,it.spot,`class="fs-tree${forestSel===it.i?" sel":""}" data-act="ftree" data-v="${it.i}" role="button" tabindex="0" aria-label="${it.i==="cur"?L("正在长的{pet}","The sprout growing now"):L(`第 ${it.i+1} 棵`,`Tree ${it.i+1}`)}"`)}).join("")}
   </svg>`;
 }
 // bird's-eye map: oldest trees in the middle of the island, newer ones spiral outwards
@@ -1468,7 +2299,7 @@ function forestMap(trees,st){
       ${r>=6?`<text x="${x.toFixed(1)}" y="${(y+r*.36).toFixed(1)}" font-size="${(r*.95).toFixed(1)}" class="fm-num">${i+1}</text>`:""}</g>`}).join("");
   // the growing sprout sits on the shore, where the next tree will be planted
   const [nx,ny]=pos(N); const sx=Math.min(Math.max(nx,40),320), sy=Math.min(Math.max(ny,40),210);
-  const sprout=`<g class="fm-cur${forestSel==="cur"?" sel":""}" data-act="ftree" data-v="cur" role="button" tabindex="0" aria-label="${L("正在长的小芽","The sprout growing now")}">
+  const sprout=`<g class="fm-cur${forestSel==="cur"?" sel":""}" data-act="ftree" data-v="cur" role="button" tabindex="0" aria-label="${L("正在长的{pet}","The sprout growing now")}">
       <circle cx="${sx}" cy="${sy}" r="${dotR+5}" class="fm-pulse"/>
       <circle cx="${sx}" cy="${sy}" r="${dotR+1}" fill="${(THEMES[curTheme]||THEMES.lemon).body}" class="fm-curdot"/>
       <path d="M${sx} ${sy-dotR*.2}v${-dotR*.9}" class="fm-stem"/><path d="M${sx} ${sy-dotR*.8}c${-dotR*.7} 0 ${-dotR*1.1} ${-dotR*.4} ${-dotR*1.1} ${-dotR}c${dotR*.7} 0 ${dotR*1.1} ${dotR*.4} ${dotR*1.1} ${dotR}z" fill="${(THEMES[curTheme]||THEMES.lemon).leaf}"/></g>`;
@@ -1489,10 +2320,10 @@ function forestView(){
   const fmtD=ts=>{const d=new Date(ts||Date.now());return L(`${d.getMonth()+1}月${d.getDate()}日`,`${d.getDate()} ${MON[d.getMonth()]}`)};
   const hidden=mode==="scene"?Math.max(0,trees.length-SCENE_MAX):0;
   let cap;
-  if(forestSel==="cur")cap=`<b>${L("正在长的小芽","Growing now")}</b> · ${tName(curTheme)} · ${STAGES[st].n} · ${L(`已经喝了 ${curWater()} 滴水`,`${curWater()} drops so far`)}`;
+  if(forestSel==="cur")cap=`<b>${L("正在长的{pet}","Growing now")}</b> · ${tName(curTheme)} · ${STAGES[st].n} · ${L(`已经喝了 ${curWater()} 滴水`,`${curWater()} drops so far`)}`;
   else if(forestSel!==null&&trees[forestSel]){const t=trees[forestSel];cap=`<b>${L(`第 ${forestSel+1} 棵`,`Tree ${forestSel+1}`)}</b> · ${tName(t.theme)} · ${L(`${fmtD(t.grownAt)}开花，喝了 ${t.drops||MAXW} 滴水`,`bloomed on ${fmtD(t.grownAt)} after ${t.drops||MAXW} drops`)}`
     +(mode==="scene"&&forestSel<trees.length-SCENE_MAX?L("。它在地图里，草地上只画最近的树。"," It's on the map; the meadow only shows the latest trees."):"")}
-  else if(!trees.length)cap=L("草地还空着，最前面那颗就是正在长的小芽。它开花后可以种进这片草地，再从一颗新种子开始。","The meadow is still empty. The little one at the front is your sprout. Once it blooms, plant it here and start again from a new seed.");
+  else if(!trees.length)cap=L("草地还空着，最前面那颗就是正在长的{pet}。它开花后可以种进这片草地，再从一颗新种子开始。","The meadow is still empty. The little one at the front is your sprout. Once it blooms, plant it here and start again from a new seed.");
   else if(mode==="map")cap=L(`地图上一共 ${trees.length} 棵树，最早种的在小岛中间。点一个圆点看看它。`,`${trees.length} ${n_(trees.length,"tree","trees")} on the map, oldest in the middle of the island. Tap a dot to see it.`);
   else cap=L(`草地上已经有 ${trees.length} 棵开花的树了。点一棵树，看看它是哪天长成的。`,`${trees.length} blooming ${n_(trees.length,"tree is","trees are")} on your meadow. Tap one to see when it bloomed.`)
     +(hidden?L(` 草地上画了最近的 ${SCENE_MAX} 棵，全部的树在地图里。`,` The meadow shows the latest ${SCENE_MAX}; see them all on the map.`):"");
@@ -1520,7 +2351,7 @@ function openPlant(){
   const bg=document.createElement("div"); bg.className="sheet-bg";
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("种进森林","Plant in forest")}">
     <div style="display:flex;gap:12px;align-items:center"><div style="width:88px;height:88px;flex:none">${treeSVG("cheer",STAGES.length-1,false,curTheme)}</div>
-      <div><h3>${L("小芽开花啦 🌸","Sprout is in full bloom 🌸")}</h3><p class="hint" style="margin:4px 0 0">${L("把它种进森林，它会一直住在那里。然后我们从一颗新种子重新开始。","Plant it in your forest, where it will stay. Then we start again from a new seed.")}</p></div></div>
+      <div><h3>${L("{pet}开花啦 🌸","{pet} is in full bloom 🌸")}</h3><p class="hint" style="margin:4px 0 0">${L("把它种进森林，它会一直住在那里。然后我们从一颗新种子重新开始。","Plant it in your forest, where it will stay. Then we start again from a new seed.")}</p></div></div>
     <div class="field"><span>${L("下一颗种子想要什么颜色？","Pick a colour for the next seed")}</span><div class="swatches">${swatches(pick,"pick")}</div></div>
     <div class="sheet-actions"><button class="btn" data-p="close">${L("再等等","Not yet")}</button><button class="btn primary" data-p="ok">${L("种进森林","Plant it")}</button></div></div>`};
   draw(); document.body.appendChild(bg);
@@ -1540,7 +2371,7 @@ function openPlant(){
 }
 
 /* ---------- daily summary ---------- */
-const dayOf=ts=>ts?ymd(new Date(ts)):null;
+const dayOf=ts=>ts?ymd(shifted(ts)):null;
 const MOODS=[["great","😄",""],["good","🙂",""],["meh","😐",""],["tired","😮‍💨",""],["down","😢",""]];
 function dayData(d){
   const doneOn=k=>tasks.filter(t=>t.done&&t.space===k&&dayOf(t.doneAt)===d);
@@ -1589,6 +2420,8 @@ function journalView(){
       ${on("study")?`<div class="jstat"><b style="color:var(--study-ink)">${D.study.length}</b><span>${L("学习","Study")}</span></div>`:""}
       ${on("work")?`<div class="jstat"><b style="color:var(--work-ink)">${D.work.length}</b><span>${L("工作","Work")}</span></div>`:""}
     </div>
+    ${(()=>{const pm=dayPomos(d),m=pm.reduce((a,p)=>a+(+p.mins||0),0);if(m<1)return "";const tn=pm.filter(p=>p.tomato).length;const by=["study","work"].map(k=>[k,pm.filter(p=>p.space===k).reduce((a,p)=>a+(+p.mins||0),0)]).filter(x=>x[1]>=1);
+      return `<div class="focusline">${TOM_ICON}<span>${d===todayStr()?L("今天","Today"):L("这天","This day")}${L("专注了","")} <b>${fmtHM(m)}</b>${L("",` of focus`)} · ${L(`${tn} 个番茄`,`${tn} ${n_(tn,"tomato","tomatoes")}`)}</span>${by.length?`<span class="fsplit">${by.map(([k,v])=>`${BOARD_NAME(k)} ${fmtMins(v)}`).join(" · ")}</span>`:""}</div>`})()}
     <div class="jgrid">
       ${on("habit")?box(L("打卡","Check-in"),"--habit",list(D.hNames)):""}
       ${on("life")?box(L("生活","Life"),"--life",lifeInner):""}
@@ -1598,9 +2431,9 @@ function journalView(){
     <div class="comment">
       <div class="mini">${treeSVG(jBusy?"think":"happy",stageOf(curWater()),false)}</div>
       <div class="body">
-        <h4>${L("小芽的评语","Sprout says")} <span class="hint">· ${L(`这天喝了 ${D.drops} 滴水`,`${D.drops} ${n_(D.drops,"drop","drops")} this day`)}</span></h4>
+        <h4>${L("{pet}的评语","{pet} says")} <span class="hint">· ${L(`这天喝了 ${D.drops} 滴水`,`${D.drops} ${n_(D.drops,"drop","drops")} this day`)}</span></h4>
         <p>${jBusy?L("让我好好想想怎么夸你…","Thinking of nice things to say…"):esc(comment||localComment(D))}</p>
-        <div class="acts">${sample?`<button class="btn primary" data-act="jai" ${jBusy?"disabled":""}>${comment?"✨ 再写一段":"✨ 让小芽认真写评语"}</button>`:""}${comment?`<span class="hint">写于 ${new Date(J.commentAt||Date.now()).toTimeString().slice(0,5)}</span>`:`<span class="hint">${sample?"写好感想再让小芽评，评语会更贴心":L("评语会根据你这天完成的事自动生成","Sprout's note is written from what you finished this day")}</span>`}</div>
+        <div class="acts">${sample?`<button class="btn primary" data-act="jai" ${jBusy?"disabled":""}>${comment?"✨ 再写一段":`✨ 让${petName()}认真写评语`}</button>`:""}${comment?`<span class="hint">写于 ${new Date(J.commentAt||Date.now()).toTimeString().slice(0,5)}</span>`:`<span class="hint">${sample?"写好感想再让小芽评，评语会更贴心":L("评语会根据你这天完成的事自动生成","Sprout's note is written from what you finished this day")}</span>`}</div>
       </div>
     </div>
     <div class="reflect">
@@ -1620,7 +2453,7 @@ async function aiComment(){
   const d=jDate||todayStr(), D=dayData(d), J=journal[d]||{};
   jBusy=true; render();
   const mood=(MOODS.find(m=>m[0]===J.mood)||[])[2];
-  const prompt=`你是「小芽」，Gracy 养在她的人生服务器里的一棵会长大的小树，性格温暖、真诚、有点俏皮。请根据她 ${d} 这一天的记录，写一段给她的小结评语。
+  const prompt=`你是「${petName()}」，${userName||"用户"}养在她的人生服务器里的一棵会长大的小树，性格温暖、真诚、有点俏皮。请根据她 ${d} 这一天的记录，写一段给她的小结评语。
 
 打卡（共 ${D.hTotal} 项）：${D.hNames.join("、")||"无"}
 生活完成：${D.life.map(t=>t.title).join("、")||"无"}${D.trip.length?`；去超市 ${D.trip.length} 趟`:""}
@@ -1630,7 +2463,7 @@ async function aiComment(){
 她的感想：${J.note||"没写"}
 
 要求：
-- 用中文，第一人称"我"（小芽）对"你"说话，100 到 160 字
+- 用中文，第一人称"我"（${petName()}）对"你"说话，100 到 160 字
 - 点名提到她具体做了的一两件事，夸得具体，不要空泛的套话
 - 如果完成得少或心情不好，温柔接住，不制造愧疚感，可以给一个很小、可行的明天建议
 - 如果她写了感想，要回应她写的内容
@@ -1642,7 +2475,7 @@ async function aiComment(){
     if(text)await saveJournal(d,{comment:text.slice(0,1200),commentAt:Date.now()});
   }catch(e){
     if(e&&e.code==="not_granted"){sample=null}
-    setStatus(e&&e.code==="rate_limited"?"小芽有点忙，过一会儿再让它写吧。":e&&e.code==="not_granted"?"":"评语没写成，稍后再试一次。");
+    setStatus(e&&e.code==="rate_limited"?`${petName()}有点忙，过一会儿再让它写吧。`:e&&e.code==="not_granted"?"":"评语没写成，稍后再试一次。");
   }finally{jBusy=false;render()}
 }
 
@@ -1658,7 +2491,9 @@ function renderPreview(){
       <div class="chips">
         ${["life","study","work","shop"].filter(on).map(s=>`<button class="chip ${s==="shop"?"life":s}${p.space===s?" on":""}" data-pv="space" data-v="${s}" data-i="${i}">${s==="shop"?"🛒 "+SPACE.shop:SPACE[s]}</button>`).join("")}
         ${p.space==="shop"?"":`<span class="gap"></span>`+HZ.map(h=>`<button class="chip hz${p.horizon===h.k?" on":""}" data-pv="hz" data-v="${h.k}" data-i="${i}">${h.name}</button>`).join("")}
-        ${p.due?`<span class="chip">${L("截止 ","Due ")}${esc(p.due)}</span>`:""}${p.pri&&p.space!=="shop"?`<button class="chip" data-pv="pri" data-i="${i}" title="${priLabel(p.pri)}"><span class="psvg">${priIcon(p.pri)}</span>${PRI_NAMES()[p.pri]}</button>`:""}
+        ${p.repeat&&p.space!=="shop"?`<span class="chip rep-chip">${REP_SVG}${repLabel(p.repeat)}${p.repeat.until?L(` · 到 ${md2(p.repeat.until)}`,` · until ${md2(p.repeat.until)}`):""}</span>`:""}
+        ${p.due?`<span class="chip">${p.repeat?L("第一次 ","First ") :L("截止 ","Due ")}${esc(p.due)}</span>`:""}
+        ${p.space!=="shop"?`<button class="chip split-chip${p.split?" on":""}" data-pv="split" data-i="${i}" aria-pressed="${!!p.split}">${p.split?"✓ ":""}${L("拆小一点","Break it down")}</button>`:""}${p.pri&&p.space!=="shop"?`<button class="chip" data-pv="pri" data-i="${i}" title="${priLabel(p.pri)}"><span class="psvg">${priIcon(p.pri)}</span>${PRI_NAMES()[p.pri]}</button>`:""}
       </div>
     </div></div>`).join("")+
   `<div class="cap-row"><button class="btn primary" id="saveParsed">${L(`保存选中的 ${pending.filter(p=>p.keep).length} 条`,`Save ${pending.filter(p=>p.keep).length} selected`)}</button><button class="btn" id="cancelParsed">${L("取消","Cancel")}</button></div>`;
@@ -1675,7 +2510,7 @@ async function parseCapture(){
     renderPreview();return}
   const btn=$("#parseBtn"); btn.disabled=true; btn.textContent="分拣中…"; thinking=true; renderBuddy();
   const t=todayStr();
-  const prompt=`你是一个个人任务整理助手。今天是 ${t}（周${WD[new Date().getDay()]}）。
+  const prompt=`你是一个个人任务整理助手。今天是 ${t}（周${WD[shifted().getDay()]}）。
 把用户随手写的一段话拆成独立的待办事项。每条返回：
 - title：简洁的中文动作描述（保留用户原意和专有名词）
 - space："study"（课程、作业、笔记整理、考试复习、刷题、自学新技能）、"work"（求职、实习、工作项目、职业发展目标）、"shop"（要去超市或商店买的具体物品，每样东西单独一条，title 只写物品名，比如"鸡蛋"）或 "life"（其他生活事项和目标：健康、社交、家务、爱好）
@@ -1683,6 +2518,7 @@ async function parseCapture(){
 - due：如果提到具体或相对日期，换算成 YYYY-MM-DD；否则为 null
 - note：用户提到的额外细节，没有则为空字符串
 - pri：优先级，3=高（提到紧急、重要、马上、急、!!、urgent、important），2=中，1=低（提到不急、有空再说、随便），没提到就是 0
+- repeat：如果是重复的事（每天、每周日、每个工作日、每两周三、每月1号、每月第一个周一…），返回 {"freq":"day"|"week"|"2week"|"month","days":[星期几，0=周日…6=周六],"mday":几号,"nth":第几个,"wd":星期几,"until":"YYYY-MM-DD 或 null"}；不重复就是 null。重复的事 due 填第一次的日期，title 里不要写"每周"这种词
 只返回 JSON 数组，不要其他文字。
 
 用户输入：
@@ -1695,7 +2531,8 @@ ${text}`;
       space:["life","shop","study"].includes(x.space)?x.space:"work",
       horizon:HZNAME[x.horizon]?x.horizon:"inbox",
       due:/^\d{4}-\d{2}-\d{2}$/.test(x.due||"")?x.due:null,
-      note:String(x.note||"").slice(0,500),pri:[0,1,2,3].includes(+x.pri)?+x.pri:0,keep:true}));
+      note:String(x.note||"").slice(0,500),pri:[0,1,2,3].includes(+x.pri)?+x.pri:0,keep:true,
+      repeat:x.repeat&&["day","week","2week","month"].includes(x.repeat.freq)?normRepeat({freq:x.repeat.freq,days:Array.isArray(x.repeat.days)?x.repeat.days.map(Number).filter(n=>n>=0&&n<=6):null,mday:+x.repeat.mday||null,nth:+x.repeat.nth||null,wd:+x.repeat.wd||0,until:/^\d{4}-\d{2}-\d{2}$/.test(x.repeat.until||"")?x.repeat.until:null},/^\d{4}-\d{2}-\d{2}$/.test(x.due||"")?x.due:null):null}));
     thinking=false;
     if(pending.length)cheer(`分好啦，一共 ${pending.length} 条，看看对不对？`);
     else $("#capHint").textContent="没分出任务，换个说法试试，或者先丢进收件箱。";
@@ -1708,7 +2545,10 @@ ${text}`;
 async function addTask(t){
   const ref=db.collection("tasks").doc();
   const body={title:t.title,space:t.space,horizon:t.horizon,due:t.due||null,note:t.note||"",pri:+t.pri||0,done:false,createdAt:Date.now()};
-  return queued(ref.path,()=>ref.set(body));
+  if(t.repeat){body.repeat=normRepeat(t.repeat,t.due);if(!body.due)body.due=repFirst(body.repeat,todayStr())}
+  if(t.subs&&t.subs.length)body.subs=t.subs;
+  await queued(ref.path,()=>ref.set(body));
+  return ref.id;
 }
 async function addInbox(){
   const text=$("#cap").value.trim(); if(!text||!db)return;
@@ -1995,21 +2835,40 @@ function openMemo(id){
 /* ---------- editor sheet ---------- */
 function openEditor(id,preset){
   const isNew=!id; const t=isNew?null:tasks.find(x=>x.id===id); if(!isNew&&!t)return;
-  const draft=isNew?{title:"",due:"",note:"",space:preset.space,horizon:preset.horizon,pri:0}:{title:t.title,due:t.due||"",note:t.note||"",space:t.space,horizon:t.horizon,pri:+t.pri||0};
-  let confirmDel=false;
+  const draft=isNew?{title:"",due:"",note:"",space:preset.space,horizon:preset.horizon,pri:0,repeat:null}:{title:t.title,due:t.due||"",note:t.note||"",space:t.space,horizon:t.horizon,pri:+t.pri||0,repeat:t.repeat?JSON.parse(JSON.stringify(t.repeat)):null,doneDay:t.done&&t.doneAt?dayOf(t.doneAt):null};
+  let confirmDel=false, pickDone=false;
+  const FREQ=[["",L("不重复","Never")],["day",L("每天","Daily")],["week",L("每周","Weekly")],["2week",L("每两周","Every 2 weeks")],["month",L("每月","Monthly")]];
+  const repBlock=()=>{const r=draft.repeat;const base=draft.due||todayStr();
+    return `<div class="field"><span>${L("重复","Repeat")}</span><div class="chips">${FREQ.map(([k,n])=>`<button class="chip hz${(r?r.freq:"")===k?" on":""}" data-ed="freq" data-v="${k}">${n}</button>`).join("")}</div>
+    ${r&&(r.freq==="week"||r.freq==="2week")?`<div class="wdots">${[1,2,3,4,5,6,0].map(d=>`<button class="wdot${(r.days||[]).includes(d)?" on":""}" data-ed="wd" data-v="${d}" aria-pressed="${(r.days||[]).includes(d)}">${L(WD[d],WDEN[d].slice(0,2))}</button>`).join("")}</div>`:""}
+    ${r&&r.freq==="month"?`<span class="hint">${r.nth?L(`每月${NTH[r.nth]}周${WD[r.wd]}`,`${NTH_EN[r.nth]} ${WDEN[r.wd]} of each month`):L(`每月 ${+base.slice(8)} 号（跟着上面的日期）`,`Day ${+base.slice(8)} of each month (follows the date above)`)}</span>`:""}
+    </div>${r?`<div class="field"><span>${L("结束日期","Ends")}</span><div class="until-row"><input type="date" id="ed-until" value="${esc(r.until||"")}" min="${base}"><button class="chip hz${r.until?"":" on"}" data-ed="nountil">${L("不设结束","Never")}</button></div></div>
+    ${!isNew&&!t.done?`<div class="rep-acts">${isPaused(t)?`<button class="btn" data-ed="resume">${L("恢复","Resume")}</button>`:`<button class="btn" data-ed="pause">${PAUSE_SVG} ${L("暂停一阵子","Pause for a while")}</button>`}<button class="btn" data-ed="skip">${L("跳过这次","Skip this one")}</button></div>`:""}`:""}`};
+  const doneBlock=()=>{if(isNew||!t.done)return "";const td=todayStr(),y1=addDays(td,-1),y2=addDays(td,-2),dd=draft.doneDay||td;const other=![td,y1,y2].includes(dd);
+    return `<div class="field"><span>${L("什么时候做完的","When did you finish it?")}</span><div class="chips">
+      <button class="chip hz${dd===td?" on":""}" data-ed="dd" data-v="${td}">${L("今天","Today")}</button>
+      <button class="chip hz${dd===y1?" on":""}" data-ed="dd" data-v="${y1}">${L(`昨天 · ${md2(y1)}`,`Yesterday · ${md2(y1)}`)}</button>
+      <button class="chip hz${dd===y2?" on":""}" data-ed="dd" data-v="${y2}">${L("前天","2 days ago")}</button>
+      <button class="chip hz${other||pickDone?" on":""}" data-ed="ddpick">${other?md2(dd):L("选日期…","Pick a date…")}</button></div>
+      ${pickDone||other?`<input type="date" id="ed-doneday" min="${addDays(td,-30)}" max="${td}" value="${dd}">`:""}</div>`};
   const bg=document.createElement("div"); bg.className="sheet-bg";
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑任务","Edit task")}">
     <h3>${isNew?L("添加一条","Add a task"):L("改一改","Edit")}</h3>
     <label class="field"><span>${isNew?L("要做什么？","What needs doing?"):L("标题","Title")}</span><input id="ed-title" value="${esc(draft.title)}" placeholder="${L("比如：整理 Week 6 笔记","e.g. Tidy up week 6 notes")}"></label>
     <div class="field"><span>${L("时间尺度","Timeframe")}</span><div class="chips">${HZ.map(h=>`<button class="chip hz${draft.horizon===h.k?" on":""}" data-ed="hz" data-v="${h.k}">${h.name}</button>`).join("")}</div></div>
     <div class="field"><span>${L("优先级","Priority")}</span><div class="chips">${[0,3,2,1].map(v=>`<button class="chip hz${draft.pri===v?" on":""}" data-ed="pri" data-v="${v}">${v?`<span class="psvg">${priIcon(v)}</span>`:""}${PRI_NAMES()[v]}</button>`).join("")}</div></div>
-    <label class="field"><span>${L("截止日期","Due date")}</span><input type="date" id="ed-due" value="${esc(draft.due)}"></label>
+    <label class="field"><span>${draft.repeat?(isNew?L("第一次是哪天","First date"):L("这一次是哪天","This one's date")):L("截止日期","Due date")}</span><input type="date" id="ed-due" value="${esc(draft.due)}"></label>
+    ${repBlock()}
+    ${doneBlock()}
     <label class="field"><span>${L("备注 / 计划细节","Notes / plan details")}</span><textarea id="ed-note">${esc(draft.note)}</textarea></label>
+    ${isNew||!t.done?`<button class="split ed-split" data-ed="split">${IDEA_FACE}${!isNew&&t.subs&&t.subs.length?L(`已拆成 ${t.subs.length} 步 · 重新拆`,`${t.subs.length} steps · redo`):L("拆小一点","Break it down")}</button>`:""}
     <div class="sheet-actions">
       ${isNew?"<span></span>":`<button class="btn danger" data-ed="del">${confirmDel?L("再点一次确认删除","Tap again to delete"):L("删除","Delete")}</button>`}
       <span style="display:flex;gap:8px"><button class="btn" data-ed="close">${L("取消","Cancel")}</button><button class="btn primary" data-ed="save">${isNew?L("添加","Add"):L("保存","Save")}</button></span>
     </div></div>`};
-  const grab=()=>{draft.title=bg.querySelector("#ed-title").value;draft.due=bg.querySelector("#ed-due").value;draft.note=bg.querySelector("#ed-note").value};
+  const grab=()=>{draft.title=bg.querySelector("#ed-title").value;draft.due=bg.querySelector("#ed-due").value;draft.note=bg.querySelector("#ed-note").value;
+    const u=bg.querySelector("#ed-until");if(u&&draft.repeat){if(u.value)draft.repeat.until=u.value;else delete draft.repeat.until}
+    const dd=bg.querySelector("#ed-doneday");if(dd&&dd.value&&dd.value<=todayStr())draft.doneDay=dd.value};
   draw(); document.body.appendChild(bg);
   bg.addEventListener("click",e=>{
     if(e.target===bg){bg.remove();return}
@@ -2018,17 +2877,42 @@ function openEditor(id,preset){
     if(a==="space"){draft.space=b.dataset.v;draw();return}
     if(a==="hz"){draft.horizon=b.dataset.v;draw();return}
     if(a==="pri"){draft.pri=+b.dataset.v;draw();return}
+    if(a==="freq"){const v=b.dataset.v;if(!v)draft.repeat=null;else{const bw=new Date((draft.due||todayStr())+"T12:00:00").getDay();draft.repeat={...(draft.repeat||{}),freq:v};if((v==="week"||v==="2week")&&!(draft.repeat.days||[]).length)draft.repeat.days=[bw];if(v!=="month"){delete draft.repeat.nth;delete draft.repeat.mday}}draw();return}
+    if(a==="wd"){const d=+b.dataset.v,ds=new Set(draft.repeat.days||[]);ds.has(d)?ds.delete(d):ds.add(d);if(ds.size)draft.repeat.days=[...ds];draw();return}
+    if(a==="nountil"){delete draft.repeat.until;draw();return}
+    if(a==="pause"){bg.remove();openPause(id);return}
+    if(a==="resume"){bg.remove();resumeTask(t);return}
+    if(a==="skip"){bg.remove();skipTask(t);return}
+    if(a==="dd"){draft.doneDay=b.dataset.v;pickDone=false;draw();return}
+    if(a==="ddpick"){pickDone=true;draw();setTimeout(()=>{const el=bg.querySelector("#ed-doneday");if(el){el.focus();try{el.showPicker()}catch(_){}}},30);return}
     if(a==="close"){bg.remove();return}
-    if(a==="del"){if(!confirmDel){confirmDel=true;draw();return}
+    if(a==="split"){const title=draft.title.trim();if(!title){bg.querySelector("#ed-title").focus();return}
+      if(isNew){bg.remove();const rp=draft.repeat?normRepeat(draft.repeat,draft.due||null):null;addTask({title:title.slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp}).then(nid=>setTimeout(()=>openSplit(nid),250));return}
+      bg.remove();openSplit(id);return}
+    if(a==="del"){
+      if(t.repeat&&!t.done){bg.remove();askChoice(L("删掉这个重复任务？","Delete this repeating task?"),"",[[L("只删这一次（跳过）","Just this one (skip)"),L("下一次照常出现","The next one still shows up")],[L("以后都不要了","All future ones"),L("整个重复都删掉","Stops the whole series")]]).then(c=>{if(c===0)skipTask(t);else if(c===1){const ref=db.doc("tasks/"+id);queued(ref.path,()=>ref.delete())}});return}
+      if(!confirmDel){confirmDel=true;draw();return}
       bg.remove(); const ref=db.doc("tasks/"+id); queued(ref.path,()=>t.done?ref.update({deleted:true}):ref.delete()); return}
     if(a==="save"){
+      const rp=draft.repeat?normRepeat(draft.repeat,draft.due||null):null;
       if(isNew){const title=draft.title.trim();if(!title){bg.querySelector("#ed-title").focus();return}
-        bg.remove();addTask({title:title.slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,note:draft.note.slice(0,2000),pri:draft.pri});cheer(L(`加进${SPACE[draft.space]}的「${HZNAME[draft.horizon]}」了～`,`Added to ${SPACE[draft.space]} · ${HZNAME[draft.horizon]}～`));return}
+        bg.remove();addTask({title:title.slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp});cheer(rp?L(`记好啦，${repLabel(rp)}都会出现～`,`Saved. It'll show up ${repLabel(rp).toLowerCase()}～`):L(`加进${SPACE[draft.space]}的「${HZNAME[draft.horizon]}」了～`,`Added to ${SPACE[draft.space]} · ${HZNAME[draft.horizon]}～`));return}
       bg.remove();
       const ref=db.doc("tasks/"+id);
-      queued(ref.path,()=>ref.update({title:(draft.title.trim()||L("未命名","Untitled")).slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,note:draft.note.slice(0,2000),pri:draft.pri}))}
+      const patch={title:(draft.title.trim()||L("未命名","Untitled")).slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp};
+      if(rp&&!patch.due&&!t.done)patch.due=repFirst(rp,todayStr());
+      if(t.done&&draft.doneDay&&draft.doneDay!==dayOf(t.doneAt))patch.doneAt=draft.doneDay===todayStr()?Date.now():noonOf(draft.doneDay);
+      const sameRule=t.repeat&&rp&&JSON.stringify({...t.repeat,until:0,pause:0})===JSON.stringify({...rp,until:0,pause:0});
+      if(!t.done&&sameRule&&t.due&&patch.due&&patch.due!==t.due){
+        askChoice(L("改了这一次的日期","You changed this one's date"),L(`${md2(t.due)} → ${md2(patch.due)}`,`${md2(t.due)} → ${md2(patch.due)}`),[[L("只改这一次","Just this one"),L("以后还按原来的规律","Future ones keep the old pattern")],[L("以后都这样改","This and future ones"),L(`以后都按 ${md2(patch.due)} 这天来排`,`Future ones follow ${md2(patch.due)}`)]]).then(c=>{
+          if(c===null)return;
+          if(c===1){const od=new Date(t.due+"T12:00:00").getDay(),nd=new Date(patch.due+"T12:00:00").getDay();const r={...rp};
+            if(r.days)r.days=[...new Set(r.days.map(x=>x===od?nd:x))];if(r.freq==="2week")r.anchor=patch.due;if(r.freq==="month"&&!r.nth)r.mday=+patch.due.slice(8);if(r.freq==="month"&&r.nth){r.wd=nd;r.nth=Math.ceil(+patch.due.slice(8)/7)}patch.repeat=r}
+          queued(ref.path,()=>ref.update(patch))});return}
+      queued(ref.path,()=>ref.update(patch))}
   });
   bg.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="ed-title"){e.preventDefault();bg.querySelector('[data-ed="save"]').click()}if(e.key==="Escape")bg.remove()});
+  bg.addEventListener("change",e=>{if(e.target.id==="ed-due"||e.target.id==="ed-doneday"||e.target.id==="ed-until"){grab();if(e.target.id!=="ed-until")draw()}});
   bg.querySelector("#ed-title").focus();
 }
 
@@ -2041,7 +2925,7 @@ document.addEventListener("click",async e=>{
   if(e.target.closest("#plantBtn")){openPlant();return}
   if(e.target.closest("#jbtn")){tab=tab==="journal"?"habit":"journal";if(tab==="journal"){jDate=todayStr();jSaved="";calMonth=null}try{localStorage.setItem("los-tab",tab)}catch(_){};render();window.scrollTo({top:0,behavior:"smooth"});return}
   const pv=e.target.closest("[data-pv]");
-  if(pv&&pv.tagName==="BUTTON"){const p=pending[+pv.dataset.i];if(pv.dataset.pv==="space")p.space=pv.dataset.v;else if(pv.dataset.pv==="pri")p.pri={3:2,2:1,1:0}[p.pri]??0;else p.horizon=pv.dataset.v;renderPreview();return}
+  if(pv&&pv.tagName==="BUTTON"){const p=pending[+pv.dataset.i];if(pv.dataset.pv==="space")p.space=pv.dataset.v;else if(pv.dataset.pv==="pri")p.pri={3:2,2:1,1:0}[p.pri]??0;else if(pv.dataset.pv==="split")p.split=!p.split;else p.horizon=pv.dataset.v;renderPreview();return}
   const id0=e.target.closest("button")?.id;
   if(id0==="parseBtn")return parseCapture();
   if(id0==="inboxBtn")return addInbox();
@@ -2049,7 +2933,9 @@ document.addEventListener("click",async e=>{
   if(id0==="saveParsed"){
     if(!db)return;
     const keep=pending.filter(p=>p.keep&&p.title.trim()); pending=[];renderPreview();
-    for(const p of keep){if(p.space==="shop")await addShop(p.title);else await addTask(p)}
+    let splitId=null;
+    for(const p of keep){if(p.space==="shop")await addShop(p.title);else{const nid=await addTask(p);if(p.split&&!splitId)splitId=nid}}
+    if(splitId)setTimeout(()=>openSplit(splitId),400);
     $("#cap").value="";
     if(keep.length){closeCap();cheer(L(`存好 ${keep.length} 条啦！`,`Saved ${keep.length} ${n_(keep.length,"item","items")}!`));
       const first=keep[0].space;
@@ -2094,6 +2980,21 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="wishkind"){wishKind=act.dataset.v;render();const el=document.getElementById("wishTitle");if(el)el.focus();return}
   if(act.dataset.act==="wishedit"){openWish(id);return}
   if(act.dataset.act==="wishdone"){wishCameTrue(id,act);return}
+  if(act.dataset.act==="focus"){startFocus(id);return}
+  if(act.dataset.act==="focusstart"){const t=defaultTask(act.dataset.space);startFocus(t?t.id:null);return}
+  if(act.dataset.act==="pomoopen"){if(P){P.open=true;saveP();renderPomo()}return}
+  if(act.dataset.act==="pickrest"){P=null;saveP();stopFlash();document.title=BASE_TITLE();render();return}
+  if(act.dataset.act==="subtoggle"){const t=tasks.find(x=>x.id===id);if(t)toggleSub(t,+act.dataset.i,act);return}
+  if(act.dataset.act==="subopen"){subOpen.has(id)?subOpen.delete(id):subOpen.add(id);render();return}
+  if(act.dataset.act==="subadd"){subAdding=id;render();setTimeout(()=>document.getElementById("subin-"+id)?.focus(),0);return}
+  if(act.dataset.act==="substart"){if(typeof startFocus==="function")startFocus(id,+act.dataset.i);return}
+  if(act.dataset.act==="split"){openSplit(id);return}
+  if(act.dataset.act==="nudgeoff"){try{const off=JSON.parse(localStorage.getItem(NUDGE_KEY)||"[]");off.push(id);localStorage.setItem(NUDGE_KEY,JSON.stringify(off.slice(-200)))}catch(_){}render();return}
+  if(act.dataset.act==="bdnew"){openBd();return}
+  if(act.dataset.act==="bdedit"){openBd(id);return}
+  if(act.dataset.act==="bdall"){bdAll=!bdAll;render();return}
+  if(act.dataset.act==="msstar"){msStarSel=+act.dataset.v;render();return}
+  if(act.dataset.act==="msedit"){openMsEdit(id);return}
   if(act.dataset.act==="msdel"){
     if(act.dataset.confirm!=="1"){act.dataset.confirm="1";act.textContent=L("删除？","Delete?");act.style.fontSize="12px";return}
     const ref=db.doc("milestones/"+id);queued(ref.path,()=>ref.delete());return}
@@ -2116,27 +3017,34 @@ document.addEventListener("click",async e=>{
     water(act,1);cheer(L(`采购完成，买了 ${got.length} 样！喝 1 滴水～`,`Shopping done, ${got.length} ${n_(got.length,"item","items")}! +1 drop～`));return;
   }
   if(act.dataset.act==="toggle"){
-    const t=tasks.find(x=>x.id===id);if(!t)return;const nd=!t.done;
-    if(nd){const r=act.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,[css(t.space==="life"?"--life":"--work"),css("--buddy"),css("--pink")]);water(act,1);cheer(PRAISE[Math.floor(Math.random()*PRAISE.length)]+L(" 浇了 1 滴水"," +1 drop"))}
-    const ref=db.doc("tasks/"+id);queued(ref.path,()=>ref.update({done:nd,doneAt:nd?Date.now():null}))
+    const t=tasks.find(x=>x.id===id);if(!t)return;
+    if(!t.done)completeTask(t,act);else uncompleteTask(t);
   }
   if(act.dataset.act==="edit")openEditor(id);
   if(act.dataset.act==="hcheck"||act.dataset.act==="hdot"){
     const t=act.dataset.act==="hdot"?act.dataset.v:(hDay||todayStr()); if(t>todayStr())return;
-    const late=t!==todayStr(); const cur={...(checkins[t]||{})}; const on=!cur[id];
-    if(on)cur[id]=true;else delete cur[id];
+    const late=t!==todayStr(); const cur={...(checkins[t]||{})}; const on=!cur[id]; const stamp=Date.now();
+    if(on)cur[id]=stamp;else delete cur[id];
     checkins[t]=cur;
     if(on){const r=act.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,[css("--habit"),css("--buddy"),css("--pink"),css("--leaf")]);
       water(act,2);const {live,done}=habitStats(); if(late){const hn=(habits.find(h=>h.id===id)||{}).name||"";const [,lm,ld]=t.split("-").map(Number);cheer(L(`补上了！${lm}月${ld}日的「${hn}」，+2 滴水`,`Done! “${hn}” for ${ld} ${MON[lm-1]} is in, +2 drops`),"happy")}else cheer(done===live.length?L("全部打完卡！我开花啦 🌸","All checked in! I'm blooming 🌸"):L(`打卡成功，咕嘟咕嘟喝了 2 滴水！`,`Checked in! Glug glug, +2 drops!`), done===live.length?"cheer":"happy")}
     render();
-    const ref=db.doc("checkins/"+t); queued(ref.path,()=>ref.set({date:t,done:cur}));
+    const ref=db.doc("checkins/"+t);
+    // only touch this one habit, so another device's check-ins on the same day are never overwritten
+    queued(ref.path,()=>db.mergeSet?ref.set({date:t,done:{[id]:on?stamp:false}},{merge:true}):ref.set({date:t,done:{...cur,[id]:on?stamp:false}}));
   }
   if(act.dataset.act==="hdel"){
     if(act.dataset.confirm!=="1"){act.dataset.confirm="1";act.textContent=L("再点一次确认移除","Tap again to remove");return}
     const ref=db.doc("habits/"+id); queued(ref.path,()=>ref.update({archived:true}));
   }
 });
-$("#buddy").addEventListener("click",()=>cheer((lang==="en"?["Hehe, that tickles～",`I'm Sprout, ${userName?userName+"'s":"your"} little tree.`,"Keep watering me and I'll grow big and bloom!","Remember to eat well today!"]:["嘿嘿，戳我干嘛～",`我是小芽，${userName||"你"}的小树。`,"多浇水，我会长成大树开花的！","今天也要好好吃饭！"])[Math.floor(Math.random()*4)]));
+document.addEventListener("keydown",e=>{const id=e.target.dataset&&e.target.dataset.subadd;if(!id)return;
+  if(e.key==="Escape"){subAdding=null;render();return}
+  if(e.key==="Enter"){e.preventDefault();const v=e.target.value.trim();const t=tasks.find(x=>x.id===id);if(!t)return;
+    if(!v){subAdding=null;render();return}
+    setSubs(t,[...(t.subs||[]).map(x=>({...x})),{t:v.slice(0,120),done:false}]);setTimeout(()=>document.getElementById("subin-"+id)?.focus(),0)}});
+document.addEventListener("focusout",e=>{const id=e.target.dataset&&e.target.dataset.subadd;if(id&&!e.target.value.trim())setTimeout(()=>{if(subAdding===id&&document.activeElement?.dataset?.subadd!==id){subAdding=null;render()}},150)});
+$("#buddy").addEventListener("click",()=>cheer((lang==="en"?["Hehe, that tickles～",`I'm ${petName()}, ${userName?userName+"'s":"your"} little tree.`,"Keep watering me and I'll grow big and bloom!","Remember to eat well today!"]:["嘿嘿，戳我干嘛～",`我是${petName()}，${userName||"你"}的小树。`,"多浇水，我会长成大树开花的！","今天也要好好吃饭！"])[Math.floor(Math.random()*4)]));
 document.addEventListener("change",e=>{if(e.target.id==="wishCur"){wishCur=e.target.value;try{localStorage.setItem("los-cur",wishCur)}catch(_){}}});
 let memoTxTimer={};
 document.addEventListener("input",e=>{
@@ -2174,7 +3082,8 @@ document.addEventListener("submit",async e=>{
     const d=e.target.dataset.date, inp=e.target.querySelector("input"), title=inp.value.trim(); if(!title)return;
     inp.value="";
     const ref=db.collection("milestones").doc();
-    await queued(ref.path,()=>ref.set({date:d,title:title.slice(0,80),createdAt:Date.now()}));
+    const st=msStarSel; msStarSel=1;
+    await queued(ref.path,()=>ref.set({date:d,title:title.slice(0,80),stars:st,createdAt:Date.now()}));
     const r=e.target.getBoundingClientRect(); burst(r.left+r.width/2,r.top,["#ffd34d","#f2a20c",css("--pink"),css("--leaf")]); setTimeout(()=>burst(r.left+r.width/3,r.top,["#ffd34d","#fff3c4",css("--water")]),200);
     cheer(L(`「${title}」，我替你记下来了 🌟`,`“${title}”, I'll remember it for you 🌟`),"cheer");return}
   if(e.target.id==="shopForm"){e.preventDefault();if(!db)return;
@@ -2219,9 +3128,9 @@ function applyStatic(){
                               "I'll split it up, pick a board and work out dates. Nothing is saved until you confirm, and you can fix anything with one tap.");
   $("#capClose").setAttribute("aria-label",L("关闭","Close"));
   $("#fab").setAttribute("aria-label",L("记下一个想法","Capture an idea"));
-  $("#fab").title=L("想到什么就丢给小芽","Toss your ideas to Sprout");
+  $("#fab").title=L("想到什么就丢给{pet}","Toss your ideas to {pet}");
   $("#today").textContent=fmtToday();
-  $("#forestTxt").textContent=L("森林","Forest");
+  $("#forestBtn").setAttribute("aria-label",L("我的森林","My forest"));
   $("#plantBtn").textContent=L("🌳 种进森林","🌳 Plant in forest");
 }
 function setLang(l){
@@ -2264,14 +3173,14 @@ function makeLocalDB(){
   const clone=x=>JSON.parse(JSON.stringify(x));
   const docRef=(col,id)=>({id,path:col+"/"+id,
     async get(){const v=(data[col]||{})[id];return {id,exists:!!v,data:()=>v,metadata:meta}},
-    async set(b){(data[col]=data[col]||{})[id]=clone(b);save();emit(col)},
+    async set(b,o){const c=(data[col]=data[col]||{});if(o&&o.merge&&c[id]){const n={...c[id]};for(const k in b)n[k]=(b[k]&&typeof b[k]==="object"&&!Array.isArray(b[k])&&n[k]&&typeof n[k]==="object")?{...n[k],...clone(b[k])}:clone(b[k]);c[id]=n}else c[id]=clone(b);save();emit(col)},
     async update(b){const c=data[col]||{};if(!c[id])throw {code:"invalid_argument"};c[id]={...c[id],...clone(b)};save();emit(col)},
     async delete(){if(data[col])delete data[col][id];save();emit(col)}});
   const colRef=col=>{const q={path:col,doc:id=>docRef(col,id||rid()),orderBy:()=>q,limit:()=>q,
     onSnapshot(cb){const l={col,cb};listeners.push(l);setTimeout(()=>cb(snap(col)),0);return ()=>{const i=listeners.indexOf(l);if(i>=0)listeners.splice(i,1)}}};return q};
   // keep two open tabs in step
   window.addEventListener("storage",e=>{if(e.key===LS_KEY){try{data=JSON.parse(e.newValue||"{}")}catch(_){data={}}emitAll()}});
-  return {firstRun,doc:p=>{const [c,i]=p.split("/");return docRef(c,i)},collection:colRef,
+  return {firstRun,mergeSet:true,doc:p=>{const [c,i]=p.split("/");return docRef(c,i)},collection:colRef,
     dump:()=>clone(data),replace:d=>{data=clone(d);save();emitAll()}};
 }
 function seed(){
@@ -2292,21 +3201,31 @@ function boardChips(){
 }
 function langChips(attr="data-set"){return [["zh","中文"],["en","English"]].map(([k,n])=>`<button class="chip hz${lang===k?" on":""}" ${attr}="lang" data-v="${k}">${n}</button>`).join("")}
 function openSettings(){
-  let confirmWipe=false;
+  let confirmWipe=false, kept={};
   const bg=document.createElement("div"); bg.className="sheet-bg";
-  const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("设置","Settings")}">
+  const keep=()=>{const q=id=>bg.querySelector(id);if(q("#set-name"))kept={name:q("#set-name").value,pet:q("#set-pet").value,ds:+q("#set-daystart").value,snd:q("#set-sound").checked,wxOn:q("#set-wx")?q("#set-wx").checked:undefined,city:q("#set-city")?q("#set-city").value:undefined}};
+  const draw=()=>{keep();bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("设置","Settings")}">
     <h3>${L("设置","Settings")}</h3>
     ${syncSection()}
     <div class="field"><span>${L("语言","Language")}</span><div class="chips">${langChips()}</div></div>
     <div class="field"><span>${L("板块","Boards")}</span><div class="chips">${boardChips()}</div>
       <p class="hint" style="margin:0">${L("关掉用不到的板块，里面的数据不会删除，随时可以再打开。","Turn off what you don't need. Nothing inside is deleted, and you can turn it back on anytime.")}</p>
       <span class="saved" id="board-msg"></span></div>
-    <label class="field"><span>${L("你的名字","Your name")}</span><input id="set-name" value="${esc(userName)}" maxlength="20" placeholder="${L("比如：Gracy","e.g. Gracy")}"></label>
-    <div class="field"><span>${L("备份","Backup")}</span>
+    <label class="field"><span>${L("你的名字","Your name")}</span><input id="set-name" value="${esc(kept.name??userName)}" maxlength="20" placeholder="${L("比如：Gracy","e.g. Gracy")}"></label>
+    ${petField("set-pet",kept.pet??petNameV).replace(L("给我取个名字吧","Give me a name"),L("{pet}的名字","{pet}'s name"))}
+    <label class="field"><span>${L("新的一天从几点开始","A new day starts at")}</span><select id="set-daystart">${[0,1,2,3,4,5,6].map(h=>`<option value="${h}"${(kept.ds??dayStartH)==h?" selected":""}>${L(h?`凌晨 ${h} 点`:"午夜 0 点",h?`${h} a.m.`:"Midnight")}</option>`).join("")}</select>
+      <span class="hint">${L("熬夜到这个时间之前做的事，都算前一天。","Anything you do before this time still counts as the day before.")}</span></label>
+    ${IS_WEB?`<div class="field"><span>${L("天气","Weather")}</span>
+      <span class="chkrow"><input type="checkbox" id="set-wx" ${(kept.wxOn??wx.on)?"checked":""}> ${L("在日期旁边显示今天的天气","Show today's weather next to the date")}</span>
+      <div class="cap-row wx-city"><input id="set-city" placeholder="${L("城市，比如 London","City, e.g. London")}" value="${esc(kept.city??(wx.city||""))}"><button class="btn" data-set="citysearch">${L("搜索","Search")}</button><button class="btn" data-set="cityhere">${L("用当前位置","Use my location")}</button></div>
+      <div class="plist tp" id="set-cityres"></div>
+      <span class="hint">${wx.lat!=null?L(`现在用的是：${esc(wx.city||"当前位置")}。`,`Using: ${esc(wx.city||"your location")}.`):L("还没有位置。识别得不对的话，在这里搜城市改一下。","No location yet. If it's wrong, search for your city here.")} ${L("位置只存在这台设备上。","Your location stays on this device.")}</span></div>`:""}
+    <label class="field chk"><span>${L("番茄钟提示音","Timer sound")}</span><span class="chkrow"><input type="checkbox" id="set-sound" ${(kept.snd??pset.sound)?"checked":""}> ${L("专注、休息结束时轻轻叮一声（默认关）","A soft ding when focus or a break ends (off by default)")}</span></label>
+    ${IS_WEB?`    <div class="field"><span>${L("备份","Backup")}</span>
       <p class="hint" style="margin:0">${L("数据只存在这个浏览器里。换手机、换浏览器或清理浏览器数据之前，先导出一份备份。","Your data lives only in this browser. Export a backup before switching phones or browsers, or clearing browser data.")}</p>
       <div class="cap-row"><button class="btn" data-set="export">${L("导出备份","Export backup")}</button><label class="btn" style="cursor:pointer">${L("导入备份","Import backup")}<input type="file" id="set-import" accept="application/json,.json" hidden></label></div>
       <span class="saved" id="set-msg"></span>
-    </div>
+    </div>`:""}
     <div class="sheet-actions">
       <button class="btn danger" data-set="wipe">${confirmWipe?L("再点一次，清空全部数据","Tap again to erase everything"):L("清空全部数据","Erase all data")}</button>
       <span style="display:flex;gap:8px"><button class="btn" data-set="close">${L("取消","Cancel")}</button><button class="btn primary" data-set="save">${L("保存","Save")}</button></span>
@@ -2315,6 +3234,7 @@ function openSettings(){
   const msg=t=>{const el=bg.querySelector("#set-msg");if(el)el.textContent=t};
   bg.addEventListener("click",e=>{
     if(e.target===bg){bg.remove();return}
+    const dz=e.target.closest("[data-dice]"); if(dz){bg.querySelector("#set-pet").value=randomPet();return}
     const b=e.target.closest("[data-set]"); if(!b)return; const a=b.dataset.set;
     if(a==="signin"){bg.remove();openSignIn();return}
     if(a==="signout"){bg.remove();if(fb)fb.auth.signOut();return}
@@ -2322,10 +3242,19 @@ function openSettings(){
       const k=b.dataset.v, mains=["habit","life","study","work"].filter(x=>boards[x]);
       if(!["shop","wish","memo"].includes(k)&&boards[k]&&mains.length===1){const el=bg.querySelector("#board-msg");if(el)el.textContent=L("至少要保留一个板块哦。","Keep at least one board on.");return}
       boards[k]=!boards[k]; try{localStorage.setItem(BOARDS_KEY,JSON.stringify(boards))}catch(_){}
-      const n=bg.querySelector("#set-name").value; draw(); bg.querySelector("#set-name").value=n; render(); return}
-    if(a==="lang"){const n=bg.querySelector("#set-name").value;setLang(b.dataset.v);draw();bg.querySelector("#set-name").value=n;return}
+      draw(); render(); return}
+    if(a==="lang"){keep();setLang(b.dataset.v);draw();return}
+    if(a==="citysearch"){const q=bg.querySelector("#set-city").value.trim();const box=bg.querySelector("#set-cityres");if(!q)return;box.innerHTML=`<span class="hint">${L("搜索中…","Searching…")}</span>`;
+      searchCity(q).then(res=>{bg._city=res;box.innerHTML=res.length?res.map((c,i)=>`<button data-set="citypick" data-i="${i}"><span>${esc(c.name)}</span><small>${esc(c.area)}</small></button>`).join(""):`<span class="hint">${L("没找到，换个写法试试（英文城市名更容易找到）","Nothing found. Try another spelling.")}</span>`}).catch(()=>{box.innerHTML=`<span class="hint">${L("搜索失败，检查一下网络","Search failed. Check your connection.")}</span>`});return}
+    if(a==="citypick"){const c=(bg._city||[])[+b.dataset.i];if(!c)return;wx.lat=c.lat;wx.lon=c.lon;wx.city=c.name;wx.on=true;saveWx();bg.querySelector("#set-cityres").innerHTML=`<span class="hint">${L(`好，改成 ${esc(c.name)} 了`,`Switched to ${esc(c.name)}`)}</span>`;bg.querySelector("#set-city").value=c.name;fetchWx(true);return}
+    if(a==="cityhere"){if(!navigator.geolocation)return;navigator.geolocation.getCurrentPosition(p=>{wx.lat=+p.coords.latitude.toFixed(3);wx.lon=+p.coords.longitude.toFixed(3);wx.city="";wx.on=true;saveWx();fetchWx(true);const h=bg.querySelector("#set-cityres");if(h)h.innerHTML=`<span class="hint">${L("好，用当前位置","OK, using your location")}</span>`},()=>{const h=bg.querySelector("#set-cityres");if(h)h.innerHTML=`<span class="hint">${L("没拿到位置，可以直接搜城市","Couldn't get your location. Search for your city instead.")}</span>`});return}
     if(a==="close"){bg.remove();return}
-    if(a==="save"){const n=bg.querySelector("#set-name").value.trim();if(n){userName=n;try{localStorage.setItem(NAME_KEY,n)}catch(_){};applyName();if(db&&db.meta)db.meta.set({name:n},{merge:true}).catch(()=>{})}bg.remove();return}
+    if(a==="save"){
+      const pn=bg.querySelector("#set-pet").value.trim(); if(pn!==petNameV)setPetName(pn);
+      pset.sound=bg.querySelector("#set-sound").checked;savePset();
+      if(IS_WEB&&bg.querySelector("#set-wx")){const o=bg.querySelector("#set-wx").checked;if(o!==wx.on){wx.on=o;saveWx();o?fetchWx(true):renderWx()}}
+      const ds=+bg.querySelector("#set-daystart").value; if(ds!==dayStartH){dayStartH=ds;try{localStorage.setItem(DAYSTART_KEY,String(ds))}catch(_){};lastDay=todayStr();$("#today").textContent=fmtToday();render()}
+      const n=bg.querySelector("#set-name").value.trim();if(n){userName=n;try{localStorage.setItem(NAME_KEY,n)}catch(_){};applyName();if(db&&db.meta)db.meta.set({name:n},{merge:true}).catch(()=>{})}bg.remove();return}
     if(a==="export"){
       msg(L("正在导出…","Exporting…"));
       Promise.resolve(db.dump()).then(data=>{
@@ -2346,14 +3275,28 @@ function openSettings(){
 }
 $("#gear").addEventListener("click",openSettings);
 
+/* ---------- the sprout's own name ---------- */
+const PET_POOL=()=>L(["团子","豆豆","糯米","青团","芽芽","小绿","嘟嘟","波波","汤圆","毛豆","布丁","阿嫩","饭团","麻薯","小葱"],["Bean","Mochi","Pip","Pea","Clover","Basil","Bud","Sprig","Maple","Olive","Peanut","Kiwi","Tofu","Pebble","Fern"]);
+let petLast="";
+function randomPet(){const pool=PET_POOL().filter(x=>x!==petLast);petLast=pool[Math.floor(Math.random()*pool.length)];return petLast}
+const DICE='<svg class="dice-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="8.5" cy="8.5" r="1.6" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.6" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.6" fill="currentColor"/></svg>';
+function setPetName(n,sync=true){
+  petNameV=(n||"").trim().slice(0,12);
+  try{petNameV?localStorage.setItem(PET_KEY,petNameV):localStorage.removeItem(PET_KEY)}catch(_){}
+  if(sync&&db&&db.meta)db.meta.set({petName:petNameV},{merge:true}).catch(()=>{});
+  applyStatic(); lastBuddy=""; render();
+}
+const petField=(id,val)=>`<label class="field"><span>${L("给我取个名字吧","Give me a name")}</span><div class="petrow"><input id="${id}" maxlength="12" value="${esc(val)}" placeholder="${L("不取就叫「小芽」","Leave empty for “Sprout”")}"><button type="button" class="dice" data-dice="${id}" aria-label="${L("随机一个名字","Pick a random name")}">${DICE}${L("随机","Random")}</button></div></label>`;
+
 /* ---------- first visit: say hi and ask a name ---------- */
 function openWelcome(){
   const bg=document.createElement("div"); bg.className="sheet-bg";
-  const draw=()=>{const keepName=bg.querySelector("#wel-name")?.value||"";bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("欢迎","Welcome")}">
+  const draw=()=>{const keepName=bg.querySelector("#wel-name")?.value||"", keepPet=bg.querySelector("#wel-pet")?.value||"";bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("欢迎","Welcome")}">
     <div class="chips" style="justify-content:flex-end">${langChips("data-w")}</div>
     <div style="display:flex;gap:12px;align-items:center"><div style="width:76px;height:76px;flex:none">${treeSVG("happy",1,false)}</div>
-      <div><h3>${L("你好呀，我是小芽 🌱","Hi, I'm Sprout 🌱")}</h3><p class="hint" style="margin:4px 0 0">${L("这是你自己的人生服务器。完成任务、打卡就是给我浇水，我会慢慢长成一棵开花的大树。","This is your own Life Server. Finishing tasks and checking in waters me, and I'll slowly grow into a blooming tree.")}</p></div></div>
+      <div><h3 id="wel-title">${L(`你好呀，我是${keepPet.trim()||"小芽"} 🌱`,`Hi, I'm ${keepPet.trim()||"Sprout"} 🌱`)}</h3><p class="hint" style="margin:4px 0 0">${L("这是你自己的人生服务器。完成任务、打卡就是给我浇水，我会慢慢长成一棵开花的大树。","This is your own Life Server. Finishing tasks and checking in waters me, and I'll slowly grow into a blooming tree.")}</p></div></div>
     <label class="field"><span>${L("我该怎么称呼你？","What should I call you?")}</span><input id="wel-name" maxlength="20" placeholder="${L("你的名字或昵称","Your name or nickname")}"></label>
+    ${petField("wel-pet",keepPet)}
     <p class="hint" style="margin:0">${FIREBASE_CONFIG?L("不登录时数据只存在这个浏览器里；登录后手机和电脑会自动同步。别人都看不到你的数据。","Without signing in, your data stays in this browser. Sign in to sync your devices. No one else can see your data."):L("你的数据只存在这个浏览器里，别人看不到。名字以后可以在右上角 ⚙️ 里改。","Your data stays in this browser and no one else can see it. You can change your name later in ⚙️ at the top.")}</p>
     ${FIREBASE_CONFIG?`<p class="hint" style="margin:0">${L("已经在别的设备上用过？","Used it on another device?")} <button class="link" data-w="signin">${L("登录同步","Sign in to sync")}</button></p>`:""}
     <div class="sheet-actions"><button class="btn" data-w="skip">${L("先跳过","Skip for now")}</button><button class="btn primary" data-w="ok">${L("开始种树","Start growing")}</button></div>
@@ -2361,8 +3304,10 @@ function openWelcome(){
   draw();
   document.body.appendChild(bg);
   const done=()=>{try{localStorage.setItem("lifeos-welcomed","1")}catch(_){};bg.remove()};
-  const ok=()=>{const n=bg.querySelector("#wel-name").value.trim();if(n){userName=n;try{localStorage.setItem(NAME_KEY,n)}catch(_){};applyName();cheer(L(`${n}，很高兴认识你！`,`Nice to meet you, ${n}!`))}done()};
-  bg.addEventListener("click",e=>{const b=e.target.closest("[data-w]");if(!b)return;if(b.dataset.w==="lang"){setLang(b.dataset.v);draw();bg.querySelector("#wel-name").focus();return}if(b.dataset.w==="signin"){done();if(fb)openSignIn();else openSettings();return}b.dataset.w==="ok"?ok():done()});
+  const retitle=()=>{const v=bg.querySelector("#wel-pet").value.trim();bg.querySelector("#wel-title").textContent=L(`你好呀，我是${v||"小芽"} 🌱`,`Hi, I'm ${v||"Sprout"} 🌱`)};
+  bg.addEventListener("input",e=>{if(e.target.id==="wel-pet")retitle()});
+  const ok=()=>{const pn=bg.querySelector("#wel-pet").value.trim();if(pn)setPetName(pn);const n=bg.querySelector("#wel-name").value.trim();if(n){userName=n;try{localStorage.setItem(NAME_KEY,n)}catch(_){};applyName();cheer(L(`${n}，很高兴认识你！`,`Nice to meet you, ${n}!`))}done()};
+  bg.addEventListener("click",e=>{const dz=e.target.closest("[data-dice]");if(dz){bg.querySelector("#wel-pet").value=randomPet();retitle();return}const b=e.target.closest("[data-w]");if(!b)return;if(b.dataset.w==="lang"){setLang(b.dataset.v);draw();bg.querySelector("#wel-name").focus();return}if(b.dataset.w==="signin"){done();if(fb)openSignIn();else openSettings();return}b.dataset.w==="ok"?ok():done()});
   bg.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();ok()}});
   setTimeout(()=>bg.querySelector("#wel-name").focus(),50);
 }
@@ -2378,7 +3323,7 @@ const FIREBASE_CONFIG={
   appId:"1:1053547899054:web:49caab221ae4f4171c253f"
 };
 const FB_VER="10.12.2";
-const COLS=["tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","memos"];
+const COLS=["tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","memos","yearlyDays","pomos"];
 const CLOUD_KEY="lifeos-cloud-uid";
 let fb=null, cloudUser=null, cloudState=FIREBASE_CONFIG?"loading":"off"; // off | loading | unavailable | signedout | signedin
 let localDB=null, unsubs=[];
@@ -2398,10 +3343,10 @@ function makeCloudDB(uid){
   const root=fb.fs.collection("users").doc(uid);
   const wrapDoc=r=>({id:r.id,path:r.path,
     get:async()=>{const s=await r.get();return {id:s.id,exists:s.exists,data:()=>s.data(),metadata:s.metadata}},
-    set:b=>r.set(clone(b)), update:b=>r.update(clone(b)), delete:()=>r.delete()});
+    set:(b,o)=>o?r.set(clone(b),o):r.set(clone(b)), update:b=>r.update(clone(b)), delete:()=>r.delete()});
   const wrapQuery=q=>({orderBy:(f,d)=>wrapQuery(q.orderBy(f,d)),limit:n=>wrapQuery(q.limit(n)),get:()=>q.get(),
     onSnapshot:(cb,err)=>q.onSnapshot({includeMetadataChanges:false},cb,err)});
-  return {cloud:true,
+  return {cloud:true,mergeSet:true,
     doc:p=>{const [c,i]=p.split("/");return wrapDoc(root.collection(c).doc(i))},
     collection:c=>{const col=root.collection(c);return {...wrapQuery(col),path:col.path,doc:id=>wrapDoc(id?col.doc(id):col.doc())}},
     dump:async()=>{const out={};for(const c of COLS){const s=await root.collection(c).get();if(!s.empty){out[c]={};s.forEach(d=>out[c][d.id]=d.data())}}return out},
@@ -2421,7 +3366,7 @@ function makeCloudDB(uid){
 function startData(store){
   unsubs.forEach(u=>{try{u()}catch(_){}}); unsubs=[];
   db=store;
-  tasks=[];habits=[];checkins={};shop=[];staples=[];trips=[];journal={};milestones=[];weekly={};yearly={};wishes=[];memos=[];forest=[];curTheme="lemon";
+  tasks=[];habits=[];checkins={};shop=[];staples=[];trips=[];journal={};milestones=[];yearlyDays=[];pomos=[];weekly={};yearly={};wishes=[];memos=[];forest=[];curTheme="lemon";
   for(const k in loaded)loaded[k]=false; recapChecked=false; lastStage=null; lastBuddy="";
   const fail=e=>{if(e&&e.code==="permission-denied")setStatus(L("没有权限读取数据，请重新登录。","No permission to read your data. Please sign in again."))};
   const sub=(c,fn,q)=>unsubs.push((q||db.collection(c)).onSnapshot(fn,fail));
@@ -2431,6 +3376,8 @@ function startData(store){
   sub("shop",s=>{shop=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.s=true;render()});
   sub("staples",s=>{staples=s.docs.map(d=>({id:d.id,...d.data()}));render()});
   sub("trips",s=>{trips=s.docs.map(d=>({id:d.id,...d.data()}));render()});
+  sub("pomos",s=>{pomos=s.docs.map(d=>({id:d.id,...d.data()}));render();if(!pomoBooted){pomoBooted=true;if(P&&(P.phase==="focus"||P.phase==="break"))P.open=P.open!==false;renderPomo()}});
+  sub("yearlyDays",s=>{yearlyDays=s.docs.map(d=>({id:d.id,...d.data()}));bdNotify();render()});
   sub("milestones",s=>{milestones=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.m=true;render()});
   sub("weekly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());weekly=m;if(ok(s))loaded.w=true;render()});
   sub("yearly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());yearly=m;if(ok(s))loaded.y=true;render()});
@@ -2441,7 +3388,7 @@ function startData(store){
   sub("journal",s=>{const m={};s.docs.forEach(d=>{const x=d.data();m[x.date||d.id]=x});
     const el=document.activeElement; if(el&&el.dataset&&el.dataset.jnote&&m[el.dataset.jnote])m[el.dataset.jnote]={...m[el.dataset.jnote],note:el.value};
     journal=m;render()},db.collection("journal").orderBy("date","desc").limit(400));
-  sub("checkins",s=>{const m={};s.docs.forEach(d=>{const x=d.data();m[x.date||d.id]=x.done||{}});checkins=m;if(ok(s))loaded.c=true;render()},db.collection("checkins").orderBy("date","desc").limit(400));
+  sub("checkins",s=>{const m={};s.docs.forEach(d=>{const x=d.data();const dn={};for(const k in (x.done||{}))if(x.done[k])dn[k]=x.done[k];m[x.date||d.id]=dn});checkins=m;if(ok(s))loaded.c=true;render()},db.collection("checkins").orderBy("date","desc").limit(400));
   // offline with nothing cached yet: stop waiting after a few seconds
   setTimeout(()=>{if(db===store){let ch=false;for(const k in loaded)if(!loaded[k]){loaded[k]=true;ch=true}if(ch)render()}},4000);
   render(); renderSync();
@@ -2457,13 +3404,14 @@ async function onSignedIn(user){
   let asked=false; try{asked=localStorage.getItem("lifeos-merged-"+user.uid)==="1"}catch(_){}
   if(fresh){
     if(n)await store.merge(localData); else{const prev=db;db=store;seed();db=prev}
-    try{await store.meta.set({createdAt:Date.now(),name:userName||user.displayName||""})}catch(_){}
+    try{await store.meta.set({createdAt:Date.now(),name:userName||user.displayName||"",petName:petNameV||""})}catch(_){}
     try{localStorage.setItem("lifeos-merged-"+user.uid,"1")}catch(_){}
     startData(store);
     cheer(n?L(`登录成功！这台设备上的 ${n} 条记录已经存进你的账号，以后手机和电脑会自动同步 ☁️`,`Signed in! ${n} records from this device are now in your account and will sync everywhere ☁️`)
            :L("登录成功！以后手机和电脑会自动同步 ☁️","Signed in! Your phone and computer will now stay in sync ☁️"),"cheer");
   }else{
     const m=meta.data()||{}; if(m.name&&!userName){userName=m.name;try{localStorage.setItem(NAME_KEY,m.name)}catch(_){};applyName()}
+    if(m.petName&&!petNameV)setPetName(m.petName,false);
     startData(store);
     if(n&&!asked)openMergeAsk(store,localData,n,user.uid);
   }
