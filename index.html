@@ -53,7 +53,8 @@ body{margin:0}
 [hidden]{display:none!important}
 .gear{border:none;background:var(--surface);border-radius:50%;width:34px;height:34px;font-size:16px;box-shadow:0 3px 0 var(--line);padding:0}
 @media(max-width:600px){.title-row{align-items:center;row-gap:8px;column-gap:8px}.title-row h1{flex-basis:100%}.title-row .today,.title-row .wx{align-self:center}.hd-acts{gap:6px}.hd-acts .gear{width:32px;height:32px;font-size:15px}.title-row .jbtn{height:32px;padding:0 10px}}
-@media(max-width:389px){#jbtnTxt{display:none}.title-row .jbtn{width:32px;padding:0;justify-content:center}}
+#jbtnTxt{display:none}.title-row .jbtn{width:34px;height:34px;padding:0;justify-content:center;border-radius:50%;font-size:16px;border:none;box-shadow:0 3px 0 var(--line)}
+@media(max-width:600px){.title-row .jbtn{width:32px;height:32px;padding:0;font-size:15px}}
 .hd-acts{margin-left:auto;align-self:center;display:flex;align-items:center;gap:8px}.hd-acts>button{margin:0;flex:none}.hd-acts .gear{display:grid;place-items:center;line-height:1}.hd-acts .gear[hidden]{display:none}
 .gear.sync{display:grid;place-items:center}.gear.sync svg{width:22px;height:22px}
 .google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:10px;background:var(--surface);font-weight:600}
@@ -887,7 +888,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 @keyframes hop{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-16px) scale(1.05,.95)}60%{transform:translateY(0) scale(1.06,.92)}100%{transform:translateY(0) scale(1)}}
 @keyframes blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
 @keyframes zz{0%,100%{opacity:.2;transform:translate(0,0)}50%{opacity:1;transform:translate(3px,-5px)}}
-@media(max-width:460px){.garden{grid-template-columns:84px 1fr;gap:8px;padding:8px 12px 8px 4px}.buddy{width:84px;height:84px}.meter-top{font-size:12px}h1{font-size:22px}.title-row .jbtn{padding:0 11px;font-size:13px}.tab{font-size:13.5px;padding:8px 2px;gap:4px}.tab .n{padding:0 6px}nav.tabs{gap:5px}.tab svg{display:none}}
+@media(max-width:460px){.garden{grid-template-columns:84px 1fr;gap:8px;padding:8px 12px 8px 4px}.buddy{width:84px;height:84px}.meter-top{font-size:12px}h1{font-size:22px}.title-row .jbtn{font-size:15px}.tab{font-size:13.5px;padding:8px 2px;gap:4px}.tab .n{padding:0 6px}nav.tabs{gap:5px}.tab svg{display:none}}
 </style>
 </head>
 <body>
