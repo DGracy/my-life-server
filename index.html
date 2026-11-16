@@ -409,6 +409,7 @@ body.pomo-open{overflow:hidden}
 .fadd{display:flex;gap:8px;flex-wrap:wrap}.fadd input{flex:1 1 180px}
 .when{display:inline-flex;align-items:center;gap:4px;border:2px solid var(--line);background:var(--surface);color:var(--fg);border-radius:14px;padding:7px 10px;font:inherit;font-size:14px;white-space:nowrap;cursor:pointer}
 @media(max-width:520px){.fridge .fadd input{flex:1 1 100%}.fridge .fadd .btn{flex:1}}
+.fi .fx.minus{font-family:var(--f-num);font-size:12.5px;font-weight:700;color:var(--life-ink);padding:4px 7px}
 .when.frz.on{border-color:#6cc4ff;background:color-mix(in srgb,#6cc4ff 18%,var(--surface));color:var(--fg)}
 .titlein{border:none;border-bottom:2px solid var(--line);background:none;font-family:var(--f-display);font-size:22px;color:var(--fg);padding:2px 0 6px;width:100%;outline:none}.titlein:focus{border-bottom-color:var(--brand)}
 .shelfset{display:flex;flex-direction:column;gap:6px}.shelfset label{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px;color:var(--fg)}.shelfset select{width:auto;min-width:120px;padding:5px 32px 5px 10px;font-size:14px}
@@ -1606,6 +1607,7 @@ function fridgeAge(x){
   const warn=lim>0&&d>=lim, bad=lim>0&&d>=lim*2&&d>=lim+3;
   return {txt:warn?L(`放了 ${d} 天`,`${d} days in`):L(`${d} 天`,`${d}d`),cls:bad?"bad":warn?"warn":"",d};
 }
+const qtyCount=q=>{const m=String(q??"").trim().match(/^(\d+)\s*(个|盒|袋|瓶|包|根|颗|块|片|罐|只|条|份|pcs|x|packs?|bottles?|tins?|cans?)?$/i);return m?{n:+m[1],u:m[2]||""}:null};
 const qtyTxt=q=>q==null||q===""?"":/^\d+$/.test(String(q))?L(`${q} 个`,`${q}`):String(q);
 function fridgeCard(){
   const list=[...fridge].sort((a,b)=>(a.addedAt||"")<(b.addedAt||"")?-1:1);
@@ -1614,7 +1616,7 @@ function fridgeCard(){
   if(old.length){const names=old.slice(0,2).map(x=>x.name);const dish=meals.find(m=>(m.ing||[]).some(i=>names.some(n=>norm(n)===norm(i))));
     tip=`<div class="ftip">${SF.happy}<span>${L(`${names.map(esc).join("和")}${old.some(x=>fridgeAge(x).cls==="bad")?"该处理一下啦":old.length===1?`放了 ${fridgeAge(old[0]).d} 天啦`:"放了好几天啦"}，${dish?`今天要不要做 <b>${esc(dish.name)}</b>？`:"记得早点吃掉～"}`,`${names.map(esc).join(" and ")} ${names.length>1?"have":"has"} been in a while. ${dish?`How about <b>${esc(dish.name)}</b> today?`:"Try to use them up soon～"}`)}</span></div>`}
   return `<div class="card fridge"><div class="fhd"><span class="fic">${FI.FRIDGE}</span><h3>${L("冰箱里有啥","In the fridge")}</h3><span class="sub">${list.length?L(`${list.length} 样`,`${list.length} ${n_(list.length,"item","items")}`):""}</span></div>
-    ${list.length?`<div class="fitems">${list.map(x=>{const a=fridgeAge(x);return `<span class="fi ${a.cls}"><button class="fn" data-fd="fedit" data-id="${x.id}">${esc(x.name)}${x.qty?`<small>${esc(qtyTxt(x.qty))} ·</small>`:""}<small class="ag">${a.txt}</small></button><button class="fx" data-fd="fdel" data-id="${x.id}" aria-label="${L(`${x.name} 吃完了`,`Used up ${x.name}`)}">×</button></span>`}).join("")}</div>`:`<p class="hint" style="margin:0">${L("买回来的菜放进来，{pet}帮你记着放了几天。","Add what you put in the fridge and {pet} will keep track of how long it's been there.")}</p>`}
+    ${list.length?`<div class="fitems">${list.map(x=>{const a=fridgeAge(x);return `<span class="fi ${a.cls}"><button class="fn" data-fd="fedit" data-id="${x.id}">${esc(x.name)}${x.qty?`<small>${esc(qtyTxt(x.qty))} ·</small>`:""}<small class="ag">${a.txt}</small></button>${(()=>{const c=qtyCount(x.qty);return c&&c.n>1?`<button class="fx minus" data-fd="fminus" data-id="${x.id}" aria-label="${L(`${x.name} 用掉一${c.u||"个"}`,`Use one ${x.name}`)}">−1</button>`:`<button class="fx" data-fd="fdel" data-id="${x.id}" aria-label="${L(`${x.name} 吃完了`,`Used up ${x.name}`)}">×</button>`})()}</span>`}).join("")}</div>`:`<p class="hint" style="margin:0">${L("买回来的菜放进来，{pet}帮你记着放了几天。","Add what you put in the fridge and {pet} will keep track of how long it's been there.")}</p>`}
     ${tip}
     <form class="fadd" id="fridgeForm"><input id="fridgeIn" maxlength="200" placeholder="${L("放进了什么？比如：西兰花、土豆 2kg","What went in? e.g. broccoli, potatoes 2kg")}" aria-label="${L("放进冰箱的东西","Fridge items")}"><button class="when" type="button" data-fd="fwhen" aria-expanded="${fWhenOpen}">${fDateLabel(fridgeDate)} ▾</button><button class="when frz${fFrozen?" on":""}" type="button" data-fd="ffrozen" aria-pressed="${fFrozen}">${fFrozen?"✓ ":""}${L("冷冻","Frozen")}</button><button class="btn life" type="submit">${L("放进冰箱","Add")}</button></form>
     ${fWhenOpen?`<div class="whenpop">${[0,1,2].map(k=>{const d=addDays(todayStr(),-k);return `<button type="button" class="${fridgeDate===d?"on":""}" data-fd="fdate" data-v="${d}">${[L("今天","Today"),L("昨天","Yesterday"),L("前天","2 days ago")][k]}</button>`}).join("")}<label class="pickd${[0,1,2].some(k=>addDays(todayStr(),-k)===fridgeDate)?"":" on"}">${L("选日期","Pick")} <input type="date" id="fridgeDateIn" max="${todayStr()}" value="${fridgeDate}"></label></div>`:""}</div>`;
@@ -1759,6 +1761,7 @@ document.addEventListener("click",e=>{
   if(a==="ffrozen"){fFrozen=!fFrozen;const v=$("#fridgeIn")?.value;render();if($("#fridgeIn"))$("#fridgeIn").value=v||"";return}
   if(a==="fwhen"){fWhenOpen=!fWhenOpen;const v=$("#fridgeIn")?.value;render();if(v&&$("#fridgeIn"))$("#fridgeIn").value=v;return}
   if(a==="fdate"){fridgeDate=b.dataset.v;fWhenOpen=false;const v=$("#fridgeIn")?.value;render();if($("#fridgeIn")){$("#fridgeIn").value=v||"";$("#fridgeIn").focus()}return}
+  if(a==="fminus"){const x=fridge.find(y=>y.id===id);const c=x&&qtyCount(x.qty);if(!c)return;const nq=c.n-1;x.qty=nq+c.u;render();const r=db.doc("fridge/"+id);queued(r.path,()=>r.update({qty:x.qty}));cheer(L(`${x.name}还剩 ${nq}${c.u||" 个"}`,`${x.name}: ${nq} left`));return}
   if(a==="fdel"){const x=fridge.find(y=>y.id===id);const r=db.doc("fridge/"+id);queued(r.path,()=>r.delete());if(x)cheer(L(`${x.name}吃完啦～`,`${x.name}: all used up～`));return}
 });
 /* ---------- courses ---------- */
