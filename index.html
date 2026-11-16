@@ -413,6 +413,14 @@ body.pomo-open{overflow:hidden}
 .tlist .tli:first-child .tm2::before{top:8px}.tlist .tli:last-child .tm2::before{bottom:auto;height:8px}
 .tli .tx{display:flex;flex-direction:column;padding-bottom:10px;line-height:22px;min-width:0;overflow-wrap:anywhere}.tli .tx .mt{width:16px;height:16px;vertical-align:-3px;margin-right:4px}.tli .tx small{color:var(--muted);font-size:12.5px;line-height:1.4}
 .tli .tag{font-size:11px;border-radius:999px;padding:0 6px;margin-left:4px;background:#ffe4e7;color:#c44a5a}
+.tour-block{position:fixed;inset:0;z-index:88}
+.tour-spot{position:fixed;z-index:89;border-radius:18px;box-shadow:0 0 0 9999px rgba(20,32,60,.55);pointer-events:none;transition:left .25s,top .25s,width .25s,height .25s}.tour-spot.soft{box-shadow:0 0 0 9999px rgba(20,32,60,.35)}
+.tour{position:fixed;z-index:91;width:min(300px,calc(100vw - 32px));box-sizing:border-box;background:#1f3156;color:#fff;border-radius:16px;padding:12px 14px;font-size:13.5px;line-height:1.55;box-shadow:0 10px 26px rgba(0,0,0,.25)}
+.tour::after{content:"";position:absolute;left:var(--ax,40px);border:9px solid transparent}.tour.dn::after{top:-8px;border-top:0;border-bottom-color:#1f3156}.tour.up::after{bottom:-8px;border-bottom:0;border-top-color:#1f3156}
+.tour .th{display:flex;gap:8px;align-items:center;margin-bottom:4px}.tour .th svg{width:30px;height:30px;flex:none}.tour .th b{font-size:15px}.tour em{font-style:normal;color:#ffd34d}
+.tour .row{display:flex;align-items:center;gap:8px;margin-top:10px}.tour .cnt{flex:1;font-family:var(--f-num);font-size:12.5px;opacity:.7}
+.tour button{border:none;border-radius:999px;padding:5px 13px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}.tour .skip{background:none;color:rgba(255,255,255,.7);padding:5px 4px}.tour .prev{background:rgba(255,255,255,.14);color:#fff}.tour .next{background:#ffd34d;color:#3a2a00}
+@media (prefers-reduced-motion: reduce){.tour-spot{transition:none}}
 .focusline{display:flex;align-items:center;gap:8px;background:var(--surface);border-radius:14px;padding:10px 14px;font-size:14px;color:var(--fg);flex-wrap:wrap}.focusline .mt{width:18px;height:18px}.focusline b{font-family:var(--f-num);font-weight:600}.focusline .fsplit{flex-basis:100%;padding-left:26px;font-size:12.5px;color:var(--muted)}
 .fz{display:flex;flex-direction:column;gap:8px}.fz-big{display:flex;align-items:baseline;gap:4px;flex-wrap:wrap}.fz-big .mt.big{width:26px;height:26px;align-self:center;margin-right:4px}.fz-big b{font-family:var(--f-num);font-weight:600;font-size:34px;line-height:1;color:#ef5d6e}.fz-big span{font-size:14px;color:var(--muted);margin-right:4px}.fz-sub{font-size:12.5px;color:var(--muted)}
 .rc-col.stack .stk{display:flex;flex-direction:column-reverse;width:100%;border-radius:999px;overflow:hidden}.rc-col.stack .stk i{display:block;width:100%;min-height:3px;border-radius:0;background-image:none}
@@ -1096,7 +1104,7 @@ function render(){
   if(fid){const el=document.getElementById(fid);if(el){el.focus();try{if(ss!=null)el.setSelectionRange(ss,se)}catch(_){}}}
   renderBuddy();
   if(pendingFocus){const el=document.querySelector(pendingFocus);pendingFocus=null;if(el)el.focus()}
-  setTimeout(maybeCelebrate,0); setTimeout(maybeRecap,0);
+  setTimeout(maybeCelebrate,0); setTimeout(maybeRecap,0); setTimeout(maybeTips,400);
 }
 function emptyBox(text){return `<div class="empty">${miniBuddy()}<span>${text}</span></div>`}
 /* ---------- priority: a little speech bubble on the right of a task ---------- */
@@ -1360,6 +1368,101 @@ function ruleParse(text,today,fallback="life",dayFirst=false){
   return out;
 }
 
+/* ---------- guided tour ---------- */
+const TOUR_KEY="lifeos-tour", TIPS_KEY="lifeos-tips";
+const tourSeen=k=>{try{return (JSON.parse(localStorage.getItem(TOUR_KEY)||"{}"))[k]}catch(_){return true}};
+const tourMark=k=>{try{const o=JSON.parse(localStorage.getItem(TOUR_KEY)||"{}");o[k]=Date.now();localStorage.setItem(TOUR_KEY,JSON.stringify(o))}catch(_){}};
+const TOUR_FULL=()=>[
+  {sel:"section.garden",t:L("这是{pet}","Meet {pet}"),b:L("你每完成一件事、打一次卡，都会给{pet}浇水。浇够 120 滴，它就长成一棵树，种进你的<em>森林</em>（右上角 🌳）。","Every task you finish and every check-in waters {pet}. At 120 drops it grows into a tree for your <em>forest</em> (🌳 at the top).")},
+  {sel:"#wx",pad:4,t:L("今天的天气","Today's weather"),b:L("日期旁边是今天的天气，点一下看最高、最低温度。城市不对的话，去设置里改。","Today's weather sits next to the date. Tap it for the high and low. Wrong city? Change it in Settings.")},
+  {sel:".tabs",t:L("四个板块","Four boards"),b:L("<em>打卡</em>放每天的小习惯，<em>生活 / 学习 / 工作</em>放各自的任务。不用的板块可以在设置里关掉。","<em>Habits</em> holds your daily habits; <em>Life / Study / Work</em> hold their own tasks. Turn off boards you don't need in Settings.")},
+  {sel:"#fab",pad:4,t:L("想到什么就丢给{pet}","Toss anything to {pet}"),b:L("点右下角，随手写一段话，比如「周五交 essay，明天买牛奶」，{pet}会自动分到对应的板块。","Tap the bottom-right button and jot down anything, like “essay due Friday, buy milk tomorrow”. {pet} sorts it into the right boards.")},
+  {go:"study",sel:".board .task",t:L("任务","Tasks"),b:L("点任务可以改日期、设成<em>每周重复</em>，觉得难开始就点「<em>拆小一点</em>」。完成了点左边的圆圈。","Tap a task to change its date, make it <em>repeat</em>, or <em>break it down</em> when it's hard to start. Tick the circle when it's done.")},
+  {go:"study",sel:".focusbar",t:L("番茄专注","Focus timer"),b:L("点「▶ 开始」或任务右边的 ▶，{pet}陪你专注 25 分钟，结束后提醒你休息。专注的时间会记在任务上。","Tap ▶ Start or the ▶ on a task and {pet} focuses with you for 25 minutes, then reminds you to rest. Focus time is saved on the task.")},
+  {go:"study",sel:".cls,.cls-empty",t:L("今天的课","Today's classes"),b:L("把课程表加进来，每天在这里看今天有什么课。可以手动加，也能导入学校课表的 .ics 文件。","Add your timetable to see today's classes here. Add them by hand or import your school's .ics file.")},
+  {go:"lifeshop",sel:".food",t:L("吃 & 买","Food"),b:L("不知道吃什么就转一下转盘。下面还有<em>冰箱</em>，记着食材放了几天；<em>购物清单</em>买到了能直接放进冰箱。","Can't decide what to eat? Spin the wheel. Below are your <em>fridge</em>, which tracks how long things have been in, and your <em>shopping list</em>.")},
+  {sel:"#jbtn",pad:4,t:L("今日小结","Today"),b:L("每天看看做了什么：<em>时间轴</em>、值得记住的大小事，还有「{pet}记着呢」帮你记生日和纪念日。","See your day: the <em>timeline</em>, moments worth remembering, and “{pet} remembers” for birthdays and anniversaries.")},
+  {sel:"#gear",pad:4,t:L("设置","Settings"),b:L("改名字、天气城市、新的一天从几点开始，登录同步手机和电脑。想再看这段介绍，也在这里。","Your name, weather city, when a new day starts, and sync. You can replay this tour here too.")}];
+const TOUR_NEW=()=>{const f=TOUR_FULL();return [
+  {sel:"#wx",pad:4,t:L("新功能 · 天气","New · Weather"),b:f[1].b},
+  {go:"study",sel:".focusbar",t:L("新功能 · 番茄专注","New · Focus timer"),b:f[5].b},
+  {go:"study",sel:".board .task",t:L("新功能 · 重复和拆小一点","New · Repeat & break it down"),b:L("点开任务可以设成<em>每周重复</em>、加小步骤；觉得难开始就点「<em>拆小一点</em>」。勾完之后还能改成「是昨天做的」。","Open a task to make it <em>repeat</em> or add steps, or <em>break it down</em> when it's hard to start. After ticking, you can say you did it yesterday.")},
+  {go:"study",sel:".cls,.cls-empty",t:L("新功能 · 课程表","New · Timetable"),b:f[6].b},
+  {go:"lifeshop",sel:".food",t:L("新功能 · 吃 & 买","New · Food"),b:f[7].b},
+  {sel:"#jbtn",pad:4,t:L("新功能 · 今日小结","New · Today"),b:L("今日小结里多了<em>时间轴</em>和「{pet}记着呢」（生日、纪念日）；里程碑可以打星星了。","Today now has a <em>timeline</em> and “{pet} remembers” for birthdays; moments can get stars.")},
+  {sel:"#gear",pad:4,t:L("设置","Settings"),b:L("想再看一遍介绍，就在设置里点「重新看一遍介绍」。","Replay this tour any time from Settings.")}]};
+let tourOn=null;
+function tourGo(go){
+  if(go==="study"&&on("study")){if(tab!=="study"){tab="study";render()}}
+  else if(go==="lifeshop"&&on("life")&&on("shop")){if(tab!=="life"||lifeSub!=="shop"){tab="life";lifeSub="shop";render()}}
+}
+function tourVisible(s){if(s.go==="study"&&!on("study"))return false;if(s.go==="lifeshop"&&!(on("life")&&on("shop")))return false;if(!s.go)return !!document.querySelector(s.sel);return true}
+function startTour(kind){
+  const steps=(kind==="new"?TOUR_NEW():TOUR_FULL());
+  const prevTab=tab, prevSub=lifeSub;
+  document.querySelectorAll(".tour-ui").forEach(x=>x.remove());
+  const block=document.createElement("div");block.className="tour-ui tour-block";
+  const spot=document.createElement("div");spot.className="tour-ui tour-spot";
+  const tip=document.createElement("div");tip.className="tour-ui tour";tip.setAttribute("role","dialog");tip.setAttribute("aria-live","polite");
+  document.body.append(block,spot,tip);
+  let i=-1;
+  const end=()=>{tourOn=null;document.querySelectorAll(".tour-ui").forEach(x=>x.remove());window.removeEventListener("resize",place);window.removeEventListener("scroll",place,true);document.removeEventListener("keydown",key);
+    tourMark(kind);if(kind==="full")tourMark("new");tab=prevTab;lifeSub=prevSub;render()};
+  const key=e=>{if(e.key==="Escape")end();if(e.key==="ArrowRight")go(1);if(e.key==="ArrowLeft")go(-1)};
+  function place(){const s=steps[i];if(!s)return;const el=document.querySelector(s.sel);if(!el)return;
+    const pad=s.pad??6, r=el.getBoundingClientRect();
+    Object.assign(spot.style,{left:r.left-pad+"px",top:r.top-pad+"px",width:r.width+pad*2+"px",height:r.height+pad*2+"px",borderRadius:(r.height<70?999:18)+"px"});
+    const w=tip.offsetWidth,h=tip.offsetHeight, below=r.bottom+pad+16+h<innerHeight||r.top-pad-16-h<0;
+    tip.classList.toggle("dn",below);tip.classList.toggle("up",!below);
+    const left=Math.min(Math.max(16,r.left+r.width/2-w/2),innerWidth-16-w);tip.style.left=left+"px";
+    tip.style.top=Math.max(8,Math.min(innerHeight-h-8,below?r.bottom+pad+12:r.top-pad-12-h))+"px";
+    tip.style.setProperty("--ax",Math.min(w-28,Math.max(12,r.left+r.width/2-left-9))+"px")}
+  function go(d){
+    let j=i+d; while(j>=0&&j<steps.length&&!tourVisible(steps[j]))j+=d;
+    if(j>=steps.length){end();cheer(kind==="new"?L("新功能就这些啦，慢慢玩～","That's what's new. Have fun～"):L("介绍完啦！先从打个卡开始吧～","That's the tour! Start with a check-in～"));return}
+    if(j<0)return;
+    i=j; const s=steps[i]; tourGo(s.go);
+    requestAnimationFrame(()=>{const el=document.querySelector(s.sel);if(!el){go(d||1);return}
+      const r=el.getBoundingClientRect();if(getComputedStyle(el).position!=="fixed"&&(r.top<70||r.bottom>innerHeight-230))window.scrollTo({top:scrollY+r.top-Math.max(80,innerHeight*.18),behavior:"instant"});
+      const n=steps.filter(tourVisible).length, k=steps.slice(0,i+1).filter(tourVisible).length;
+      tip.innerHTML=`<div class="th">${SF.star}<b>${s.t}</b></div><div class="tb">${s.b}</div><div class="row"><span class="cnt">${k} / ${n}</span><button class="skip" data-tr="skip">${L("跳过","Skip")}</button>${k>1?`<button class="prev" data-tr="prev">${L("上一步","Back")}</button>`:""}<button class="next" data-tr="next">${k===n?L("开始吧","Let's go"):L("下一步","Next")}</button></div>`;
+      place(); tip.querySelector(".next").focus({preventScroll:true})});
+  }
+  tip.addEventListener("click",e=>{const b=e.target.closest("[data-tr]");if(!b)return;const a=b.dataset.tr;if(a==="skip")end();else go(a==="next"?1:-1)});
+  window.addEventListener("resize",place);window.addEventListener("scroll",place,true);document.addEventListener("keydown",key);
+  tourOn=kind; go(1);
+}
+function maybeTour(kind){
+  if(tourOn||tourSeen(kind)||(kind==="new"&&tourSeen("full")))return;
+  let tries=0;const t=setInterval(()=>{tries++;if(tourOn||tourSeen(kind)){clearInterval(t);return}
+    if(!document.querySelector(".sheet-bg,#pomoPage:not([hidden])")&&loaded.t){clearInterval(t);startTour(kind)}else if(tries>120)clearInterval(t)},700);
+}
+/* one-step tips the first time you open a spot */
+const TIPS=()=>[
+  {k:"habit",when:()=>tab==="habit",sel:".hday",t:L("忘了打卡？","Missed a check-in?"),b:L("点左边的 ‹ 回到前几天补上，或者点习惯下面对应那天的小圆点。","Tap ‹ to go back a day and check in, or tap that day's dot under a habit.")},
+  {k:"wish",when:()=>tab==="life"&&lifeSub==="wish",sel:"#wishTitle",pad:4,t:L("愿望清单","Wishlist"),b:L("想买的、想去的、想做的都记在这里。实现了就点一下，{pet}会帮你庆祝。","Things to buy, places to go, things to do. Tap one when it comes true and {pet} will celebrate.")},
+  {k:"memo",when:()=>tab==="life"&&lifeSub==="memo",sel:".board[data-k=life] [data-act=memonew]",pad:4,t:L("备忘","Notes"),b:L("出门清单、待买的书……可以写成勾选清单，用完一键重置再用。","Packing lists, books to read… make them checklists and reset them to reuse.")},
+  {k:"ms",when:()=>tab==="journal",sel:".ms-starrow",t:L("给大事打星星","Star your big moments"),b:L("记下一件事之前，点星星选它有多重要。三颗星的事，明年今天{pet}会陪你庆祝。","Before adding a moment, tap the stars to say how big it is. Three-star moments get celebrated on the same day next year.")},
+  {k:"bd",when:()=>tab==="journal",sel:".upc-add",pad:4,t:L("「{pet}记着呢」","“{pet} remembers”"),b:L("把家人朋友的生日、纪念日加进来，快到的时候{pet}会提醒你。","Add birthdays and anniversaries, and {pet} will remind you ahead of time.")}];
+let tipsSeen={}; try{tipsSeen=JSON.parse(localStorage.getItem(TIPS_KEY)||"{}")}catch(_){tipsSeen=null}
+function maybeTips(){
+  if(!tipsSeen||tourOn||!tourSeen("full")&&!tourSeen("new")||document.querySelector(".sheet-bg,.tour-ui,#pomoPage:not([hidden])"))return;
+  const s=TIPS().find(x=>!tipsSeen[x.k]&&x.when()&&document.querySelector(x.sel));if(!s)return;
+  tipsSeen[s.k]=1;try{localStorage.setItem(TIPS_KEY,JSON.stringify(tipsSeen))}catch(_){}
+  const el=document.querySelector(s.sel);const pad=s.pad??6;
+  const spot=document.createElement("div");spot.className="tour-ui tour-spot soft";
+  const tip=document.createElement("div");tip.className="tour-ui tour";
+  tip.innerHTML=`<div class="th">${SF.star}<b>${s.t}</b></div><div class="tb">${s.b}</div><div class="row"><span class="cnt"></span><button class="next" data-tr="ok">${L("知道了","Got it")}</button></div>`;
+  document.body.append(spot,tip);
+  const place=()=>{if(!document.body.contains(el)){close();return}const r=el.getBoundingClientRect();Object.assign(spot.style,{left:r.left-pad+"px",top:r.top-pad+"px",width:r.width+pad*2+"px",height:r.height+pad*2+"px",borderRadius:(r.height<70?999:18)+"px"});
+    const w=tip.offsetWidth,h=tip.offsetHeight,below=r.bottom+pad+16+h<innerHeight||r.top-pad-16-h<0;tip.classList.toggle("dn",below);tip.classList.toggle("up",!below);
+    const left=Math.min(Math.max(16,r.left+r.width/2-w/2),innerWidth-16-w);tip.style.left=left+"px";tip.style.top=Math.max(8,Math.min(innerHeight-h-8,below?r.bottom+pad+12:r.top-pad-12-h))+"px";tip.style.setProperty("--ax",Math.min(w-28,Math.max(12,r.left+r.width/2-left-9))+"px")};
+  const close=()=>{spot.remove();tip.remove();window.removeEventListener("scroll",place,true);window.removeEventListener("resize",place)};
+  const r=el.getBoundingClientRect();if(r.top<70||r.bottom>innerHeight-220)window.scrollTo({top:scrollY+r.top-innerHeight*.25,behavior:"instant"});
+  place();window.addEventListener("scroll",place,true);window.addEventListener("resize",place);
+  tip.addEventListener("click",e=>{if(e.target.closest("[data-tr]"))close()});
+  document.addEventListener("click",function once(e){if(!tip.contains(e.target)){close();document.removeEventListener("click",once,true)}},true);
+}
 /* ---------- 吃 & 买: what to eat, fridge ---------- */
 let meals=[], rests=[], eats=[], fridge=[], tlog=[], courses=[];
 const FI={"FRIDGE":"<svg viewBox=\"0 0 64 64\"><ellipse cx=\"32\" cy=\"60\" rx=\"26\" ry=\"2.5\" fill=\"#d5e3f5\"/><rect x=\"26\" y=\"6\" width=\"28\" height=\"53\" rx=\"6\" fill=\"#cfe9ff\" stroke=\"#9cc8ee\" stroke-width=\"1.6\"/><path d=\"M26 25h28\" stroke=\"#9cc8ee\" stroke-width=\"1.6\"/><rect x=\"29\" y=\"12\" width=\"2.4\" height=\"8\" rx=\"1.2\" fill=\"#7fb2e0\"/><rect x=\"29\" y=\"30\" width=\"2.4\" height=\"12\" rx=\"1.2\" fill=\"#7fb2e0\"/><circle cx=\"46\" cy=\"14\" r=\"2.4\" fill=\"#ff8fb1\"/><rect x=\"42\" y=\"33\" width=\"7\" height=\"5\" rx=\"1\" fill=\"#fff\" stroke=\"#ffd34d\"/><path d=\"M17 37.65V32.15\" stroke=\"#3faa74\" stroke-width=\"1.76\" stroke-linecap=\"round\"/><path d=\"M17 34.9c-4.62 0-6.82-2.2-6.82-5.5 4.62 0 6.82 2.42 6.82 5.5zM17 34.9c4.62 0 6.82-2.2 6.82-5.5-4.62 0-6.82 2.42-6.82 5.5z\" fill=\"#5cc98f\"/><ellipse cx=\"17\" cy=\"47\" rx=\"11\" ry=\"10.120000000000001\" fill=\"#ffe08a\"/><circle cx=\"13.04\" cy=\"46.45\" r=\"2.2\" fill=\"#3a3350\"/><circle cx=\"20.96\" cy=\"46.45\" r=\"2.2\" fill=\"#3a3350\"/><circle cx=\"13.81\" cy=\"45.57\" r=\"0.88\" fill=\"#fff\"/><circle cx=\"21.73\" cy=\"45.57\" r=\"0.88\" fill=\"#fff\"/><path d=\"M14.58 50.52q2.42 2.6399999999999997 4.84 0\" stroke=\"#3a3350\" stroke-width=\"1.3199999999999998\" fill=\"none\" stroke-linecap=\"round\"/><ellipse cx=\"9.739999999999998\" cy=\"49.75\" rx=\"1.98\" ry=\"1.21\" fill=\"#ff8fb1\" opacity=\".85\"/><ellipse cx=\"24.26\" cy=\"49.75\" rx=\"1.98\" ry=\"1.21\" fill=\"#ff8fb1\" opacity=\".85\"/></svg>","BASKET":"<svg viewBox=\"0 0 64 64\"><ellipse cx=\"32\" cy=\"60\" rx=\"26\" ry=\"2.5\" fill=\"#d5e3f5\"/><path d=\"M4 4h56l-2 6H6z\" fill=\"#ff8fb1\"/><path d=\"M6 10q2.6 2.6 5.2 0t5.2 0 5.2 0 5.2 0 5.2 0 5.2 0 5.2 0 5.2 0 5.2 0 5.2 0\" stroke=\"#ff8fb1\" stroke-width=\"2.4\" fill=\"none\"/><path d=\"M24 33.8V27.799999999999997\" stroke=\"#3faa74\" stroke-width=\"1.92\" stroke-linecap=\"round\"/><path d=\"M24 30.799999999999997c-5.04 0-7.4399999999999995-2.4000000000000004-7.4399999999999995-6 5.04 0 7.4399999999999995 2.64 7.4399999999999995 6zM24 30.799999999999997c5.04 0 7.4399999999999995-2.4000000000000004 7.4399999999999995-6-5.04 0-7.4399999999999995 2.64-7.4399999999999995 6z\" fill=\"#5cc98f\"/><ellipse cx=\"24\" cy=\"44\" rx=\"12\" ry=\"11.040000000000001\" fill=\"#ffe08a\"/><path d=\"M17.759999999999998 44q1.92-2.64 3.84 0M26.4 44q1.92-2.64 3.84 0\" stroke=\"#3a3350\" stroke-width=\"1.56\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M21.36 47.84q2.64 2.88 5.28 0\" stroke=\"#3a3350\" stroke-width=\"1.44\" fill=\"none\" stroke-linecap=\"round\"/><ellipse cx=\"16.08\" cy=\"47\" rx=\"2.16\" ry=\"1.32\" fill=\"#ff8fb1\" opacity=\".85\"/><ellipse cx=\"31.92\" cy=\"47\" rx=\"2.16\" ry=\"1.32\" fill=\"#ff8fb1\" opacity=\".85\"/><path d=\"M40 47q8-12 16 0\" stroke=\"#b0784a\" stroke-width=\"2\" fill=\"none\"/><circle cx=\"44\" cy=\"45\" r=\"2.8\" fill=\"#ef5d6e\"/><path d=\"M48.5 40v6\" stroke=\"#5cc98f\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><circle cx=\"52\" cy=\"45\" r=\"2.3\" fill=\"#ffd34d\"/><path d=\"M38 47h20l-2.5 10h-15z\" fill=\"#e8b27a\"/><path d=\"M39.5 51h17M40.5 54h15\" stroke=\"#c68b52\" stroke-width=\"1.1\"/><path d=\"M35 46q2-1 3 1\" stroke=\"#ffe08a\" stroke-width=\"3.4\" stroke-linecap=\"round\" fill=\"none\"/></svg>","WHEEL":"<svg viewBox=\"0 0 64 64\"><ellipse cx=\"32\" cy=\"60\" rx=\"26\" ry=\"2.5\" fill=\"#d5e3f5\"/><path d=\"M44 40v18M38 58h12\" stroke=\"#a9b8d0\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M44 26L44.0 11.0A15 15 0 0 1 57.0 18.5Z\" fill=\"#ffd9a8\" stroke=\"#fff\" stroke-width=\"1.2\"/><path d=\"M44 26L57.0 18.5A15 15 0 0 1 57.0 33.5Z\" fill=\"#cfe9ff\" stroke=\"#fff\" stroke-width=\"1.2\"/><path d=\"M44 26L57.0 33.5A15 15 0 0 1 44.0 41.0Z\" fill=\"#ffd3e0\" stroke=\"#fff\" stroke-width=\"1.2\"/><path d=\"M44 26L44.0 41.0A15 15 0 0 1 31.0 33.5Z\" fill=\"#d6f5e3\" stroke=\"#fff\" stroke-width=\"1.2\"/><path d=\"M44 26L31.0 33.5A15 15 0 0 1 31.0 18.5Z\" fill=\"#e6dcff\" stroke=\"#fff\" stroke-width=\"1.2\"/><path d=\"M44 26L31.0 18.5A15 15 0 0 1 44.0 11.0Z\" fill=\"#fff1a8\" stroke=\"#fff\" stroke-width=\"1.2\"/><circle cx=\"44\" cy=\"26\" r=\"15\" fill=\"none\" stroke=\"#e6edf7\" stroke-width=\"1.5\"/><circle cx=\"44\" cy=\"26\" r=\"3\" fill=\"#fff\" stroke=\"#e6edf7\"/><path d=\"M44 8l-3 5h6z\" fill=\"#ef5d6e\"/><path d=\"M16 38.65V33.15\" stroke=\"#3faa74\" stroke-width=\"1.76\" stroke-linecap=\"round\"/><path d=\"M16 35.9c-4.62 0-6.82-2.2-6.82-5.5 4.62 0 6.82 2.42 6.82 5.5zM16 35.9c4.62 0 6.82-2.2 6.82-5.5-4.62 0-6.82 2.42-6.82 5.5z\" fill=\"#5cc98f\"/><ellipse cx=\"16\" cy=\"48\" rx=\"11\" ry=\"10.120000000000001\" fill=\"#ffe08a\"/><circle cx=\"12.04\" cy=\"47.45\" r=\"2.2\" fill=\"#3a3350\"/><circle cx=\"19.96\" cy=\"47.45\" r=\"2.2\" fill=\"#3a3350\"/><circle cx=\"12.81\" cy=\"46.57\" r=\"0.88\" fill=\"#fff\"/><circle cx=\"20.73\" cy=\"46.57\" r=\"0.88\" fill=\"#fff\"/><path d=\"M13.58 51.52q2.42 2.6399999999999997 4.84 0\" stroke=\"#3a3350\" stroke-width=\"1.3199999999999998\" fill=\"none\" stroke-linecap=\"round\"/><ellipse cx=\"8.739999999999998\" cy=\"50.75\" rx=\"1.98\" ry=\"1.21\" fill=\"#ff8fb1\" opacity=\".85\"/><ellipse cx=\"23.26\" cy=\"50.75\" rx=\"1.98\" ry=\"1.21\" fill=\"#ff8fb1\" opacity=\".85\"/><path d=\"M27 32l2-3M29 37l3-1\" stroke=\"#ffc94a\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>"};
@@ -3574,6 +3677,7 @@ function openSettings(){
       <div class="cap-row wx-city"><input id="set-city" placeholder="${L("城市，比如 London","City, e.g. London")}" value="${esc(kept.city??(wx.city||""))}"><button class="btn" data-set="citysearch">${L("搜索","Search")}</button><button class="btn" data-set="cityhere">${L("用当前位置","Use my location")}</button></div>
       <div class="plist tp" id="set-cityres"></div>
       <span class="hint">${wx.lat!=null?L(`现在用的是：${esc(wx.city||"当前位置")}。`,`Using: ${esc(wx.city||"your location")}.`):L("还没有位置。识别得不对的话，在这里搜城市改一下。","No location yet. If it's wrong, search for your city here.")} ${L("位置只存在这台设备上。","Your location stays on this device.")}</span></div>`:""}
+    <div class="field"><span>${L("功能介绍","Tour")}</span><div><button class="btn" data-set="tour">${L("重新看一遍介绍","Replay the tour")}</button></div></div>
     <label class="field chk"><span>${L("番茄钟提示音","Timer sound")}</span><span class="chkrow"><input type="checkbox" id="set-sound" ${(kept.snd??pset.sound)?"checked":""}> ${L("专注、休息结束时轻轻叮一声（默认关）","A soft ding when focus or a break ends (off by default)")}</span></label>
     ${IS_WEB?`    <div class="field"><span>${L("备份","Backup")}</span>
       <p class="hint" style="margin:0">${L("数据只存在这个浏览器里。换手机、换浏览器或清理浏览器数据之前，先导出一份备份。","Your data lives only in this browser. Export a backup before switching phones or browsers, or clearing browser data.")}</p>
@@ -3598,6 +3702,7 @@ function openSettings(){
       boards[k]=!boards[k]; try{localStorage.setItem(BOARDS_KEY,JSON.stringify(boards))}catch(_){}
       draw(); render(); return}
     if(a==="lang"){keep();setLang(b.dataset.v);draw();return}
+    if(a==="tour"){bg.remove();setTimeout(()=>startTour("full"),250);return}
     if(a==="citysearch"){const q=bg.querySelector("#set-city").value.trim();const box=bg.querySelector("#set-cityres");if(!q)return;box.innerHTML=`<span class="hint">${L("搜索中…","Searching…")}</span>`;
       searchCity(q).then(res=>{bg._city=res;box.innerHTML=res.length?res.map((c,i)=>`<button data-set="citypick" data-i="${i}"><span>${esc(c.name)}</span><small>${esc(c.area)}</small></button>`).join(""):`<span class="hint">${L("没找到，换个写法试试（英文城市名更容易找到）","Nothing found. Try another spelling.")}</span>`}).catch(()=>{box.innerHTML=`<span class="hint">${L("搜索失败，检查一下网络","Search failed. Check your connection.")}</span>`});return}
     if(a==="citypick"){const c=(bg._city||[])[+b.dataset.i];if(!c)return;wx.lat=c.lat;wx.lon=c.lon;wx.city=c.name;wx.on=true;saveWx();bg.querySelector("#set-cityres").innerHTML=`<span class="hint">${L(`好，改成 ${esc(c.name)} 了`,`Switched to ${esc(c.name)}`)}</span>`;bg.querySelector("#set-city").value=c.name;fetchWx(true);return}
@@ -3657,7 +3762,7 @@ function openWelcome(){
   </div>`;bg.querySelector("#wel-name").value=keepName};
   draw();
   document.body.appendChild(bg);
-  const done=()=>{try{localStorage.setItem("lifeos-welcomed","1")}catch(_){};bg.remove()};
+  const done=()=>{try{localStorage.setItem("lifeos-welcomed","1")}catch(_){};bg.remove();tourMark("new");setTimeout(()=>maybeTour("full"),500)};
   const retitle=()=>{const v=bg.querySelector("#wel-pet").value.trim();bg.querySelector("#wel-title").textContent=L(`你好呀，我是${v||"小芽"} 🌱`,`Hi, I'm ${v||"Sprout"} 🌱`)};
   bg.addEventListener("input",e=>{if(e.target.id==="wel-pet")retitle()});
   const ok=()=>{const pn=bg.querySelector("#wel-pet").value.trim();if(pn)setPetName(pn);const n=bg.querySelector("#wel-name").value.trim();if(n){userName=n;try{localStorage.setItem(NAME_KEY,n)}catch(_){};applyName();cheer(L(`${n}，很高兴认识你！`,`Nice to meet you, ${n}!`))}done()};
@@ -3731,7 +3836,7 @@ function startData(store){
   sub("staples",s=>{staples=s.docs.map(d=>({id:d.id,...d.data()}));render()});
   sub("trips",s=>{trips=s.docs.map(d=>({id:d.id,...d.data()}));render()});
   for(const [c,set] of [["meals",v=>meals=v],["rests",v=>rests=v],["eats",v=>eats=v],["fridge",v=>fridge=v],["tlog",v=>tlog=v],["courses",v=>courses=v]])sub(c,s=>{set(s.docs.map(d=>({id:d.id,...d.data()})));if(!spinning)render()});
-  sub("pomos",s=>{pomos=s.docs.map(d=>({id:d.id,...d.data()}));render();if(!pomoBooted){pomoBooted=true;if(P&&(P.phase==="focus"||P.phase==="break"))P.open=P.open!==false;renderPomo()}});
+  sub("pomos",s=>{pomos=s.docs.map(d=>({id:d.id,...d.data()}));render();if(!pomoBooted){pomoBooted=true;setTimeout(()=>{let w=false;try{w=!!localStorage.getItem("lifeos-welcomed")}catch(_){};if(w||userName)maybeTour("new")},1500);if(P&&(P.phase==="focus"||P.phase==="break"))P.open=P.open!==false;renderPomo()}});
   sub("yearlyDays",s=>{yearlyDays=s.docs.map(d=>({id:d.id,...d.data()}));bdNotify();render()});
   sub("milestones",s=>{milestones=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.m=true;render()});
   sub("weekly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());weekly=m;if(ok(s))loaded.w=true;render()});
