@@ -447,6 +447,41 @@ body.pomo-open{overflow:hidden}
 .trdate{border:2px solid var(--line);border-radius:12px;background:var(--surface);padding:6px 10px;font:inherit;color:var(--fg)}
 .tdel{align-self:flex-start;border:none;background:none;color:#e0465a;font:inherit;font-size:14px;padding:2px 0;cursor:pointer}
 .snack .snbtns{display:flex;gap:6px;flex:none}
+.mbb{position:relative}.mbb .mbdot{position:absolute;top:0;right:0;width:9px;height:9px;border-radius:50%;background:#ff5c7a;box-shadow:0 0 0 2px var(--surface)}
+.mbpage{position:fixed;inset:0;z-index:18;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch}body.mb-on{overflow:hidden}
+.mbin{max-width:560px;margin:0 auto;padding:max(14px,env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-right,0px)) 40px max(18px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:14px}
+.mbtop button{border:none;background:var(--surface);width:38px;height:38px;border-radius:50%;font-size:20px;color:var(--fg);box-shadow:0 3px 0 var(--line);cursor:pointer}
+.mbhero{background:linear-gradient(180deg,color-mix(in srgb,#ffb3b3 22%,var(--surface)),var(--surface));border-radius:26px;padding:16px 18px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;box-shadow:var(--shadow)}
+.mbsvg{width:200px;height:166px;max-width:100%}.mbhero h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:26px}.mbhero p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+.mbhero .mbwrite{margin-top:8px;padding:10px 28px;font-size:15px;background:#ff8f8f;border-color:#ff8f8f;color:#fff;box-shadow:0 3px 0 #e06b6b}
+.mbsec{display:flex;flex-direction:column;gap:8px}.mbsec h4{margin:4px 2px 0;font-size:14px;color:var(--muted);font-weight:500}.mbempty{text-align:center;color:var(--muted);margin:0}.mbimp{align-self:center;font-size:14px}
+.env{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;background:var(--surface);box-shadow:var(--shadow);border:none;border-radius:16px;padding:10px 12px;font:inherit;color:var(--fg);text-align:left;cursor:pointer;width:100%}
+.env .et{min-width:0}.env b{font-size:15px;display:block}.env small{display:block;color:var(--muted);font-size:12.5px}
+.env .ic{width:52px;height:38px;border-radius:6px;background:#fff3e6;position:relative;box-shadow:inset 0 0 0 2px #f1d9bd;display:block}.env .ic:before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom right,transparent 49%,#f1d9bd 49% 51%,transparent 51%),linear-gradient(to bottom left,transparent 49%,#f1d9bd 49% 51%,transparent 51%);background-size:100% 60%;background-repeat:no-repeat}
+.env .ic i{position:absolute;left:50%;top:52%;width:12px;height:12px;border-radius:50%;background:#e0465a;transform:translate(-50%,-50%)}.env.open .ic{background:#fffaf2}.env.open .ic i,.env.draft .ic i{display:none}
+.env .tag{font-size:12px;border-radius:999px;padding:3px 9px;background:color-mix(in srgb,#ff8f8f 15%,var(--surface));color:#c44;white-space:nowrap}.env.open .tag,.env.draft .tag{background:var(--bg-2);color:var(--brand)}.env.ready .tag{background:#ff8f8f;color:#fff;font-weight:600}
+@media(max-width:420px){.env{grid-template-columns:44px 1fr}.env .ic{width:44px;height:32px}.env .tag{grid-column:2;justify-self:start}}
+.lsheet .sheet{max-width:620px}
+.lp{--lh:34px;position:relative;border-radius:16px;padding:14px 18px 10px;background-position:0 14px;line-height:var(--lh);font-size:17px;min-height:calc(var(--lh)*7 + 24px);overflow-wrap:anywhere}
+.lp .lto{min-height:var(--lh)}.lp .lsig{text-align:right;margin-right:60px}.lp .ltail{height:calc(var(--lh)*1)}
+.lp .lbody{display:block;width:100%;border:none;background:none;outline:none;resize:none;padding:0;margin:0;font:inherit;line-height:var(--lh);color:inherit;min-height:calc(var(--lh)*3);overflow:hidden;border-radius:0}
+.lp .lbody.rd{min-height:var(--lh)}
+.lp .lsk{position:absolute;right:10px;bottom:8px;width:60px;height:60px;transform:rotate(8deg);pointer-events:none}.lp .lsk svg{width:100%;height:100%}
+.lp-kraft{background-color:#ead7b8;background-image:repeating-linear-gradient(to bottom,transparent 0 calc(var(--lh,34px) - 1px),rgba(138,106,74,.3) calc(var(--lh,34px) - 1px) var(--lh,34px));color:#3f2d1a;box-shadow:inset 0 0 0 2px #d9bf96}
+.lp-cream{background-color:#fffaf2;background-image:repeating-linear-gradient(to bottom,transparent 0 calc(var(--lh,34px) - 1px),rgba(255,143,177,.3) calc(var(--lh,34px) - 1px) var(--lh,34px));color:#3a3350;box-shadow:inset 0 0 0 2px #f3e3cf}
+.lp-xuan{background-color:#f6f0e1;background-image:radial-gradient(ellipse 3px 1px at 20% 30%,rgba(160,130,90,.35),transparent),radial-gradient(ellipse 2px 1px at 70% 60%,rgba(160,130,90,.3),transparent),radial-gradient(ellipse 4px 1px at 45% 85%,rgba(160,130,90,.25),transparent),repeating-linear-gradient(to bottom,transparent 0 calc(var(--lh,34px) - 1px),rgba(130,105,70,.16) calc(var(--lh,34px) - 1px) var(--lh,34px));background-size:37px 23px,53px 41px,71px 59px,auto;color:#2e2a24;box-shadow:inset 0 0 0 2px #e6dcc4}
+.lp-red{background-color:#fffdf7;background-image:repeating-linear-gradient(to bottom,transparent 0 calc(var(--lh,34px) - 1px),rgba(214,72,60,.45) calc(var(--lh,34px) - 1px) var(--lh,34px));color:#2b2b2b;box-shadow:inset 0 0 0 2px #e9a69c,inset 0 0 0 8px #fffdf7,inset 0 0 0 9.5px rgba(214,72,60,.55)}.lp.lp-red{border-radius:6px;padding-left:26px;padding-right:26px}
+.lp-sky{background-color:#f0f8ff;background-image:radial-gradient(#b9dcf7 1.3px,transparent 1.6px);background-size:17px 17px;color:#23405e;box-shadow:inset 0 0 0 2px #cfe6fa}
+.pps .lp-kraft,.pps .lp-cream,.pps .lp-xuan,.pps .lp-red{--lh:10px}.pps .lp-sky{background-size:8px 8px}.pps .lp-red{box-shadow:inset 0 0 0 4px #fffdf7,inset 0 0 0 5px rgba(214,72,60,.6)}
+.lsec{display:flex;flex-direction:column;gap:6px}.lsec>span{font-size:13px;color:var(--muted)}
+.pps{display:flex;gap:8px;overflow-x:auto;padding:4px 2px}.pp{flex:none;width:60px;display:flex;flex-direction:column;align-items:center;gap:3px;font:inherit;font-size:11.5px;color:var(--muted);border:none;background:none;padding:0;cursor:pointer}.pp i{width:52px;height:40px;border-radius:9px;display:block;outline:2px solid var(--line);outline-offset:-2px}.pp.on i{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--brand)}.pp.on{color:var(--fg);font-weight:600}
+.fts{display:flex;gap:6px;flex-wrap:wrap}.fts button{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 14px;font-size:16px;color:var(--fg);cursor:pointer}.fts button.on{background:var(--fg);color:var(--surface);border-color:var(--fg)}
+.stks{display:flex;gap:6px;overflow-x:auto;padding:2px}.stk{flex:none;width:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border:2px solid transparent;border-radius:14px;background:var(--bg-2);padding:4px 0 3px;font:inherit;font-size:11px;color:var(--muted);cursor:pointer;min-height:58px}.stk svg{width:36px;height:36px}.stk.on{border-color:var(--brand);background:var(--surface);color:var(--fg)}
+.opnd{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--muted)}.opnd button{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;font:inherit;font-size:13px;color:var(--fg);cursor:pointer}.opnd button.on{background:var(--fg);color:var(--surface);border-color:var(--fg)}
+.bdask{display:flex;flex-direction:column;gap:6px;background:var(--bg-2);border-radius:14px;padding:10px 12px;font-size:13px;color:var(--muted)}.bdask .drow{display:flex;gap:6px;flex-wrap:wrap}.bdask select,.bdask input{border:2px solid var(--line);border-radius:10px;background:var(--surface);padding:5px 8px;font:inherit;color:var(--fg)}.bdask input{width:80px}
+.lrow{display:flex;gap:10px;flex-wrap:wrap}.lrow .field{flex:1;min-width:140px}
+.ovl-letter{position:fixed;inset:0;background:rgba(30,34,60,.45);display:grid;place-items:center;z-index:80;padding:16px}.ovl-letter .ovc{background:var(--surface);border-radius:26px;padding:22px 22px 18px;width:min(330px,100%);text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+.ovl-letter h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:21px}.ovl-letter p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}.ovl-letter .btn{padding:9px 26px}
 .jfoot{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-top:2px}.jfoot .saved{margin-right:auto}.jfoot .jsave{padding:7px 18px}
 .gsh{display:flex;align-items:center;justify-content:space-between;gap:8px}.gsh .lk{border:none;background:none;color:var(--brand);font:inherit;font-size:13px;padding:0;cursor:pointer}
 .gmore.has{color:var(--fg);text-align:left;font-size:14px;background:var(--bg-2);border-radius:12px;padding:8px 12px;align-self:stretch}.gmore.has b{color:var(--life-ink,var(--fg));font-weight:600}
@@ -894,7 +929,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 <body>
 
 <div class="wrap">
-  <div class="title-row"><h1 id="appName">我的人生服务器</h1><span class="today" id="today"></span><span class="hd-acts"><button class="jbtn" id="jbtn" aria-pressed="false">📔<span id="jbtnTxt"> 小结</span></button><button class="gear sync" id="syncBtn" hidden></button><button class="gear" id="gear" aria-label="设置">⚙️</button></span></div>
+  <div class="title-row"><h1 id="appName">我的人生服务器</h1><span class="today" id="today"></span><span class="hd-acts"><button class="gear mbb" id="mbBtn" aria-label="信箱">📫<i class="mbdot" hidden></i></button><button class="jbtn" id="jbtn" aria-pressed="false">📔<span id="jbtnTxt"> 小结</span></button><button class="gear sync" id="syncBtn" hidden></button><button class="gear" id="gear" aria-label="设置">⚙️</button></span></div>
   <section class="garden" aria-label="小芽的成长">
     <div class="buddy" id="buddy" role="img" aria-label="小芽"></div>
     <div class="g-text">
@@ -1202,7 +1237,7 @@ function render(){
   document.querySelectorAll("#main .gta").forEach(autosz);
   renderBuddy();
   if(pendingFocus){const el=document.querySelector(pendingFocus);pendingFocus=null;if(el)el.focus()}
-  setTimeout(maybeCelebrate,0); setTimeout(maybeRecap,0); setTimeout(maybeTips,400);
+  setTimeout(maybeCelebrate,0); setTimeout(maybeRecap,0); setTimeout(maybeTips,400); setTimeout(maybeLetter,900); mbDot();
 }
 function emptyBox(text){return `<div class="empty">${miniBuddy()}<span>${text}</span></div>`}
 /* ---------- priority: a little speech bubble on the right of a task ---------- */
@@ -1844,7 +1879,7 @@ document.addEventListener("click",e=>{
   if(a==="fdel"){if(fOpen===id)fOpen=null;const x=fridge.find(y=>y.id===id);const r=db.doc("fridge/"+id);queued(r.path,()=>r.delete());if(x)cheer(L(`${x.name}吃完啦～`,`${x.name}: all used up～`));return}
 });
 /* ---------- sleep ---------- */
-let sleeps={};
+let sleeps={}, letters=[];
 const BED_KEY="lifeos-bedtime";
 let bedTime="23:30"; try{const v=localStorage.getItem(BED_KEY);if(v!==null)bedTime=v}catch(_){}
 function setBedTime(v,sync=true){bedTime=v||"";try{localStorage.setItem(BED_KEY,bedTime)}catch(_){};if(sync&&db&&db.meta)db.meta.set({bedTime},{merge:true}).catch(()=>{})}
@@ -1858,6 +1893,121 @@ function sleepPhase(){const n=new Date(),h=n.getHours()+n.getMinutes()/60;
   return ln.wake||slSkip(addDays(todayStr(),-1),"wake")?(h>=11?"eve":"morn"):"morn"}
 const slSkip=(k,kind)=>{try{return !!localStorage.getItem(`lifeos-slpskip-${k}-${kind}`)}catch(_){return false}};
 const slSkipSet=(k,kind)=>{try{localStorage.setItem(`lifeos-slpskip-${k}-${kind}`,"1")}catch(_){}};
+/* ---------- mailbox: letters to future me ---------- */
+const BDAY_KEY="lifeos-birthday";
+let birthday=""; try{birthday=localStorage.getItem(BDAY_KEY)||""}catch(_){}
+function setBirthday(v,sync=true){birthday=v||"";try{localStorage.setItem(BDAY_KEY,birthday)}catch(_){};if(sync&&db&&db.meta)db.meta.set({birthday},{merge:true}).catch(()=>{});if(mbOpen)renderMailbox()}
+const bdParts=()=>{const m=/^(\d{4}|-)?-?(\d{2})-(\d{2})$/.exec(birthday||"");return m?{y:m[1]&&m[1]!=="-"?+m[1]:null,m:+m[2],d:+m[3]}:null};
+function nextBday(from){const b=bdParts();if(!b)return null;const y0=+from.slice(0,4);for(let y=y0;y<=y0+1;y++){const dim=new Date(y,b.m,0).getDate();const d=`${y}-${pad(b.m)}-${pad(Math.min(b.d,dim))}`;if(d>from)return d}return null}
+const LPAPERS=()=>[["kraft",L("牛皮纸","Kraft")],["cream",L("米色横线","Cream")],["xuan",L("宣纸","Rice paper")],["red",L("红格信笺","Red-ruled")],["sky",L("天蓝点点","Sky dots")]];
+const LFONTS=()=>[["brush",L("毛笔","Brush"),"'Ma Shan Zheng',serif"],["hand",L("手写","Handwritten"),"'Long Cang',cursive"],["cute",L("可爱","Cute"),"'ZCOOL KuaiLe',sans-serif"],["serif",L("宋体","Serif"),"'Noto Serif SC','Songti SC','STSong',serif"],["sans",L("默认","Plain"),"inherit"]];
+const LSTICK=()=>[["great",L("开心","Happy")],["love",L("爱你","Love")],["wink",L("眨眼","Wink")],["shy",L("害羞","Shy")],["touched",L("感动","Touched")],["letter",L("抱着信","With a letter")]];
+let mbOpen=false, fontsIn=false;
+function loadLetterFonts(){if(fontsIn)return;fontsIn=true;const l=document.createElement("link");l.rel="stylesheet";l.href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Long+Cang&family=ZCOOL+KuaiLe&display=swap";document.head.appendChild(l)}
+const lfont=k=>(LFONTS().find(x=>x[0]===k)||LFONTS()[0])[2];
+function letterTo(x){if(x.toText)return x.toText;if(x.kind==="bday")return x.age?L(`${x.age} 岁的我`,`me at ${x.age}`):L("下一岁的我","next-year-older me");return L(`${x.toYear} 年的我`,`me in ${x.toYear}`)}
+const lReady=x=>x.sealed&&!x.opened&&x.openOn&&x.openOn<=todayStr();
+const lYmd=ts=>{const d=new Date(ts);return L(`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`,`${d.getDate()} ${MON[d.getMonth()]} ${d.getFullYear()}`)};
+const lYmdS=s=>lYmd(new Date(s+"T12:00:00").getTime());
+const daysTo=s=>Math.round((new Date(s+"T12:00:00")-new Date(todayStr()+"T12:00:00"))/864e5);
+function mbDot(){const el=document.querySelector("#mbBtn .mbdot");if(el)el.hidden=!letters.some(lReady)}
+const MBOX=()=>`<svg viewBox="0 0 120 100" class="mbsvg" aria-hidden="true"><ellipse cx="62" cy="94" rx="52" ry="5" fill="color-mix(in srgb,var(--life) 30%,transparent)"/><rect x="80" y="44" width="7" height="50" rx="2" fill="#b98a5a"/><path d="M62 22h34a14 14 0 0 1 14 14v18H62z" fill="#ff7a7a"/><path d="M62 22a14 14 0 0 1 14 14v18H48V36a14 14 0 0 1 14-14z" fill="#ff9a9a"/><rect x="52" y="40" width="20" height="3" rx="1.5" fill="#d9575f"/><path d="M104 14v16" stroke="#8a6a4a" stroke-width="2"/><path d="M104 14h11l-3 4 3 4h-11z" fill="#ffd34d"/><g transform="rotate(-12 63 32)"><rect x="54" y="26" width="18" height="12" rx="2" fill="#fff"/><path d="M54.5 27l8.5 6 8.5-6" stroke="#ff8fb1" stroke-width="1.4" fill="none"/></g><g transform="translate(-4 28) scale(1.75)">${moodFace("great").replace(/^<svg[^>]*>/,"").replace(/<\/svg>$/,"")}</g></svg>`;
+function envRow(x){
+  const ready=lReady(x), open=x.opened, sealed=x.sealed&&!open;
+  const tag=!x.sealed?L("草稿 · 接着写","Draft · keep writing"):ready?L("可以拆啦！","Ready to open!"):sealed?L(`${x.kind==="bday"?"生日":lYmdS(x.openOn).replace(/^\d+年/,"")}拆 · 还有 ${daysTo(x.openOn)} 天`,`Opens ${lYmdS(x.openOn)} · ${daysTo(x.openOn)} days`):L("再读一遍","Read again");
+  return `<button class="env${open?" open":""}${ready?" ready":""}${!x.sealed?" draft":""}" data-mb="${!x.sealed?"edit":sealed&&!ready?"locked":"read"}" data-id="${x.id}"><span class="ic"><i></i></span><span class="et"><b>${L("致 ","To ")}${esc(letterTo(x))}</b><small>${L("写于 ","Written ")}${lYmd(x.writtenAt||x.createdAt||Date.now())}</small></span><span class="tag">${tag}</span></button>`;
+}
+function renderMailbox(){
+  let pg=document.getElementById("mbPage");
+  if(!pg){pg=document.createElement("div");pg.id="mbPage";pg.className="mbpage";pg.setAttribute("role","dialog");pg.setAttribute("aria-label",L("信箱","Mailbox"));document.body.appendChild(pg)}
+  const by=(a,b)=>(a.openOn||"").localeCompare(b.openOn||"");
+  const drafts=letters.filter(x=>!x.sealed), ready=letters.filter(lReady), wait=letters.filter(x=>x.sealed&&!x.opened&&!lReady(x)).sort(by), done=letters.filter(x=>x.opened).sort((a,b)=>(b.writtenAt||0)-(a.writtenAt||0));
+  const sec=(t,arr)=>arr.length?`<div class="mbsec"><h4>${t}</h4>${arr.map(envRow).join("")}</div>`:"";
+  pg.innerHTML=`<div class="mbin"><div class="mbtop"><button data-mb="close" aria-label="${L("返回","Back")}">‹</button></div>
+    <div class="mbhero">${MBOX()}<h2>${L("信箱","Mailbox")}</h2><p>${L("给未来的自己写一封信，封起来，<br>到日子才能拆开。","Write to your future self, seal it,<br>and open it when the day comes.")}</p><button class="btn primary mbwrite" data-mb="new">${L("写一封信 ✉","Write a letter ✉")}</button></div>
+    ${sec(L("可以拆啦","Ready to open"),ready)}${sec(L("还在写的","Drafts"),drafts)}${sec(L("还没到拆的时候","Sealed"),wait)}${sec(L("拆开过的","Opened"),done)}
+    ${letters.length?"":`<p class="mbempty">${L("信箱还是空的，写第一封吧。","Your mailbox is empty. Write the first one.")}</p>`}
+    <button class="link mbimp" data-mb="import">${L("＋ 抄进一封以前写的信","＋ Copy in a letter you wrote before")}</button></div>`;
+}
+function openMailbox(){if(!db)return;mbOpen=true;loadLetterFonts();renderMailbox();document.body.classList.add("mb-on")}
+function closeMailbox(){mbOpen=false;document.getElementById("mbPage")?.remove();document.body.classList.remove("mb-on")}
+function paperHTML(x,editable){
+  const st=x.sticker?`<span class="lsk">${moodFace(x.sticker)}</span>`:"";
+  const sig=L(`—— ${lYmd(x.writtenAt||Date.now()).replace(/\d+日$/,"")}的我`,`— me, ${lYmd(x.writtenAt||Date.now())}`);
+  return `<div class="lp lp-${x.paper||"kraft"}" style="font-family:${lfont(x.font)}"><div class="lto">${L("致 ","Dear ")}${esc(letterTo(x))}${L("：",",")}</div>${editable?`<textarea class="lbody" id="lbody" rows="3" placeholder="${L("想对那时候的自己说些什么？","What would you like to tell yourself?")}">${esc(x.body||"")}</textarea>`:`<div class="lbody rd">${esc(x.body||"").replace(/\n/g,"<br>")}</div>`}<div class="lsig">${sig}</div><div class="ltail"></div>${st}</div>`;
+}
+function openLetter(id,importMode){
+  const ex=id?letters.find(x=>x.id===id):null; if(id&&!ex)return;
+  const t=todayStr(), y=+t.slice(0,4);
+  const st=ex?{...ex}:{kind:"year",paper:"kraft",font:"brush",sticker:"great",body:"",writtenAt:Date.now()};
+  if(importMode){st.kind="old";st.toText="";st.wdate=addDays(t,-365)}
+  let sure=false, bdEdit=false;
+  const bg=document.createElement("div"); bg.className="sheet-bg lsheet";
+  const grab=()=>{const b=bg.querySelector("#lbody");if(b)st.body=b.value;const tt=bg.querySelector("#ltoText");if(tt)st.toText=tt.value;const wd=bg.querySelector("#lwdate");if(wd&&wd.value)st.wdate=wd.value};
+  const calc=()=>{if(st.kind==="year"){st.toYear=y+1;st.openOn=`${y+1}-01-01`;st.age=null}
+    else if(st.kind==="bday"){const nb=nextBday(t);st.openOn=nb;const b=bdParts();st.age=b&&b.y&&nb?+nb.slice(0,4)-b.y:null}};
+  const draw=()=>{grab();if(!importMode)calc();const b=bdParts();
+    const sw=LPAPERS().map(([k,n])=>`<button class="pp${st.paper===k?" on":""}" data-lt="paper" data-v="${k}" aria-pressed="${st.paper===k}"><i class="lp-${k}"></i>${n}</button>`).join("");
+    bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("写一封信","Write a letter")}"><h3>${importMode?L("抄进一封以前写的信","Copy in an old letter"):ex?L("接着写","Keep writing"):L("写一封信","Write a letter")}</h3>
+      ${importMode?`<div class="lrow"><label class="field"><span>${L("当时写给","It was to")}</span><input id="ltoText" maxlength="30" value="${esc(st.toText||"")}" placeholder="${L("比如：2025 年的我、22 岁的我","e.g. me in 2025, me at 22")}"></label><label class="field"><span>${L("是哪天写的","Written on")}</span><input type="date" id="lwdate" max="${t}" value="${esc(st.wdate)}"></label></div>`
+      :`<div class="opnd"><span>${L("写给","To")}</span><button class="${st.kind==="year"?"on":""}" data-lt="kind" data-v="year">${L("明年的我 · 1月1日拆","Next year's me · opens 1 Jan")}</button><button class="${st.kind==="bday"?"on":""}" data-lt="kind" data-v="bday">${L("下一岁的我 · 生日那天拆","A year older · opens on my birthday")}</button></div>
+        ${st.kind==="bday"&&(!b||bdEdit)?`<div class="bdask"><span>${L("你的生日是哪天？（年份可以不填）","When's your birthday? (year optional)")}</span><div class="drow"><select id="lbm"><option value="">${L("月","Month")}</option>${[...Array(12)].map((_,i)=>`<option value="${i+1}" ${b&&b.m===i+1?"selected":""}>${L(`${i+1} 月`,MON[i])}</option>`).join("")}</select><select id="lbd"><option value="">${L("日","Day")}</option>${[...Array(31)].map((_,i)=>`<option value="${i+1}" ${b&&b.d===i+1?"selected":""}>${L(`${i+1} 日`,String(i+1))}</option>`).join("")}</select><input id="lby" inputmode="numeric" maxlength="4" placeholder="${L("年","Year")}" value="${b&&b.y?b.y:""}"><button class="btn" data-lt="bdsave">${L("好了","OK")}</button></div></div>`
+        :st.kind==="bday"?`<span class="hint">${L(`${lYmdS(st.openOn)}拆`,`Opens ${lYmdS(st.openOn)}`)} · <button class="link" data-lt="bdedit">${L("改生日","Change birthday")}</button></span>`:""}`}
+      ${paperHTML({...st,writtenAt:importMode?new Date(st.wdate+"T12:00:00").getTime():st.writtenAt,toText:importMode?(st.toText||L("那时候的我","me back then")):null},true)}
+      <div class="lsec"><span>${L("信纸","Paper")}</span><div class="pps">${sw}</div></div>
+      <div class="lsec"><span>${L("字体","Font")}</span><div class="fts">${LFONTS().map(([k,n,f])=>`<button class="${st.font===k?"on":""}" data-lt="font" data-v="${k}" style="font-family:${f}">${n}</button>`).join("")}</div></div>
+      <div class="lsec"><span>${L("小芽贴纸","Sticker")}</span><div class="stks"><button class="stk${!st.sticker?" on":""}" data-lt="stk" data-v="">${L("不贴","None")}</button>${LSTICK().map(([k,n])=>`<button class="stk${st.sticker===k?" on":""}" data-lt="stk" data-v="${k}">${moodFace(k)}<span>${n}</span></button>`).join("")}</div></div>
+      ${importMode?`<span class="hint">${L("抄进来的信会直接放进「拆开过的」。","Copied letters go straight into “Opened”.")}</span>`:`<span class="hint">${L("封起来之前可以随时回来改。封起来以后，到那天才能拆开。","Edit any time before sealing. Once sealed, it opens on the day.")}</span>`}
+      <div class="sheet-actions">${ex?`<button class="btn danger" data-lt="del">${sure?L("再点一次删除","Tap again to delete"):L("删掉","Delete")}</button>`:"<span></span>"}<span style="display:flex;gap:8px">${importMode?`<button class="btn" data-lt="x">${L("取消","Cancel")}</button><button class="btn primary" data-lt="imp">${L("放进信箱","Add to mailbox")}</button>`:`<button class="btn" data-lt="draft">${L("先存着","Save draft")}</button><button class="btn primary" data-lt="seal">${L("封起来 ✉","Seal it ✉")}</button>`}</span></div></div>`;
+    const ta=bg.querySelector("#lbody");if(ta)autosz(ta)};
+  const body=()=>({kind:st.kind,toYear:st.toYear||null,age:st.age||null,openOn:st.openOn||null,paper:st.paper,font:st.font,sticker:st.sticker||"",body:(st.body||"").slice(0,20000),writtenAt:st.writtenAt||Date.now(),updatedAt:Date.now()});
+  const save=extra=>{const ref=ex?db.doc("letters/"+ex.id):db.collection("letters").doc();const full={...(ex||{}),...body(),...extra};delete full.id;const local={id:ref.id,...full};letters=[...letters.filter(x=>x.id!==ref.id),local];queued(ref.path,()=>ref.set(full));mbDot();if(mbOpen)renderMailbox();return ref.id};
+  bg.addEventListener("click",e=>{if(e.target===bg){grab();if(!ex&&!importMode&&(st.body||"").trim()){save({sealed:false});cheer(L("先帮你存成草稿了","Saved as a draft"))}bg.remove();return}
+    const bt=e.target.closest("[data-lt]");if(!bt)return;const a=bt.dataset.lt;grab();
+    if(a==="kind"){st.kind=bt.dataset.v;draw();return}
+    if(a==="paper"){st.paper=bt.dataset.v;draw();return}
+    if(a==="font"){st.font=bt.dataset.v;draw();return}
+    if(a==="stk"){st.sticker=bt.dataset.v;draw();return}
+    if(a==="bdedit"){bdEdit=true;draw();return}
+    if(a==="bdsave"){const m=+bg.querySelector("#lbm").value,d=+bg.querySelector("#lbd").value,yy=+bg.querySelector("#lby").value;if(!m||!d)return;setBirthday(`${yy>1900&&yy<=y?yy:"-"}-${pad(m)}-${pad(d)}`.replace(/^-(-)/,"-$1"));bdEdit=false;draw();return}
+    if(a==="x"){bg.remove();return}
+    if(a==="del"){if(!sure){sure=true;draw();return}const r=db.doc("letters/"+ex.id);letters=letters.filter(x=>x.id!==ex.id);queued(r.path,()=>r.delete());bg.remove();if(mbOpen)renderMailbox();mbDot();return}
+    if(a==="draft"){save({sealed:false});bg.remove();cheer(L("存好啦，想写的时候再回来～","Saved. Come back any time～"));return}
+    if(a==="seal"){if(!(st.body||"").trim()){bg.querySelector("#lbody").focus();return}
+      if(st.kind==="bday"&&!st.openOn){bdEdit=true;draw();return}
+      if(!sure){sure=true;bt.textContent=L("确定封起来？","Seal it for sure?");return}
+      save({sealed:true,sealedAt:Date.now()});bg.remove();cheer(L(`封好啦！${lYmdS(st.openOn)}见～`,`Sealed! See you on ${lYmdS(st.openOn)}～`),"happy");return}
+    if(a==="imp"){if(!(st.body||"").trim()){bg.querySelector("#lbody").focus();return}
+      const w=new Date((st.wdate||t)+"T12:00:00").getTime();save({kind:"old",toText:(st.toText||"").trim()||L("那时候的我","me back then"),writtenAt:w,openOn:st.wdate,sealed:true,opened:true,openedAt:Date.now(),imported:true});bg.remove();cheer(L("放进信箱啦","Added to your mailbox"));return}});
+  bg.addEventListener("input",e=>{if(e.target.id==="lbody")autosz(e.target)});
+  bg.addEventListener("change",e=>{if(e.target.id==="lwdate"){grab();draw()}});
+  draw();document.body.appendChild(bg);
+}
+function openRead(id){
+  const x=letters.find(l=>l.id===id);if(!x)return;loadLetterFonts();
+  if(!x.opened){const r=db.doc("letters/"+id);x.opened=true;x.openedAt=Date.now();queued(r.path,()=>r.update({opened:true,openedAt:x.openedAt}));mbDot();if(mbOpen)renderMailbox()}
+  const bg=document.createElement("div");bg.className="sheet-bg lsheet";
+  bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("读信","Read the letter")}">${paperHTML(x,false)}<div class="sheet-actions"><span></span><button class="btn primary" data-x="1">${L("收好","Put it away")}</button></div></div>`;
+  bg.addEventListener("click",e=>{if(e.target===bg||e.target.closest("[data-x]"))bg.remove()});document.body.appendChild(bg);
+}
+let letterPopped=false;
+function maybeLetter(){
+  if(letterPopped||!db||!letters.length||document.querySelector(".sheet-bg,.rc-sheet,.tour-ui,#mbPage,.ovl-letter"))return;
+  const r=letters.filter(lReady);if(!r.length)return;letterPopped=true;
+  const k="lifeos-letterpop-"+todayStr();try{if(localStorage.getItem(k))return;localStorage.setItem(k,"1")}catch(_){}
+  const x=r[0], t=todayStr(), isNY=t.slice(5)==="01-01", isBd=x.kind==="bday";
+  const o=document.createElement("div");o.className="ovl-letter";
+  o.innerHTML=`<div class="ovc" role="dialog" aria-label="${L("有一封信到日子了","A letter is ready")}">${MBOX()}<h3>${isBd?L("生日快乐！","Happy birthday!"):isNY?L("新年快乐！","Happy New Year!"):L("有一封信到日子了","A letter is ready")}</h3><p>${isBd?L("去年的你给今天的你写了一封信，","Last year's you wrote to today's you.<br>"):L("以前的你给你写了一封信，","Your past self wrote you a letter.<br>")}${L("<br>今天可以拆开啦。","It's ready to open.")}</p><button class="btn primary" data-o="open">${L("拆开读读 ✉","Open it ✉")}</button><button class="link" data-o="later">${L("晚点再看","Later")}</button></div>`;
+  o.addEventListener("click",e=>{const b=e.target.closest("[data-o]");if(e.target===o||b){o.remove();if(b&&b.dataset.o==="open")openRead(x.id)}});document.body.appendChild(o);
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-mb]");if(!b||!db)return;const a=b.dataset.mb,id=b.dataset.id;
+  if(a==="close"){closeMailbox();return}
+  if(a==="new"){openLetter();return}
+  if(a==="import"){openLetter(null,true);return}
+  if(a==="edit"){openLetter(id);return}
+  if(a==="read"){openRead(id);return}
+  if(a==="locked"){const x=letters.find(l=>l.id===id);if(x)cheer(L(`还没到时候哦，${lYmdS(x.openOn)}才能拆～`,`Not yet. It opens on ${lYmdS(x.openOn)}～`));return}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&mbOpen&&!document.querySelector(".sheet-bg"))closeMailbox()});
 const SLQ=()=>[["good",L("睡饱了","Slept well")],["ok",L("还行","OK")],["bad",L("没睡好","Poorly")],["nightmare",L("做噩梦了","Nightmare")]];
 const slQ=k=>{const x=sleeps[k]||{};return "q" in x?x.q:((journal[addDays(k,1)]||{}).sleepq||null)};
 function hmParts(ms){const m=Math.max(0,Math.round(ms/6e4)),h=Math.floor(m/60),mm=m%60;return (h?`${h}<i>${L("小时","h")}</i>`:"")+(mm||!h?`${mm}<i>${L("分","m")}</i>`:"")}
@@ -2590,7 +2740,13 @@ function pickRepeat(text,today){
 /* ---------- Sprout faces for moods ---------- */
 function moodFace(k){
   const ink="var(--buddy-ink)";
+  const hrt=(x,y,c)=>`<path transform="translate(${x} ${y})" d="M0 2.2C0-.6 3.6-1.4 4 1.6 4.4-1.4 8-.6 8 2.2 8 5 4 7.5 4 7.5S0 5 0 2.2z" fill="${c}"/>`;
   const F={
+    love:hrt(10,18.5,"#ff5c7a")+hrt(22,18.5,"#ff5c7a")+`<path d="M16 27q4 4.5 8 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    wink:`<circle cx="14" cy="22" r="2.3" fill="${ink}"/><circle cx="14.8" cy="21.2" r=".8" fill="#fff"/><path d="M23 22.5q3-3 6 0" stroke="${ink}" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M16 27q4 4 8 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M33 13l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z" fill="#ffc94d"/>`,
+    shy:`<path d="M11 21.5q3 2.6 6 0M23 21.5q3 2.6 6 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="11" cy="26.5" rx="4" ry="2.3" fill="#ff8fb1"/><ellipse cx="29" cy="26.5" rx="4" ry="2.3" fill="#ff8fb1"/><path d="M18.5 28.5q1.5 1 3 0" stroke="${ink}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
+    touched:`<path d="M11 22q3-3 6 0M23 22q3-3 6 0" stroke="${ink}" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M11.5 24.5q-1.6 3 0 4.2q1.6-1.2 0-4.2zM28.5 24.5q-1.6 3 0 4.2q1.6-1.2 0-4.2z" fill="#6cc4ff"/><path d="M16 27q4 4.5 8 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    letter:`<circle cx="14" cy="21" r="2.3" fill="${ink}"/><circle cx="26" cy="21" r="2.3" fill="${ink}"/><circle cx="14.8" cy="20.2" r=".8" fill="#fff"/><circle cx="26.8" cy="20.2" r=".8" fill="#fff"/><path d="M17.5 25q2.5 2 5 0" stroke="${ink}" stroke-width="1.8" fill="none" stroke-linecap="round"/><g transform="rotate(-8 20 31)"><rect x="12" y="26.5" width="16" height="10.5" rx="1.6" fill="#fff" stroke="#ffb3c6" stroke-width="1.2"/><path d="M12.6 27.2l7.4 5.2 7.4-5.2" stroke="#ff8fb1" stroke-width="1.3" fill="none"/><g transform="translate(17.6 29.6) scale(.6)"><path d="M0 2.2C0-.6 3.6-1.4 4 1.6 4.4-1.4 8-.6 8 2.2 8 5 4 7.5 4 7.5S0 5 0 2.2z" fill="#ff5c7a"/></g></g>`,
     zz:`<path d="M11 22.5q3 2.6 6 0M23 22.5q3 2.6 6 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M18.2 28.6q1.8 1 3.6 0" stroke="${ink}" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M30 11h4.5l-4.5 4.5h4.5" stroke="#8b6cf0" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M35 4.5h3l-3 3h3" stroke="#b9a4ff" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
     wake:`<circle cx="14" cy="22" r="2.4" fill="${ink}"/><circle cx="26" cy="22" r="2.4" fill="${ink}"/><circle cx="14.8" cy="21.1" r=".85" fill="#fff"/><circle cx="26.8" cy="21.1" r=".85" fill="#fff"/><ellipse cx="20" cy="28.6" rx="2.2" ry="2" fill="${ink}"/><circle cx="34" cy="9" r="2.6" fill="#ffc94d"/><g stroke="#ffc94d" stroke-width="1.4" stroke-linecap="round"><path d="M34 3.6v1.4M34 13v1.4M28.6 9h1.4M38 9h1.4M30.2 5.2l1 1M36.8 11.8l1 1M30.2 12.8l1-1M36.8 6.2l1-1"/></g>`,
     great:`<path d="M11 22q3-4 6 0M23 22q3-4 6 0" stroke="${ink}" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M15 27q5 7 10 0z" fill="${ink}"/><path d="M17.5 29.5q2.5 2 5 0" fill="var(--pink)"/><path d="M34 9l1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1z" fill="var(--habit)"/>`,
@@ -3951,7 +4107,7 @@ function buildStrings(){
 function applyStatic(){
   document.documentElement.lang=L("zh-CN","en");
   $("#jbtnTxt").textContent=" "+L("小结","Today");$("#jbtn").setAttribute("aria-label",L("小结","Today"));
-  $("#gear").setAttribute("aria-label",L("设置","Settings"));
+  $("#gear").setAttribute("aria-label",L("设置","Settings"));$("#mbBtn").setAttribute("aria-label",L("信箱","Mailbox"));
   $("#dropsLbl").textContent=L("滴水","drops");
   [["habit","打卡","Habits"],["life","生活","Life"],["study","学习","Study"],["work","工作","Work"]].forEach(([k,zh,en])=>$("#tl-"+k).textContent=L(zh,en));
   $("#capLbl").textContent=L("想到什么就丢给我","Toss me anything on your mind");
@@ -4056,6 +4212,7 @@ function openSettings(){
       <div class="plist tp" id="set-cityres"></div>
       <span class="hint">${wx.lat!=null?L(`现在用的是：${esc(wx.city||"当前位置")}。`,`Using: ${esc(wx.city||"your location")}.`):L("还没有位置。识别得不对的话，在这里搜城市改一下。","No location yet. If it's wrong, search for your city here.")} ${L("位置只存在这台设备上。","Your location stays on this device.")}</span></div>`:""}
     <div class="field"><span>${L("几点该睡觉","Bedtime")}</span><div class="until-row"><input type="time" id="set-bed" value="${esc(kept.bed??bedTime)}"><button class="chip hz${(kept.bed??bedTime)?"":" on"}" data-set="nobed">${L("不提醒","Off")}</button></div><span class="hint">${L("过了这个时间，{pet}会提醒你该睡啦。","After this time {pet} will remind you to go to bed.")}</span></div>
+    <div class="field"><span>${L("我的生日（写给下一岁的信会在这天拆）","My birthday (letters to a year-older me open then)")}</span><div class="drow">${(()=>{const b=bdParts();return `<select id="set-bm"><option value="">${L("月","Month")}</option>${[...Array(12)].map((_,i)=>`<option value="${i+1}" ${b&&b.m===i+1?"selected":""}>${L(`${i+1} 月`,MON[i])}</option>`).join("")}</select><select id="set-bd"><option value="">${L("日","Day")}</option>${[...Array(31)].map((_,i)=>`<option value="${i+1}" ${b&&b.d===i+1?"selected":""}>${L(`${i+1} 日`,String(i+1))}</option>`).join("")}</select><input id="set-by" inputmode="numeric" maxlength="4" placeholder="${L("年（可不填）","Year (optional)")}" value="${b&&b.y?b.y:""}">`})()}</div></div>
     <div class="field"><span>${L("冰箱：放多久提醒我","Fridge: remind me after")}</span><div class="shelfset">${SHELF.map(([k,,d,zh,en])=>`<label><span>${L(zh,en)}</span><select data-shelf="${k}">${[1,2,3,4,5,7,10,14,21,30,60,0].map(v=>`<option value="${v}" ${shelfDays(k)===v?"selected":""}>${v?L(v>=30&&v%30===0?`${v/30} 个月`:v>=7&&v%7===0?`${v/7} 周`:`${v} 天`,v>=30&&v%30===0?`${v/30} mo`:v>=7&&v%7===0?`${v/7} wk`:`${v} d`):L("不提醒","Never")}${v===d?L("（默认）"," (default)"):""}</option>`).join("")}</select></label>`).join("")}</div></div>
     <div class="field"><span>${L("功能介绍","Tour")}</span><div><button class="btn" data-set="tour">${L("重新看一遍介绍","Replay the tour")}</button></div></div>
     <label class="field chk"><span>${L("番茄钟提示音","Timer sound")}</span><span class="chkrow"><input type="checkbox" id="set-sound" ${(kept.snd??pset.sound)?"checked":""}> ${L("专注、休息结束时轻轻叮一声（默认关）","A soft ding when focus or a break ends (off by default)")}</span></label>
@@ -4093,6 +4250,7 @@ function openSettings(){
       const pn=bg.querySelector("#set-pet").value.trim(); if(pn!==petNameV)setPetName(pn);
       pset.sound=bg.querySelector("#set-sound").checked;savePset();
       {const v=bg.querySelector("#set-bed").value;if(v!==bedTime)setBedTime(v)}
+      {const m=+bg.querySelector("#set-bm").value,d=+bg.querySelector("#set-bd").value,yy=+bg.querySelector("#set-by").value;const nv=m&&d?`${yy>1900&&yy<=new Date().getFullYear()?yy:"-"}-${pad(m)}-${pad(d)}`:"";if(nv!==birthday)setBirthday(nv)}
       {const o={};bg.querySelectorAll("[data-shelf]").forEach(sel=>{const k=sel.dataset.shelf,e=SHELF.find(x=>x[0]===k);if(+sel.value!==e[2])o[k]=+sel.value});if(JSON.stringify(o)!==JSON.stringify(shelfCustom))setShelf(o)}
       if(IS_WEB&&bg.querySelector("#set-wx")){const o=bg.querySelector("#set-wx").checked;if(o!==wx.on){wx.on=o;saveWx();o?fetchWx(true):renderWx()}}
       const ds=+bg.querySelector("#set-daystart").value; if(ds!==dayStartH){dayStartH=ds;try{localStorage.setItem(DAYSTART_KEY,String(ds))}catch(_){};lastDay=todayStr();$("#today").textContent=fmtToday();render()}
@@ -4116,6 +4274,7 @@ function openSettings(){
   });
 }
 $("#gear").addEventListener("click",openSettings);
+$("#mbBtn").addEventListener("click",()=>openMailbox());
 
 /* ---------- the sprout's own name ---------- */
 const PET_POOL=()=>L(["团子","豆豆","糯米","青团","芽芽","小绿","嘟嘟","波波","汤圆","毛豆","布丁","阿嫩","饭团","麻薯","小葱"],["Bean","Mochi","Pip","Pea","Clover","Basil","Bud","Sprig","Maple","Olive","Peanut","Kiwi","Tofu","Pebble","Fern"]);
@@ -4165,7 +4324,7 @@ const FIREBASE_CONFIG={
   appId:"1:1053547899054:web:49caab221ae4f4171c253f"
 };
 const FB_VER="10.12.2";
-const COLS=["tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","memos","yearlyDays","pomos","meals","rests","eats","fridge","tlog","courses","sleep"];
+const COLS=["letters","tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","memos","yearlyDays","pomos","meals","rests","eats","fridge","tlog","courses","sleep"];
 const CLOUD_KEY="lifeos-cloud-uid";
 let fb=null, cloudUser=null, cloudState=FIREBASE_CONFIG?"loading":"off"; // off | loading | unavailable | signedout | signedin
 let localDB=null, unsubs=[];
@@ -4208,7 +4367,7 @@ function makeCloudDB(uid){
 function startData(store){
   unsubs.forEach(u=>{try{u()}catch(_){}}); unsubs=[];
   db=store;
-  tasks=[];habits=[];checkins={};shop=[];staples=[];trips=[];journal={};milestones=[];yearlyDays=[];pomos=[];meals=[];rests=[];eats=[];fridge=[];tlog=[];courses=[];sleeps={};weekly={};yearly={};wishes=[];memos=[];forest=[];curTheme="lemon";
+  letters=[];tasks=[];habits=[];checkins={};shop=[];staples=[];trips=[];journal={};milestones=[];yearlyDays=[];pomos=[];meals=[];rests=[];eats=[];fridge=[];tlog=[];courses=[];sleeps={};weekly={};yearly={};wishes=[];memos=[];forest=[];curTheme="lemon";
   for(const k in loaded)loaded[k]=false; recapChecked=false; lastStage=null; lastBuddy="";
   const fail=e=>{if(e&&e.code==="permission-denied")setStatus(L("没有权限读取数据，请重新登录。","No permission to read your data. Please sign in again."))};
   const sub=(c,fn,q)=>unsubs.push((q||db.collection(c)).onSnapshot(fn,fail));
@@ -4218,6 +4377,7 @@ function startData(store){
   sub("shop",s=>{shop=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.s=true;render()});
   sub("staples",s=>{staples=s.docs.map(d=>({id:d.id,...d.data()}));render()});
   sub("trips",s=>{trips=s.docs.map(d=>({id:d.id,...d.data()}));render()});
+  sub("letters",s=>{letters=s.docs.map(d=>({id:d.id,...d.data()}));mbDot();if(mbOpen)renderMailbox()});
   sub("sleep",s=>{const o={};s.docs.forEach(d=>{o[d.id]=d.data()});sleeps=o;render()});
   for(const [c,set] of [["meals",v=>meals=v],["rests",v=>rests=v],["eats",v=>eats=v],["fridge",v=>fridge=v],["tlog",v=>tlog=v],["courses",v=>courses=v]])sub(c,s=>{set(s.docs.map(d=>({id:d.id,...d.data()})));if(!spinning)render()});
   sub("pomos",s=>{pomos=s.docs.map(d=>({id:d.id,...d.data()}));render();if(!pomoBooted){pomoBooted=true;setTimeout(()=>{let w=false;try{w=!!localStorage.getItem("lifeos-welcomed")}catch(_){};if(w||userName)maybeTour("new")},1500);if(P&&(P.phase==="focus"||P.phase==="break"))P.open=P.open!==false;renderPomo()}});
@@ -4259,6 +4419,7 @@ async function onSignedIn(user){
     if(m.petName&&!petNameV)setPetName(m.petName,false);
     if(m.shelf)setShelf(m.shelf,false);
     if(m.bedTime!=null)setBedTime(m.bedTime,false);
+    if(m.birthday!=null)setBirthday(m.birthday,false);
     startData(store);
     if(n&&!asked)openMergeAsk(store,localData,n,user.uid);
   }
