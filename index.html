@@ -417,6 +417,9 @@ body.pomo-open{overflow:hidden}
 .fprev{display:flex;flex-direction:column;gap:6px}.fprev .lbl{font-size:12px;color:var(--muted)}.pv{display:flex;gap:6px;flex-wrap:wrap}.pv .pc{display:inline-flex;align-items:center;gap:8px;background:var(--bg-2);border:2px dashed var(--line);border-radius:12px;padding:3px 4px 3px 10px;font-size:13.5px}
 .pv .stp{border:none;gap:2px}.pv .stp button{background:var(--surface-2);border-radius:8px;width:26px;height:26px;font-size:14px}.pv .stp>span{min-width:36px;font-size:12.5px;color:var(--life-ink)}.pv .wq{padding-right:6px}
 .when.frz.on{border-color:#6cc4ff;background:color-mix(in srgb,#6cc4ff 18%,var(--surface));color:var(--fg)}
+.slots{display:flex;gap:6px}.slot{width:34px;height:34px;border-radius:50%;border:2.5px solid var(--line);background:var(--surface);font:inherit;font-size:13px;font-weight:600;color:var(--muted);display:grid;place-items:center;padding:0;cursor:pointer;flex:none}.slot svg{width:16px;height:16px}
+.slot.on{color:#fff;border-color:var(--sc,var(--life));background:var(--sc,var(--life))}.slot:not(.on):hover{border-color:var(--sc,var(--life))}
+.sheet>.titlein{margin-bottom:2px}
 .titlein{border:none;border-bottom:2px solid var(--line);background:none;font-family:var(--f-display);font-size:22px;color:var(--fg);padding:2px 0 6px;width:100%;outline:none}.titlein:focus{border-bottom-color:var(--brand)}
 .slp{background:var(--surface);border-radius:20px;padding:12px 14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
 .slp .h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.slp .h svg{width:40px;height:40px;flex:none}.slp .h b{font-family:var(--f-display);font-weight:400;font-size:18px;flex:1;min-width:0}.slp .h small{color:var(--muted);font-size:12.5px}
@@ -1066,6 +1069,7 @@ function buddyState(){
   if(h<5)return {...base,mood:"sleepy",say:L(`已经凌晨 ${h} 点啦，记完就去睡吧，事情明天还在～`,`It's ${h} a.m. already. Jot it down and get some sleep, it'll all still be here tomorrow.`)};
   const bdr=bdReminder(); if(bdr)return {...base,mood:"happy",say:bdr};
   const bed=bedReminder(); if(bed)return {...base,mood:"sleepy",say:bed};
+  const pmr=pmReminder(); if(pmr)return {...base,mood:"idle",say:pmr};
   if(bloom)return {...base,mood:"cheer",say:L("今天的打卡全部完成！我开花啦 🌸","All check-ins done today! I'm blooming 🌸")};
   const hot=tasks.filter(t=>!t.done&&!t.deleted&&+t.pri===3&&on(t.space)).length;
   if(!urgent&&hot&&h>=5)return {...base,mood:"idle",say:L(`有 ${hot} 件高优先级的事，先挑最红的那个开始吧！`,`${hot} high-priority ${n_(hot,"task is","tasks are")} waiting. Start with a red one!`)};
@@ -1182,10 +1186,13 @@ function taskRow(t){
   if(fm>=1)tags.unshift(`<span class="fp">${TOM_ICON}${fmtMins(fm)}</span>`);
   const canPlay=!t.done&&(t.space==="study"||t.space==="work");
   const hot=P&&P.phase==="pick";
+  const tt=!t.done&&t.repeat?todOf(t.repeat):[], sd=t.slotDone||{};
+  if(tt.length>1)tags.splice(tags.findIndex(x=>x.includes('class="rep'))+1,0,`<span class="prog">${tt.filter(x=>sd[x[0]]).length}/${tt.length}</span>`);
+  const whenLine=tt.filter(x=>sd[x[0]]).map(x=>L(`${x[1]} ${hhmm(sd[x[0]])} 做完`,`${x[1]} done ${hhmm(sd[x[0]])}`)).join(" · ");
   return `<div class="task${t.done?" done":""}${pr?" p"+pr:""}${pz?" paused":""}${canPlay?" hasplay":""}">
-    <button class="check${t.done?" on":""}" data-act="toggle" data-id="${t.id}" aria-label="${t.done?L("标记为未完成","Mark as not done"):L("标记为完成","Mark as done")}">${CHECK}</button>
+    ${tt.length?`<span class="slots" style="--sc:var(--${t.space==="study"||t.space==="work"?t.space:"life"})">${tt.map(([k,n,sh])=>`<button class="slot${sd[k]?" on":""}" data-act="slot" data-id="${t.id}" data-v="${k}" aria-label="${n}${sd[k]?L(" · 已完成，点一下取消"," · done, tap to undo"):L(" · 点一下完成"," · tap when done")}" aria-pressed="${!!sd[k]}">${sd[k]?SLOT_CK:sh}</button>`).join("")}</span>`:`<button class="check${t.done?" on":""}" data-act="toggle" data-id="${t.id}" aria-label="${t.done?L("标记为未完成","Mark as not done"):L("标记为完成","Mark as done")}">${CHECK}</button>`}
     <button class="t-main" data-act="edit" data-id="${t.id}">
-      <span class="t-title">${esc(t.title)}</span>
+      <span class="t-title">${esc(t.title)}</span>${whenLine?`<span class="t-note">${whenLine}</span>`:""}
       ${t.note?`<span class="t-note">${esc(t.note)}</span>`:""}
     </button>
     ${tags.length?`<span class="tagset">${tags.join("")}</span>`:"<span></span>"}
@@ -1687,8 +1694,8 @@ function openDish(id){
   const cur=foodSlot||slotNow();
   let sl=x?[...dishSlots(x)]:(cur==="b"?["b"]:["l","d"]);
   const bg=document.createElement("div");bg.className="sheet-bg";
-  const draw=(n,ing)=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("一道菜","A dish")}"><h3>${x?L("改一改这道菜","Edit dish"):L("加一道菜","Add a dish")}</h3>
-    <label class="field"><span>${L("菜名","Dish")}</span><input id="dn" maxlength="40" value="${esc(n)}" placeholder="${L("比如：番茄炒蛋","e.g. Tomato and egg")}"></label>
+  const draw=(n,ing)=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("一道菜","A dish")}">${x?`<input aria-label="${L("菜名","Dish")}" class="titlein" id="dn" maxlength="40" value="${esc(n)}" placeholder="${L("比如：番茄炒蛋","e.g. Tomato and egg")}">`:`<h3>${L("加一道菜","Add a dish")}</h3>
+    <label class="field"><span>${L("菜名","Dish")}</span><input id="dn" maxlength="40" value="${esc(n)}" placeholder="${L("比如：番茄炒蛋","e.g. Tomato and egg")}"></label>`}
     <div class="field"><span>${L("适合哪几顿（可以多选）","Good for (pick any)")}</span><div class="chips">${SLOTS().map(([k,nm])=>`<button class="chip hz${sl.includes(k)?" on":""}" data-d="slot" data-v="${k}" aria-pressed="${sl.includes(k)}">${nm}</button>`).join("")}</div></div>
     <label class="field"><span>${L("要用到的食材（可不填，用逗号隔开）","Ingredients (optional, comma-separated)")}</span><input id="di" maxlength="200" value="${esc(ing)}" placeholder="${L("番茄、鸡蛋","tomato, egg")}"></label>
     <span class="hint">${L("填了食材，转到这道菜时会看冰箱里有没有，缺的可以一键加进购物清单。","With ingredients, the wheel checks your fridge and can add what's missing to your list.")}</span>
@@ -1709,8 +1716,8 @@ function openRest(id){
   const st={name:x?x.name:"",addr:x?x.addr||"":"",cuisine:x?x.cuisine||"":"",want:x?!!x.want&&!(x.visits>0):true,slots:x&&x.slots&&x.slots.length?[...x.slots]:[foodSlot||slotNow()]};
   const bg=document.createElement("div");bg.className="sheet-bg";
   const grab=()=>{const q=k=>bg.querySelector(k);if(!q("#rn"))return;st.name=q("#rn").value;st.addr=q("#ra").value;st.cuisine=q("#rc").value;st.want=q("#rw").checked};
-  const draw=()=>{grab();bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("一家店","A place")}"><h3>${x?L("改一改这家店","Edit place"):L("加一家店","Add a place")}</h3>
-    <label class="field"><span>${L("店名","Name")}</span><input id="rn" maxlength="40" value="${esc(st.name)}" placeholder="${L("比如：Dishoom","e.g. Dishoom")}"></label>
+  const draw=()=>{grab();bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("一家店","A place")}">${x?`<input aria-label="${L("店名","Name")}" class="titlein" id="rn" maxlength="40" value="${esc(st.name)}" placeholder="${L("比如：Dishoom","e.g. Dishoom")}">`:`<h3>${L("加一家店","Add a place")}</h3>
+    <label class="field"><span>${L("店名","Name")}</span><input id="rn" maxlength="40" value="${esc(st.name)}" placeholder="${L("比如：Dishoom","e.g. Dishoom")}"></label>`}
     <label class="field"><span>${L("地址（自己记一下就好）","Address (just a note)")}</span><input id="ra" maxlength="80" value="${esc(st.addr)}" placeholder="${L("比如：King's Cross","e.g. King's Cross")}"></label>
     <label class="field"><span>${L("菜系（可不填）","Cuisine (optional)")}</span><input id="rc" maxlength="20" value="${esc(st.cuisine)}" placeholder="${L("比如：印度菜","e.g. Indian")}"></label>
     <div class="field"><span>${L("适合哪一顿","Good for")}</span><div class="chips">${SLOTS().map(([k,n])=>`<button class="chip hz${st.slots.includes(k)?" on":""}" data-r="slot" data-v="${k}">${n}</button>`).join("")}</div></div>
@@ -1854,6 +1861,14 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-sl]");if(!
   if(a==="wake"){const y=addDays(t,-1);saveSleep(y,{wake:Date.now()});const n=sleeps[y];cheer(n.bed?L(`早上好！昨晚睡了 ${durTxt(n.wake-n.bed)}`,`Morning! You slept ${durTxt(n.wake-n.bed)}`):L("早上好！","Good morning!"));return}
   if(a==="skip"){slSkipSet(b.dataset.v,b.dataset.k);render();return}
   if(a==="edit"){openSleep(b.dataset.v);return}});
+function pmLeft(){
+  if(new Date().getHours()<20&&new Date().getHours()>=dayStartH)return [];
+  const td=todayStr();
+  return tasks.filter(t=>!t.done&&!t.deleted&&t.repeat&&!isPaused(t)&&(t.repeat.times||[]).includes("pm")&&(!t.due||t.due<=td)&&!(t.slotDone||{}).pm);
+}
+function pmReminder(){const l=pmLeft();if(!l.length)return null;
+  const n=l.map(t=>`「${t.title}」`).slice(0,2).join(L("和",", "));
+  return L(`${n}晚上那次还没做哦，做完点一下「晚」～`,`${n}: tonight's one isn't done yet. Tap “PM” when it is～`)}
 function bedReminder(){
   if(!bedTime)return null;const n=new Date(),h=n.getHours()*60+n.getMinutes(),bt=tmin(bedTime);
   const late=h>=bt||(h<dayStartH*60&&bt>12*60);
@@ -1897,8 +1912,8 @@ function openCourse(id){
   const st=x?{...x,days:[...(x.days||[])]}:{name:"",days:[new Date(todayStr()+"T12:00:00").getDay()],start:"09:00",end:"10:00",loc:"",from:todayStr(),to:"",color:CCOLS[courses.length%CCOLS.length]};
   const bg=document.createElement("div");bg.className="sheet-bg";
   const grab=()=>{const q=k=>bg.querySelector(k);if(!q("#cn"))return;st.name=q("#cn").value;st.start=q("#cs").value;st.end=q("#ce").value;st.loc=q("#cl").value;st.from=q("#cf").value;st.to=q("#ct").value};
-  const draw=()=>{grab();bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("一门课","A class")}"><h3>${x?L("改一改这门课","Edit class"):L("加一门课","Add a class")}</h3>
-    <label class="field"><span>${L("课程名","Class")}</span><input id="cn" maxlength="60" value="${esc(st.name)}" placeholder="${L("比如：Speech Processing","e.g. Speech Processing")}"></label>
+  const draw=()=>{grab();bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("一门课","A class")}">${x?`<input aria-label="${L("课程名","Class")}" class="titlein" id="cn" maxlength="60" value="${esc(st.name)}" placeholder="${L("比如：Speech Processing","e.g. Speech Processing")}">`:`<h3>${L("加一门课","Add a class")}</h3>
+    <label class="field"><span>${L("课程名","Class")}</span><input id="cn" maxlength="60" value="${esc(st.name)}" placeholder="${L("比如：Speech Processing","e.g. Speech Processing")}"></label>`}
     ${x&&x.dates&&x.dates.length?`<span class="hint">${L(`从日历导入，一共 ${x.dates.length} 次课`,`Imported: ${x.dates.length} sessions`)}</span>`:`<div class="field"><span>${L("每周哪几天","Which days")}</span><div class="wdots">${[1,2,3,4,5,6,0].map(d=>`<button class="wdot${st.days.includes(d)?" on":""}" data-c3="wd" data-v="${d}">${L(WD[d],WDEN[d].slice(0,2))}</button>`).join("")}</div></div>`}
     <div class="drow"><label class="field"><span>${L("开始","Starts")}</span><input type="time" id="cs" value="${esc(st.start)}"></label><label class="field"><span>${L("结束","Ends")}</span><input type="time" id="ce" value="${esc(st.end)}"></label></div>
     <label class="field"><span>${L("地点（可不填）","Room (optional)")}</span><input id="cl" maxlength="60" value="${esc(st.loc||"")}" placeholder="${L("比如：Roberts 106","e.g. Roberts 106")}"></label>
@@ -1944,7 +1959,8 @@ function timelineItems(d){
   const it=[];
   const ck=checkins[d]||{};
   for(const hid in ck){const v=ck[hid];if(typeof v!=="number")continue;const h=habits.find(x=>x.id===hid);if(!h)continue;it.push({t:v,k:"habit",txt:L(`打卡 · ${esc(h.name)}`,`Check-in · ${esc(h.name)}`)})}
-  tasks.filter(t=>t.done&&!t.deleted&&t.doneAt&&dayOf(t.doneAt)===d).forEach(t=>it.push({t:t.doneAt,k:t.space,txt:L(`完成「${esc(t.title)}」`,`Done: “${esc(t.title)}”`)}));
+  tasks.filter(t=>!t.deleted&&t.slotDone&&t.repeat&&todOf(t.repeat).length).forEach(t=>todOf(t.repeat).forEach(([k,n])=>{const v=t.slotDone[k];if(v&&dayOf(v)===d)it.push({t:v,k:t.space,txt:L(`完成「${esc(t.title)}」（${n}）`,`Done: “${esc(t.title)}” (${n.toLowerCase()})`)})}));
+  tasks.filter(t=>t.done&&!t.deleted&&t.doneAt&&dayOf(t.doneAt)===d&&!(t.slotDone&&t.repeat&&todOf(t.repeat).length)).forEach(t=>it.push({t:t.doneAt,k:t.space,txt:L(`完成「${esc(t.title)}」`,`Done: “${esc(t.title)}”`)}));
   pomos.filter(p=>p.day===d&&(+p.mins||0)>=1).forEach(p=>{const t=p.taskId&&tasks.find(x=>x.id===p.taskId);const st=p.end?p.end-(+p.mins)*6e4:p.start;
     it.push({t:st,mins:+p.mins,k:"pomo",txt:`${TOM_ICON}${L(`专注 ${Math.round(p.mins)} 分钟`,`Focused ${Math.round(p.mins)} min`)}${p.space?` <span class="tag ${p.space}">${BOARD_NAME(p.space)}</span>`:""}`,sub:t?esc(t.title):""})});
   eats.filter(x=>x.day===d).forEach(x=>{const s=SLOTS().find(y=>y[0]===x.slot);it.push({t:x.at,k:"life",txt:`${s?s[2]:L("吃饭","Meal")} · ${esc(x.name)}`,eat:x.id})});
@@ -1969,8 +1985,8 @@ function openTl(d,id){
   const now=new Date();const st={title:x?x.title:"",start:x?x.start:pad(now.getHours())+":00",end:x?x.end||"":"",space:x?x.space||"":""};
   const bg=document.createElement("div");bg.className="sheet-bg";
   const grab=()=>{const q=k=>bg.querySelector(k);if(!q("#tt"))return;st.title=q("#tt").value;st.start=q("#ts").value;st.end=q("#te").value};
-  const draw=()=>{grab();bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("补一条","Add an entry")}"><h3>${x?L("改一改","Edit"):L("补一条","Add an entry")}</h3>
-    <label class="field"><span>${L("做了什么","What happened")}</span><input id="tt" maxlength="60" value="${esc(st.title)}" placeholder="${L("比如：去健身房","e.g. Gym")}"></label>
+  const draw=()=>{grab();bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("补一条","Add an entry")}">${x?`<input aria-label="${L("做了什么","What happened")}" class="titlein" id="tt" maxlength="60" value="${esc(st.title)}" placeholder="${L("比如：去健身房","e.g. Gym")}">`:`<h3>${L("补一条","Add an entry")}</h3>
+    <label class="field"><span>${L("做了什么","What happened")}</span><input id="tt" maxlength="60" value="${esc(st.title)}" placeholder="${L("比如：去健身房","e.g. Gym")}"></label>`}
     <div class="drow"><label class="field"><span>${L("开始","Start")}</span><input type="time" id="ts" value="${esc(st.start)}"></label><label class="field"><span>${L("结束（可不填）","End (optional)")}</span><input type="time" id="te" value="${esc(st.end)}"></label></div>
     <div class="field"><span>${L("算在哪个板块（可不选）","Board (optional)")}</span><div class="chips">${[["",L("不选","None")],["life",BOARD_NAME("life")],["study",BOARD_NAME("study")],["work",BOARD_NAME("work")]].map(([k,n])=>`<button class="chip hz${st.space===k?" on":""}" data-t="sp" data-v="${k}">${n}</button>`).join("")}</div></div>
     <div class="sheet-actions"><button class="btn" data-t="x">${L("取消","Cancel")}</button><button class="btn primary" data-t="ok">${L("保存","Save")}</button></div>
@@ -2228,8 +2244,13 @@ const NTH=["","第一个","第二个","第三个","第四个"], NTH_EN=["","1st"
 const wdOrder=ds=>[...ds].sort((a,b)=>((a+6)%7)-((b+6)%7));
 const md2=d=>{const [,m,dd]=d.split("-").map(Number);return `${m}/${dd}`};
 const mdw=d=>{const [y,m,dd]=d.split("-").map(Number);const w=new Date(y,m-1,dd).getDay();return L(`${m}/${dd} 周${WD[w]}`,`${WDEN[w]} ${dd} ${MON[m-1]}`)};
+const SLOT_CK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const TOD=()=>[["am",L("早上","Morning"),L("早","AM")],["noon",L("中午","Midday"),L("中","Noon")],["pm",L("晚上","Evening"),L("晚","PM")]];
+const todOf=r=>r&&Array.isArray(r.times)?TOD().filter(x=>r.times.includes(x[0])):[];
 function repLabel(r){
   if(!r)return "";
+  const tt=todOf(r);if(tt.length){const base=repLabel({...r,times:null});const w=tt.length===1?tt[0][1]:tt.map(x=>x[2]).join(L("",
+" & "));return r.freq==="day"||base===L("每天","Daily")?L(`每天${w}`,`Daily · ${w}`):L(`${base} · ${w}`,`${base} · ${w}`)}
   if(r.freq==="day")return L("每天","Daily");
   if(r.freq==="month")return r.nth?L(`每月${NTH[r.nth]}周${WD[r.wd]}`,`Monthly · ${NTH_EN[r.nth]} ${WDEN[r.wd]}`):L(`每月${r.mday}号`,`Monthly · day ${r.mday}`);
   const ds=wdOrder(r.days||[]);
@@ -2266,6 +2287,7 @@ function normRepeat(r,due){
   if(r.freq==="week"||r.freq==="2week"){o.days=(r.days&&r.days.length?[...new Set(r.days)]:[bw]).map(Number);if(r.freq==="2week")o.anchor=r.anchor||base}
   if(r.freq==="month"){if(r.nth){o.nth=r.nth;o.wd=r.wd}else o.mday=r.mday||+base.slice(8)}
   if(r.until)o.until=r.until; if(r.pause)o.pause=r.pause;
+  if(Array.isArray(r.times)&&r.times.length)o.times=TOD().map(x=>x[0]).filter(k=>r.times.includes(k));
   return o;
 }
 function spawnNext(t,nx){
@@ -2297,6 +2319,7 @@ function completeTask(t,el){
   Object.assign(t,patch); render();
   queued(ref.path,()=>ref.update(patch));
   const undo=()=>{const p2={done:false,doneAt:null,nextId:null};if(patch.nextId){const r2=db.doc("tasks/"+patch.nextId);queued(r2.path,()=>r2.delete())}queued(ref.path,()=>ref.update(p2))};
+  if(t.slotDone&&todOf(t.repeat).length){snack(L("今天的都做完啦！咕嘟喝了 1 滴水","All done for today! Glug, 1 drop of water"),nx?L(`下一次：${mdw(nx)}`,`Next: ${mdw(nx)}`):L("这是最后一次啦","That was the last one"),L("撤销","Undo"),()=>{uncompleteTask(t)});return}
   if(t.repeat&&t.due&&t.due>today)snack(L("提前完成啦！咕嘟喝了 1 滴水","Done early! Glug, 1 drop of water"),nx?L(`下一次：${mdw(nx)}`,`Next: ${mdw(nx)}`):L("这是最后一次啦","That was the last one"),L("撤销","Undo"),undo);
   else snack(L("完成啦！咕嘟喝了 1 滴水","Done! Glug, 1 drop of water"),L(`记在今天 · ${dayLabel(today)}`,`Logged today · ${dayLabel(today)}`)+(nx?L(` · 下一次 ${md2(nx)}`,` · next ${md2(nx)}`):""),L("是昨天做的","I did it yesterday"),()=>{
     const y=addDays(today,-1);queued(ref.path,()=>ref.update({doneAt:noonOf(y)}));cheer(L(`改好啦，记在昨天 · ${dayLabel(y)}`,`Fixed. Logged for yesterday, ${dayLabel(y)}`))});
@@ -2304,7 +2327,9 @@ function completeTask(t,el){
 function uncompleteTask(t){
   const ref=db.doc("tasks/"+t.id);
   if(t.nextId){const n=tasks.find(x=>x.id===t.nextId);if(n&&!n.done){const r2=db.doc("tasks/"+t.nextId);queued(r2.path,()=>r2.delete())}}
-  queued(ref.path,()=>ref.update({done:false,doneAt:null,nextId:null}));
+  const p={done:false,doneAt:null,nextId:null};
+  if(t.slotDone&&Object.keys(t.slotDone).length){const sd={...t.slotDone};const last=Object.keys(sd).sort((a,b)=>sd[b]-sd[a])[0];delete sd[last];p.slotDone=sd}
+  queued(ref.path,()=>ref.update(p));
 }
 function skipTask(t){
   const nx=repNextFor(t);
@@ -2647,9 +2672,9 @@ function openBd(id){
     const mSel=`<select id="bd-m" aria-label="${L("月","Month")}"><option value="">${L("月","Month")}</option>${[...Array(12)].map((_,i)=>`<option value="${i+1}" ${+st.month===i+1?"selected":""}>${L(`${i+1} 月`,MON[i])}</option>`).join("")}</select>`;
     const dSel=`<select id="bd-d" aria-label="${L("日","Day")}"><option value="">${L("日","Day")}</option>${[...Array(31)].map((_,i)=>`<option value="${i+1}" ${+st.day===i+1?"selected":""}>${L(`${i+1} 日`,i+1)}</option>`).join("")}</select>`;
     bg.innerHTML=`<div class="sheet bd-sheet" role="dialog" aria-label="${L("记住一个日子","Remember a date")}" style="--bc:${col}">
-    <h3>${old?L("改一改这个日子","Edit this date"):L("让{pet}记住一个日子","Ask {pet} to remember a date")}</h3>
+    ${old?`<input id="bd-name" class="titlein" maxlength="40" value="${esc(st.name||"")}" aria-label="${L("名字","Name")}">`:`<h3>${L("让{pet}记住一个日子","Ask {pet} to remember a date")}</h3>`}
     <div class="tchips">${TYPES.map(([k,n])=>`<button type="button" class="tchip${st.type===k?" on":""}" data-b="type" data-v="${k}">${BD_IC[k]}${n}</button>`).join("")}</div>
-    <label class="field"><span>${st.type==="birthday"?L("是谁的生日？","Whose birthday?"):L("纪念什么？","What's the occasion?")}</span><input id="bd-name" maxlength="40" value="${esc(st.name||"")}" placeholder="${st.type==="birthday"?L("比如：妈妈","e.g. Mum"):L("比如：和 Lily 认识","e.g. Met Lily")}"></label>
+    ${old?"":`<label class="field"><span>${st.type==="birthday"?L("是谁的生日？","Whose birthday?"):L("纪念什么？","What's the occasion?")}</span><input id="bd-name" maxlength="40" value="${esc(st.name||"")}" placeholder="${st.type==="birthday"?L("比如：妈妈","e.g. Mum"):L("比如：和 Lily 认识","e.g. Met Lily")}"></label>`}
     <div class="field"><span>${L("日期","Date")}</span><div class="drow">${lang==="en"?mSel+dSel+ySel:ySel+mSel+dSel}</div>
       <span class="hint">${st.type==="birthday"?L("年份可以不填，填了会显示几岁","Year is optional. Add it to show their age"):L("年份可以不填，填了会显示第几周年","Year is optional. Add it to count the years")}</span></div>
     <div class="field"><span>${L("颜色","Colour")}</span><div class="cdots">${BD_COLORS.map(c=>`<button type="button" class="cdot${c===col?" on":""}" data-b="col" data-v="${c}" style="--c:${c}" aria-label="${c}" aria-pressed="${c===col}"></button>`).join("")}</div></div>
@@ -3334,9 +3359,8 @@ function openWish(id){
   const bg=document.createElement("div"); bg.className="sheet-bg";
   const grab=()=>{draft.title=bg.querySelector("#we-title").value;draft.note=bg.querySelector("#we-note").value;const p=bg.querySelector("#we-price"),s=bg.querySelector("#we-saved"),c=bg.querySelector("#we-cur");if(p)draft.price=p.value;if(s)draft.saved=s.value;if(c)draft.cur=c.value};
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑愿望","Edit wish")}">
-    <h3>${L("改一改这个愿望","Edit this wish")}</h3>
+    <input id="we-title" class="titlein" value="${esc(draft.title)}" maxlength="100" aria-label="${L("愿望","Wish")}">
     <div class="field"><span>${L("类型","Type")}</span><div class="chips">${WISH_KINDS.map(k=>`<button class="chip hz${draft.kind===k[0]?" on":""}" data-we="kind" data-v="${k[0]}">${sproutIcon(k[0])}${L(k[2],k[3])}</button>`).join("")}</div></div>
-    <label class="field"><span>${L("愿望","Wish")}</span><input id="we-title" value="${esc(draft.title)}" maxlength="100"></label>
     ${draft.kind==="buy"?`<div class="wa-row"><label class="field"><span>${L("货币","Currency")}</span><select id="we-cur" class="wish-sheet-cur">${curOptions(draft.cur)}</select></label><label class="field" style="flex:1"><span>${L("价格","Price")}</span><input id="we-price" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(draft.price||"")}"></label>
       <label class="field" style="flex:1"><span>${L("已经攒了","Saved so far")}</span><input id="we-saved" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(draft.saved||"")}"></label></div>`:""}
     <label class="field"><span>${L("备注","Notes")}</span><textarea id="we-note" placeholder="${L("链接、颜色、想和谁一起去……","A link, a colour, who to go with…")}">${esc(draft.note||"")}</textarea></label>
@@ -3494,8 +3518,7 @@ function openMemo(id){
   const bg=document.createElement("div"); bg.className="sheet-bg";
   const draw=()=>{const tv=bg.querySelector("#me-title")?.value??m.title??"", nv=bg.querySelector("#me-note")?.value??m.note??"";
     bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑备忘","Edit note")}">
-    <h3>${L("改一改这张备忘","Edit this note")}</h3>
-    <label class="field"><span>${L("标题","Title")}</span><input id="me-title" maxlength="60" placeholder="${L("比如：周六去 Brighton","e.g. Saturday in Brighton")}"></label>
+    <input id="me-title" class="titlein" maxlength="60" aria-label="${L("标题","Title")}" placeholder="${L("比如：周六去 Brighton","e.g. Saturday in Brighton")}">
     <label class="field"${m.kind==="text"?" hidden":""}><span>${L("备注","Notes")}</span><textarea id="me-note" maxlength="2000" placeholder="${L("地址、集合时间、要提醒自己的话……","An address, a meeting time, a reminder to yourself…")}"></textarea></label>
     <div class="sheet-actions"><button class="btn danger" data-me="del">${confirmDel?L("再点一次确认删除","Tap again to delete"):L("删除这张备忘","Delete note")}</button>
       <span style="display:flex;gap:8px"><button class="btn" data-me="close">${L("取消","Cancel")}</button><button class="btn primary" data-me="save">${L("保存","Save")}</button></span></div></div>`;
@@ -3520,7 +3543,8 @@ function openEditor(id,preset){
     return `<div class="field"><span>${L("重复","Repeat")}</span><div class="chips">${FREQ.map(([k,n])=>`<button class="chip hz${(r?r.freq:"")===k?" on":""}" data-ed="freq" data-v="${k}">${n}</button>`).join("")}</div>
     ${r&&(r.freq==="week"||r.freq==="2week")?`<div class="wdots">${[1,2,3,4,5,6,0].map(d=>`<button class="wdot${(r.days||[]).includes(d)?" on":""}" data-ed="wd" data-v="${d}" aria-pressed="${(r.days||[]).includes(d)}">${L(WD[d],WDEN[d].slice(0,2))}</button>`).join("")}</div>`:""}
     ${r&&r.freq==="month"?`<span class="hint">${r.nth?L(`每月${NTH[r.nth]}周${WD[r.wd]}`,`${NTH_EN[r.nth]} ${WDEN[r.wd]} of each month`):L(`每月 ${+base.slice(8)} 号（跟着上面的日期）`,`Day ${+base.slice(8)} of each month (follows the date above)`)}</span>`:""}
-    </div>${r?`<div class="field"><span>${L("结束日期","Ends")}</span><div class="until-row"><input type="date" id="ed-until" value="${esc(r.until||"")}" min="${base}"><button class="chip hz${r.until?"":" on"}" data-ed="nountil">${L("不设结束","Never")}</button></div></div>
+    </div>${r?`<div class="field"><span>${L("何时做此事（可多选）","When (pick any)")}</span><div class="chips">${TOD().map(([k,n])=>`<button class="chip hz${(r.times||[]).includes(k)?" on":""}" data-ed="tod" data-v="${k}" aria-pressed="${(r.times||[]).includes(k)}">${n}</button>`).join("")}</div><span class="hint">${(r.times||[]).length?L("每一次单独打勾，都勾完了才算这次做完","Tick each one. It's done when they're all ticked"):L("不选就是一次，什么时候做都行","Leave empty for once, any time")}</span></div>
+    <div class="field"><span>${L("结束日期","Ends")}</span><div class="until-row"><input type="date" id="ed-until" value="${esc(r.until||"")}" min="${base}"><button class="chip hz${r.until?"":" on"}" data-ed="nountil">${L("不设结束","Never")}</button></div></div>
     ${!isNew&&!t.done?`<div class="rep-acts">${isPaused(t)?`<button class="btn" data-ed="resume">${L("恢复","Resume")}</button>`:`<button class="btn" data-ed="pause">${PAUSE_SVG} ${L("暂停一阵子","Pause for a while")}</button>`}<button class="btn" data-ed="skip">${L("跳过这次","Skip this one")}</button></div>`:""}`:""}`};
   const doneBlock=()=>{if(isNew||!t.done)return "";const td=todayStr(),y1=addDays(td,-1),y2=addDays(td,-2),dd=draft.doneDay||td;const other=![td,y1,y2].includes(dd);
     return `<div class="field"><span>${L("什么时候做完的","When did you finish it?")}</span><div class="chips">
@@ -3531,8 +3555,8 @@ function openEditor(id,preset){
       ${pickDone||other?`<input type="date" id="ed-doneday" min="${addDays(td,-30)}" max="${td}" value="${dd}">`:""}</div>`};
   const bg=document.createElement("div"); bg.className="sheet-bg";
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑任务","Edit task")}">
-    <h3>${isNew?L("添加一条","Add a task"):L("改一改","Edit")}</h3>
-    <label class="field"><span>${isNew?L("要做什么？","What needs doing?"):L("标题","Title")}</span><input id="ed-title" value="${esc(draft.title)}" placeholder="${L("比如：整理 Week 6 笔记","e.g. Tidy up week 6 notes")}"></label>
+    ${isNew?`<h3>${L("添加一条","Add a task")}</h3>
+    <label class="field"><span>${L("要做什么？","What needs doing?")}</span><input id="ed-title" value="${esc(draft.title)}" placeholder="${L("比如：整理 Week 6 笔记","e.g. Tidy up week 6 notes")}"></label>`:`<input id="ed-title" class="titlein" aria-label="${L("标题","Title")}" value="${esc(draft.title)}" placeholder="${L("比如：整理 Week 6 笔记","e.g. Tidy up week 6 notes")}">`}
     <div class="field"><span>${L("时间尺度","Timeframe")}</span><div class="chips">${HZ.map(h=>`<button class="chip hz${draft.horizon===h.k?" on":""}" data-ed="hz" data-v="${h.k}">${h.name}</button>`).join("")}</div></div>
     <div class="field"><span>${L("优先级","Priority")}</span><div class="chips">${[0,3,2,1].map(v=>`<button class="chip hz${draft.pri===v?" on":""}" data-ed="pri" data-v="${v}">${v?`<span class="psvg">${priIcon(v)}</span>`:""}${PRI_NAMES()[v]}</button>`).join("")}</div></div>
     <label class="field"><span>${draft.repeat?(isNew?L("第一次是哪天","First date"):L("这一次是哪天","This one's date")):L("截止日期","Due date")}</span><input type="date" id="ed-due" value="${esc(draft.due)}"></label>
@@ -3558,6 +3582,7 @@ function openEditor(id,preset){
     if(a==="freq"){const v=b.dataset.v;if(!v)draft.repeat=null;else{const bw=new Date((draft.due||todayStr())+"T12:00:00").getDay();draft.repeat={...(draft.repeat||{}),freq:v};if((v==="week"||v==="2week")&&!(draft.repeat.days||[]).length)draft.repeat.days=[bw];if(v!=="month"){delete draft.repeat.nth;delete draft.repeat.mday}}draw();return}
     if(a==="wd"){const d=+b.dataset.v,ds=new Set(draft.repeat.days||[]);ds.has(d)?ds.delete(d):ds.add(d);if(ds.size)draft.repeat.days=[...ds];draw();return}
     if(a==="nountil"){delete draft.repeat.until;draw();return}
+    if(a==="tod"){const v=b.dataset.v,ts=new Set(draft.repeat.times||[]);ts.has(v)?ts.delete(v):ts.add(v);draft.repeat.times=[...ts];draw();return}
     if(a==="pause"){bg.remove();openPause(id);return}
     if(a==="resume"){bg.remove();resumeTask(t);return}
     if(a==="skip"){bg.remove();skipTask(t);return}
@@ -3697,6 +3722,17 @@ document.addEventListener("click",async e=>{
     for(const x of got){const ref=db.doc("shop/"+x.id);await queued(ref.path,()=>ref.delete())}
     water(act,1);cheer(L(`采购完成，买了 ${got.length} 样！喝 1 滴水～`,`Shopping done, ${got.length} ${n_(got.length,"item","items")}! +1 drop～`));return;
   }
+  if(act.dataset.act==="slot"){
+    const t=tasks.find(x=>x.id===id);if(!t||t.done)return;
+    const k=act.dataset.v, sd={...(t.slotDone||{})};
+    if(sd[k])delete sd[k];else sd[k]=Date.now();
+    const need=todOf(t.repeat).map(x=>x[0]);
+    t.slotDone=sd; const ref=db.doc("tasks/"+t.id);
+    if(need.every(x=>sd[x])){queued(ref.path,()=>ref.update({slotDone:sd}));completeTask(t,act);return}
+    queued(ref.path,()=>ref.update({slotDone:sd}));
+    if(sd[k]){const r=act.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,[css(t.space==="life"?"--life":t.space==="study"?"--study":"--work"),css("--buddy")]);
+      const n=TOD().find(x=>x[0]===k)[1];cheer(L(`${n}的「${t.title}」记下啦，还差 ${need.filter(x=>!sd[x]).length} 次`,`${n} done for “${t.title}”, ${need.filter(x=>!sd[x]).length} to go`),"happy")}
+    render();return}
   if(act.dataset.act==="toggle"){
     const t=tasks.find(x=>x.id===id);if(!t)return;
     if(!t.done)completeTask(t,act);else uncompleteTask(t);
