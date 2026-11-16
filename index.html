@@ -260,6 +260,8 @@ details.done-box .list{margin-top:8px}
 .fmode button{display:flex;align-items:center;gap:4px}
 .fmode svg{width:18px;height:18px;flex:none}
 .rc-btns{display:flex;flex-wrap:wrap;gap:6px;border-bottom:2px dashed var(--line);padding-bottom:12px}
+@media(max-width:600px){.rc-btns{gap:6px}.rc-btns .btn{flex:1 1 auto;min-width:0;padding:7px 6px;font-size:13px;white-space:nowrap;text-align:center}}
+@media(max-width:380px){.rc-btns .btn{font-size:12px;padding:7px 4px}}
 .rc-btns .btn{font-size:13px;padding:5px 12px}
 /* recap sheet: a keepsake page */
 .sheet.rc-sheet{padding:0;gap:0;max-width:600px;overflow:auto}
@@ -2921,9 +2923,9 @@ function recapButtons(){
   const t=todayStr(), y=+t.slice(0,4), lw=addDays(weekStart(t),-7);
   const pastYears=[...new Set([...tasks.filter(x=>x.done&&x.doneAt).map(x=>+dayOf(x.doneAt).slice(0,4)),...Object.keys(checkins).map(d=>+d.slice(0,4))])].filter(v=>v&&v<y).sort((a,b)=>b-a);
   return `<div class="rc-btns">
-    <button class="btn" data-act="recap" data-kind="week" data-v="${lw}">📖 ${L("上周小记","Last week")}</button>
+    <button class="btn" data-act="recap" data-kind="week" data-v="${lw}">${L("上周小记","Last week")}</button>
     <button class="btn" data-act="recap" data-kind="week" data-v="${weekStart(t)}">${L("本周到现在","This week so far")}</button>
-    <button class="btn" data-act="recap" data-kind="year" data-v="${y}">🎉 ${L(`${y} 年到现在`,`${y} so far`)}</button>
+    <button class="btn" data-act="recap" data-kind="year" data-v="${y}">${L(`${y} 年到现在`,`${y} so far`)}</button>
     ${pastYears.map(v=>`<button class="btn" data-act="recap" data-kind="year" data-v="${v}">${L(`${v} 年总结`,`Your ${v}`)}</button>`).join("")}
   </div>`;
 }
