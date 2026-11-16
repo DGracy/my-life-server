@@ -259,7 +259,7 @@ details.done-box .list{margin-top:8px}
 .ms-row-d{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 .fmode button{display:flex;align-items:center;gap:4px}
 .fmode svg{width:18px;height:18px;flex:none}
-.rc-btns{display:flex;flex-wrap:wrap;gap:6px;border-top:2px dashed var(--line);padding-top:10px}
+.rc-btns{display:flex;flex-wrap:wrap;gap:6px;border-bottom:2px dashed var(--line);padding-bottom:12px}
 .rc-btns .btn{font-size:13px;padding:5px 12px}
 /* recap sheet: a keepsake page */
 .sheet.rc-sheet{padding:0;gap:0;max-width:600px;overflow:auto}
@@ -2923,12 +2923,12 @@ function calendarCard(sel){
   }
   const wd=L(["一","二","三","四","五","六","日"],["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]);
   return `<div class="cal">
+    ${recapButtons()}
     <div class="cal-head"><button data-act="calprev" aria-label="${L("上个月","Previous month")}">‹</button><h3>${L(`${y}年${m}月`,`${MONFULL[m-1]} ${y}`)}</h3><button data-act="calnext" aria-label="${L("下个月","Next month")}">›</button></div>
     <div class="cal-grid">${wd.map(w=>`<span class="cal-wd">${w}</span>`).join("")}${cells}</div>
     <div class="cal-legend">${keys.map(k=>`<span><i style="background:var(--${k})"></i>${name[k]}</span>`).join("")}<span>✎ ${L("写了感想","Reflection")}</span><span>${milestoneFace()}${L("值得记住","Moment")}</span>${["birthday","anniv"].filter(k=>yearlyDays.some(x=>x.type===k)).map(k=>`<span class="lgi">${BD_IC[k]}${k==="birthday"?L("生日","Birthday"):L("纪念日","Anniversary")}</span>`).join("")}<span>${L("点一天看详情","Tap a day for details")}</span></div>
     ${bdSection()}
     ${milestoneWall()}
-    ${recapButtons()}
   </div>`;
 }
 function shiftMonth(n){const [y,m]=(calMonth||(jDate||todayStr()).slice(0,7)).split("-").map(Number);const d=new Date(y,m-1+n,1);calMonth=`${d.getFullYear()}-${pad(d.getMonth()+1)}`;render()}
