@@ -376,6 +376,43 @@ body.pomo-open{overflow:hidden}
 .wx svg{position:absolute;left:4px;top:50%;width:24px;height:24px;transform:translateY(-52%)}.wx small{color:var(--muted);font-size:12.5px;font-family:var(--f-body);margin-left:3px}
 @media (max-width:480px){.wx small{display:none}.wx{padding:2px 8px 2px 27px;font-size:13px}.wx svg{width:22px;height:22px}}
 .wx-city input{flex:1;min-width:120px;border:2px solid var(--line);border-radius:14px;background:var(--bg-2);padding:8px 12px}
+.food,.fridge,.cls,.tline{display:flex;flex-direction:column;gap:10px}
+.fhd{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.fhd h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:20px;flex:1;min-width:0;white-space:nowrap}
+@media(max-width:480px){.food .fhd .meals{flex-basis:100%}}.fhd .sub{font-size:13px;color:var(--muted);font-family:var(--f-body)}
+.fic{width:52px;height:52px;flex:none;margin:-6px 0 -6px -4px}.fic svg{width:100%;height:100%;display:block}
+.shop-hd{display:flex;align-items:center;gap:10px;margin:6px 2px 0}.shop-hd h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:21px}
+.meals{display:flex;gap:6px}.meals button,.flt button{font:inherit;font-weight:500;font-size:13px;border:2px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:3px 11px}.meals button.on,.flt button.on{border-color:var(--life);background:var(--life-soft);color:var(--life-ink)}
+.fmode{display:grid;grid-template-columns:1fr 1fr;background:var(--bg-2);border-radius:14px;padding:3px}.fmode button{border:none;background:none;font:inherit;font-weight:600;font-size:14px;padding:7px;border-radius:11px;color:var(--muted)}.fmode button.on{background:var(--surface);color:var(--life-ink);box-shadow:0 2px 6px rgba(31,49,86,.08)}
+.flt{display:flex;gap:6px;flex-wrap:wrap}.flt button{font-size:12.5px;padding:2px 10px}
+.wrapw{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center}
+.whwrap{position:relative;width:220px;height:220px;flex:none}.wh{width:100%;height:100%;display:block}.wrot{transform-box:view-box;transform-origin:120px 120px}
+.spinbtn{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;border:none;background:transparent;font:inherit;font-size:14px;font-weight:700;color:var(--brand);padding:0}
+.res{display:flex;flex-direction:column;gap:8px;min-width:220px;flex:1}
+.say3{display:flex;gap:8px;align-items:center;background:var(--bg-2);border-radius:14px;padding:8px 12px;font-size:15px}.say3 b{color:var(--life-ink)}.say3 .pf{width:36px;height:36px;flex:none}
+.rbtn{display:flex;gap:8px}.rbtn button{flex:1;border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:8px;font:inherit;font-size:14px;font-weight:600;color:var(--fg)}.rbtn button.pr{background:var(--life);border-color:var(--life);color:#fff}
+.miss{font-size:13px;color:var(--muted);border:2px dashed var(--line);border-radius:12px;padding:7px 10px}.miss button{border:none;background:none;color:var(--brand);font:inherit;font-weight:600;padding:0}
+.rinfo{display:flex;flex-direction:column;gap:2px;border:2px solid var(--line);border-radius:14px;padding:8px 12px}.rinfo b{font-size:14.5px}.rinfo small{font-size:12px;color:var(--muted)}
+.dish{display:flex;flex-wrap:wrap;gap:6px}.fchip{font:inherit;font-size:13px;background:var(--bg-2);border:2px solid transparent;color:var(--fg);border-radius:999px;padding:3px 10px}.fchip.add{color:var(--brand);background:none;border:2px dashed var(--line)}
+.fchip i{font-style:normal;font-size:10.5px;color:#c47a12;background:#fff4e0;border-radius:999px;padding:0 5px;margin-left:4px}
+.fitems{display:flex;flex-wrap:wrap;gap:8px}.fi{display:inline-flex;align-items:center;background:var(--bg-2);border-radius:14px;padding:0 4px 0 0}.fi .fn{border:none;background:none;font:inherit;font-size:14.5px;color:var(--fg);padding:7px 4px 7px 12px;display:inline-flex;align-items:baseline;gap:6px}
+.fi small{font-size:12px;color:var(--muted)}.fi.warn{background:#fff3df}.fi.warn .ag{color:#c47a12;font-weight:600}.fi.bad{background:#ffe7e7}.fi.bad .ag{color:#d04a4a;font-weight:600}
+.fi .fx{border:none;background:none;color:var(--faint);font-size:16px;padding:4px 6px}
+.ftip{display:flex;gap:10px;align-items:center;background:var(--life-soft);border-radius:14px;padding:9px 12px;font-size:14px;line-height:1.5}.ftip .sf{width:28px;height:28px;flex:none}.ftip b{color:var(--life-ink)}
+.fadd{display:flex;gap:8px}.fadd input{flex:1;min-width:0;border:2px solid var(--line);border-radius:14px;background:var(--bg-2);padding:8px 12px;font:inherit}
+.cls-empty{border:2px dashed var(--line);background:none;border-radius:16px;padding:10px;font:inherit;font-size:14px;color:var(--study-ink);margin-bottom:10px;width:100%}
+.cls{margin-bottom:12px}.cbtn2{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 11px;font:inherit;font-size:13px;color:var(--brand);white-space:nowrap}
+.cl{display:grid;grid-template-columns:4px 56px 1fr auto;gap:10px;align-items:center;background:var(--bg-2);border:none;border-radius:14px;padding:9px 12px 9px 0;overflow:hidden;text-align:left;font:inherit;color:inherit;width:100%}
+.cl i{align-self:stretch;background:var(--c)}.cl .tm{font-family:var(--f-num);font-size:13px;line-height:1.3}.cl .tm small{display:block;color:var(--muted);font-size:11.5px}.cl .cn{min-width:0}.cl b{font-weight:600;font-size:14.5px;display:block}.cl em{font-style:normal;font-size:12.5px;color:var(--muted)}
+.cl .now{font-size:11.5px;font-weight:700;color:#fff;background:var(--c);border-radius:999px;padding:2px 8px;white-space:nowrap}.cl.done{opacity:.55}
+.cdot2{width:12px;height:12px;border-radius:50%;flex:none}.cmeta{display:block;margin:0!important;color:var(--muted);font-size:12px}
+.imp{display:flex;gap:10px;align-items:center;border:2px dashed var(--line);border-radius:14px;padding:10px 12px;font-size:13.5px;color:var(--muted);cursor:pointer}.imp b{color:var(--study-ink);margin-left:4px}
+.tlist{display:flex;flex-direction:column}.tli{display:grid;grid-template-columns:48px 22px 1fr;gap:8px;align-items:start;min-height:34px}.tli[role=button]{cursor:pointer}
+.tli .tt{font-family:var(--f-num);font-size:13px;color:var(--muted);text-align:right;line-height:22px}
+.tm2{position:relative;display:flex;justify-content:center;align-self:stretch}.tm2::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:var(--line)}
+.tm2 i{position:relative;width:12px;height:12px;border-radius:50%;margin-top:5px}.tli.blk .tm2 i{width:12px;border-radius:6px;margin-top:3px}
+.tlist .tli:first-child .tm2::before{top:8px}.tlist .tli:last-child .tm2::before{bottom:auto;height:8px}
+.tli .tx{display:flex;flex-direction:column;padding-bottom:10px;line-height:22px;min-width:0;overflow-wrap:anywhere}.tli .tx .mt{width:16px;height:16px;vertical-align:-3px;margin-right:4px}.tli .tx small{color:var(--muted);font-size:12.5px;line-height:1.4}
+.tli .tag{font-size:11px;border-radius:999px;padding:0 6px;margin-left:4px;background:#ffe4e7;color:#c44a5a}
 .focusline{display:flex;align-items:center;gap:8px;background:var(--surface);border-radius:14px;padding:10px 14px;font-size:14px;color:var(--fg);flex-wrap:wrap}.focusline .mt{width:18px;height:18px}.focusline b{font-family:var(--f-num);font-weight:600}.focusline .fsplit{flex-basis:100%;padding-left:26px;font-size:12.5px;color:var(--muted)}
 .fz{display:flex;flex-direction:column;gap:8px}.fz-big{display:flex;align-items:baseline;gap:4px;flex-wrap:wrap}.fz-big .mt.big{width:26px;height:26px;align-self:center;margin-right:4px}.fz-big b{font-family:var(--f-num);font-weight:600;font-size:34px;line-height:1;color:#ef5d6e}.fz-big span{font-size:14px;color:var(--muted);margin-right:4px}.fz-sub{font-size:12.5px;color:var(--muted)}
 .rc-col.stack .stk{display:flex;flex-direction:column-reverse;width:100%;border-radius:999px;overflow:hidden}.rc-col.stack .stk i{display:block;width:100%;min-height:3px;border-radius:0;background-image:none}
@@ -1099,7 +1136,7 @@ function sortTasks(a,b){
 const EMPTY={};
 const LIFE_HZ={};
 function lifeSeg(){
-  const subs=[["shop",sproutIcon("shop"),L("购物","Shop"),shop.filter(x=>!x.bought).length],["memo",sproutIcon("memo"),L("备忘","Notes"),memos.length],["goals",sproutIcon("goals"),L("任务","Tasks"),tasks.filter(t=>t.space==="life"&&!t.done&&!t.deleted).length],["wish",sproutIcon("wish"),L("愿望","Wishes"),wishes.filter(w=>!w.done).length]].filter(x=>x[0]==="goals"||on(x[0]));
+  const subs=[["shop",sproutIcon("shop"),L("吃 & 买","Food"),shop.filter(x=>!x.bought).length],["memo",sproutIcon("memo"),L("备忘","Notes"),memos.length],["goals",sproutIcon("goals"),L("任务","Tasks"),tasks.filter(t=>t.space==="life"&&!t.done&&!t.deleted).length],["wish",sproutIcon("wish"),L("愿望","Wishes"),wishes.filter(w=>!w.done).length]].filter(x=>x[0]==="goals"||on(x[0]));
   if(subs.length<2)return "";
   return `<div class="seg" role="group" aria-label="${L("生活分区","Life sections")}" style="grid-template-columns:repeat(${subs.length},1fr)">
     ${subs.map(([k,ic,n,c])=>`<button data-act="lifesub" data-v="${k}" aria-pressed="${lifeSub===k}">${ic}<span class="sl">${n}</span> <span class="n${c?"":" z"}">${c}</span></button>`).join("")}</div>`;
@@ -1119,7 +1156,7 @@ function shopBoard(){
       <button class="nm" data-act="shopedittext" data-id="${x.id}" title="${L("点一下修改","Tap to edit")}">${esc(x.name)}</button>
       <button class="star${stapleNames.has(x.name.trim().toLowerCase())?" on":""}" data-act="shopstar" data-id="${x.id}" aria-label="${L("设为常买","Save as a staple")}">★</button>
       <button class="del" data-act="shopdel" data-id="${x.id}" aria-label="${L("从清单删除","Remove from list")}">×</button></div>`;
-  return `<div class="card">
+  return `${foodCard()}${fridgeCard()}<div class="shop-hd"><span class="fic">${FI.BASKET}</span><h3>${L("购物清单","Shopping list")}</h3></div><div class="card">
       <div class="card-head"><h3>${L("常买","Staples")}</h3><span class="sub">${L("点选几样，一起加进清单","Pick a few and add them in one go")}</span>
         <span class="right">${sts.length?`<button class="link" data-act="stedit">${stapleEdit?L("完成","Done"):L("管理","Edit")}</button>`:""}</span></div>
       <div class="staples">${chips||`<span class="hint">${L("还没有常买的东西。清单里点 ★ 就能把它设为常买。","No staples yet. Tap ★ next to an item on your list to save it here.")}</span>`}</div>
@@ -1151,7 +1188,7 @@ function taskBoard(k){
   }).join("");
   const done=mine.filter(t=>t.done).sort((a,b)=>(b.doneAt||0)-(a.doneAt||0)).slice(0,50);
   const doneBox=done.length?`<details class="done-box"><summary>${L(`已完成 ${done.length} 件`,`${done.length} done`)}</summary><div class="list">${done.map(taskRow).join("")}</div></details>`:"";
-  return `<div class="board" data-k="${k}">${k==="life"?lifeSeg():""}${k==="study"||k==="work"?focusBar(k):""}${nudgeCard(k)}${groups}${doneBox}</div>`;
+  return `<div class="board" data-k="${k}">${k==="life"?lifeSeg():""}${k==="study"?courseCard():""}${k==="study"||k==="work"?focusBar(k):""}${nudgeCard(k)}${groups}${doneBox}</div>`;
 }
 function streakOf(id){
   const t=todayStr(); let d=(checkins[t]||{})[id]?t:addDays(t,-1); let n=0;
@@ -1323,6 +1360,317 @@ function ruleParse(text,today,fallback="life",dayFirst=false){
   return out;
 }
 
+/* ---------- 吃 & 买: what to eat, fridge ---------- */
+let meals=[], rests=[], eats=[], fridge=[], tlog=[], courses=[];
+const FI={"FRIDGE":"<svg viewBox=\"0 0 64 64\"><ellipse cx=\"32\" cy=\"60\" rx=\"26\" ry=\"2.5\" fill=\"#d5e3f5\"/><rect x=\"26\" y=\"6\" width=\"28\" height=\"53\" rx=\"6\" fill=\"#cfe9ff\" stroke=\"#9cc8ee\" stroke-width=\"1.6\"/><path d=\"M26 25h28\" stroke=\"#9cc8ee\" stroke-width=\"1.6\"/><rect x=\"29\" y=\"12\" width=\"2.4\" height=\"8\" rx=\"1.2\" fill=\"#7fb2e0\"/><rect x=\"29\" y=\"30\" width=\"2.4\" height=\"12\" rx=\"1.2\" fill=\"#7fb2e0\"/><circle cx=\"46\" cy=\"14\" r=\"2.4\" fill=\"#ff8fb1\"/><rect x=\"42\" y=\"33\" width=\"7\" height=\"5\" rx=\"1\" fill=\"#fff\" stroke=\"#ffd34d\"/><path d=\"M17 37.65V32.15\" stroke=\"#3faa74\" stroke-width=\"1.76\" stroke-linecap=\"round\"/><path d=\"M17 34.9c-4.62 0-6.82-2.2-6.82-5.5 4.62 0 6.82 2.42 6.82 5.5zM17 34.9c4.62 0 6.82-2.2 6.82-5.5-4.62 0-6.82 2.42-6.82 5.5z\" fill=\"#5cc98f\"/><ellipse cx=\"17\" cy=\"47\" rx=\"11\" ry=\"10.120000000000001\" fill=\"#ffe08a\"/><circle cx=\"13.04\" cy=\"46.45\" r=\"2.2\" fill=\"#3a3350\"/><circle cx=\"20.96\" cy=\"46.45\" r=\"2.2\" fill=\"#3a3350\"/><circle cx=\"13.81\" cy=\"45.57\" r=\"0.88\" fill=\"#fff\"/><circle cx=\"21.73\" cy=\"45.57\" r=\"0.88\" fill=\"#fff\"/><path d=\"M14.58 50.52q2.42 2.6399999999999997 4.84 0\" stroke=\"#3a3350\" stroke-width=\"1.3199999999999998\" fill=\"none\" stroke-linecap=\"round\"/><ellipse cx=\"9.739999999999998\" cy=\"49.75\" rx=\"1.98\" ry=\"1.21\" fill=\"#ff8fb1\" opacity=\".85\"/><ellipse cx=\"24.26\" cy=\"49.75\" rx=\"1.98\" ry=\"1.21\" fill=\"#ff8fb1\" opacity=\".85\"/></svg>","BASKET":"<svg viewBox=\"0 0 64 64\"><ellipse cx=\"32\" cy=\"60\" rx=\"26\" ry=\"2.5\" fill=\"#d5e3f5\"/><path d=\"M4 4h56l-2 6H6z\" fill=\"#ff8fb1\"/><path d=\"M6 10q2.6 2.6 5.2 0t5.2 0 5.2 0 5.2 0 5.2 0 5.2 0 5.2 0 5.2 0 5.2 0 5.2 0\" stroke=\"#ff8fb1\" stroke-width=\"2.4\" fill=\"none\"/><path d=\"M24 33.8V27.799999999999997\" stroke=\"#3faa74\" stroke-width=\"1.92\" stroke-linecap=\"round\"/><path d=\"M24 30.799999999999997c-5.04 0-7.4399999999999995-2.4000000000000004-7.4399999999999995-6 5.04 0 7.4399999999999995 2.64 7.4399999999999995 6zM24 30.799999999999997c5.04 0 7.4399999999999995-2.4000000000000004 7.4399999999999995-6-5.04 0-7.4399999999999995 2.64-7.4399999999999995 6z\" fill=\"#5cc98f\"/><ellipse cx=\"24\" cy=\"44\" rx=\"12\" ry=\"11.040000000000001\" fill=\"#ffe08a\"/><path d=\"M17.759999999999998 44q1.92-2.64 3.84 0M26.4 44q1.92-2.64 3.84 0\" stroke=\"#3a3350\" stroke-width=\"1.56\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M21.36 47.84q2.64 2.88 5.28 0\" stroke=\"#3a3350\" stroke-width=\"1.44\" fill=\"none\" stroke-linecap=\"round\"/><ellipse cx=\"16.08\" cy=\"47\" rx=\"2.16\" ry=\"1.32\" fill=\"#ff8fb1\" opacity=\".85\"/><ellipse cx=\"31.92\" cy=\"47\" rx=\"2.16\" ry=\"1.32\" fill=\"#ff8fb1\" opacity=\".85\"/><path d=\"M40 47q8-12 16 0\" stroke=\"#b0784a\" stroke-width=\"2\" fill=\"none\"/><circle cx=\"44\" cy=\"45\" r=\"2.8\" fill=\"#ef5d6e\"/><path d=\"M48.5 40v6\" stroke=\"#5cc98f\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><circle cx=\"52\" cy=\"45\" r=\"2.3\" fill=\"#ffd34d\"/><path d=\"M38 47h20l-2.5 10h-15z\" fill=\"#e8b27a\"/><path d=\"M39.5 51h17M40.5 54h15\" stroke=\"#c68b52\" stroke-width=\"1.1\"/><path d=\"M35 46q2-1 3 1\" stroke=\"#ffe08a\" stroke-width=\"3.4\" stroke-linecap=\"round\" fill=\"none\"/></svg>","WHEEL":"<svg viewBox=\"0 0 64 64\"><ellipse cx=\"32\" cy=\"60\" rx=\"26\" ry=\"2.5\" fill=\"#d5e3f5\"/><path d=\"M44 40v18M38 58h12\" stroke=\"#a9b8d0\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M44 26L44.0 11.0A15 15 0 0 1 57.0 18.5Z\" fill=\"#ffd9a8\" stroke=\"#fff\" stroke-width=\"1.2\"/><path d=\"M44 26L57.0 18.5A15 15 0 0 1 57.0 33.5Z\" fill=\"#cfe9ff\" stroke=\"#fff\" stroke-width=\"1.2\"/><path d=\"M44 26L57.0 33.5A15 15 0 0 1 44.0 41.0Z\" fill=\"#ffd3e0\" stroke=\"#fff\" stroke-width=\"1.2\"/><path d=\"M44 26L44.0 41.0A15 15 0 0 1 31.0 33.5Z\" fill=\"#d6f5e3\" stroke=\"#fff\" stroke-width=\"1.2\"/><path d=\"M44 26L31.0 33.5A15 15 0 0 1 31.0 18.5Z\" fill=\"#e6dcff\" stroke=\"#fff\" stroke-width=\"1.2\"/><path d=\"M44 26L31.0 18.5A15 15 0 0 1 44.0 11.0Z\" fill=\"#fff1a8\" stroke=\"#fff\" stroke-width=\"1.2\"/><circle cx=\"44\" cy=\"26\" r=\"15\" fill=\"none\" stroke=\"#e6edf7\" stroke-width=\"1.5\"/><circle cx=\"44\" cy=\"26\" r=\"3\" fill=\"#fff\" stroke=\"#e6edf7\"/><path d=\"M44 8l-3 5h6z\" fill=\"#ef5d6e\"/><path d=\"M16 38.65V33.15\" stroke=\"#3faa74\" stroke-width=\"1.76\" stroke-linecap=\"round\"/><path d=\"M16 35.9c-4.62 0-6.82-2.2-6.82-5.5 4.62 0 6.82 2.42 6.82 5.5zM16 35.9c4.62 0 6.82-2.2 6.82-5.5-4.62 0-6.82 2.42-6.82 5.5z\" fill=\"#5cc98f\"/><ellipse cx=\"16\" cy=\"48\" rx=\"11\" ry=\"10.120000000000001\" fill=\"#ffe08a\"/><circle cx=\"12.04\" cy=\"47.45\" r=\"2.2\" fill=\"#3a3350\"/><circle cx=\"19.96\" cy=\"47.45\" r=\"2.2\" fill=\"#3a3350\"/><circle cx=\"12.81\" cy=\"46.57\" r=\"0.88\" fill=\"#fff\"/><circle cx=\"20.73\" cy=\"46.57\" r=\"0.88\" fill=\"#fff\"/><path d=\"M13.58 51.52q2.42 2.6399999999999997 4.84 0\" stroke=\"#3a3350\" stroke-width=\"1.3199999999999998\" fill=\"none\" stroke-linecap=\"round\"/><ellipse cx=\"8.739999999999998\" cy=\"50.75\" rx=\"1.98\" ry=\"1.21\" fill=\"#ff8fb1\" opacity=\".85\"/><ellipse cx=\"23.26\" cy=\"50.75\" rx=\"1.98\" ry=\"1.21\" fill=\"#ff8fb1\" opacity=\".85\"/><path d=\"M27 32l2-3M29 37l3-1\" stroke=\"#ffc94a\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>"};
+const SLOTS=()=>[["b",L("早餐","Breakfast"),L("早饭","Breakfast")],["l",L("午餐","Lunch"),L("午饭","Lunch")],["d",L("晚餐","Dinner"),L("晚饭","Dinner")]];
+const slotNow=()=>{const h=new Date().getHours()+new Date().getMinutes()/60;return h<10.5?"b":h<16?"l":"d"};
+let foodSlot=null, foodMode="home", foodFlt="all", foodRes=null, wheelRot=0, spinning=false, wheelSet=null;
+try{foodMode=localStorage.getItem("los-foodmode")||"home"}catch(_){}
+const WCOLS=['#ffd9a8','#cfe9ff','#ffd3e0','#d6f5e3','#e6dcff','#fff1a8','#ffe0c7','#dff3ff'];
+const hhmm=ts=>{const d=new Date(ts);return pad(d.getHours())+":"+pad(d.getMinutes())};
+const fNames=()=>new Set(fridge.map(x=>norm(x.name)));
+function foodList(){
+  const s=foodSlot||slotNow();
+  if(foodMode==="out"){let r=rests.filter(x=>!(x.slots&&x.slots.length)||x.slots.includes(s));
+    if(foodFlt==="fav")r=r.filter(x=>(x.visits||0)>=2);if(foodFlt==="want")r=r.filter(x=>x.want&&!(x.visits>0));return r}
+  return meals.filter(x=>(x.slot||"l")===s);
+}
+function foodWeight(x){
+  const recent=eats.some(e=>e.name===x.name&&e.day>=addDays(todayStr(),-2));
+  let w=recent?.3:1;
+  if(foodMode==="home"&&x.ing&&x.ing.length){const f=fNames();if(x.ing.every(i=>f.has(norm(i))))w*=2}
+  if(foodMode==="out"&&x.want&&!(x.visits>0))w*=1.3;
+  return w;
+}
+function wheelPick(list){
+  if(list.length<=8)return list;
+  const key=list.map(x=>x.id).join();
+  if(wheelSet&&wheelSet.key===key)return wheelSet.items;
+  const pool=[...list],out=[];while(out.length<8&&pool.length){const tot=pool.reduce((a,x)=>a+foodWeight(x),0);let r=Math.random()*tot,i=0;for(;i<pool.length-1;i++){r-=foodWeight(pool[i]);if(r<=0)break}out.push(pool.splice(i,1)[0])}
+  wheelSet={key,items:out};return out;
+}
+function wheelSVG(items){
+  const n=items.length, R=110, cx=120, cy=120;
+  let seg="";
+  items.forEach((x,i)=>{const a0=(i/n)*2*Math.PI-Math.PI/2,a1=a0+2*Math.PI/n,am=(a0+a1)/2;
+    const path=n===1?`<circle cx="${cx}" cy="${cy}" r="${R}" fill="${WCOLS[0]}"/>`:`<path d="M${cx} ${cy}L${(cx+R*Math.cos(a0)).toFixed(1)} ${(cy+R*Math.sin(a0)).toFixed(1)}A${R} ${R} 0 ${n<2?1:0} 1 ${(cx+R*Math.cos(a1)).toFixed(1)} ${(cy+R*Math.sin(a1)).toFixed(1)}Z" fill="${WCOLS[i%WCOLS.length]}" stroke="#fff" stroke-width="3"/>`;
+    const nm=x.name.length>7?x.name.slice(0,6)+"…":x.name, rr=n===1?0:68;
+    const tx=(cx+rr*Math.cos(am)).toFixed(1), ty=(cy+(n===1?-40:rr*Math.sin(am))).toFixed(1);
+    seg+=path+`<text x="${tx}" y="${ty}" transform="rotate(${(-wheelRot%360).toFixed(2)} ${tx} ${ty})" text-anchor="middle" dominant-baseline="middle" font-size="${n>6?11:12.5}" font-weight="600" fill="#3a3350">${esc(nm)}</text>`});
+  return `<svg viewBox="0 0 240 240" class="wh" role="img" aria-label="${L("转盘","Wheel")}"><g class="wrot" style="transform:rotate(${wheelRot}deg)">${seg}</g><circle cx="120" cy="120" r="24" fill="#fff" stroke="#e6edf7" stroke-width="3"/><path d="M120 2l-11 20h22z" fill="#ef5d6e"/></svg>`;
+}
+function foodCard(){
+  const s=foodSlot||slotNow(), list=foodList(), items=list.length?wheelPick(list):[];
+  const home=foodMode==="home";
+  let res="";
+  if(foodRes&&!spinning){const x=(home?meals:rests).find(y=>y.id===foodRes);
+    if(x){let extra="";
+      if(home&&x.ing&&x.ing.length){const f=fNames(),have=x.ing.filter(i=>f.has(norm(i))),miss=x.ing.filter(i=>!f.has(norm(i)));
+        extra=`<div class="miss">${have.length?L(`冰箱里有 ${have.map(esc).join("、")} ✓`,`In the fridge: ${have.map(esc).join(", ")} ✓`):""}${have.length&&miss.length?" · ":""}${miss.length?`${L("还缺：","Missing: ")}${miss.map(esc).join(L("、",", "))} · <button data-fd="missadd" data-id="${x.id}">${L("加进购物清单","Add to shopping list")}</button>`:""}</div>`}
+      if(!home){const bits=[x.addr?`📍 ${esc(x.addr)}`:"",x.cuisine?esc(x.cuisine):"",x.want&&!(x.visits>0)?L("想去还没去","Haven't been yet"):""].filter(Boolean);
+        if(bits.length)extra=`<div class="rinfo"><b>${esc(x.name)}</b><small>${bits.join(" · ")}</small></div>`}
+      res=`<div class="say3">${SF.star}<span>${home?L(`那就吃 <b>${esc(x.name)}</b> 吧！`,`Let's have <b>${esc(x.name)}</b>!`):L(`那就去 <b>${esc(x.name)}</b> 吧！`,`Let's go to <b>${esc(x.name)}</b>!`)}</span></div>
+        <div class="rbtn"><button class="pr" data-fd="eat" data-id="${x.id}">${L("就吃这个","Let's eat this")}</button><button data-fd="spin">${L("再转一次","Spin again")}</button></div>${extra}`}}
+  const chips=(home?meals.filter(x=>(x.slot||"l")===s):rests.filter(x=>!(x.slots&&x.slots.length)||x.slots.includes(s))).map(x=>`<button class="fchip" data-fd="${home?"dishedit":"restedit"}" data-id="${x.id}">${esc(x.name)}${!home&&x.want&&!(x.visits>0)?`<i>${L("想去","want")}</i>`:""}</button>`).join("");
+  return `<div class="food card">
+    <div class="fhd"><span class="fic">${FI.WHEEL}</span><h3>${L("整点什么吃","What to eat")}</h3><div class="meals">${SLOTS().map(([k,n])=>`<button class="${s===k?"on":""}" data-fd="slot" data-v="${k}">${n}</button>`).join("")}</div></div>
+    <div class="fmode"><button class="${home?"on":""}" data-fd="mode" data-v="home">${L("在家做","Cook at home")}</button><button class="${home?"":"on"}" data-fd="mode" data-v="out">${L("出去吃","Eat out")}</button></div>
+    ${home?"":`<div class="flt">${[["all",L("全部","All")],["fav",L("常去的","Regulars")],["want",L("想去还没去","Want to try")]].map(([k,n])=>`<button class="${foodFlt===k?"on":""}" data-fd="flt" data-v="${k}">${n}</button>`).join("")}</div>`}
+    ${items.length?`<div class="wrapw"><div class="whwrap">${wheelSVG(items)}<button class="spinbtn" data-fd="spin" aria-label="${L("转转盘","Spin")}">${L("转！","Spin!")}</button></div><div class="res">${res||`<p class="hint" style="margin:0">${L("点中间的「转！」，让转盘帮你决定。","Tap Spin! and let the wheel decide.")}</p>`}</div></div>`
+      :`<p class="hint" style="margin:0">${home?L(`还没有${SLOTS().find(x=>x[0]===s)[1]}的菜。加几道常做的，以后就交给转盘。`,`No ${SLOTS().find(x=>x[0]===s)[1].toLowerCase()} dishes yet. Add a few you often make.`):foodFlt!=="all"&&rests.length?L("这个筛选下没有店。","No places under this filter."):L("还没有店。把常去的、想去的店加进来。","No places yet. Add your regulars and places you want to try.")}</p>`}
+    <div class="dish">${chips}<button class="fchip add" data-fd="${home?"dishnew":"restnew"}">＋ ${home?L("加一道","Add a dish"):L("加一家","Add a place")}</button>${home&&!meals.length?`<button class="fchip add" data-fd="seeddish">${L("先用几道家常菜","Start with a few classics")}</button>`:""}${!home&&wishes.some(w=>w.kind==="go"&&!w.done&&!rests.some(r=>norm(r.name)===norm(w.title)))?`<button class="fchip add" data-fd="restwish">${L("从愿望「想去」导入","Import from wishlist")}</button>`:""}</div>
+  </div>`;
+}
+function fridgeAge(x){
+  if(x.frozen)return {txt:L("冷冻","frozen"),cls:""};
+  const t=todayStr();
+  if(x.exp){const d=Math.round((dnum(x.exp)-dnum(t)));if(d<0)return {txt:L(`过期 ${-d} 天`,`${-d}d past`),cls:"bad"};if(d===0)return {txt:L("今天过期","expires today"),cls:"warn"};return {txt:L(`还有 ${d} 天过期`,`${d}d left`),cls:d<=2?"warn":""}}
+  const d=x.addedAt?Math.max(0,dnum(t)-dnum(x.addedAt)):0;
+  return {txt:d>=4?L(`放了 ${d} 天`,`${d} days in`):L(`${d} 天`,`${d}d`),cls:d>=4?"warn":"",d};
+}
+function fridgeCard(){
+  const list=[...fridge].sort((a,b)=>(a.addedAt||"")<(b.addedAt||"")?-1:1);
+  const old=list.filter(x=>{const a=fridgeAge(x);return a.cls});
+  let tip="";
+  if(old.length){const names=old.slice(0,2).map(x=>x.name);const dish=meals.find(m=>(m.ing||[]).some(i=>names.some(n=>norm(n)===norm(i))));
+    tip=`<div class="ftip">${SF.happy}<span>${L(`${names.map(esc).join("和")}${old.some(x=>fridgeAge(x).cls==="bad")?"该处理一下啦":"放了好几天啦"}，${dish?`今天要不要做 <b>${esc(dish.name)}</b>？`:"记得早点吃掉～"}`,`${names.map(esc).join(" and ")} ${names.length>1?"have":"has"} been in a while. ${dish?`How about <b>${esc(dish.name)}</b> today?`:"Try to use them up soon～"}`)}</span></div>`}
+  return `<div class="card fridge"><div class="fhd"><span class="fic">${FI.FRIDGE}</span><h3>${L("冰箱里有啥","In the fridge")}</h3><span class="sub">${list.length?L(`${list.length} 样`,`${list.length} ${n_(list.length,"item","items")}`):""}</span></div>
+    ${list.length?`<div class="fitems">${list.map(x=>{const a=fridgeAge(x);return `<span class="fi ${a.cls}"><button class="fn" data-fd="fedit" data-id="${x.id}">${esc(x.name)}${x.qty?`<small>${L(`剩 ${x.qty} 个`,`${x.qty} left`)}</small>`:""}<small class="ag">${a.txt}</small></button><button class="fx" data-fd="fdel" data-id="${x.id}" aria-label="${L(`${x.name} 吃完了`,`Used up ${x.name}`)}">×</button></span>`}).join("")}</div>`:`<p class="hint" style="margin:0">${L("买回来的菜放进来，{pet}帮你记着放了几天。","Add what you put in the fridge and {pet} will keep track of how long it's been there.")}</p>`}
+    ${tip}
+    <form class="fadd" id="fridgeForm"><input id="fridgeIn" maxlength="200" placeholder="${L("放进了什么？比如：西兰花、豆腐","What went in? e.g. broccoli, tofu")}" aria-label="${L("放进冰箱的东西","Fridge items")}"><button class="btn life" type="submit">${L("放进冰箱","Add")}</button></form></div>`;
+}
+async function addFridge(names){
+  const t=todayStr();
+  for(const n of names){const nm=n.trim().slice(0,40);if(!nm)continue;const ex=fridge.find(x=>norm(x.name)===norm(nm));if(ex){const r=db.doc("fridge/"+ex.id);queued(r.path,()=>r.update({addedAt:t}));continue}
+    const ref=db.collection("fridge").doc();queued(ref.path,()=>ref.set({name:nm,addedAt:t,createdAt:Date.now()}))}
+}
+const NONFOOD=/洗衣|纸巾|卫生纸|洗发|沐浴|牙膏|牙刷|洗洁精|垃圾袋|电池|洗手液|清洁|detergent|tissue|toilet|shampoo|soap|toothpaste|bin bag|batter|cleaner|sponge/i;
+let boughtBuf=[], boughtT=null;
+function noteBought(name){
+  if(NONFOOD.test(name))return;
+  boughtBuf.push(name); clearTimeout(boughtT);
+  boughtT=setTimeout(()=>{const names=[...new Set(boughtBuf)].filter(n=>!fridge.some(x=>norm(x.name)===norm(n)));boughtBuf=[];if(!names.length)return;
+    snack(L(`买到了${names.slice(0,3).join("、")}${names.length>3?" 等":""}`,`Got ${names.slice(0,3).join(", ")}${names.length>3?"…":""}`),L("要放进冰箱吗？","Put them in the fridge?"),L("放进冰箱","Add to fridge"),()=>{addFridge(names);cheer(L("放好啦，我帮你记着～","In they go. I'll keep track～"))})},2200);
+}
+function openDish(id){
+  const x=id?meals.find(m=>m.id===id):null; let sure=false;
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  const draw=(n,ing)=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("一道菜","A dish")}"><h3>${x?L("改一改这道菜","Edit dish"):L(`加一道${SLOTS().find(y=>y[0]===(foodSlot||slotNow()))[1]}`,"Add a dish")}</h3>
+    <label class="field"><span>${L("菜名","Dish")}</span><input id="dn" maxlength="40" value="${esc(n)}" placeholder="${L("比如：番茄炒蛋","e.g. Tomato and egg")}"></label>
+    <label class="field"><span>${L("要用到的食材（可不填，用逗号隔开）","Ingredients (optional, comma-separated)")}</span><input id="di" maxlength="200" value="${esc(ing)}" placeholder="${L("番茄、鸡蛋","tomato, egg")}"></label>
+    <span class="hint">${L("填了食材，转到这道菜时会看冰箱里有没有，缺的可以一键加进购物清单。","With ingredients, the wheel checks your fridge and can add what's missing to your list.")}</span>
+    <div class="sheet-actions"><button class="btn" data-d="x">${L("取消","Cancel")}</button><button class="btn primary" data-d="ok">${L("保存","Save")}</button></div>
+    ${x?`<button class="link danger-link" data-d="del">${sure?L("再点一次，确定删除","Tap again to delete"):L("删掉这道菜","Delete dish")}</button>`:""}</div>`};
+  draw(x?x.name:"",x?(x.ing||[]).join(L("、",", ")):""); document.body.appendChild(bg); setTimeout(()=>bg.querySelector("#dn")?.focus(),30);
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-d]");if(!b)return;const a=b.dataset.d;
+    if(a==="x"){bg.remove();return}
+    if(a==="del"){if(!sure){sure=true;draw(bg.querySelector("#dn").value,bg.querySelector("#di").value);return}bg.remove();const r=db.doc("meals/"+id);queued(r.path,()=>r.delete());return}
+    if(a==="ok"){const n=bg.querySelector("#dn").value.trim();if(!n){bg.querySelector("#dn").focus();return}const ing=splitItems(bg.querySelector("#di").value).slice(0,15);bg.remove();
+      const r=x?db.doc("meals/"+id):db.collection("meals").doc();queued(r.path,()=>x?r.update({name:n.slice(0,40),ing}):r.set({name:n.slice(0,40),ing,slot:foodSlot||slotNow(),createdAt:Date.now()}))}});
+}
+function openRest(id){
+  const x=id?rests.find(m=>m.id===id):null; let sure=false;
+  const st={name:x?x.name:"",addr:x?x.addr||"":"",cuisine:x?x.cuisine||"":"",want:x?!!x.want&&!(x.visits>0):true,slots:x&&x.slots&&x.slots.length?[...x.slots]:[foodSlot||slotNow()]};
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  const grab=()=>{const q=k=>bg.querySelector(k);if(!q("#rn"))return;st.name=q("#rn").value;st.addr=q("#ra").value;st.cuisine=q("#rc").value;st.want=q("#rw").checked};
+  const draw=()=>{grab();bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("一家店","A place")}"><h3>${x?L("改一改这家店","Edit place"):L("加一家店","Add a place")}</h3>
+    <label class="field"><span>${L("店名","Name")}</span><input id="rn" maxlength="40" value="${esc(st.name)}" placeholder="${L("比如：Dishoom","e.g. Dishoom")}"></label>
+    <label class="field"><span>${L("地址（自己记一下就好）","Address (just a note)")}</span><input id="ra" maxlength="80" value="${esc(st.addr)}" placeholder="${L("比如：King's Cross","e.g. King's Cross")}"></label>
+    <label class="field"><span>${L("菜系（可不填）","Cuisine (optional)")}</span><input id="rc" maxlength="20" value="${esc(st.cuisine)}" placeholder="${L("比如：印度菜","e.g. Indian")}"></label>
+    <div class="field"><span>${L("适合哪一顿","Good for")}</span><div class="chips">${SLOTS().map(([k,n])=>`<button class="chip hz${st.slots.includes(k)?" on":""}" data-r="slot" data-v="${k}">${n}</button>`).join("")}</div></div>
+    <label class="field"><span class="chkrow"><input type="checkbox" id="rw" ${st.want?"checked":""}> ${L("想去还没去","Haven't been yet")}</span></label>
+    <div class="sheet-actions"><button class="btn" data-r="x">${L("取消","Cancel")}</button><button class="btn primary" data-r="ok">${L("保存","Save")}</button></div>
+    ${x?`<button class="link danger-link" data-r="del">${sure?L("再点一次，确定删除","Tap again to delete"):L("删掉这家店","Delete place")}</button>`:""}</div>`};
+  draw(); document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-r]");if(!b)return;const a=b.dataset.r;
+    if(a==="slot"){grab();const k=b.dataset.v;st.slots=st.slots.includes(k)?st.slots.filter(y=>y!==k):[...st.slots,k];if(!st.slots.length)st.slots=[k];draw();return}
+    if(a==="x"){bg.remove();return}
+    if(a==="del"){if(!sure){sure=true;draw();return}bg.remove();const r=db.doc("rests/"+id);queued(r.path,()=>r.delete());return}
+    if(a==="ok"){grab();const n=st.name.trim();if(!n){bg.querySelector("#rn").focus();return}bg.remove();
+      const doc={name:n.slice(0,40),addr:st.addr.trim().slice(0,80),cuisine:st.cuisine.trim().slice(0,20),want:st.want,slots:st.slots};
+      if(x&&!st.want&&x.want&&!(x.visits>0))doc.visits=1;
+      const r=x?db.doc("rests/"+id):db.collection("rests").doc();queued(r.path,()=>x?r.update(doc):r.set({...doc,visits:0,createdAt:Date.now()}))}});
+}
+function openFridgeItem(id){
+  const x=fridge.find(m=>m.id===id);if(!x)return;
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${esc(x.name)}"><h3>${esc(x.name)}</h3>
+    <div class="drow"><label class="field"><span>${L("哪天放进去的","Put in on")}</span><input type="date" id="fa" max="${todayStr()}" value="${esc(x.addedAt||todayStr())}"></label><label class="field"><span>${L("保质到（可不填）","Use by (optional)")}</span><input type="date" id="fe" value="${esc(x.exp||"")}"></label></div>
+    <label class="field"><span>${L("还剩几个（可不填）","How many left (optional)")}</span><input type="number" id="fq" min="0" max="99" value="${x.qty||""}"></label>
+    <label class="field"><span class="chkrow"><input type="checkbox" id="ff" ${x.frozen?"checked":""}> ${L("冷冻的（不算天数）","Frozen (don't count days)")}</span></label>
+    <div class="sheet-actions"><button class="btn" data-f="used">${L("吃完了","Used up")}</button><button class="btn primary" data-f="ok">${L("保存","Save")}</button></div></div>`;
+  document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-f]");if(!b)return;const r=db.doc("fridge/"+id);
+    if(b.dataset.f==="used"){bg.remove();queued(r.path,()=>r.delete());return}
+    const q=+bg.querySelector("#fq").value;bg.remove();queued(r.path,()=>r.update({addedAt:bg.querySelector("#fa").value||x.addedAt,exp:bg.querySelector("#fe").value||null,qty:q>0?Math.round(q):null,frozen:bg.querySelector("#ff").checked}))});
+}
+function doSpin(){
+  if(spinning)return;
+  const list=foodList(); if(!list.length)return;
+  const items=wheelPick(list), n=items.length;
+  const tot=items.reduce((a,x)=>a+foodWeight(x),0); let r=Math.random()*tot, i=0;
+  for(;i<n-1;i++){r-=foodWeight(items[i]);if(r<=0)break}
+  if(foodRes&&n>1&&items[i].id===foodRes)i=(i+1+Math.floor(Math.random()*(n-1)))%n;
+  const center=(i+.5)*360/n, jitter=(Math.random()-.5)*(300/n)*.6;
+  const base=Math.ceil(wheelRot/360)*360;
+  wheelRot=base+360*5-center+jitter;
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const g=document.querySelector(".food .wrot");
+  spinning=true; foodRes=null;
+  const res=document.querySelector(".food .res"); if(res)res.innerHTML=`<p class="hint" style="margin:0">${L("转呀转…","Spinning…")}</p>`;
+  if(g&&!reduce){g.style.transition="transform 2.6s cubic-bezier(.17,.67,.21,1)";requestAnimationFrame(()=>{g.style.transform=`rotate(${wheelRot}deg)`})}
+  setTimeout(()=>{spinning=false;foodRes=items[i].id;render()},reduce||!g?50:2700);
+}
+function logEat(x){
+  const s=foodSlot||slotNow(), home=foodMode==="home";
+  const ref=db.collection("eats").doc();
+  queued(ref.path,()=>ref.set({day:todayStr(),at:Date.now(),slot:s,name:x.name,kind:foodMode,refId:x.id}));
+  if(!home){const r=db.doc("rests/"+x.id);queued(r.path,()=>r.update({visits:(x.visits||0)+1,want:false}))}
+  foodRes=null;
+  cheer(L(`好，${SLOTS().find(y=>y[0]===s)[2]}就${home?"吃":"去"}${x.name}！记进今天的时间轴了。`,`${x.name} it is! Added to today's timeline.`));
+  render();
+}
+document.addEventListener("submit",e=>{if(e.target.id==="fridgeForm"){e.preventDefault();if(!db)return;const v=$("#fridgeIn").value;const names=splitItems(v);if(!names.length)return;addFridge(names);$("#fridgeIn").value="";cheer(L(`放进冰箱了：${names.join("、")}`,`In the fridge: ${names.join(", ")}`))}});
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-fd]"); if(!b||!db)return; const a=b.dataset.fd, id=b.dataset.id;
+  if(a==="slot"){foodSlot=b.dataset.v;foodRes=null;render();return}
+  if(a==="mode"){foodMode=b.dataset.v;foodRes=null;try{localStorage.setItem("los-foodmode",foodMode)}catch(_){};render();return}
+  if(a==="flt"){foodFlt=b.dataset.v;foodRes=null;render();return}
+  if(a==="spin"){doSpin();return}
+  if(a==="eat"){const x=(foodMode==="home"?meals:rests).find(y=>y.id===id);if(x)logEat(x);return}
+  if(a==="missadd"){const x=meals.find(y=>y.id===id);if(!x)return;const f=fNames();const miss=(x.ing||[]).filter(i=>!f.has(norm(i)));miss.forEach(m=>addShop(m));cheer(L(`加进购物清单了：${miss.join("、")}`,`Added to your list: ${miss.join(", ")}`));return}
+  if(a==="dishnew"){openDish();return}
+  if(a==="dishedit"){openDish(id);return}
+  if(a==="restnew"){openRest();return}
+  if(a==="restedit"){openRest(id);return}
+  if(a==="restwish"){const s=foodSlot||slotNow();wishes.filter(w=>w.kind==="go"&&!w.done&&!rests.some(r=>norm(r.name)===norm(w.title))).forEach(w=>{const r=db.collection("rests").doc();queued(r.path,()=>r.set({name:w.title.slice(0,40),addr:"",cuisine:"",want:true,slots:["l","d"],visits:0,createdAt:Date.now()}))});cheer(L("从愿望清单导进来了，点店名可以补地址。","Imported. Tap a place to add its address."));return}
+  if(a==="seeddish"){const D=L([["b","燕麦粥",["燕麦","牛奶"]],["b","鸡蛋吐司",["鸡蛋","吐司"]],["b","酸奶水果",["酸奶"]],["l","番茄炒蛋",["番茄","鸡蛋"]],["l","咖喱饭",["土豆","胡萝卜","咖喱块"]],["l","牛肉面",["牛肉","面条"]],["l","三明治",["吐司","火腿"]],["d","西兰花炒豆腐",["西兰花","豆腐"]],["d","可乐鸡翅",["鸡翅","可乐"]],["d","青椒肉丝",["青椒","猪肉"]],["d","番茄牛腩",["番茄","牛腩"]]],[["b","Porridge",["oats","milk"]],["b","Eggs on toast",["eggs","bread"]],["b","Yogurt and fruit",["yogurt"]],["l","Pasta",["pasta","tomato"]],["l","Sandwich",["bread","ham"]],["l","Fried rice",["rice","eggs"]],["l","Noodle soup",["noodles"]],["d","Stir-fry",["broccoli","tofu"]],["d","Curry",["potato","carrot"]],["d","Roast chicken",["chicken"]],["d","Salmon and rice",["salmon","rice"]]]);
+    D.forEach(([sl,n,ing])=>{const r=db.collection("meals").doc();queued(r.path,()=>r.set({name:n,ing,slot:sl,createdAt:Date.now()}))});return}
+  if(a==="fedit"){openFridgeItem(id);return}
+  if(a==="fdel"){const x=fridge.find(y=>y.id===id);const r=db.doc("fridge/"+id);queued(r.path,()=>r.delete());if(x)cheer(L(`${x.name}吃完啦～`,`${x.name}: all used up～`));return}
+});
+/* ---------- courses ---------- */
+const CCOLS=["#8b6cf0","#4aa8ff","#2fb38a","#ff9a3d","#ff8fb1","#6c8ef5","#d9a400"];
+const tmin=s=>{const [h,m]=(s||"0:0").split(":").map(Number);return h*60+(m||0)};
+function coursesOn(d){
+  const wd=new Date(d+"T12:00:00").getDay();
+  return courses.filter(c=>c.dates&&c.dates.length?c.dates.includes(d):(c.days||[]).includes(wd)&&(!c.from||d>=c.from)&&(!c.to||d<=c.to)).sort((a,b)=>tmin(a.start)-tmin(b.start));
+}
+function courseCard(){
+  const t=todayStr(), list=coursesOn(t), wd=new Date(t+"T12:00:00").getDay();
+  if(!courses.length)return `<button class="cls-empty" data-co="all">＋ ${L("加课程表","Add your timetable")}</button>`;
+  const now=new Date(), nm=now.getHours()*60+now.getMinutes();
+  return `<div class="cls card"><div class="fhd"><h3>${L("今天的课","Today's classes")} <span class="sub">${L(`周${WD[wd]} · ${list.length} 节`,`${WDEN[wd]} · ${list.length}`)}</span></h3><button class="cbtn2" data-co="all">${L("课程表","Timetable")}</button></div>
+    ${list.length?list.map(c=>{const st=tmin(c.start),en=tmin(c.end),done=nm>=en,live=nm>=st&&nm<en;
+      return `<button class="cl${done?" done":""}" data-co="edit" data-id="${c.id}" style="--c:${c.color||CCOLS[0]}"><i></i><span class="tm">${esc(c.start)}<small>${esc(c.end)}</small></span><span class="cn"><b>${esc(c.name)}</b>${c.loc?`<em>${esc(c.loc)}</em>`:""}</span>${live?`<span class="now">${L("正在上","Now")}</span>`:"<span></span>"}</button>`}).join(""):`<p class="hint" style="margin:0">${L("今天没有课，好好安排自己的时间～","No classes today. The day is yours～")}</p>`}</div>`;
+}
+function openCourses(){
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  const draw=(msg)=>{const list=[...courses].sort((a,b)=>Math.min(...(a.days||[7]).map(d=>(d+6)%7))-Math.min(...(b.days||[7]).map(d=>(d+6)%7))||tmin(a.start)-tmin(b.start));
+    bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("课程表","Timetable")}"><h3>${L("课程表","Timetable")}</h3>
+    ${list.length?`<div class="plist tp">${list.map(c=>`<button data-c2="edit" data-id="${c.id}"><span class="cdot2" style="background:${c.color||CCOLS[0]}"></span><span>${esc(c.name)}<small class="cmeta">${(c.days||[]).length?wdOrder(c.days).map(d=>L("周"+WD[d],WDEN[d])).join(L("、",", ")):""} ${esc(c.start)}–${esc(c.end)}${c.loc?" · "+esc(c.loc):""}</small></span></button>`).join("")}</div>`:`<p class="hint" style="margin:0">${L("还没有课。一门门加，或者导入学校课表导出的日历文件（.ics）。","No classes yet. Add them one by one, or import the calendar file (.ics) your school timetable exports.")}</p>`}
+    ${msg?`<p class="hint" style="margin:0">${msg}</p>`:""}
+    <label class="imp"><span>📅</span><span>${L("课太多不想一门门加？","Lots of classes?")}<b>${L("导入课表日历文件（.ics）","Import a calendar file (.ics)")}</b></span><input type="file" id="icsIn" accept=".ics,text/calendar" hidden></label>
+    <div class="sheet-actions"><button class="btn" data-c2="x">${L("关闭","Close")}</button><button class="btn primary" data-c2="new">＋ ${L("加一门课","Add a class")}</button></div></div>`};
+  draw(); document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-c2]");if(!b)return;
+    if(b.dataset.c2==="x"){bg.remove();return}
+    if(b.dataset.c2==="new"){bg.remove();openCourse();return}
+    if(b.dataset.c2==="edit"){bg.remove();openCourse(b.dataset.id);return}});
+  bg.addEventListener("change",async e=>{if(e.target.id!=="icsIn"||!e.target.files[0])return;
+    try{const txt=await e.target.files[0].text();const n=importIcs(txt);const m=n?L(`导入了 ${n} 门课 ✓`,`Imported ${n} ${n_(n,"class","classes")} ✓`):L("这个文件里没找到课。","No classes found in this file.");setTimeout(()=>{if(document.body.contains(bg))draw(m)},500);draw(n?L(`导入了 ${n} 门课 ✓`,`Imported ${n} ${n_(n,"class","classes")} ✓`):L("这个文件里没找到课。","No classes found in this file."))}catch(_){draw(L("读不了这个文件，确认是 .ics 日历文件。","Couldn't read that file. Make sure it's an .ics calendar."))}});
+}
+function openCourse(id){
+  const x=id?courses.find(c=>c.id===id):null; let sure=false;
+  const st=x?{...x,days:[...(x.days||[])]}:{name:"",days:[new Date(todayStr()+"T12:00:00").getDay()],start:"09:00",end:"10:00",loc:"",from:todayStr(),to:"",color:CCOLS[courses.length%CCOLS.length]};
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  const grab=()=>{const q=k=>bg.querySelector(k);if(!q("#cn"))return;st.name=q("#cn").value;st.start=q("#cs").value;st.end=q("#ce").value;st.loc=q("#cl").value;st.from=q("#cf").value;st.to=q("#ct").value};
+  const draw=()=>{grab();bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("一门课","A class")}"><h3>${x?L("改一改这门课","Edit class"):L("加一门课","Add a class")}</h3>
+    <label class="field"><span>${L("课程名","Class")}</span><input id="cn" maxlength="60" value="${esc(st.name)}" placeholder="${L("比如：Speech Processing","e.g. Speech Processing")}"></label>
+    ${x&&x.dates&&x.dates.length?`<span class="hint">${L(`从日历导入，一共 ${x.dates.length} 次课`,`Imported: ${x.dates.length} sessions`)}</span>`:`<div class="field"><span>${L("每周哪几天","Which days")}</span><div class="wdots">${[1,2,3,4,5,6,0].map(d=>`<button class="wdot${st.days.includes(d)?" on":""}" data-c3="wd" data-v="${d}">${L(WD[d],WDEN[d].slice(0,2))}</button>`).join("")}</div></div>`}
+    <div class="drow"><label class="field"><span>${L("开始","Starts")}</span><input type="time" id="cs" value="${esc(st.start)}"></label><label class="field"><span>${L("结束","Ends")}</span><input type="time" id="ce" value="${esc(st.end)}"></label></div>
+    <label class="field"><span>${L("地点（可不填）","Room (optional)")}</span><input id="cl" maxlength="60" value="${esc(st.loc||"")}" placeholder="${L("比如：Roberts 106","e.g. Roberts 106")}"></label>
+    ${x&&x.dates&&x.dates.length?`<input type="hidden" id="cf" value="${esc(st.from||"")}"><input type="hidden" id="ct" value="${esc(st.to||"")}">`:`<div class="drow"><label class="field"><span>${L("从哪天","From")}</span><input type="date" id="cf" value="${esc(st.from||"")}"></label><label class="field"><span>${L("上到哪天","Until")}</span><input type="date" id="ct" value="${esc(st.to||"")}"></label></div>`}
+    <div class="field"><span>${L("颜色","Colour")}</span><div class="cdots">${CCOLS.map(c=>`<button type="button" class="cdot${c===st.color?" on":""}" data-c3="col" data-v="${c}" style="--c:${c}" aria-label="${c}"></button>`).join("")}</div></div>
+    <div class="sheet-actions"><button class="btn" data-c3="x">${L("取消","Cancel")}</button><button class="btn primary" data-c3="ok">${L("保存","Save")}</button></div>
+    ${x?`<button class="link danger-link" data-c3="del">${sure?L("再点一次，确定删除","Tap again to delete"):L("删掉这门课","Delete class")}</button>`:""}</div>`};
+  draw(); document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-c3]");if(!b)return;const a=b.dataset.c3;
+    if(a==="wd"){grab();const d=+b.dataset.v;st.days=st.days.includes(d)?st.days.filter(y=>y!==d):[...st.days,d];draw();return}
+    if(a==="col"){grab();st.color=b.dataset.v;draw();return}
+    if(a==="x"){bg.remove();return}
+    if(a==="del"){if(!sure){grab();sure=true;draw();return}bg.remove();const r=db.doc("courses/"+id);queued(r.path,()=>r.delete());return}
+    if(a==="ok"){grab();if(!st.name.trim()){bg.querySelector("#cn").focus();return}if(!(x&&x.dates&&x.dates.length)&&!st.days.length)return;if(tmin(st.end)<=tmin(st.start))st.end=st.start;bg.remove();
+      const doc={name:st.name.trim().slice(0,60),days:st.days,start:st.start,end:st.end,loc:(st.loc||"").trim().slice(0,60),from:st.from||null,to:st.to||null,color:st.color};
+      const r=x?db.doc("courses/"+id):db.collection("courses").doc();queued(r.path,()=>x?r.update(doc):r.set({...doc,createdAt:Date.now()}))}});
+}
+function importIcs(txt){
+  const lines=txt.replace(/\r\n[ \t]/g,"").replace(/\n[ \t]/g,"").split(/\r?\n/);
+  const evs=[];let cur=null;
+  for(const ln of lines){if(ln==="BEGIN:VEVENT")cur={};else if(ln==="END:VEVENT"){if(cur)evs.push(cur);cur=null}else if(cur){const i=ln.indexOf(":");if(i<0)continue;const k=ln.slice(0,i),v=ln.slice(i+1);const key=k.split(";")[0];cur[key]={v,p:k}}}
+  const un=s=>s.replace(/\\n/gi," ").replace(/\\,/g,",").replace(/\;/g,";").replace(/\\\\/g,"\\").trim();
+  const dt=o=>{if(!o)return null;const m=o.v.match(/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})?(Z)?)?/);if(!m)return null;
+    let d=m[4]?new Date(+m[1],+m[2]-1,+m[3],+m[4],+m[5]):new Date(+m[1],+m[2]-1,+m[3]);if(m[7])d=new Date(Date.UTC(+m[1],+m[2]-1,+m[3],+m[4],+m[5]));return d};
+  const ymdD=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`, hm=d=>pad(d.getHours())+":"+pad(d.getMinutes());
+  const BD={SU:0,MO:1,TU:2,WE:3,TH:4,FR:5,SA:6};
+  const groups={}, out=[];
+  for(const e of evs){const s=dt(e.DTSTART),en=dt(e.DTEND);if(!s||!e.SUMMARY||!/T\d/.test(e.DTSTART.v))continue;
+    const name=un(e.SUMMARY.v).slice(0,60),loc=e.LOCATION?un(e.LOCATION.v).slice(0,60):"",start=hm(s),end=en?hm(en):hm(new Date(s.getTime()+36e5));
+    if(e.RRULE){const r=Object.fromEntries(e.RRULE.v.split(";").map(x=>x.split("=")));if(r.FREQ!=="WEEKLY")continue;
+      const days=r.BYDAY?r.BYDAY.split(",").map(x=>BD[x.slice(-2)]).filter(x=>x!=null):[s.getDay()];
+      let to=null;if(r.UNTIL){const u=dt({v:r.UNTIL});if(u)to=ymdD(u)}else if(r.COUNT){const wk=Math.ceil(+r.COUNT/days.length)*(+r.INTERVAL||1);to=ymdD(new Date(s.getTime()+wk*7*864e5))}
+      out.push({name,days,start,end,loc,from:ymdD(s),to});continue}
+    const k=[name,s.getDay(),start,end,loc].join("|");(groups[k]=groups[k]||{name,days:[s.getDay()],start,end,loc,dates:[]}).dates.push(ymdD(s))}
+  for(const g of Object.values(groups)){g.dates.sort();g.from=g.dates[0];g.to=g.dates[g.dates.length-1];out.push(g)}
+  const names=[...new Set(out.map(c=>c.name))];
+  out.forEach(c=>{if(courses.some(x=>x.name===c.name&&x.start===c.start&&(x.days||[]).join()===c.days.join()))return;const r=db.collection("courses").doc();c.color=CCOLS[names.indexOf(c.name)%CCOLS.length];queued(r.path,()=>r.set({...c,createdAt:Date.now()}))});
+  return names.length;
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-co]");if(!b||!db)return;if(b.dataset.co==="all")openCourses();else if(b.dataset.co==="edit")openCourse(b.dataset.id)});
+/* ---------- timeline ---------- */
+function timelineItems(d){
+  const it=[];
+  const ck=checkins[d]||{};
+  for(const hid in ck){const v=ck[hid];if(typeof v!=="number")continue;const h=habits.find(x=>x.id===hid);if(!h)continue;it.push({t:v,k:"habit",txt:L(`打卡 · ${esc(h.name)}`,`Check-in · ${esc(h.name)}`)})}
+  tasks.filter(t=>t.done&&!t.deleted&&t.doneAt&&dayOf(t.doneAt)===d).forEach(t=>it.push({t:t.doneAt,k:t.space,txt:L(`完成「${esc(t.title)}」`,`Done: “${esc(t.title)}”`)}));
+  pomos.filter(p=>p.day===d&&(+p.mins||0)>=1).forEach(p=>{const t=p.taskId&&tasks.find(x=>x.id===p.taskId);const st=p.end?p.end-(+p.mins)*6e4:p.start;
+    it.push({t:st,mins:+p.mins,k:"pomo",txt:`${TOM_ICON}${L(`专注 ${Math.round(p.mins)} 分钟`,`Focused ${Math.round(p.mins)} min`)}${p.space?` <span class="tag ${p.space}">${BOARD_NAME(p.space)}</span>`:""}`,sub:t?esc(t.title):""})});
+  eats.filter(x=>x.day===d).forEach(x=>{const s=SLOTS().find(y=>y[0]===x.slot);it.push({t:x.at,k:"life",txt:`${s?s[2]:L("吃饭","Meal")} · ${esc(x.name)}`,eat:x.id})});
+  const base=new Date(d+"T00:00:00");
+  coursesOn(d).forEach(c=>{const st=new Date(base.getTime()+tmin(c.start)*6e4).getTime();it.push({t:st,mins:tmin(c.end)-tmin(c.start),k:"grey",txt:L(`上课 · ${esc(c.name)}`,`Class · ${esc(c.name)}`),sub:`${esc(c.start)}–${esc(c.end)}${c.loc?" · "+esc(c.loc):""}`})});
+  tlog.filter(x=>x.day===d).forEach(x=>{const st=new Date(base.getTime()+tmin(x.start)*6e4).getTime();const m=x.end?tmin(x.end)-tmin(x.start):0;it.push({t:st,mins:m>0?m:0,k:x.space||"grey",txt:esc(x.title),sub:m>0?`${esc(x.start)}–${esc(x.end)}`:"",tl:x.id})});
+  return it.sort((a,b)=>a.t-b.t);
+}
+function timelineCard(d){
+  const it=timelineItems(d);
+  const col=k=>({habit:"var(--habit)",life:"var(--life)",study:"var(--study)",work:"var(--work)",pomo:"#ef5d6e",grey:"#aab6cf"})[k]||"#aab6cf";
+  return `<div class="tline card"><div class="fhd"><h3>${d===todayStr()?L("今天的时间轴","Today's timeline"):L("这天的时间轴","Timeline")}</h3><button class="cbtn2" data-tl="new" data-d="${d}">＋ ${L("补一条","Add")}</button></div>
+    ${it.length?`<div class="tlist">${it.map(x=>{const blk=x.mins>=10;const h=blk?Math.min(120,Math.max(34,Math.round(x.mins*.9))):0;
+      return `<div class="tli${blk?" blk":""}"${x.tl?` data-tl="edit" data-id="${x.tl}" role="button" tabindex="0"`:""}><span class="tt">${hhmm(x.t)}</span><span class="tm2"><i style="background:${col(x.k)};${blk?`height:${h}px`:""}"></i></span><span class="tx"><span>${x.txt}</span>${x.sub?`<small>${x.sub}</small>`:""}</span></div>`}).join("")}</div>`
+      :`<p class="hint" style="margin:0">${L("这天还没有带时间的记录。打卡、完成任务、番茄专注、吃饭都会自动出现在这里。","Nothing timed yet. Check-ins, finished tasks, focus sessions and meals show up here by themselves.")}</p>`}</div>`;
+}
+function openTl(d,id){
+  const x=id?tlog.find(y=>y.id===id):null; let sure=false;
+  const now=new Date();const st={title:x?x.title:"",start:x?x.start:pad(now.getHours())+":00",end:x?x.end||"":"",space:x?x.space||"":""};
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  const grab=()=>{const q=k=>bg.querySelector(k);if(!q("#tt"))return;st.title=q("#tt").value;st.start=q("#ts").value;st.end=q("#te").value};
+  const draw=()=>{grab();bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("补一条","Add an entry")}"><h3>${x?L("改一改","Edit"):L("补一条","Add an entry")}</h3>
+    <label class="field"><span>${L("做了什么","What happened")}</span><input id="tt" maxlength="60" value="${esc(st.title)}" placeholder="${L("比如：去健身房","e.g. Gym")}"></label>
+    <div class="drow"><label class="field"><span>${L("开始","Start")}</span><input type="time" id="ts" value="${esc(st.start)}"></label><label class="field"><span>${L("结束（可不填）","End (optional)")}</span><input type="time" id="te" value="${esc(st.end)}"></label></div>
+    <div class="field"><span>${L("算在哪个板块（可不选）","Board (optional)")}</span><div class="chips">${[["",L("不选","None")],["life",BOARD_NAME("life")],["study",BOARD_NAME("study")],["work",BOARD_NAME("work")]].map(([k,n])=>`<button class="chip hz${st.space===k?" on":""}" data-t="sp" data-v="${k}">${n}</button>`).join("")}</div></div>
+    <div class="sheet-actions"><button class="btn" data-t="x">${L("取消","Cancel")}</button><button class="btn primary" data-t="ok">${L("保存","Save")}</button></div>
+    ${x?`<button class="link danger-link" data-t="del">${sure?L("再点一次，确定删除","Tap again to delete"):L("删掉这一条","Delete entry")}</button>`:""}</div>`};
+  draw();document.body.appendChild(bg);setTimeout(()=>bg.querySelector("#tt")?.focus(),30);
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-t]");if(!b)return;const a=b.dataset.t;
+    if(a==="sp"){grab();st.space=b.dataset.v;draw();return}
+    if(a==="x"){bg.remove();return}
+    if(a==="del"){if(!sure){sure=true;draw();return}bg.remove();const r=db.doc("tlog/"+id);queued(r.path,()=>r.delete());return}
+    if(a==="ok"){grab();if(!st.title.trim()||!st.start){bg.querySelector("#tt").focus();return}bg.remove();
+      const doc={day:d,title:st.title.trim().slice(0,60),start:st.start,end:st.end&&tmin(st.end)>tmin(st.start)?st.end:null,space:st.space||null};
+      const r=x?db.doc("tlog/"+id):db.collection("tlog").doc();queued(r.path,()=>x?r.update(doc):r.set({...doc,createdAt:Date.now()}))}});
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-tl]");if(!b||!db)return;openTl(b.dataset.d||jDate||todayStr(),b.dataset.tl==="edit"?b.dataset.id:null)});
 /* ---------- weather (web only) ---------- */
 const IS_WEB=true;
 const WX_KEY="lifeos-wx";
@@ -2427,6 +2775,7 @@ function journalView(){
     </div>
     ${(()=>{const pm=dayPomos(d),m=pm.reduce((a,p)=>a+(+p.mins||0),0);if(m<1)return "";const tn=pm.filter(p=>p.tomato).length;const by=["study","work"].map(k=>[k,pm.filter(p=>p.space===k).reduce((a,p)=>a+(+p.mins||0),0)]).filter(x=>x[1]>=1);
       return `<div class="focusline">${TOM_ICON}<span>${d===todayStr()?L("今天","Today"):L("这天","This day")}${L("专注了","")} <b>${fmtHM(m)}</b>${L("",` of focus`)} · ${L(`${tn} 个番茄`,`${tn} ${n_(tn,"tomato","tomatoes")}`)}</span>${by.length?`<span class="fsplit">${by.map(([k,v])=>`${BOARD_NAME(k)} ${fmtMins(v)}`).join(" · ")}</span>`:""}</div>`})()}
+    ${timelineCard(d)}
     <div class="jgrid">
       ${on("habit")?box(L("打卡","Check-in"),"--habit",list(D.hNames)):""}
       ${on("life")?box(L("生活","Life"),"--life",lifeInner):""}
@@ -3011,7 +3360,7 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="stedit"){stapleEdit=!stapleEdit;pick.clear();render();return}
   if(act.dataset.act==="stdel"){const ref=db.doc("staples/"+id);queued(ref.path,()=>ref.delete());return}
   if(act.dataset.act==="stadd"){const names=staples.filter(x=>pick.has(x.id)).map(x=>x.name);pick.clear();render();for(const n of names)await addShop(n);cheer(L(`放进清单 ${names.length} 样～`,`Added ${names.length} to the list～`));return}
-  if(act.dataset.act==="shopbuy"){const x=shop.find(y=>y.id===id);if(!x)return;const ref=db.doc("shop/"+id);const nb=!x.bought;queued(ref.path,()=>ref.update({bought:nb,boughtAt:nb?Date.now():null}));return}
+  if(act.dataset.act==="shopbuy"){const x=shop.find(y=>y.id===id);if(!x)return;const ref=db.doc("shop/"+id);const nb=!x.bought;queued(ref.path,()=>ref.update({bought:nb,boughtAt:nb?Date.now():null}));if(nb)noteBought(x.name);return}
   if(act.dataset.act==="shopdel"){const ref=db.doc("shop/"+id);queued(ref.path,()=>ref.delete());return}
   if(act.dataset.act==="shopstar"){const x=shop.find(y=>y.id===id);if(!x)return;const st=staples.find(y=>norm(y.name)===norm(x.name));
     if(st){const ref=db.doc("staples/"+st.id);queued(ref.path,()=>ref.delete())}else{await addStaple(x.name);cheer(L(`「${x.name}」加进常买了`,`“${x.name}” saved as a staple`))}return}
@@ -3328,7 +3677,7 @@ const FIREBASE_CONFIG={
   appId:"1:1053547899054:web:49caab221ae4f4171c253f"
 };
 const FB_VER="10.12.2";
-const COLS=["tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","memos","yearlyDays","pomos"];
+const COLS=["tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","memos","yearlyDays","pomos","meals","rests","eats","fridge","tlog","courses"];
 const CLOUD_KEY="lifeos-cloud-uid";
 let fb=null, cloudUser=null, cloudState=FIREBASE_CONFIG?"loading":"off"; // off | loading | unavailable | signedout | signedin
 let localDB=null, unsubs=[];
@@ -3371,7 +3720,7 @@ function makeCloudDB(uid){
 function startData(store){
   unsubs.forEach(u=>{try{u()}catch(_){}}); unsubs=[];
   db=store;
-  tasks=[];habits=[];checkins={};shop=[];staples=[];trips=[];journal={};milestones=[];yearlyDays=[];pomos=[];weekly={};yearly={};wishes=[];memos=[];forest=[];curTheme="lemon";
+  tasks=[];habits=[];checkins={};shop=[];staples=[];trips=[];journal={};milestones=[];yearlyDays=[];pomos=[];meals=[];rests=[];eats=[];fridge=[];tlog=[];courses=[];weekly={};yearly={};wishes=[];memos=[];forest=[];curTheme="lemon";
   for(const k in loaded)loaded[k]=false; recapChecked=false; lastStage=null; lastBuddy="";
   const fail=e=>{if(e&&e.code==="permission-denied")setStatus(L("没有权限读取数据，请重新登录。","No permission to read your data. Please sign in again."))};
   const sub=(c,fn,q)=>unsubs.push((q||db.collection(c)).onSnapshot(fn,fail));
@@ -3381,6 +3730,7 @@ function startData(store){
   sub("shop",s=>{shop=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.s=true;render()});
   sub("staples",s=>{staples=s.docs.map(d=>({id:d.id,...d.data()}));render()});
   sub("trips",s=>{trips=s.docs.map(d=>({id:d.id,...d.data()}));render()});
+  for(const [c,set] of [["meals",v=>meals=v],["rests",v=>rests=v],["eats",v=>eats=v],["fridge",v=>fridge=v],["tlog",v=>tlog=v],["courses",v=>courses=v]])sub(c,s=>{set(s.docs.map(d=>({id:d.id,...d.data()})));if(!spinning)render()});
   sub("pomos",s=>{pomos=s.docs.map(d=>({id:d.id,...d.data()}));render();if(!pomoBooted){pomoBooted=true;if(P&&(P.phase==="focus"||P.phase==="break"))P.open=P.open!==false;renderPomo()}});
   sub("yearlyDays",s=>{yearlyDays=s.docs.map(d=>({id:d.id,...d.data()}));bdNotify();render()});
   sub("milestones",s=>{milestones=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.m=true;render()});
