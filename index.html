@@ -1809,8 +1809,10 @@ const SL_MOON=`<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M28 6a14 14 
 const SL_SUN=`<svg viewBox="0 0 40 40" aria-hidden="true"><g stroke="#ffb84d" stroke-width="2.4" stroke-linecap="round"><path d="M20 3v4M20 33v4M3 20h4M33 20h4M8 8l3 3M29 29l3 3M32 8l-3 3M11 29l-3 3"/></g><circle cx="20" cy="20" r="10" fill="#ffe08a"/><circle cx="17" cy="19" r="1.5" fill="#3a3350"/><circle cx="23" cy="19" r="1.5" fill="#3a3350"/><path d="M17.5 23q2.5 2 5 0" stroke="#3a3350" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>`;
 const durTxt=ms=>{const m=Math.round(ms/6e4);return `${Math.floor(m/60)}h${String(m%60).padStart(2,"0")}m`};
 const nowHM=()=>hhmm(Date.now());
-function sleepPhase(){const n=new Date(),h=n.getHours()+n.getMinutes()/60;const bt=bedTime?tmin(bedTime)/60:23.5;const eve=Math.min(21,bt-1);
-  if(h<dayStartH||h>=eve)return "eve"; if(h<14)return "morn"; return "day"}
+function sleepPhase(){const n=new Date(),h=n.getHours()+n.getMinutes()/60;
+  if(h<dayStartH||h>=14)return "eve";
+  const ln=sleeps[addDays(todayStr(),-1)]||{};
+  return ln.wake||slSkip(addDays(todayStr(),-1),"wake")?(h>=11?"eve":"morn"):"morn"}
 const slSkip=(k,kind)=>{try{return !!localStorage.getItem(`lifeos-slpskip-${k}-${kind}`)}catch(_){return false}};
 const slSkipSet=(k,kind)=>{try{localStorage.setItem(`lifeos-slpskip-${k}-${kind}`,"1")}catch(_){}};
 function sleepCard(){
