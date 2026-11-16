@@ -1508,7 +1508,8 @@ function foodList(){
   const s=foodSlot||slotNow();
   return foodPool().filter(x=>!(x.wheelOff||[]).includes(s));
 }
-function foodPool(){const s=foodSlot||slotNow();return foodMode==="out"?rests.filter(x=>!(x.slots&&x.slots.length)||x.slots.includes(s)):meals.filter(x=>(x.slot||"l")===s)}
+function foodPool(){const s=foodSlot||slotNow();return foodMode==="out"?rests.filter(x=>!(x.slots&&x.slots.length)||x.slots.includes(s)):meals.filter(x=>dishSlots(x).includes(s))}
+const dishSlots=x=>x.slots&&x.slots.length?x.slots:x.slot==="b"?["b"]:["l","d"];
 const isWant=x=>!!x.want&&!(x.visits>0);
 function wheelLabel(name){
   let n=name.replace(/\s*[（(][^）)]*[）)]\s*$/,"").trim()||name;
@@ -1603,19 +1604,25 @@ function noteBought(name){
 }
 function openDish(id){
   const x=id?meals.find(m=>m.id===id):null; let sure=false;
+  const cur=foodSlot||slotNow();
+  let sl=x?[...dishSlots(x)]:(cur==="b"?["b"]:["l","d"]);
   const bg=document.createElement("div");bg.className="sheet-bg";
-  const draw=(n,ing)=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("一道菜","A dish")}"><h3>${x?L("改一改这道菜","Edit dish"):L(`加一道${SLOTS().find(y=>y[0]===(foodSlot||slotNow()))[1]}`,"Add a dish")}</h3>
+  const draw=(n,ing)=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("一道菜","A dish")}"><h3>${x?L("改一改这道菜","Edit dish"):L("加一道菜","Add a dish")}</h3>
     <label class="field"><span>${L("菜名","Dish")}</span><input id="dn" maxlength="40" value="${esc(n)}" placeholder="${L("比如：番茄炒蛋","e.g. Tomato and egg")}"></label>
+    <div class="field"><span>${L("适合哪几顿（可以多选）","Good for (pick any)")}</span><div class="chips">${SLOTS().map(([k,nm])=>`<button class="chip hz${sl.includes(k)?" on":""}" data-d="slot" data-v="${k}" aria-pressed="${sl.includes(k)}">${nm}</button>`).join("")}</div></div>
     <label class="field"><span>${L("要用到的食材（可不填，用逗号隔开）","Ingredients (optional, comma-separated)")}</span><input id="di" maxlength="200" value="${esc(ing)}" placeholder="${L("番茄、鸡蛋","tomato, egg")}"></label>
     <span class="hint">${L("填了食材，转到这道菜时会看冰箱里有没有，缺的可以一键加进购物清单。","With ingredients, the wheel checks your fridge and can add what's missing to your list.")}</span>
     <div class="sheet-actions"><button class="btn" data-d="x">${L("取消","Cancel")}</button><button class="btn primary" data-d="ok">${L("保存","Save")}</button></div>
     ${x?`<button class="link danger-link" data-d="del">${sure?L("再点一次，确定删除","Tap again to delete"):L("删掉这道菜","Delete dish")}</button>`:""}</div>`};
+  const val=()=>[bg.querySelector("#dn").value,bg.querySelector("#di").value];
   draw(x?x.name:"",x?(x.ing||[]).join(L("、",", ")):""); document.body.appendChild(bg); setTimeout(()=>bg.querySelector("#dn")?.focus(),30);
   bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-d]");if(!b)return;const a=b.dataset.d;
+    if(a==="slot"){const k=b.dataset.v;sl=sl.includes(k)?sl.filter(y=>y!==k):[...sl,k];if(!sl.length)sl=[k];draw(...val());return}
     if(a==="x"){bg.remove();return}
-    if(a==="del"){if(!sure){sure=true;draw(bg.querySelector("#dn").value,bg.querySelector("#di").value);return}bg.remove();const r=db.doc("meals/"+id);queued(r.path,()=>r.delete());return}
+    if(a==="del"){if(!sure){sure=true;draw(...val());return}bg.remove();const r=db.doc("meals/"+id);queued(r.path,()=>r.delete());return}
     if(a==="ok"){const n=bg.querySelector("#dn").value.trim();if(!n){bg.querySelector("#dn").focus();return}const ing=splitItems(bg.querySelector("#di").value).slice(0,15);bg.remove();
-      const r=x?db.doc("meals/"+id):db.collection("meals").doc();queued(r.path,()=>x?r.update({name:n.slice(0,40),ing}):r.set({name:n.slice(0,40),ing,slot:foodSlot||slotNow(),createdAt:Date.now()}))}});
+      const order=["b","l","d"].filter(k=>sl.includes(k));
+      const r=x?db.doc("meals/"+id):db.collection("meals").doc();queued(r.path,()=>x?r.update({name:n.slice(0,40),ing,slots:order}):r.set({name:n.slice(0,40),ing,slots:order,createdAt:Date.now()}))}});
 }
 function openRest(id){
   const x=id?rests.find(m=>m.id===id):null; let sure=false;
