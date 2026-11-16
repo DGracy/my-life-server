@@ -2647,7 +2647,7 @@ function bdSection(){
   const show=bdAll?up:up.slice(0,3);
   const row=({x,nx})=>`<button class="upc-row${nx.days===0?" today":""}" data-act="bdedit" data-id="${x.id}" style="--rc:${bdCol(x)}" aria-label="${esc(bdTitle(x))}，${bdIn(nx.days)}"><span class="ic">${bdIcon(x)}</span><span class="tx"><b>${esc(bdTitle(x))}</b><small>${bdSub(x,nx)}</small></span><span class="in">${bdIn(nx.days)}</span></button>`;
   const open=!fold.bd||!up.length, nx=up[0];
-  return `<div class="upc${open?"":" folded"}"><div class="upc-head"><b>${L("{pet}记着呢","{pet} remembers")}</b><span class="hr">${up.length?`<button class="foldt" data-act="fold" data-v="bd" aria-expanded="${open}">${L(`${up.length} 个`,`${up.length}`)} · ${open?L("收起","Hide"):L("展开","Show")} ${open?"▴":"▾"}</button>`:""}<button class="upc-add" data-act="bdnew">＋ ${L("添加","Add")}</button></span></div>
+  return `<div class="upc${open?"":" folded"}"><div class="upc-head"><b>${L("{pet}记着呢","{pet} remembers")}</b><span class="hr">${up.length?`<button class="foldt" data-act="fold" data-v="bd" aria-expanded="${open}">${up.length>1?L(`一共 ${up.length} 个 · `,`${up.length} in total · `):""}${open?L("收起","Hide"):L("展开","Show")} ${open?"▴":"▾"}</button>`:""}<button class="upc-add" data-act="bdnew">＋ ${L("添加","Add")}</button></span></div>
     ${!open?"":up.length?show.map(row).join(""):`<p class="hint upc-empty">${L("家人朋友的生日、纪念日记在这里，{pet}会提前提醒你。","Add birthdays and anniversaries here, and {pet} will remind you ahead of time.")}</p>`}
     ${open&&up.length>3?`<button class="link upc-more" data-act="bdall">${bdAll?L("收起","Show less"):L(`看全部 ${up.length} 个`,`See all ${up.length}`)}</button>`:""}</div>`;
 }
