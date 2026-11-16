@@ -3003,7 +3003,6 @@ function journalView(){
   const comment=J.comment||"";
   return `<div class="board" data-k="journal">
     ${calendarCard(d)}
-    ${milestoneCard(d)}
     <div class="jnav"><button data-act="jprev" aria-label="${L("前一天","Previous day")}">‹</button><h2>${L(label+"的小结",label==="Today"||label==="Yesterday"?label+"'s recap":"Recap · "+label)}<small>${L(`${m}月${dd}日 · 周${wd}`,`${WDEN[wdIdx]}, ${dd} ${MON[m-1]}`)}</small></h2><button data-act="jnext" aria-label="${L("后一天","Next day")}" ${d>=t?"disabled":""}>›</button></div>
     <div class="jstats" style="grid-template-columns:repeat(${Math.min(["habit","life","study","work"].filter(on).length,4)},1fr)">
       ${on("habit")?`<div class="jstat"><b style="color:var(--habit-ink)">${D.hNames.length}<span style="font-size:13px"> / ${D.hTotal}</span></b><span>${L("打卡","Check-in")}</span></div>`:""}
@@ -3028,6 +3027,7 @@ function journalView(){
         <div class="acts">${sample?`<button class="btn primary" data-act="jai" ${jBusy?"disabled":""}>${comment?"✨ 再写一段":`✨ 让${petName()}认真写评语`}</button>`:""}${comment?`<span class="hint">写于 ${new Date(J.commentAt||Date.now()).toTimeString().slice(0,5)}</span>`:`<span class="hint">${sample?"写好感想再让小芽评，评语会更贴心":L("评语会根据你这天完成的事自动生成","Sprout's note is written from what you finished this day")}</span>`}</div>
       </div>
     </div>
+    ${milestoneCard(d)}
     <div class="reflect">
       <h4>${L("今日感想","Reflection")} <span class="hint">· ${L("想写就写，不写也可以","Optional, write if you feel like it")}</span></h4>
       <div class="moods">${MOODS.map(([k,e,n])=>`<button class="mood${J.mood===k?" on":""}" data-act="jmood" data-v="${k}" aria-pressed="${J.mood===k}">${moodFace(k)}<span>${n}</span></button>`).join("")}</div>
