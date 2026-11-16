@@ -9,8 +9,8 @@
 <meta name="theme-color" content="#eaf4ff">
 <title>我的人生服务器</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=2">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Fredoka:wght@500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap">
 <style>
@@ -52,6 +52,7 @@
 body{margin:0}
 [hidden]{display:none!important}
 .gear{border:none;background:var(--surface);border-radius:50%;width:34px;height:34px;font-size:16px;box-shadow:0 3px 0 var(--line);padding:0}
+@media(max-width:600px){.title-row{align-items:center;row-gap:8px}.title-row h1{flex-basis:100%}}
 .hd-acts{margin-left:auto;align-self:center;display:flex;align-items:center;gap:8px}.hd-acts>button{margin:0;flex:none}.hd-acts .gear{display:grid;place-items:center;line-height:1}.hd-acts .gear[hidden]{display:none}
 .gear.sync{display:grid;place-items:center}.gear.sync svg{width:22px;height:22px}
 .google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:10px;background:var(--surface);font-weight:600}
@@ -438,6 +439,12 @@ body.pomo-open{overflow:hidden}
 .gq{color:var(--muted);font-size:13.5px}
 .gl2{display:flex;gap:10px;align-items:flex-start;border-bottom:2px dashed var(--line);padding:4px 2px}.gl2 i{font-style:normal;color:#e0a100;font-weight:700;width:16px;text-align:center;line-height:1.6;padding-top:5px;flex:none}
 .reflect .gta{flex:1;width:100%;border:none;background:none;font:inherit;color:var(--fg);resize:none;outline:none;line-height:1.6;padding:5px 0;min-height:0;overflow:hidden;border-radius:0}
+.tripln{display:inline-flex;align-items:center;gap:4px;align-self:flex-start;border:none;background:color-mix(in srgb,var(--life) 12%,var(--surface));color:var(--fg);border-radius:10px;padding:4px 10px;font:inherit;font-size:13px;margin-top:4px;cursor:pointer;text-align:left}.tripln em{font-style:normal;color:var(--muted)}
+.trow{display:flex;flex-direction:column;gap:8px;background:var(--bg-2);border-radius:16px;padding:12px}.trow b{font-size:15px}.trow small{color:var(--muted);font-size:13px}.trow .tq{font-size:13px;color:var(--muted)}
+.tchips3{display:flex;gap:6px;flex-wrap:wrap}.tchips3 button{border:2px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer}.tchips3 button.on{background:var(--fg);color:var(--surface);border-color:var(--fg)}
+.trdate{border:2px solid var(--line);border-radius:12px;background:var(--surface);padding:6px 10px;font:inherit;color:var(--fg)}
+.tdel{align-self:flex-start;border:none;background:none;color:#e0465a;font:inherit;font-size:14px;padding:2px 0;cursor:pointer}
+.snack .snbtns{display:flex;gap:6px;flex:none}
 .jfoot{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-top:2px}.jfoot .saved{margin-right:auto}.jfoot .jsave{padding:7px 18px}
 .gsh{display:flex;align-items:center;justify-content:space-between;gap:8px}.gsh .lk{border:none;background:none;color:var(--brand);font:inherit;font-size:13px;padding:0;cursor:pointer}
 .gmore.has{color:var(--fg);text-align:left;font-size:14px;background:var(--bg-2);border-radius:12px;padding:8px 12px;align-self:stretch}.gmore.has b{color:var(--life-ink,var(--fg));font-weight:600}
@@ -2328,12 +2335,36 @@ function spawnNext(t,nx){
   return ref.id;
 }
 let snackT=null;
-function snack(title,sub,btn,fn){
+function openTrips(d,onlyId){
+  let sure=null, pickFor=null;
+  const bg=document.createElement("div"); bg.className="sheet-bg";
+  const list=()=>trips.filter(t=>t.date===d&&(!onlyId||t.id===onlyId)).sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
+  const draw=()=>{const ls=list();if(!ls.length){bg.remove();return}
+    const td=todayStr(),y1=addDays(td,-1),y2=addDays(td,-2);
+    bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("超市记录","Shopping trips")}"><h3>${d===td?L("今天的超市记录","Today's shopping"):L(`${dayLabel(d)}的超市记录`,`Shopping · ${dayLabel(d)}`)}</h3>
+      ${ls.map((t,i)=>`<div class="trow"><b>${ls.length>1?L(`第 ${i+1} 趟 · `,`Trip ${i+1} · `):""}${L(`买了 ${t.items||0} 样`,`${t.items||0} ${n_(t.items||0,"item","items")}`)}</b>${t.names&&t.names.length?`<small>${esc(t.names.join(L("、",", ")))}</small>`:""}
+        <span class="tq">${L("是哪天买的？","Which day was it?")}</span>
+        <div class="tchips3">${[[td,L("今天","Today")],[y1,L(`昨天 · ${md2(y1)}`,`Yesterday · ${md2(y1)}`)],[y2,L("前天","2 days ago")]].map(([v,n])=>`<button class="${t.date===v?"on":""}" data-tr="date" data-id="${t.id}" data-v="${v}">${n}</button>`).join("")}<button class="${![td,y1,y2].includes(t.date)||pickFor===t.id?"on":""}" data-tr="pick" data-id="${t.id}">${![td,y1,y2].includes(t.date)?md2(t.date):L("选日期…","Pick a date…")}</button></div>
+        ${pickFor===t.id?`<input type="date" class="trdate" data-id="${t.id}" max="${td}" value="${t.date}">`:""}
+        <button class="tdel" data-tr="del" data-id="${t.id}">${sure===t.id?L("再点一次，确定删除","Tap again to delete"):L("删掉这条","Delete this trip")}</button></div>`).join("")}
+      <div class="sheet-actions"><span></span><button class="btn primary" data-tr="x">${L("好了","Done")}</button></div></div>`};
+  const move=(id,v)=>{const t=trips.find(x=>x.id===id);if(!t||!v||v>todayStr())return;const r=db.doc("trips/"+id);t.date=v;queued(r.path,()=>r.update({date:v}));render();
+    if(v!==d){cheer(L(`挪到 ${dayLabel(v)} 了`,`Moved to ${dayLabel(v)}`));onlyId=null;d=v}pickFor=null;draw()};
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-tr]");if(!b)return;const a=b.dataset.tr,id=b.dataset.id;
+    if(a==="x"){bg.remove();return}
+    if(a==="date"){move(id,b.dataset.v);return}
+    if(a==="pick"){pickFor=id;draw();setTimeout(()=>{const el=bg.querySelector(".trdate");if(el){el.focus();try{el.showPicker()}catch(_){}}},30);return}
+    if(a==="del"){if(sure!==id){sure=id;draw();return}const r=db.doc("trips/"+id);trips=trips.filter(x=>x.id!==id);queued(r.path,()=>r.delete());render();cheer(L("删掉啦","Deleted"));sure=null;draw();return}});
+  bg.addEventListener("change",e=>{if(e.target.classList.contains("trdate"))move(e.target.dataset.id,e.target.value)});
+  draw();document.body.appendChild(bg);
+}
+function snack(title,sub,btn,fn,btn2,fn2){
   document.querySelector(".snack")?.remove(); clearTimeout(snackT);
   const el=document.createElement("div"); el.className="snack"; el.setAttribute("role","status");
-  el.innerHTML=`${SNACK_FACE}<span><b>${title}</b><small>${sub}</small></span>${btn?`<button type="button">${btn}</button>`:""}`;
+  el.innerHTML=`${SNACK_FACE}<span><b>${title}</b><small>${sub}</small></span>${btn?`<span class="snbtns"><button type="button" data-n="1">${btn}</button>${btn2?`<button type="button" data-n="2">${btn2}</button>`:""}</span>`:""}`;
   document.body.appendChild(el);
-  if(btn)el.querySelector("button").onclick=()=>{el.remove();clearTimeout(snackT);fn()};
+  if(btn)el.querySelector('[data-n="1"]').onclick=()=>{el.remove();clearTimeout(snackT);fn()};
+  if(btn2)el.querySelector('[data-n="2"]').onclick=()=>{el.remove();clearTimeout(snackT);fn2()};
   snackT=setTimeout(()=>el.remove(),6500);
 }
 const dayLabel=d=>{const [,m,dd]=d.split("-").map(Number);return L(`${m}月${dd}日`,`${dd} ${MON[m-1]}`)};
@@ -3141,7 +3172,7 @@ function journalView(){
   const wdIdx=new Date(y,m-1,dd).getDay();
   const list=(arr,key)=>arr.length?`<ul>${arr.map(x=>`<li>${esc(key?x[key]:x)}</li>`).join("")}</ul>`:`<span class="none">${L("这天没有完成的","Nothing finished this day")}</span>`;
   const box=(name,color,inner)=>`<div class="jbox" style="--c:var(${color})"><h4><i style="background:var(${color})"></i>${name}</h4>${inner}</div>`;
-  const lifeInner=list(D.life,"title")+(D.trip.length?`<span class="hint">🛒 ${L(`去了 ${D.trip.length} 趟超市，买了 ${D.trip.reduce((a,b)=>a+(b.items||0),0)} 样`,`${D.trip.length} shopping ${n_(D.trip.length,"trip","trips")}, ${D.trip.reduce((a,b)=>a+(b.items||0),0)} items`)}</span>`:"");
+  const lifeInner=list(D.life,"title")+(D.trip.length?`<button class="tripln" data-act="trips" data-v="${d}">🛒 ${L(`去了 ${D.trip.length} 趟超市，买了 ${D.trip.reduce((a,b)=>a+(b.items||0),0)} 样`,`${D.trip.length} shopping ${n_(D.trip.length,"trip","trips")}, ${D.trip.reduce((a,b)=>a+(b.items||0),0)} items`)} <em>›</em></button>`:"");
   const comment=J.comment||"";
   return `<div class="board" data-k="journal">
     ${calendarCard(d)}
@@ -3766,6 +3797,7 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="settheme"){setTheme(act.dataset.v);return}
   if(act.dataset.act==="newtask"){openEditor(null,{space:act.dataset.space,horizon:act.dataset.hz});return}
   if(act.dataset.act==="jsleep"){const d=jDate||todayStr();const cur=(journal[d]||{}).sleepq;saveJournal(d,{sleepq:cur===act.dataset.v?null:act.dataset.v});render();return}
+  if(act.dataset.act==="trips"){openTrips(act.dataset.v);return}
   if(act.dataset.act==="jmode"){jMode=act.dataset.v;try{localStorage.setItem("lifeos-jmode",jMode)}catch(_){}render();return}
   if(act.dataset.act==="jstepclose"){const d=jDate||todayStr();clearTimeout(noteTimer);saveGrat(d).catch(()=>{});jStepOpen=null;render();return}
   if(act.dataset.act==="jsave"){const d=jDate||todayStr();clearTimeout(noteTimer);
@@ -3788,9 +3820,14 @@ document.addEventListener("click",async e=>{
     if(st){const ref=db.doc("staples/"+st.id);queued(ref.path,()=>ref.delete())}else{await addStaple(x.name);cheer(L(`「${x.name}」加进常买了`,`“${x.name}” saved as a staple`))}return}
   if(act.dataset.act==="tripdone"){
     const got=shop.filter(x=>x.bought);
-    const tr=db.collection("trips").doc(); await queued(tr.path,()=>tr.set({date:todayStr(),items:got.length,createdAt:Date.now()}));
+    const tr=db.collection("trips").doc(); const td=todayStr(); await queued(tr.path,()=>tr.set({date:td,items:got.length,names:got.map(x=>x.name).slice(0,60),createdAt:Date.now()}));
+    const saved=got.map(x=>({...x}));
     for(const x of got){const ref=db.doc("shop/"+x.id);await queued(ref.path,()=>ref.delete())}
-    water(act,1);cheer(L(`采购完成，买了 ${got.length} 样！喝 1 滴水～`,`Shopping done, ${got.length} ${n_(got.length,"item","items")}! +1 drop～`));return;
+    water(act,1);
+    snack(L(`买好了 ${got.length} 样`,`Got ${got.length} ${n_(got.length,"item","items")}`),L(`+1 滴水 · 记在今天 ${dayLabel(td)}`,`+1 drop · logged today, ${dayLabel(td)}`),L("撤销","Undo"),()=>{
+        queued(tr.path,()=>tr.delete());for(const x of saved){const {id,...body}=x;const r=db.doc("shop/"+id);queued(r.path,()=>r.set(body))}cheer(L("撤销啦，东西回到清单里了","Undone. They're back on your list"))},
+      L("不是今天","Not today"),()=>openTrips(td,tr.id));
+    return;
   }
   if(act.dataset.act==="slot"){
     const t=tasks.find(x=>x.id===id);if(!t||t.done)return;
