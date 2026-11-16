@@ -421,6 +421,25 @@ body.pomo-open{overflow:hidden}
 .slot.on{color:#fff;border-color:var(--sc,var(--life));background:var(--sc,var(--life))}.slot:not(.on):hover{border-color:var(--sc,var(--life))}
 .sheet>.titlein{margin-bottom:2px}
 .titlein{border:none;border-bottom:2px solid var(--line);background:none;font-family:var(--f-display);font-size:22px;color:var(--fg);padding:2px 0 6px;width:100%;outline:none}.titlein:focus{border-bottom-color:var(--brand)}
+.slp.full{gap:10px;padding:12px 16px}
+.slx{display:flex;align-items:center;gap:12px;min-width:0}.slx>svg{width:40px;height:40px;flex:none}
+.slx .dur{display:flex;flex-direction:column;line-height:1.1;min-width:0}.slx .dur small{font-size:12.5px;color:var(--muted)}.slx .dur b{font-family:var(--f-num);font-size:28px;font-weight:700;color:#6a4fd6;white-space:nowrap}.slx .dur i{font-style:normal;font-size:14px;font-weight:500;margin:0 3px 0 2px;color:var(--muted)}
+.slx .tms{margin-left:auto;display:flex;align-items:center;gap:8px}.slx .ic{display:flex;flex-direction:column;align-items:center;gap:1px}.slx .ic svg{width:30px;height:30px;display:block}.slx .ic b{font-family:var(--f-num);font-size:16px;font-weight:700;color:var(--fg)}
+.slx .ar{color:var(--muted);opacity:.6}.slx .ed{margin-left:auto;border:none;background:none;color:var(--brand);font:inherit;font-size:14px;padding:4px;cursor:pointer;white-space:nowrap;flex:none}.slx .tms+.ed{margin-left:0}
+.slq{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-top:10px;border-top:2px dashed var(--line)}.slq>span{font-size:13.5px;color:var(--muted);white-space:nowrap}.slq .qb{display:flex;gap:6px;flex-wrap:wrap}.slq button{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;font:inherit;font-size:13px;color:var(--fg);cursor:pointer}.slq button.on{border-color:#8b6cf0;background:color-mix(in srgb,#b9a4ff 22%,var(--surface));color:#5a3fc0;font-weight:600}
+@media(max-width:600px){.slq{flex-direction:column;justify-content:center}.slq .qb{justify-content:center}}
+@media(min-width:700px){.slx .dur{flex-direction:row;align-items:baseline;gap:10px}.slx .dur small{font-size:16px;color:var(--fg)}.slx .dur b{font-size:32px}.slx .tms{gap:14px}.slx .ic b{font-size:19px}.slx .ic svg{width:36px;height:36px}.slq>span{font-size:16px;color:var(--fg)}.slq button{font-size:14.5px;padding:5px 14px}}
+:root[data-theme="dark"] .slx .dur b,:root:not([data-theme])[data-tod="night"] .slx .dur b{color:#c4b2ff}
+:root[data-theme="dark"] .slq button.on,:root:not([data-theme])[data-tod="night"] .slq button.on{color:#e2d8ff}
+.moodc{background:var(--surface);border-radius:22px;padding:14px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}.moodc h4{margin:0;font-family:var(--f-display);font-weight:400;font-size:17px}
+.dtabs{display:flex;gap:18px}.dtabs button{border:none;background:none;padding:0 0 4px;font-family:var(--f-display);font-size:17px;color:var(--muted);opacity:.75;border-bottom:3px solid transparent;cursor:pointer}.dtabs button.on{color:var(--fg);opacity:1;border-bottom-color:var(--brand)}
+.gq{color:var(--muted);font-size:13.5px}
+.gl2{display:flex;gap:10px;align-items:flex-start;border-bottom:2px dashed var(--line);padding:4px 2px}.gl2 i{font-style:normal;color:#e0a100;font-weight:700;width:16px;text-align:center;line-height:1.6;padding-top:5px;flex:none}
+.reflect .gta{flex:1;width:100%;border:none;background:none;font:inherit;color:var(--fg);resize:none;outline:none;line-height:1.6;padding:5px 0;min-height:0;overflow:hidden;border-radius:0}
+.gmore{align-self:flex-start;border:none;background:none;color:var(--brand);font:inherit;font-size:14px;padding:2px 0;cursor:pointer}
+.gstepbox{background:var(--bg-2);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}.gstepbox b{font-size:13.5px;color:var(--life-ink,var(--fg))}
+.reflect .gstepbox .gta{border:2px solid var(--line);border-radius:12px;background:var(--surface);padding:6px 10px}.reflect .gstepbox .gta:focus{border-color:var(--brand)}
+.gsug small{color:var(--muted);font-size:12.5px;display:block;margin-bottom:5px}.gsug>div{display:flex;flex-wrap:wrap;gap:6px}.gsug button{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 11px;font:inherit;font-size:13px;color:var(--fg);cursor:pointer;text-align:left}
 .slp{background:var(--surface);border-radius:20px;padding:12px 14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
 .slp .h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.slp .h svg{width:40px;height:40px;flex:none}.slp .h b{font-family:var(--f-display);font-weight:400;font-size:18px;flex:1;min-width:0}.slp .h small{color:var(--muted);font-size:12.5px}
 .slp .acts{display:flex;gap:8px}.slp .acts button{flex:1;border:2px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:8px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}.slp .acts .pr{background:#8b6cf0;border-color:#8b6cf0;color:#fff;font-family:inherit}.slp .acts .pr.sun{background:#ffb84d;border-color:#ffb84d;color:#3a2a00}
@@ -1164,6 +1183,7 @@ function render(){
   $("#forestBtn").setAttribute("aria-pressed",String(tab==="forest"));
   for(const k in keep){const el=document.getElementById(k);if(el)el.value=keep[k]}
   if(fid){const el=document.getElementById(fid);if(el){el.focus();try{if(ss!=null)el.setSelectionRange(ss,se)}catch(_){}}}
+  document.querySelectorAll("#main .gta").forEach(autosz);
   renderBuddy();
   if(pendingFocus){const el=document.querySelector(pendingFocus);pendingFocus=null;if(el)el.focus()}
   setTimeout(maybeCelebrate,0); setTimeout(maybeRecap,0); setTimeout(maybeTips,400);
@@ -1822,10 +1842,14 @@ function sleepPhase(){const n=new Date(),h=n.getHours()+n.getMinutes()/60;
   return ln.wake||slSkip(addDays(todayStr(),-1),"wake")?(h>=11?"eve":"morn"):"morn"}
 const slSkip=(k,kind)=>{try{return !!localStorage.getItem(`lifeos-slpskip-${k}-${kind}`)}catch(_){return false}};
 const slSkipSet=(k,kind)=>{try{localStorage.setItem(`lifeos-slpskip-${k}-${kind}`,"1")}catch(_){}};
+const SLQ=()=>[["good",L("睡饱了","Slept well")],["ok",L("还行","OK")],["bad",L("没睡好","Poorly")],["nightmare",L("做噩梦了","Nightmare")]];
+const slQ=k=>{const x=sleeps[k]||{};return "q" in x?x.q:((journal[addDays(k,1)]||{}).sleepq||null)};
+function hmParts(ms){const m=Math.max(0,Math.round(ms/6e4)),h=Math.floor(m/60),mm=m%60;return (h?`${h}<i>${L("小时","h")}</i>`:"")+(mm||!h?`${mm}<i>${L("分","m")}</i>`:"")}
+const qRow=k=>`<div class="slq"><span>${L("睡得怎么样？","How did you sleep?")}</span><div class="qb">${SLQ().map(([v,n])=>`<button class="${slQ(k)===v?"on":""}" data-sl="q" data-v="${k}" data-q="${v}" aria-pressed="${slQ(k)===v}">${n}</button>`).join("")}</div></div>`;
 function sleepCard(){
   const t=todayStr(), y=addDays(t,-1), ph=sleepPhase(), tn=sleeps[t]||{}, ln=sleeps[y]||{};
-  const line=(n,k)=>n.bed&&n.wake?`<div class="slp done">${SL_MOON}<span>${L("昨晚睡了","Slept")} <b>${durTxt(n.wake-n.bed)}</b> · ${hhmm(n.bed)}–${hhmm(n.wake)}</span><button data-sl="edit" data-v="${k}">${L("改","Edit")}</button></div>`
-      :n.wake?`<div class="slp done">${SL_SUN}<span>${L(`今天 ${hhmm(n.wake)} 起床`,`Up at ${hhmm(n.wake)}`)}</span><button data-sl="edit" data-v="${k}">${L("补睡觉时间","Add bedtime")}</button></div>`:"";
+  const line=(n,k)=>n.bed&&n.wake?`<div class="slp full"><div class="slx">${SL_MOON}<div class="dur"><small>${L("昨晚睡了","Slept")}</small><b>${hmParts(n.wake-n.bed)}</b></div><div class="tms"><span class="ic">${moodFace("zz")}<b>${hhmm(n.bed)}</b></span><span class="ar">→</span><span class="ic">${moodFace("wake")}<b>${hhmm(n.wake)}</b></span></div><button class="ed" data-sl="edit" data-v="${k}">${L("改","Edit")}</button></div>${qRow(k)}</div>`
+      :n.wake?`<div class="slp full"><div class="slx">${moodFace("wake")}<div class="dur"><small>${L("今天起床","Up at")}</small><b>${hhmm(n.wake)}</b></div><button class="ed" data-sl="edit" data-v="${k}">${L("补睡觉时间","Add bedtime")}</button></div>${qRow(k)}</div>`:"";
   if(ph==="eve"){
     if(tn.bed)return `<div class="slp done">${SL_MOON}<span>${L(`${hhmm(tn.bed)} 去睡的 · 晚安～`,`Off to bed at ${hhmm(tn.bed)} · good night～`)}</span><button data-sl="edit" data-v="${t}">${L("改","Edit")}</button></div>`;
     if(slSkip(t,"bed"))return "";
@@ -1857,6 +1881,7 @@ function openSleep(k){
     saveSleep(k,{bed,wake})});
 }
 document.addEventListener("click",e=>{const b=e.target.closest("[data-sl]");if(!b||!db)return;const a=b.dataset.sl,t=todayStr();
+  if(a==="q"){const k=b.dataset.v,q=b.dataset.q;saveSleep(k,{q:slQ(k)===q?null:q});return}
   if(a==="bed"){saveSleep(t,{bed:Date.now()});cheer(L("晚安～明天见！","Good night～ See you tomorrow!"));return}
   if(a==="wake"){const y=addDays(t,-1);saveSleep(y,{wake:Date.now()});const n=sleeps[y];cheer(n.bed?L(`早上好！昨晚睡了 ${durTxt(n.wake-n.bed)}`,`Morning! You slept ${durTxt(n.wake-n.bed)}`):L("早上好！","Good morning!"));return}
   if(a==="skip"){slSkipSet(b.dataset.v,b.dataset.k);render();return}
@@ -2526,6 +2551,8 @@ function pickRepeat(text,today){
 function moodFace(k){
   const ink="var(--buddy-ink)";
   const F={
+    zz:`<path d="M11 22.5q3 2.6 6 0M23 22.5q3 2.6 6 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M18.2 28.6q1.8 1 3.6 0" stroke="${ink}" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M30 11h4.5l-4.5 4.5h4.5" stroke="#8b6cf0" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M35 4.5h3l-3 3h3" stroke="#b9a4ff" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+    wake:`<circle cx="14" cy="22" r="2.4" fill="${ink}"/><circle cx="26" cy="22" r="2.4" fill="${ink}"/><circle cx="14.8" cy="21.1" r=".85" fill="#fff"/><circle cx="26.8" cy="21.1" r=".85" fill="#fff"/><ellipse cx="20" cy="28.6" rx="2.2" ry="2" fill="${ink}"/><circle cx="34" cy="9" r="2.6" fill="#ffc94d"/><g stroke="#ffc94d" stroke-width="1.4" stroke-linecap="round"><path d="M34 3.6v1.4M34 13v1.4M28.6 9h1.4M38 9h1.4M30.2 5.2l1 1M36.8 11.8l1 1M30.2 12.8l1-1M36.8 6.2l1-1"/></g>`,
     great:`<path d="M11 22q3-4 6 0M23 22q3-4 6 0" stroke="${ink}" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M15 27q5 7 10 0z" fill="${ink}"/><path d="M17.5 29.5q2.5 2 5 0" fill="var(--pink)"/><path d="M34 9l1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1z" fill="var(--habit)"/>`,
     good:`<circle cx="14" cy="22" r="2.3" fill="${ink}"/><circle cx="26" cy="22" r="2.3" fill="${ink}"/><circle cx="14.8" cy="21.2" r=".8" fill="#fff"/><circle cx="26.8" cy="21.2" r=".8" fill="#fff"/><path d="M16 27q4 4 8 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`,
     meh:`<circle cx="14" cy="22.5" r="2.1" fill="${ink}"/><circle cx="26" cy="22.5" r="2.1" fill="${ink}"/><path d="M16.5 28.5h7" stroke="${ink}" stroke-width="2" stroke-linecap="round"/>`,
@@ -2915,10 +2942,10 @@ function calendarCard(sel){
     const d=`${cm}-${pad(dd)}`, c=cnt[d], J=journal[d]||{}, future=d>t;
     const mood=MOODS.some(x=>x[0]===J.mood)?moodFace(J.mood):"";
     const pills=c?keys.filter(k=>c[k]).map(k=>`<i class="pill" style="--c:var(--${k}-ink);--s:var(--${k}-soft)" title="${name[k]} ${c[k]}">${c[k]}</i>`).join(""):"";
-    const lbl=L(`${m}月${dd}日`,`${dd} ${MON[m-1]}`)+(c?" · "+keys.filter(k=>c[k]).map(k=>`${name[k]} ${c[k]}`).join(", "):"")+(J.note?" · "+L("有感想","has a reflection"):"")+(msOn(d).length?" · "+L("值得记住：","Moment: ")+msOn(d).map(x=>x.title).join(", "):"");
+    const lbl=L(`${m}月${dd}日`,`${dd} ${MON[m-1]}`)+(c?" · "+keys.filter(k=>c[k]).map(k=>`${name[k]} ${c[k]}`).join(", "):"")+(hasJ(J)?" · "+L("有感想","has a reflection"):"")+(msOn(d).length?" · "+L("值得记住：","Moment: ")+msOn(d).map(x=>x.title).join(", "):"");
     const msN=msOn(d).length, bd=bdOnDay(d)[0];
     cells+=`<button class="cal-day${d===sel?" sel":""}${d===t?" today":""}${msN?" ms":""}${bd?" bd":""}" data-act="jday" data-v="${d}" ${future?"disabled":""} aria-label="${lbl}${bd?" · "+esc(bdTitle(bd)):""}" aria-pressed="${d===sel}"${bd?` style="--bdc:${bdCol(bd)}"`:""}>
-      ${msN?`<span class="cal-ms">${milestoneFace()}</span>`:""}<span class="cal-top"><b>${dd}</b>${mood?`<span class="cal-mood">${mood}</span>`:J.note?`<span class="cal-note">✎</span>`:""}</span>
+      ${msN?`<span class="cal-ms">${milestoneFace()}</span>`:""}<span class="cal-top"><b>${dd}</b>${mood?`<span class="cal-mood">${mood}</span>`:hasJ(J)?`<span class="cal-note">✎</span>`:""}</span>
       ${bd?`<span class="cal-bd">${bdIcon(bd)}</span>`:`<span class="pills">${pills}</span>`}</button>`;
   }
   const wd=L(["一","二","三","四","五","六","日"],["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]);
@@ -3138,14 +3165,40 @@ function journalView(){
       </div>
     </div>
     ${milestoneCard(d)}
+    <div class="moodc"><h4>${L("今天心情","Mood today")}</h4>
+      <div class="moods">${MOODS.map(([k,e,n])=>`<button class="mood${J.mood===k?" on":""}" data-act="jmood" data-v="${k}" aria-pressed="${J.mood===k}">${moodFace(k)}<span>${n}</span></button>`).join("")}</div></div>
     <div class="reflect">
-      <h4>${L("今日感想","Reflection")} <span class="hint">· ${L("想写就写，不写也可以","Optional, write if you feel like it")}</span></h4>
-      <div class="moods">${MOODS.map(([k,e,n])=>`<button class="mood${J.mood===k?" on":""}" data-act="jmood" data-v="${k}" aria-pressed="${J.mood===k}">${moodFace(k)}<span>${n}</span></button>`).join("")}</div>
-      <div class="sleepq"><span>${L("昨晚：","Last night:")}</span>${[["good",L("睡饱了","Slept well")],["ok",L("还行","OK")],["bad",L("没睡好","Poorly")],["nightmare",L("做噩梦了","Nightmare")]].map(([k,n])=>`<button class="mood${J.sleepq===k?" on":""}" data-act="jsleep" data-v="${k}" aria-pressed="${J.sleepq===k}">${n}</button>`).join("")}</div>
-      <textarea id="jnote-${d}" data-jnote="${d}" placeholder="${L("今天印象最深的一件事？有什么想对明天的自己说的？","What stood out today? Anything to tell tomorrow's you?")}" maxlength="4000">${esc(J.note||"")}</textarea>
+      <div class="dtabs" role="tablist">${[["g",L("感恩日记","Gratitude")],["n",L("今日感想","Reflection")]].map(([k,n])=>`<button class="${jMode===k?"on":""}" data-act="jmode" data-v="${k}" role="tab" aria-selected="${jMode===k}">${n}</button>`).join("")}</div>
+      ${jMode==="g"?gratBlock(d,J):`<textarea id="jnote-${d}" data-jnote="${d}" placeholder="${L("今天印象最深的一件事？有什么想对明天的自己说的？","What stood out today? Anything to tell tomorrow's you?")}" maxlength="4000">${esc(J.note||"")}</textarea>`}
       <span class="saved" id="jsaved">${jSaved}</span>
     </div>
   </div>`;
+}
+let jMode="g", jStepOpen=null;
+try{const v=localStorage.getItem("lifeos-jmode");if(v==="g"||v==="n")jMode=v}catch(_){}
+const hasJ=J=>!!(J&&((J.note&&J.note.trim())||(J.grat||[]).some(x=>x&&x.trim())||(J.step&&J.step.trim())));
+const autosz=el=>{el.style.height="auto";el.style.height=el.scrollHeight+"px"};
+function stepSug(d){
+  const out=[];
+  tasks.filter(t=>t.done&&!t.deleted&&t.doneAt&&dayOf(t.doneAt)===d).sort((a,b)=>a.doneAt-b.doneAt).forEach(t=>out.push(L(`完成「${t.title}」`,`Finished “${t.title}”`)));
+  const fm={};pomos.filter(p=>p.day===d&&(+p.mins||0)>=1).forEach(p=>{const t=p.taskId&&tasks.find(x=>x.id===p.taskId);const k=t?t.title:"";fm[k]=(fm[k]||0)+(+p.mins||0)});
+  for(const k in fm){const m=Math.round(fm[k]),zh=m<60?`${m} 分钟`:`${Math.floor(m/60)} 小时${m%60?` ${m%60} 分钟`:""}`;out.push(L(`专注 ${zh}${k?" · "+k:""}`,`Focused ${fmtMins(fm[k])}${k?" · "+k:""}`))}
+  return [...new Set(out)].slice(0,6);
+}
+function gratBlock(d,J){
+  const g=J.grat||[], open=jStepOpen===d||(J.step&&J.step.trim()), sug=open?stepSug(d):[];
+  return `<small class="gq">${L("今天有哪些小事让你开心，或者想说声谢谢？","What small things made you happy today, or thankful?")}</small>
+    ${[0,1,2].map(i=>`<div class="gl2"><i>${i+1}</i><textarea class="gta" rows="1" id="jg-${d}-${i}" data-jg="${d}" maxlength="500" placeholder="${i===0?L("比如：室友给我留了一块蛋糕","e.g. My flatmate saved me a slice of cake"):"……"}">${esc(g[i]||"")}</textarea></div>`).join("")}
+    ${open?`<div class="gstepbox"><b>${L("今天朝目标走的一小步","A small step toward your goals")}</b><textarea class="gta" rows="1" id="jstep-${d}" data-jstep="${d}" maxlength="300" placeholder="${L("写一句，或者从下面挑一个","Write one, or pick below")}">${esc(J.step||"")}</textarea>
+      ${sug.length?`<div class="gsug"><small>${L("今天做完的事","Done today")}</small><div>${sug.map(x=>`<button data-act="jsteppick" data-v="${esc(x)}">${esc(x)}</button>`).join("")}</div></div>`:""}</div>`
+      :`<button class="gmore" data-act="jstepopen">＋ ${L("记一小步","Log a small step")}</button>`}`;
+}
+function saveGrat(d){
+  const J=journal[d]||{}, p={};
+  const g=[0,1,2].map(i=>{const el=document.getElementById(`jg-${d}-${i}`);return el?el.value:((J.grat||[])[i]||"")});
+  if(g.some(x=>x)||J.grat)p.grat=g;
+  const st=document.getElementById(`jstep-${d}`);if(st)p.step=st.value;
+  return saveJournal(d,p);
 }
 function saveJournal(d,patch){
   const ref=db.doc("journal/"+d); const cur=journal[d]||{};
@@ -3164,6 +3217,8 @@ async function aiComment(){
 工作完成：${D.work.map(t=>t.title).join("、")||"无"}
 心情：${mood||"没填"}
 她的感想：${J.note||"没写"}
+感恩的小事：${(J.grat||[]).filter(x=>x&&x.trim()).join("；")||"没写"}${J.step?`
+朝目标的一小步：${J.step}`:""}
 
 要求：
 - 用中文，第一人称"我"（${petName()}）对"你"说话，100 到 160 字
@@ -3706,6 +3761,10 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="settheme"){setTheme(act.dataset.v);return}
   if(act.dataset.act==="newtask"){openEditor(null,{space:act.dataset.space,horizon:act.dataset.hz});return}
   if(act.dataset.act==="jsleep"){const d=jDate||todayStr();const cur=(journal[d]||{}).sleepq;saveJournal(d,{sleepq:cur===act.dataset.v?null:act.dataset.v});render();return}
+  if(act.dataset.act==="jmode"){jMode=act.dataset.v;try{localStorage.setItem("lifeos-jmode",jMode)}catch(_){}render();return}
+  if(act.dataset.act==="jstepopen"){const d=jDate||todayStr();jStepOpen=d;pendingFocus=`#jstep-${d}`;render();return}
+  if(act.dataset.act==="jsteppick"){const d=jDate||todayStr();const el=document.getElementById(`jstep-${d}`);const cur=(el?el.value:(journal[d]||{}).step||"").trim();const v=act.dataset.v;
+    if(!cur.includes(v)){const nv=cur?cur+L("；","; ")+v:v;if(el)el.value=nv;saveJournal(d,{step:nv});render()}return}
   if(act.dataset.act==="jmood"){const d=jDate||todayStr();const cur=(journal[d]||{}).mood;saveJournal(d,{mood:cur===act.dataset.v?null:act.dataset.v});render();return}
   if(act.dataset.act==="stpick"){pick.has(id)?pick.delete(id):pick.add(id);render();return}
   if(act.dataset.act==="stclear"){pick.clear();render();return}
@@ -3772,6 +3831,10 @@ document.addEventListener("input",e=>{
   if(e.target.dataset&&e.target.dataset.memoText&&db){const id=e.target.dataset.memoText, v=e.target.value, m=memos.find(x=>x.id===id); if(m)m.body=v;
     const sv=document.getElementById("memo-sv-"+id); if(sv)sv.textContent=L("正在保存…","Saving…");
     clearTimeout(memoTxTimer[id]); memoTxTimer[id]=setTimeout(()=>{const ref=db.doc("memos/"+id);queued(ref.path,()=>ref.update({body:v.slice(0,10000),updatedAt:Date.now()})).then(()=>{const el=document.getElementById("memo-sv-"+id);if(el)el.textContent=L("已保存 ✓","Saved ✓")}).catch(()=>{})},700);
+    return}
+  if(e.target.dataset&&(e.target.dataset.jg||e.target.dataset.jstep)&&db){
+    autosz(e.target);const d=e.target.dataset.jg||e.target.dataset.jstep;
+    clearTimeout(noteTimer); noteTimer=setTimeout(()=>{saveGrat(d).catch(()=>{})},800);
     return}
   if(e.target.dataset&&e.target.dataset.jnote&&db){
     const d=e.target.dataset.jnote, v=e.target.value; jSaved=L("正在保存…","Saving…"); const sv=$("#jsaved"); if(sv)sv.textContent=jSaved;
@@ -4113,6 +4176,7 @@ function startData(store){
   sub("garden",s=>{const g=s.docs.find(d=>d.id==="current");if(g&&THEMES[g.data().theme])curTheme=g.data().theme;render()});
   sub("journal",s=>{const m={};s.docs.forEach(d=>{const x=d.data();m[x.date||d.id]=x});
     const el=document.activeElement; if(el&&el.dataset&&el.dataset.jnote&&m[el.dataset.jnote])m[el.dataset.jnote]={...m[el.dataset.jnote],note:el.value};
+    if(el&&el.dataset&&el.dataset.jstep&&m[el.dataset.jstep])m[el.dataset.jstep]={...m[el.dataset.jstep],step:el.value};
     journal=m;render()},db.collection("journal").orderBy("date","desc").limit(400));
   sub("checkins",s=>{const m={};s.docs.forEach(d=>{const x=d.data();const dn={};for(const k in (x.done||{}))if(x.done[k])dn[k]=x.done[k];m[x.date||d.id]=dn});checkins=m;if(ok(s))loaded.c=true;render()},db.collection("checkins").orderBy("date","desc").limit(400));
   // offline with nothing cached yet: stop waiting after a few seconds
