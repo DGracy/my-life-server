@@ -479,7 +479,7 @@ body.pomo-open{overflow:hidden}
 .stks{display:flex;gap:6px;overflow-x:auto;padding:2px}.stk{flex:none;width:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border:2px solid transparent;border-radius:14px;background:var(--bg-2);padding:4px 0 3px;font:inherit;font-size:11px;color:var(--muted);cursor:pointer;min-height:58px}.stk svg{width:36px;height:36px}.stk.on{border-color:var(--brand);background:var(--surface);color:var(--fg)}
 .opnd{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--muted)}.opnd button{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;font:inherit;font-size:13px;color:var(--fg);cursor:pointer}.opnd button.on{background:var(--fg);color:var(--surface);border-color:var(--fg)}
 .bdask{display:flex;flex-direction:column;gap:6px;background:var(--bg-2);border-radius:14px;padding:10px 12px;font-size:13px;color:var(--muted)}.bdask .drow{display:flex;gap:6px;flex-wrap:wrap}.bdask select,.bdask input{border:2px solid var(--line);border-radius:10px;background:var(--surface);padding:5px 8px;font:inherit;color:var(--fg)}.bdask input{width:80px}
-.lp .lsig.empty{display:none}.reseal{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--bg-2);border-radius:14px;padding:10px 12px;font-size:13px;color:var(--muted)}
+.lp .lsig.empty{display:none}.env .from{display:inline-block;font-size:11.5px;color:#b5651d;background:#fff1de;border-radius:6px;padding:1px 6px;margin-left:4px;font-weight:500;vertical-align:2px}.env.fr .ic{background:#fff7e0}.env.fr .ic i{background:#e0a100}.rlinks{display:flex;gap:14px;flex-wrap:wrap}.reseal{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--bg-2);border-radius:14px;padding:10px 12px;font-size:13px;color:var(--muted)}
 .lsigin{border:2px solid var(--line);border-radius:12px;background:var(--bg-2);padding:7px 12px;font:inherit;color:var(--fg)}
 .lrow{display:flex;gap:10px;flex-wrap:wrap}.lrow .field{flex:1;min-width:140px}
 .ovl-letter{position:fixed;inset:0;background:rgba(30,34,60,.45);display:grid;place-items:center;z-index:80;padding:16px}.ovl-letter .ovc{background:var(--surface);border-radius:26px;padding:22px 22px 18px;width:min(330px,100%);text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
@@ -1917,19 +1917,20 @@ const MBOX=()=>`<svg viewBox="0 0 120 100" class="mbsvg" aria-hidden="true"><ell
 function envRow(x){
   const ready=lReady(x), open=x.opened, sealed=x.sealed&&!open;
   const tag=!x.sealed?L("草稿 · 接着写","Draft · keep writing"):ready?L("可以拆啦！","Ready to open!"):sealed?L(`${x.kind==="bday"?"生日":x.kind==="year"?lYmdS(x.openOn).replace(/^\d+年/,""):lYmdS(x.openOn)}拆 · 还有 ${daysTo(x.openOn)} 天`,`Opens ${lYmdS(x.openOn)} · ${daysTo(x.openOn)} days`):L("再读一遍","Read again");
-  return `<button class="env${open?" open":""}${ready?" ready":""}${!x.sealed?" draft":""}" data-mb="${!x.sealed?"edit":sealed&&!ready?"locked":"read"}" data-id="${x.id}"><span class="ic"><i></i></span><span class="et"><b>${L("致 ","To ")}${esc(letterTo(x))}</b><small>${L("写于 ","Written ")}${lYmd(x.writtenAt||x.createdAt||Date.now())}</small></span><span class="tag">${tag}</span></button>`;
+  return `<button class="env${open?" open":""}${ready?" ready":""}${!x.sealed?" draft":""}${x.from?" fr":""}" data-mb="${!x.sealed?"edit":sealed&&!ready?"locked":"read"}" data-id="${x.id}"><span class="ic"><i></i></span><span class="et"><b>${x.from?`${L("来自 ","From ")}${esc(x.from)} <span class="from">${L("朋友","Friend")}</span>`:`${L("致 ","To ")}${esc(letterTo(x))}`}</b><small>${L("写于 ","Written ")}${lYmd(x.writtenAt||x.createdAt||Date.now())}</small></span><span class="tag">${tag}</span></button>`;
 }
 function renderMailbox(){
   let pg=document.getElementById("mbPage");
   if(!pg){pg=document.createElement("div");pg.id="mbPage";pg.className="mbpage";pg.setAttribute("role","dialog");pg.setAttribute("aria-label",L("信箱","Mailbox"));document.body.appendChild(pg)}
   const by=(a,b)=>(a.openOn||"").localeCompare(b.openOn||"");
-  const drafts=letters.filter(x=>!x.sealed), ready=letters.filter(lReady), wait=letters.filter(x=>x.sealed&&!x.opened&&!lReady(x)).sort(by), done=letters.filter(x=>x.opened).sort((a,b)=>(b.writtenAt||0)-(a.writtenAt||0));
+  const mine=letters.filter(x=>!x.from), fr=letters.filter(x=>x.from).sort((a,b)=>(lReady(b)-lReady(a))||((!!a.opened)-(!!b.opened))||(b.writtenAt||0)-(a.writtenAt||0));
+  const drafts=mine.filter(x=>!x.sealed), ready=mine.filter(lReady), wait=mine.filter(x=>x.sealed&&!x.opened&&!lReady(x)).sort(by), done=mine.filter(x=>x.opened).sort((a,b)=>(b.writtenAt||0)-(a.writtenAt||0));
   const sec=(t,arr)=>arr.length?`<div class="mbsec"><h4>${t}</h4>${arr.map(envRow).join("")}</div>`:"";
   pg.innerHTML=`<div class="mbin"><div class="mbtop"><button data-mb="close" aria-label="${L("返回","Back")}">‹</button></div>
     <div class="mbhero">${MBOX()}<h2>${L("信箱","Mailbox")}</h2><p>${L("给未来的自己写一封信，封起来，<br>到日子才能拆开。","Write to your future self, seal it,<br>and open it when the day comes.")}</p><button class="btn primary mbwrite" data-mb="new">${L("写一封信 ✉","Write a letter ✉")}</button></div>
-    ${sec(L("可以拆啦","Ready to open"),ready)}${sec(L("还在写的","Drafts"),drafts)}${sec(L("还没到拆的时候","Sealed"),wait)}${sec(L("拆开过的","Opened"),done)}
+    ${sec(L("可以拆啦","Ready to open"),ready)}${sec(L("还在写的","Drafts"),drafts)}${sec(L("还没到拆的时候","Sealed"),wait)}${sec(L("拆开过的","Opened"),done)}${sec(L("朋友写给我的","From friends"),fr)}
     ${letters.length?"":`<p class="mbempty">${L("信箱还是空的，写第一封吧。","Your mailbox is empty. Write the first one.")}</p>`}
-    <button class="link mbimp" data-mb="import">${L("＋ 抄进一封以前写的信","＋ Copy in a letter you wrote before")}</button></div>`;
+    <button class="link mbimp" data-mb="import">${L("＋ 抄进一封信（自己或朋友写的）","＋ Copy in a letter (yours or a friend's)")}</button></div>`;
 }
 function openMailbox(){if(!db)return;mbOpen=true;loadLetterFonts();renderMailbox();document.body.classList.add("mb-on")}
 function closeMailbox(){mbOpen=false;document.getElementById("mbPage")?.remove();document.body.classList.remove("mb-on")}
@@ -1937,25 +1938,26 @@ const defSig=x=>L(`—— ${lYmd(x.writtenAt||Date.now()).replace(/\d+日$/,"")}
 function paperHTML(x,editable){
   const st=x.sticker?`<span class="lsk">${moodFace(x.sticker)}</span>`:"";
   const sig=(x.sig||"").trim();
-  return `<div class="lp lp-${x.paper||"kraft"}" style="font-family:${lfont(x.font)}"><div class="lto">${L("致 ","Dear ")}${esc(letterTo(x))}${L("：",",")}</div>${editable?`<textarea class="lbody" id="lbody" rows="3" placeholder="${L("想对那时候的自己说些什么？","What would you like to tell yourself?")}">${esc(x.body||"")}</textarea>`:`<div class="lbody rd">${esc(x.body||"").replace(/\n/g,"<br>")}</div>`}<div class="lsig${sig?"":" empty"}">${esc(sig)}</div><div class="ltail"></div>${st}</div>`;
+  return `<div class="lp lp-${x.paper||"kraft"}" style="font-family:${lfont(x.font)}">${x.from||x.who==="friend"?"":`<div class="lto">${L("致 ","Dear ")}${esc(letterTo(x))}${L("：",",")}</div>`}${editable?`<textarea class="lbody" id="lbody" rows="3" placeholder="${L("想对那时候的自己说些什么？","What would you like to tell yourself?")}">${esc(x.body||"")}</textarea>`:`<div class="lbody rd">${esc(x.body||"").replace(/\n/g,"<br>")}</div>`}<div class="lsig${sig?"":" empty"}">${esc(sig)}</div><div class="ltail"></div>${st}</div>`;
 }
 function openLetter(id,importMode){
   const ex=id?letters.find(x=>x.id===id):null; if(id&&!ex)return;
   const t=todayStr(), y=+t.slice(0,4);
   const st=ex?{...ex}:{kind:"year",paper:"kraft",font:"brush",sticker:"great",body:"",writtenAt:Date.now()};
-  if(importMode){st.kind="old";st.toText="";st.wdate=addDays(t,-365);st.iw="done";st.iOpen=addDays(t,180)}
+  if(importMode){st.kind="old";st.toText="";st.wdate=addDays(t,-365);st.iw="done";st.iOpen=addDays(t,180);st.who="me";st.friend=""}
   if(st.kind==="custom"){st.custTo=st.toText||"";st.customOn=st.openOn}
   if(!st.customOn)st.customOn=addDays(t,365);
   let sure=false, bdEdit=false;
   const bg=document.createElement("div"); bg.className="sheet-bg lsheet";
-  const grab=()=>{const b=bg.querySelector("#lbody");if(b)st.body=b.value;const sg=bg.querySelector("#lsigIn");if(sg)st.sig=sg.value;const tt=bg.querySelector("#ltoText");if(tt)st.toText=tt.value;const wd=bg.querySelector("#lwdate");if(wd&&wd.value)st.wdate=wd.value;const co=bg.querySelector("#lopen");if(co&&co.value)st.customOn=co.value;const ct=bg.querySelector("#lcustTo");if(ct)st.custTo=ct.value;const io=bg.querySelector("#limpOpen");if(io&&io.value)st.iOpen=io.value};
+  const grab=()=>{const b=bg.querySelector("#lbody");if(b)st.body=b.value;const sg=bg.querySelector("#lsigIn");if(sg)st.sig=sg.value;const tt=bg.querySelector("#ltoText");if(tt)st.toText=tt.value;const wd=bg.querySelector("#lwdate");if(wd&&wd.value)st.wdate=wd.value;const co=bg.querySelector("#lopen");if(co&&co.value)st.customOn=co.value;const ct=bg.querySelector("#lcustTo");if(ct)st.custTo=ct.value;const io=bg.querySelector("#limpOpen");if(io&&io.value)st.iOpen=io.value;const fn=bg.querySelector("#lfriend");if(fn)st.friend=fn.value};
   const calc=()=>{if(st.kind==="year"){st.toYear=y+1;st.openOn=`${y+1}-01-01`;st.age=null}
     else if(st.kind==="bday"){const nb=nextBday(t);st.openOn=nb;const b=bdParts();st.age=b&&b.y&&nb?+nb.slice(0,4)-b.y:null}
     else if(st.kind==="custom"){st.openOn=st.customOn;st.toYear=null;st.age=null}};
   const draw=()=>{grab();if(!importMode)calc();const b=bdParts();
     const sw=LPAPERS().map(([k,n])=>`<button class="pp${st.paper===k?" on":""}" data-lt="paper" data-v="${k}" aria-pressed="${st.paper===k}"><i class="lp-${k}"></i>${n}</button>`).join("");
-    bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("写一封信","Write a letter")}"><h3>${importMode?L("抄进一封以前写的信","Copy in an old letter"):ex?L("接着写","Keep writing"):L("写一封信","Write a letter")}</h3>
-      ${importMode?`<div class="lrow"><label class="field"><span>${L("当时写给","It was to")}</span><input id="ltoText" maxlength="30" value="${esc(st.toText||"")}" placeholder="${L("比如：2025 年的我、22 岁的我","e.g. me in 2025, me at 22")}"></label><label class="field"><span>${L("是哪天写的","Written on")}</span><input type="date" id="lwdate" max="${t}" value="${esc(st.wdate)}"></label></div>`
+    bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("写一封信","Write a letter")}"><h3>${importMode?L("抄进一封信","Copy in a letter"):ex?L("接着写","Keep writing"):L("写一封信","Write a letter")}</h3>
+      ${importMode?`<div class="opnd"><span>${L("谁写的","Written by")}</span><button class="${st.who==="me"?"on":""}" data-lt="who" data-v="me">${L("我自己","Me")}</button><button class="${st.who==="friend"?"on":""}" data-lt="who" data-v="friend">${L("朋友","A friend")}</button></div>
+      <div class="lrow">${st.who==="friend"?`<label class="field"><span>${L("朋友的名字","Friend's name")}</span><input id="lfriend" maxlength="30" value="${esc(st.friend||"")}" placeholder="${L("比如：Lily","e.g. Lily")}"></label>`:`<label class="field"><span>${L("当时写给","It was to")}</span><input id="ltoText" maxlength="30" value="${esc(st.toText||"")}" placeholder="${L("比如：2025 年的我、22 岁的我","e.g. me in 2025, me at 22")}"></label>`}<label class="field"><span>${L("是哪天写的","Written on")}</span><input type="date" id="lwdate" max="${t}" value="${esc(st.wdate)}"></label></div>`
       :`<div class="opnd"><span>${L("写给","To")}</span><button class="${st.kind==="year"?"on":""}" data-lt="kind" data-v="year">${L("明年的我 · 1月1日拆","Next year's me · opens 1 Jan")}</button><button class="${st.kind==="bday"?"on":""}" data-lt="kind" data-v="bday">${L("下一岁的我 · 生日那天拆","A year older · opens on my birthday")}</button><button class="${st.kind==="custom"?"on":""}" data-lt="kind" data-v="custom">${L("自己选日子","Pick a date")}</button></div>
         ${st.kind==="custom"?`<div class="lrow"><label class="field"><span>${L("哪天拆","Open on")}</span><input type="date" id="lopen" min="${addDays(t,1)}" value="${esc(st.customOn)}"></label><label class="field"><span>${L("写给","To")}</span><input id="lcustTo" maxlength="30" value="${esc(st.custTo||"")}" placeholder="${L("未来的我","future me")}"></label></div>`:""}
         ${st.kind==="bday"&&(!b||bdEdit)?`<div class="bdask"><span>${L("你的生日是哪天？（年份可以不填）","When's your birthday? (year optional)")}</span><div class="drow"><select id="lbm"><option value="">${L("月","Month")}</option>${[...Array(12)].map((_,i)=>`<option value="${i+1}" ${b&&b.m===i+1?"selected":""}>${L(`${i+1} 月`,MON[i])}</option>`).join("")}</select><select id="lbd"><option value="">${L("日","Day")}</option>${[...Array(31)].map((_,i)=>`<option value="${i+1}" ${b&&b.d===i+1?"selected":""}>${L(`${i+1} 日`,String(i+1))}</option>`).join("")}</select><input id="lby" inputmode="numeric" maxlength="4" placeholder="${L("年","Year")}" value="${b&&b.y?b.y:""}"><button class="btn" data-lt="bdsave">${L("好了","OK")}</button></div></div>`
@@ -1974,6 +1976,7 @@ function openLetter(id,importMode){
     const bt=e.target.closest("[data-lt]");if(!bt)return;const a=bt.dataset.lt;grab();if(!importMode)calc();
     if(a==="kind"){st.kind=bt.dataset.v;draw();return}
     if(a==="iw"){st.iw=bt.dataset.v;draw();return}
+    if(a==="who"){st.who=bt.dataset.v;draw();return}
     if(a==="paper"){st.paper=bt.dataset.v;draw();return}
     if(a==="font"){st.font=bt.dataset.v;draw();return}
     if(a==="stk"){st.sticker=bt.dataset.v;draw();return}
@@ -1988,8 +1991,9 @@ function openLetter(id,importMode){
       if(!sure){sure=true;bt.textContent=L("确定封起来？","Seal it for sure?");return}
       save({sealed:true,sealedAt:Date.now()});bg.remove();cheer(L(`封好啦！${lYmdS(st.openOn)}见～`,`Sealed! See you on ${lYmdS(st.openOn)}～`),"happy");return}
     if(a==="imp"){if(!(st.body||"").trim()){bg.querySelector("#lbody").focus();return}
+      if(st.who==="friend"&&!(st.friend||"").trim()){bg.querySelector("#lfriend").focus();return}
       const w=new Date((st.wdate||t)+"T12:00:00").getTime();const later=st.iw==="later"&&st.iOpen>t;
-      save({kind:"old",toText:(st.toText||"").trim()||L("那时候的我","me back then"),writtenAt:w,openOn:later?st.iOpen:st.wdate,sealed:true,opened:!later,openedAt:later?null:Date.now(),imported:true});bg.remove();
+      save({kind:"old",...(st.who==="friend"?{from:st.friend.trim(),toText:L("我","me")}:{toText:(st.toText||"").trim()||L("那时候的我","me back then")}),writtenAt:w,openOn:later?st.iOpen:st.wdate,sealed:true,opened:!later,openedAt:later?null:Date.now(),imported:true});bg.remove();
       cheer(later?L(`封好放进信箱啦，${lYmdS(st.iOpen)}见～`,`Sealed in your mailbox. See you on ${lYmdS(st.iOpen)}～`):L("放进信箱啦","Added to your mailbox"));return}});
   bg.addEventListener("input",e=>{if(e.target.id==="lbody")autosz(e.target);if(e.target.id==="lsigIn"){const el=bg.querySelector(".lsig");if(el){el.textContent=e.target.value.trim();el.classList.toggle("empty",!e.target.value.trim())}}if(e.target.id==="lcustTo"){const el=bg.querySelector(".lto");if(el)el.textContent=L("致 ","Dear ")+(e.target.value.trim()||L("未来的我","future me"))+L("：",",")}if(e.target.id==="ltoText"){const el=bg.querySelector(".lto");if(el)el.textContent=L("致 ","Dear ")+(e.target.value.trim()||L("那时候的我","me back then"))+L("：",",")}});
   bg.addEventListener("change",e=>{if(e.target.id==="lwdate"){grab();draw()}});
@@ -2000,12 +2004,15 @@ function openRead(id){
   const x=letters.find(l=>l.id===id);if(!x)return;loadLetterFonts();
   if(!x.opened){const r=db.doc("letters/"+id);x.opened=true;x.openedAt=Date.now();queued(r.path,()=>r.update({opened:true,openedAt:x.openedAt}));mbDot();if(mbOpen)renderMailbox()}
   const bg=document.createElement("div");bg.className="sheet-bg lsheet";
-  let rs=false; const t=todayStr();
+  let rs=false, fe=false; const t=todayStr();
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("读信","Read the letter")}">${paperHTML(x,false)}
     ${rs?`<div class="reseal"><span>${L("封回去，到哪天再拆？","Seal it again until:")}</span><input type="date" id="rsDate" class="lsigin" min="${addDays(t,1)}" value="${addDays(t,180)}"><button class="btn primary" data-r="ok">${L("封起来 ✉","Seal it ✉")}</button></div>`:""}
-    <div class="sheet-actions">${rs?"<span></span>":`<button class="link" data-r="open">${L("封回去，以后再拆","Seal it again for later")}</button>`}<button class="btn${rs?"":" primary"}" data-x="1">${L("收好","Put it away")}</button></div></div>`};
+    ${fe?`<div class="reseal"><span>${L("朋友的名字","Friend's name")}</span><input id="frName" class="lsigin" maxlength="30" placeholder="${L("比如：Lily","e.g. Lily")}"><button class="btn primary" data-r="frok">${L("好了","OK")}</button></div>`:""}
+    <div class="sheet-actions">${rs||fe?"<span></span>":`<span class="rlinks"><button class="link" data-r="open">${L("封回去，以后再拆","Seal it again for later")}</button>${x.imported&&!x.from?`<button class="link" data-r="fr">${L("改成朋友写的","Mark as from a friend")}</button>`:""}</span>`}<button class="btn${rs?"":" primary"}" data-x="1">${L("收好","Put it away")}</button></div></div>`};
   bg.addEventListener("click",e=>{if(e.target===bg||e.target.closest("[data-x]")){bg.remove();return}const b=e.target.closest("[data-r]");if(!b)return;
     if(b.dataset.r==="open"){rs=true;draw();bg.querySelector("#rsDate")?.focus();return}
+    if(b.dataset.r==="fr"){fe=true;draw();bg.querySelector("#frName")?.focus();return}
+    if(b.dataset.r==="frok"){const v=(bg.querySelector("#frName").value||"").trim();if(!v)return;const r=db.doc("letters/"+id);x.from=v;queued(r.path,()=>r.update({from:v}));fe=false;draw();if(mbOpen)renderMailbox();cheer(L(`放进「朋友写给我的」了`,`Moved to “From friends”`));return}
     if(b.dataset.r==="ok"){const v=bg.querySelector("#rsDate").value;if(!v||v<=t)return;const r=db.doc("letters/"+id);Object.assign(x,{opened:false,openedAt:null,sealed:true,openOn:v});queued(r.path,()=>r.update({opened:false,openedAt:null,sealed:true,openOn:v}));bg.remove();mbDot();if(mbOpen)renderMailbox();cheer(L(`封回去啦，${lYmdS(v)}见～`,`Sealed again. See you on ${lYmdS(v)}～`),"happy")}});
   draw();document.body.appendChild(bg);
 }
@@ -2016,7 +2023,7 @@ function maybeLetter(){
   const k="lifeos-letterpop-"+todayStr();try{if(localStorage.getItem(k))return;localStorage.setItem(k,"1")}catch(_){}
   const x=r[0], t=todayStr(), isNY=t.slice(5)==="01-01", isBd=x.kind==="bday";
   const o=document.createElement("div");o.className="ovl-letter";
-  o.innerHTML=`<div class="ovc" role="dialog" aria-label="${L("有一封信到日子了","A letter is ready")}">${MBOX()}<h3>${isBd?L("生日快乐！","Happy birthday!"):isNY?L("新年快乐！","Happy New Year!"):L("有一封信到日子了","A letter is ready")}</h3><p>${isBd?L("去年的你给今天的你写了一封信，","Last year's you wrote to today's you.<br>"):L("以前的你给你写了一封信，","Your past self wrote you a letter.<br>")}${L("<br>今天可以拆开啦。","It's ready to open.")}</p><button class="btn primary" data-o="open">${L("拆开读读 ✉","Open it ✉")}</button><button class="link" data-o="later">${L("晚点再看","Later")}</button></div>`;
+  o.innerHTML=`<div class="ovc" role="dialog" aria-label="${L("有一封信到日子了","A letter is ready")}">${MBOX()}<h3>${x.from?L(`${esc(x.from)} 的信到日子了`,`${esc(x.from)}'s letter is ready`):isBd?L("生日快乐！","Happy birthday!"):isNY?L("新年快乐！","Happy New Year!"):L("有一封信到日子了","A letter is ready")}</h3><p>${x.from?L(`${esc(x.from)} 写给你的信，`,`The letter ${esc(x.from)} wrote you<br>`):isBd?L("去年的你给今天的你写了一封信，","Last year's you wrote to today's you.<br>"):L("以前的你给你写了一封信，","Your past self wrote you a letter.<br>")}${L("<br>今天可以拆开啦。","It's ready to open.")}</p><button class="btn primary" data-o="open">${L("拆开读读 ✉","Open it ✉")}</button><button class="link" data-o="later">${L("晚点再看","Later")}</button></div>`;
   o.addEventListener("click",e=>{const b=e.target.closest("[data-o]");if(e.target===o||b){o.remove();if(b&&b.dataset.o==="open")openRead(x.id)}});document.body.appendChild(o);
 }
 document.addEventListener("click",e=>{const b=e.target.closest("[data-mb]");if(!b||!db)return;const a=b.dataset.mb,id=b.dataset.id;
