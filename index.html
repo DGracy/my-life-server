@@ -497,7 +497,7 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .fv .cd{display:flex;gap:12px}.fv .cd span{background:#fff;border-radius:18px;padding:12px 14px;box-shadow:0 4px 0 #e6dcf0;display:flex;flex-direction:column;align-items:center;min-width:72px}.fv .cd b{font-family:var(--f-num);font-size:34px;color:#c8344a;line-height:1.1}.fv .cd small{color:#8a83a0;font-size:13px}
 .fv .fvhd{display:flex;flex-direction:column;align-items:center;gap:6px}.fv .fvhd b{font-family:var(--f-display);font-weight:400;font-size:24px}.fv .fvhd small{color:#8a83a0}
 .fv .lp{align-self:stretch;text-align:left}.fv .mbsvg{width:180px;height:150px}.env .from{display:inline-block;font-size:11.5px;color:#b5651d;background:#fff1de;border-radius:6px;padding:1px 6px;margin-left:4px;font-weight:500;vertical-align:2px}.env.fr .ic{background:#fff7e0}.env.fr .ic i{background:#e0a100}.rlinks{display:flex;gap:14px;flex-wrap:wrap}.reseal{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--bg-2);border-radius:14px;padding:10px 12px;font-size:13px;color:var(--muted)}
-.dtrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.dtrow input[type=date]{flex:1;min-width:140px}.dtrow input[type=time]{width:120px;flex:none}.dtrow input[type=time]:disabled{opacity:.45}.dthint{margin-top:2px}
+.dtrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.dtrow input[type=date]{flex:1;min-width:140px}.dtrow input[type=date]{flex:1 1 100%}.field .dtrow select{width:auto;flex:none;border:2px solid var(--line);border-radius:14px;background:var(--bg-2);padding:9px 10px;font:inherit;color:var(--fg)}.dtrow select:disabled{opacity:.45}.dthint{margin-top:2px}
 .due.hot{background:color-mix(in srgb,#ff8f5c 22%,var(--surface));color:#c2410c;font-weight:600}
 .lsigin{border:2px solid var(--line);border-radius:12px;background:var(--bg-2);padding:7px 12px;font:inherit;color:var(--fg)}
 .lrow{display:flex;gap:10px;flex-wrap:wrap}.lrow .field{flex:1;min-width:140px}
@@ -3936,7 +3936,8 @@ function openEditor(id,preset){
     <label class="field"><span>${L("要做什么？","What needs doing?")}</span><input id="ed-title" value="${esc(draft.title)}" placeholder="${L("比如：整理 Week 6 笔记","e.g. Tidy up week 6 notes")}"></label>`:`<input id="ed-title" class="titlein" aria-label="${L("标题","Title")}" value="${esc(draft.title)}" placeholder="${L("比如：整理 Week 6 笔记","e.g. Tidy up week 6 notes")}">`}
     <div class="field"><span>${L("时间尺度","Timeframe")}</span><div class="chips">${HZ.map(h=>`<button class="chip hz${draft.horizon===h.k?" on":""}" data-ed="hz" data-v="${h.k}">${h.name}</button>`).join("")}</div></div>
     <div class="field"><span>${L("优先级","Priority")}</span><div class="chips">${[0,3,2,1].map(v=>`<button class="chip hz${draft.pri===v?" on":""}" data-ed="pri" data-v="${v}">${v?`<span class="psvg">${priIcon(v)}</span>`:""}${PRI_NAMES()[v]}</button>`).join("")}</div></div>
-    <label class="field"><span>${draft.repeat?(isNew?L("第一次是哪天","First date"):L("这一次是哪天","This one's date")):L("截止日期","Due date")}</span><span class="dtrow"><input type="date" id="ed-due" value="${esc(draft.due)}"><input type="time" id="ed-dtime" value="${esc(draft.dueTime||"")}" aria-label="${L("几点","Time")}" ${draft.due?"":"disabled"}>${draft.dueTime?`<button class="link" data-ed="notime">${L("不要时间","No time")}</button>`:""}</span><span class="hint dthint">${draft.due?L("面试、测评这种可以填上几点，不填就是当天任何时候","Add a time for interviews or tests, or leave it blank"):""}</span></label>
+    <label class="field"><span>${draft.repeat?(isNew?L("第一次是哪天","First date"):L("这一次是哪天","This one's date")):L("截止日期","Due date")}</span><span class="dtrow"><input type="date" id="ed-due" value="${esc(draft.due)}">${(()=>{const [hh,mm]=(draft.dueTime||"").split(":"),dis=draft.due?"":"disabled";const hl=h=>L(`${h<5?"凌晨":h<12?"上午":h<13?"中午":h<18?"下午":"晚上"} ${h<=12?h:h-12} 点`,`${h%12||12} ${h<12?"AM":"PM"}`);
+      return `<select id="ed-dh" aria-label="${L("几点","Hour")}" ${dis}><option value="">${L("几点","Hour")}</option>${[...Array(24)].map((_,h)=>`<option value="${pad(h)}" ${hh===pad(h)?"selected":""}>${hl(h)}</option>`).join("")}</select><select id="ed-dm" aria-label="${L("几分","Minute")}" ${dis}>${[...Array(12)].map((_,i)=>`<option value="${pad(i*5)}" ${(mm||"00")===pad(i*5)?"selected":""}>${pad(i*5)} ${L("分","min")}</option>`).join("")}</select>`})()}${draft.dueTime?`<button class="link" data-ed="notime">${L("不要时间","No time")}</button>`:""}</span><span class="hint dthint">${draft.due?L("面试、测评这种可以填上几点，不填就是当天任何时候","Add a time for interviews or tests, or leave it blank"):""}</span></label>
     ${repBlock()}
     ${doneBlock()}
     <label class="field"><span>${L("备注 / 计划细节","Notes / plan details")}</span><textarea id="ed-note">${esc(draft.note)}</textarea></label>
@@ -3945,7 +3946,7 @@ function openEditor(id,preset){
       ${isNew?"<span></span>":`<button class="btn danger" data-ed="del">${confirmDel?L("再点一次确认删除","Tap again to delete"):L("删除","Delete")}</button>`}
       <span style="display:flex;gap:8px"><button class="btn" data-ed="close">${L("取消","Cancel")}</button><button class="btn primary" data-ed="save">${isNew?L("添加","Add"):L("保存","Save")}</button></span>
     </div></div>`};
-  const grab=()=>{draft.title=bg.querySelector("#ed-title").value;draft.due=bg.querySelector("#ed-due").value;{const tm=bg.querySelector("#ed-dtime");draft.dueTime=tm&&draft.due?tm.value:""}draft.note=bg.querySelector("#ed-note").value;
+  const grab=()=>{draft.title=bg.querySelector("#ed-title").value;draft.due=bg.querySelector("#ed-due").value;{const h=bg.querySelector("#ed-dh"),m=bg.querySelector("#ed-dm");draft.dueTime=h&&h.value&&draft.due?`${h.value}:${m?m.value:"00"}`:""}draft.note=bg.querySelector("#ed-note").value;
     const u=bg.querySelector("#ed-until");if(u&&draft.repeat){if(u.value)draft.repeat.until=u.value;else delete draft.repeat.until}
     const dd=bg.querySelector("#ed-doneday");if(dd&&dd.value&&dd.value<=todayStr())draft.doneDay=dd.value};
   draw(); document.body.appendChild(bg);
@@ -3993,7 +3994,7 @@ function openEditor(id,preset){
       queued(ref.path,()=>ref.update(patch))}
   });
   bg.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="ed-title"){e.preventDefault();bg.querySelector('[data-ed="save"]').click()}if(e.key==="Escape")bg.remove()});
-  bg.addEventListener("change",e=>{if(e.target.id==="ed-due"||e.target.id==="ed-doneday"||e.target.id==="ed-until"||e.target.id==="ed-dtime"){grab();if(e.target.id!=="ed-until")draw()}});
+  bg.addEventListener("change",e=>{if(e.target.id==="ed-due"||e.target.id==="ed-doneday"||e.target.id==="ed-until"||e.target.id==="ed-dh"||e.target.id==="ed-dm"){grab();if(e.target.id!=="ed-until")draw()}});
   bg.querySelector("#ed-title").focus();
 }
 
