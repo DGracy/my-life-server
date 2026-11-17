@@ -2,7 +2,7 @@
 
 My "life server": a bilingual (中文 / English) task and habit tracker with a sprout that grows as you get things done. Built with AI in one night.
 
-**Try it:** [https://my-life-is-mine.netlify.app/](https://dgracy.github.io/my-life-server/)
+**Try it:** (https://dgracy.github.io/my-life-server/)
 
 ## What it does
 
