@@ -1,6 +1,6 @@
 # 🌱 My Life Server · 我的人生服务器
 
-My "life server": a bilingual (中文 / English) task and habit tracker with a sprout that grows as you get things done. Built with AI in one night.
+My "life server": a bilingual (Mandarin Chinese / English) task and habit tracker with a sprout that grows as you get things done. Built with AI in one night.
 
 **Try it:** https://dgracy.github.io/my-life-server/
 
