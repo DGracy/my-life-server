@@ -4809,7 +4809,7 @@ function openFund(fromPool){
     render()});
 }
 function wishPre(id,el){const w=wishes.find(x=>x.id===id);if(!w)return;const r=db.doc("wishes/"+id);queued(r.path,()=>r.update({pre:true}));w.pre=true;wishMenu=null;
-  const cur=w.cur||"£";wfund.log=[...(wfund.log||[]),{at:Date.now(),t:L(`先买了「${w.title}」，还要补 ${money(+w.price-(+w.saved||0),cur)}`,`Bought “${w.title}” early, ${money(+w.price-(+w.saved||0),cur)} to pay back`)}];fundSave();wishCameTrue(id,el)}
+  const cur=w.cur||"£";wfund.log=[...(wfund.log||[]),{at:Date.now(),id:w.id,k:"pre",t:L(`先买了「${w.title}」，还要补 ${money(+w.price-(+w.saved||0),cur)}`,`Bought “${w.title}” early, ${money(+w.price-(+w.saved||0),cur)} to pay back`)}];fundSave();wishCameTrue(id,el)}
 
 // drag to reorder (lists and the postcard wall)
 document.addEventListener("pointerdown",e=>{
@@ -4881,10 +4881,11 @@ function openWish(id){
   const w=wishes.find(x=>x.id===id); if(!w||!db)return;
   const draft={...w,cur:w.cur||"£"}; let confirmDel=false;
   const bg=document.createElement("div"); bg.className="sheet-bg";
-  const grab=()=>{draft.title=bg.querySelector("#we-title").value;draft.note=bg.querySelector("#we-note").value;draft.link=bg.querySelector("#we-link").value;const p=bg.querySelector("#we-price"),s=bg.querySelector("#we-saved"),c=bg.querySelector("#we-cur");if(p)draft.price=p.value;if(s)draft.saved=s.value;if(c)draft.cur=c.value};
+  const grab=()=>{const dn=bg.querySelector("#we-done");if(dn&&dn.value)draft.doneDay=dn.value;draft.title=bg.querySelector("#we-title").value;draft.note=bg.querySelector("#we-note").value;draft.link=bg.querySelector("#we-link").value;const p=bg.querySelector("#we-price"),s=bg.querySelector("#we-saved"),c=bg.querySelector("#we-cur");if(p)draft.price=p.value;if(s)draft.saved=s.value;if(c)draft.cur=c.value};
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑愿望","Edit wish")}">
     <input id="we-title" class="titlein" value="${esc(draft.title)}" maxlength="100" aria-label="${L("愿望","Wish")}">
     <div class="we-img"><label class="wm-slot sm">${draft.img?`<img src="${draft.img}" alt="">`:`<span>${L("配一张图","Add a picture")}</span>`}<input type="file" accept="image/*" id="we-file" hidden></label><span class="hint">${draft.img?`<button class="link" data-we="noimg">${L("不要这张图","Remove picture")}</button><br>`:""}${L("想买的放商品截图，想去的放一张风景照。","A product screenshot, or a photo of the place.")}${draft.done&&draft.kind==="go"?`<br><button class="link" data-we="memo">${L("换明信片上的照片和那句话","Change the postcard photo and line")}</button>`:""}</span></div>
+    ${draft.done?`<label class="field"><span>${draft.pre?L("什么时候买的","Bought on"):L("哪天实现的","Came true on")}</span><input id="we-done" type="date" max="${todayStr()}" value="${dayOf(draft.doneAt||Date.now())}"></label>`:""}
     <label class="field"><span>${L("链接（可不填）","Link (optional)")}</span><input id="we-link" type="url" maxlength="500" value="${esc(draft.link||"")}" placeholder="${L("购物页面、攻略……","A shop page, a guide…")}"></label>
     <div class="field"><span>${L("类型","Type")}</span><div class="chips">${WISH_KINDS.map(k=>`<button class="chip hz${draft.kind===k[0]?" on":""}" data-we="kind" data-v="${k[0]}">${sproutIcon(k[0])}${L(k[2],k[3])}</button>`).join("")}</div></div>
     ${draft.kind==="buy"?`<div class="wa-row"><label class="field"><span>${L("货币","Currency")}</span><select id="we-cur" class="wish-sheet-cur">${curOptions(draft.cur)}</select></label><label class="field" style="flex:1"><span>${L("价格","Price")}</span><input id="we-price" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(draft.price||"")}"></label>
@@ -4907,7 +4908,10 @@ function openWish(id){
     const ref=db.doc("wishes/"+id);
     if(a==="del"){if(!confirmDel){confirmDel=true;draw();return}bg.remove();queued(ref.path,()=>ref.delete());return}
     if(a==="undo"){bg.remove();queued(ref.path,()=>ref.update({done:false,doneAt:null}));return}
-    if(a==="save"){bg.remove();queued(ref.path,()=>ref.update({title:(draft.title.trim()||w.title).slice(0,100),kind:draft.kind,note:(draft.note||"").slice(0,1000),img:draft.img||null,link:(draft.link||"").trim().slice(0,500)||null,
+    if(a==="save"){const nd=draft.done&&draft.doneDay&&draft.doneDay!==dayOf(w.doneAt||0)?new Date(draft.doneDay+"T12:00:00").getTime():null;
+      if(nd){queued(ref.path,()=>ref.update({doneAt:nd}));if(w.pre){const tag=`「${w.title}」`;let hit=false;wfund.log=(wfund.log||[]).map(l=>{if(!hit&&(l.id===w.id&&l.k==="pre"||!l.id&&l.t&&l.t.includes(tag)&&/先买了|Bought/.test(l.t))){hit=true;return {...l,at:nd}}return l}).sort((x,y)=>x.at-y.at);if(hit)fundSave()}
+        const mt=L("实现愿望：","Wish come true: ")+w.title,od=dayOf(w.doneAt||0);const m=milestones.find(x=>x.title===mt&&x.date===od);if(m&&m.id){const mr=db.doc("milestones/"+m.id);queued(mr.path,()=>mr.update({date:draft.doneDay}))}}
+      bg.remove();queued(ref.path,()=>ref.update({title:(draft.title.trim()||w.title).slice(0,100),kind:draft.kind,note:(draft.note||"").slice(0,1000),img:draft.img||null,link:(draft.link||"").trim().slice(0,500)||null,
       cur:draft.cur,price:draft.kind==="buy"&&draft.price!==""&&draft.price!=null?Math.max(0,+draft.price):null,saved:draft.kind==="buy"&&draft.saved!==""&&draft.saved!=null?Math.max(0,+draft.saved):null}))}
   });
   bg.querySelector("#we-title").focus();
