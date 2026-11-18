@@ -590,6 +590,26 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .gear.sm{width:28px;height:28px;font-size:13px;display:grid;place-items:center}
 .st-mgr .smlist{display:flex;flex-direction:column;gap:6px}.smrow{display:flex;align-items:center;gap:6px;background:var(--surface-2);border-radius:12px;padding:6px 8px 6px 12px}.smrow .nm{flex:1;min-width:0;font-size:15px}
 .mini{width:30px;height:30px;border-radius:50%;border:0;background:var(--surface);color:var(--fg);font-size:14px;cursor:pointer}.mini:disabled{opacity:.3}.mini.del{color:var(--danger)}
+.idtop{display:flex;align-items:center;gap:12px}.idtop h2{margin:0;font-size:20px}
+.idbar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.seg3.sm button{font-size:12.5px;padding:4px 11px}
+.idcomp,.idlogin,.idc{background:var(--surface);border-radius:18px;padding:12px 14px;box-shadow:0 0 0 1.5px var(--line);display:flex;flex-direction:column;gap:8px}
+.idcomp textarea{width:100%;box-sizing:border-box;border:none;background:var(--surface-2);border-radius:12px;padding:10px 12px;font:inherit;font-size:15px;color:var(--fg);resize:vertical;min-height:56px}
+.idcb{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.idpost{margin-left:auto}
+.idtog{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:2px}.idtog button{border:0;background:none;font:inherit;font-size:12.5px;color:var(--fg);padding:4px 11px;border-radius:999px;cursor:pointer}.idtog button.on{background:var(--life);color:#fff}
+.idlogin{flex-direction:row;align-items:center;gap:10px}.idlogin>div{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}.idlogin b{font-size:14px}.idlogin span{font-size:12.5px;color:var(--muted)}.idlogin .mface,.idask .mface{width:36px;height:36px;flex:none}
+.idask{display:flex;gap:10px;background:#fff8e1;color:#6b5410;border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.55}.idask small{display:block;font-size:12.5px;opacity:.85}.idaskb{display:flex;gap:8px;margin-top:8px}
+.idlist{display:flex;flex-direction:column;gap:10px}
+.idw{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13px;color:var(--muted)}.idw .mface{width:24px;height:24px}.idw b{color:var(--fg)}.idt{color:var(--faint)}
+.idbadge{font-size:11px;background:var(--brand);color:#fff;border-radius:999px;padding:0 7px;font-weight:600}.idbadge.sm{font-size:10.5px;margin-right:5px}
+.idlock{font-size:11.5px;background:var(--surface-2);border-radius:999px;padding:0 8px}
+.idx,.idcx{margin-left:auto;border:0;background:none;color:var(--danger);font:inherit;font-size:12.5px;cursor:pointer;padding:0}.idcx{float:right;margin-left:8px}
+.idc p{margin:0;font-size:15px;line-height:1.6;overflow-wrap:anywhere}
+.idm{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.idm button{border:0;background:none;font:inherit;font-size:13px;color:var(--muted);padding:2px 0;cursor:pointer}.idl.on{color:var(--danger)}.idvis{margin-left:auto}
+.idst{font-size:12px;border-radius:999px;padding:1px 10px;background:#fff1de;color:#c06a12}.idst.done{background:var(--life-soft);color:var(--life-ink)}.idst.no{background:var(--surface-2);color:var(--muted)}
+.idadm{display:flex;align-items:center;gap:6px;flex-wrap:wrap;border-top:1.5px dashed var(--line);padding-top:8px;font-size:12.5px;color:var(--muted)}.idadm button{border:0;font:inherit;font-size:12.5px;background:var(--surface-2);color:var(--fg);border-radius:999px;padding:3px 11px;cursor:pointer}.idadm button.on{background:var(--habit);color:#fff}
+.idcms{display:flex;flex-direction:column;gap:6px}.idco{background:var(--surface-2);border-radius:12px;padding:7px 11px;font-size:13.5px;line-height:1.55;overflow-wrap:anywhere}.idco b{margin-right:5px}
+.idcin{display:flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:14px;padding:4px 6px 4px 10px}.idcin input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:14px;color:var(--fg);outline:none}
+.idtg{border:0;font:inherit;font-size:12px;border-radius:999px;padding:3px 9px;background:var(--life);color:#fff;cursor:pointer}.idtg.on{background:var(--muted)}.idsend{border:0;background:none;font:inherit;font-size:13.5px;font-weight:600;color:var(--brand);cursor:pointer}
 .btnrow{display:flex;flex-wrap:wrap;gap:8px}.fpv{margin-top:8px;align-items:center;gap:6px}
 .tour-spot{position:fixed;z-index:89;border-radius:18px;box-shadow:0 0 0 9999px rgba(20,32,60,.55);pointer-events:none;transition:left .25s,top .25s,width .25s,height .25s}.tour-spot.soft{box-shadow:0 0 0 9999px rgba(20,32,60,.35)}
 .tour{position:fixed;z-index:91;width:min(300px,calc(100vw - 32px));box-sizing:border-box;background:#1f3156;color:#fff;border-radius:16px;padding:12px 14px;font-size:13.5px;line-height:1.55;box-shadow:0 10px 26px rgba(0,0,0,.25)}
@@ -1005,7 +1025,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 <body>
 
 <div class="wrap">
-  <div class="title-row"><h1 id="appName">我的人生服务器</h1><span class="today" id="today"></span><span class="hd-acts"><button class="gear mbb" id="mbBtn" aria-label="信箱">📫<i class="mbdot" hidden></i></button><button class="jbtn" id="jbtn" aria-pressed="false">📔<span id="jbtnTxt"> 小结</span></button><button class="gear sync" id="syncBtn" hidden></button><button class="gear" id="gear" aria-label="设置">⚙️</button></span></div>
+  <div class="title-row"><h1 id="appName">我的人生服务器</h1><span class="today" id="today"></span><span class="hd-acts"><button class="gear mbb" id="mbBtn" aria-label="信箱">📫<i class="mbdot" hidden></i></button><button class="gear mbb" id="idBtn" aria-label="想法箱" hidden>💡<i class="mbdot" hidden></i></button><button class="jbtn" id="jbtn" aria-pressed="false">📔<span id="jbtnTxt"> 小结</span></button><button class="gear sync" id="syncBtn" hidden></button><button class="gear" id="gear" aria-label="设置">⚙️</button></span></div>
   <section class="garden" aria-label="小芽的成长">
     <div class="buddy" id="buddy" role="img" aria-label="小芽"></div>
     <div class="g-text">
@@ -1700,7 +1720,7 @@ const TOUR_NEW=()=>{const f=TOUR_FULL();return [
   {sel:"#gear",pad:4,t:L("设置","Settings"),b:L("想再看一遍介绍，就在设置里点「重新看一遍介绍」。","Replay this tour any time from Settings.")}]};
 /* what's new: one batch per release; each batch shows once to people who already know the app */
 const NEWS_MORE=[];
-const NEWS=()=>[...NEWS_BASE(),...NEWS_MORE.map(f=>{const n=f();return {...n,steps:n.steps.filter(x=>!x.web||pipOK())}})];
+const NEWS=()=>[...NEWS_BASE(),...NEWS_MORE.map(f=>{const n=f();return {...n,steps:n.steps.filter(x=>!x.web||(x.sel==="#idBtn"?idOK():pipOK()))}}).filter(n=>n.steps.length)];
 const NEWS_BASE=()=>[
   {id:"1118",steps:[
     {sel:"#mbBtn",pad:4,t:L("新功能 · 信箱","New · Mailbox"),b:L("给以后的自己写封信，封好后到了日子才能拆：写给明年、下一个生日，或者自己挑一天。以前写的信也能放进来，还能寄给朋友。","Write to your future self. Letters stay sealed until their day: next year, your next birthday, or a date you pick. Add old letters too, or send one to a friend.")},
@@ -1714,6 +1734,8 @@ NEWS_MORE.push(()=>({id:"1118b",steps:[
     {sel:"#gear",pad:4,t:L("新功能 · 节日和同步","New · Holidays & sync"),b:L("过节的时候小芽会换装，不想要可以在设置里关掉。同步也搬进了设置里，⚙️ 上有蓝色小勾就是在同步。","{pet} dresses up on holidays; turn it off in Settings. Sync moved into Settings too: a blue tick on ⚙️ means you're synced.")}]}));
 NEWS_MORE.push(()=>({id:"1118c",steps:[
     {sel:"#gear",pad:4,t:L("新功能 · 按超市分组","New · Group by shop"),b:L("在设置里打开「按超市分组」，购物清单就会按 Tesco、亚超这样分开。加东西时选一下在哪家买，常买的东西会记住上次的店。","Turn on “Group by shop” in Settings and your shopping list splits by shop. Pick a shop when adding things; staples remember where you last bought them.")}]}));
+NEWS_MORE.push(()=>({id:"1118d",steps:[
+    {sel:"#idBtn",pad:4,t:L("新功能 · 想法箱","New · Idea box"),b:L("想要什么功能、有什么吐槽，都可以放进 💡 想法箱。公开的想法大家都能看到、点赞和评论；有人评论你的想法时，💡 上会出现小红点。","Put feature wishes and gripes in the 💡 idea box. Public ideas can be liked and commented on, and a red dot appears when someone replies to yours."),web:1}]}));
 const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
 let tourOn=null;
 function tourGo(go){
@@ -2784,7 +2806,8 @@ function renderPomo(){
 }
 let pomoMenu=false, pomoBooted=false;
 function openCustom(){
-  const bg=document.createElement("div");bg.className="sheet-bg";
+  if(document.querySelector(".sheet-bg.pcustom"))return;
+  const bg=document.createElement("div");bg.className="sheet-bg pcustom";bg.style.zIndex=80;
   bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("自己设时长","Custom length")}"><h3>${L("自己设时长","Custom length")}</h3>
     <div class="drow"><label class="field"><span>${L("专注（5–90 分钟）","Focus (5–90 min)")}</span><input type="number" id="pc-f" min="5" max="90" value="${pset.custom.f}"></label><label class="field"><span>${L("休息（1–30 分钟）","Break (1–30 min)")}</span><input type="number" id="pc-b" min="1" max="30" value="${pset.custom.b}"></label></div>
     <div class="sheet-actions"><button class="btn" data-c="x">${L("取消","Cancel")}</button><button class="btn primary" data-c="ok">${L("就用这个","Use it")}</button></div></div>`;
@@ -4760,6 +4783,8 @@ function openSettings(){
 }
 $("#gear").addEventListener("click",openSettings);
 $("#mbBtn").addEventListener("click",()=>openMailbox());
+$("#idBtn").addEventListener("click",()=>openIdeas());
+setTimeout(()=>{if(IS_WEB&&FIREBASE_CONFIG)$("#idBtn").hidden=false},0);
 
 /* ---------- the sprout's own name ---------- */
 const PET_POOL=()=>L(["团子","豆豆","糯米","青团","芽芽","小绿","嘟嘟","波波","汤圆","毛豆","布丁","阿嫩","饭团","麻薯","小葱"],["Bean","Mochi","Pip","Pea","Clover","Basil","Bud","Sprig","Maple","Olive","Peanut","Kiwi","Tofu","Pebble","Fern"]);
@@ -4885,7 +4910,7 @@ function startData(store){
 }
 const realLocalCount=d=>{let n=0;for(const c of ["tasks","checkins","journal","milestones","wishes","shop","forest","trips","memos"])for(const id in (d[c]||{}))if(!/^ex\d/.test(id))n++;return n};
 async function onSignedIn(user){
-  cloudUser=user; cloudState="signedin";
+  cloudUser=user; cloudState="signedin"; setTimeout(()=>{idCheckDot();if(idOpen)openIdeas()},2500);
   try{localStorage.setItem(CLOUD_KEY,user.uid)}catch(_){}
   const store=makeCloudDB(user.uid);
   let meta=null; try{meta=await store.meta.get()}catch(_){}
@@ -4936,6 +4961,99 @@ function authErr(e){const c=(e&&e.code)||"";
   if(/popup-closed|cancelled-popup/.test(c))return "";
   if(/unauthorized-domain/.test(c))return L("这个网址还没加进 Firebase 的授权域名。","This site isn't on Firebase's list of authorised domains yet.");
   return L("登录没成功，稍后再试。","Couldn't sign in. Try again in a moment.")}
+/* ---------- idea box (web only, shared Firestore "ideas") ---------- */
+const IDEA_ADMIN="GPChhXtdJ9SVwezLCRRVafAcwbz2";
+const IDEA_SEEN="lifeos-idea-seen", IDEA_VIS="lifeos-idea-vis";
+let idOpen=false, idTab="all", idSort="new", idAll=[], idMine=[], idCm={}, idOpenC=new Set(), idBusy=false, idErr="", idUnsub=[], idDraft={text:"",pub:null,anon:false}, idAsk=false, idSure=null;
+const idOK=()=>IS_WEB&&!!FIREBASE_CONFIG;
+const idMe=()=>cloudUser&&cloudUser.uid||null;
+const idAdmin=()=>idMe()===IDEA_ADMIN;
+const idAgo=ts=>{const m=Math.floor((Date.now()-ts)/6e4);if(m<1)return L("刚刚","just now");if(m<60)return L(`${m} 分钟前`,`${m} min ago`);const h=Math.floor(m/60);if(h<24)return L(`${h} 小时前`,`${h} h ago`);const d=Math.floor(h/24);if(d<2)return L("昨天","yesterday");if(d<30)return L(`${d} 天前`,`${d} days ago`);return lYmd(ts)};
+const idName=x=>x.anon||!x.name?L("匿名小芽","Anonymous sprout"):x.name;
+async function idFs(){if(!fb)fb=await loadFirebase();return fb.fs}
+async function openIdeas(){if(!idOK())return;idOpen=true;document.body.classList.add("mb-on");renderIdeas();try{localStorage.setItem(IDEA_SEEN,String(Date.now()))}catch(_){};idDot(false);
+  try{const fs=await idFs();idUnsub.forEach(f=>f());idUnsub=[];
+    idUnsub.push(fs.collection("ideas").where("public","==",true).limit(300).onSnapshot(s=>{idAll=s.docs.map(d=>({id:d.id,...d.data()}));idErr="";renderIdeas()},e=>{idErr=L("想法没读出来，可能是网络问题，或者 Firebase 规则还没加好。","Couldn't load ideas. Check your connection, or the Firebase rules.");renderIdeas()}));
+    if(idMe())idUnsub.push(fs.collection("ideas").where("uid","==",idMe()).onSnapshot(s=>{idMine=s.docs.map(d=>({id:d.id,...d.data()}));renderIdeas()},()=>{}));
+    idOpenC.forEach(id=>idLoadC(id));
+  }catch(e){idErr=L("连不上想法箱，检查一下网络再试试。","Can't reach the idea box. Check your connection.");renderIdeas()}}
+function closeIdeas(){idOpen=false;idUnsub.forEach(f=>f());idUnsub=[];document.getElementById("idPage")?.remove();if(!mbOpen)document.body.classList.remove("mb-on");try{localStorage.setItem(IDEA_SEEN,String(Date.now()))}catch(_){}}
+async function idLoadC(id){try{const fs=await idFs();if(idCm[id]&&idCm[id].unsub)return;const unsub=fs.collection("ideas").doc(id).collection("comments").orderBy("createdAt").limit(200).onSnapshot(s=>{idCm[id]={unsub,list:s.docs.map(d=>({id:d.id,...d.data()}))};renderIdeas()},()=>{});idCm[id]={unsub,list:(idCm[id]||{}).list||[]}}catch(_){}}
+function idDot(on){const el=document.querySelector("#idBtn .mbdot");if(el)el.hidden=!on}
+async function idCheckDot(){if(!idOK()||!idMe())return;try{const fs=await idFs();const s=await fs.collection("ideas").where("uid","==",idMe()).get();let seen=0;try{seen=+localStorage.getItem(IDEA_SEEN)||0}catch(_){}idDot(s.docs.some(d=>(d.data().lastCommentAt||0)>seen))}catch(_){}}
+function ideaCard(x){
+  const me=idMe(), mine=x.uid===me, admin=idAdmin(), likes=Object.keys(x.likes||{}).length, liked=!!(me&&(x.likes||{})[me]);
+  const open=idOpenC.has(x.id), cm=(idCm[x.id]||{}).list||[];
+  const ST={doing:L("在做啦","On it"),done:L("做好了","Done"),no:L("不做了","Not planned")};
+  return `<div class="idc" data-id="${x.id}">
+    <div class="idw">${moodFace(x.anon?"wink":"great")}<b>${esc(idName(x))}</b>${x.uid===IDEA_ADMIN&&!x.anon?`<span class="idbadge">${L("作者","Author")}</span>`:""}<span class="idt">· ${idAgo(x.createdAt||Date.now())}</span>${x.public?"":`<span class="idlock">🔒 ${L("只自己看","Only me")}</span>`}${mine||admin?`<button class="idx" data-id-a="del" data-id="${x.id}">${idSure===x.id?L("确定删掉？","Delete?"):L("删掉","Delete")}</button>`:""}</div>
+    <p>${esc(x.text||"").replace(/\n/g,"<br>")}</p>
+    <div class="idm">${x.public?`<button class="idl${liked?" on":""}" data-id-a="like" data-id="${x.id}" aria-pressed="${liked}">${liked?"♥":"♡"} ${likes}</button><button class="idcm" data-id-a="cm" data-id="${x.id}" aria-expanded="${open}">💬 ${x.commentCount||0}</button>`:""}${x.status&&ST[x.status]?`<span class="idst ${x.status}">${ST[x.status]}</span>`:""}${mine?`<button class="idvis" data-id-a="vis" data-id="${x.id}">${x.public?L("改成只自己看","Make private"):L("改成公开","Make public")}</button>`:""}</div>
+    ${admin&&x.public?`<div class="idadm"><span>${L("标记：","Mark:")}</span>${Object.entries(ST).map(([k,n])=>`<button class="${x.status===k?"on":""}" data-id-a="st" data-v="${k}" data-id="${x.id}">${n}</button>`).join("")}</div>`:""}
+    ${open?`<div class="idcms">${cm.map(c=>`<div class="idco"><b>${esc(idName(c))}</b>${c.uid===IDEA_ADMIN&&!c.anon?`<span class="idbadge sm">${L("作者","Author")}</span>`:""}${esc(c.text||"")}${c.uid===me||admin?`<button class="idcx" data-id-a="cdel" data-id="${x.id}" data-c="${c.id}" aria-label="${L("删掉评论","Delete comment")}">${L("删掉","Delete")}</button>`:""}</div>`).join("")||`<span class="hint">${L("还没有评论","No comments yet")}</span>`}
+      ${me?`<div class="idcin"><input id="idc-${x.id}" maxlength="500" placeholder="${L("写一句评论…","Write a comment…")}"><button class="idtg${(idDraft.canon||{})[x.id]?" on":""}" data-id-a="canon" data-id="${x.id}">${(idDraft.canon||{})[x.id]?L("匿名","Anon"):L("署名","Named")}</button><button class="idsend" data-id-a="csend" data-id="${x.id}">${L("发送","Send")}</button></div>`:`<button class="link" data-id-a="login">${L("登录后就能评论","Sign in to comment")}</button>`}</div>`:""}
+  </div>`}
+function renderIdeas(){
+  if(!idOpen)return;let pg=document.getElementById("idPage");
+  if(!pg){pg=document.createElement("div");pg.id="idPage";pg.className="mbpage";pg.setAttribute("role","dialog");pg.setAttribute("aria-label",L("想法箱","Idea box"));document.body.appendChild(pg)}
+  const keep={};pg.querySelectorAll("input,textarea").forEach(el=>{if(el.id)keep[el.id]=el.value});const foc=document.activeElement&&document.activeElement.id,st=pg.scrollTop;
+  const me=idMe(), first=me&&!idAdmin()&&localStorage.getItem(IDEA_VIS)==null;
+  let list=idTab==="all"?idAll:idMine;
+  list=[...list].sort(idSort==="top"&&idTab==="all"?(a,b)=>Object.keys(b.likes||{}).length-Object.keys(a.likes||{}).length||(b.createdAt||0)-(a.createdAt||0):(a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  const pub=idDraft.pub!=null?idDraft.pub:(()=>{try{const v=localStorage.getItem(IDEA_VIS);return v==null?true:v==="pub"}catch(_){return true}})();
+  pg.innerHTML=`<div class="mbin"><div class="mbtop idtop"><button data-id-a="close" aria-label="${L("返回","Back")}">‹</button><h2>${L("想法箱","Idea box")}</h2></div>
+    <p class="hint" style="margin:0">${L("想要的功能、吐槽、好玩的点子都可以放进来。公开的想法大家都能看到、点赞和评论。","Feature wishes, gripes, fun ideas, all welcome. Public ideas can be seen, liked and commented on by everyone.")}</p>
+    <div class="idbar"><div class="seg3">${[["all",L("大家的","Everyone")],["mine",L("我的","Mine")]].map(([k,n])=>`<button class="${idTab===k?"on":""}" data-id-a="tab" data-v="${k}">${n}</button>`).join("")}</div>${idTab==="all"?`<div class="seg3 sm">${[["new",L("最新","New")],["top",L("最多赞","Top")]].map(([k,n])=>`<button class="${idSort===k?"on":""}" data-id-a="sort" data-v="${k}">${n}</button>`).join("")}</div>`:""}</div>
+    ${me?`<div class="idcomp"><textarea id="idText" maxlength="1000" rows="2" placeholder="${L("有什么想法？功能、吐槽、好玩的点子都可以…","Got an idea? Features, gripes, anything…")}"></textarea>
+      ${idAsk?`<div class="idask">${moodFace("great")}<div>${L("第一次放想法：要公开给大家看吗？","Your first idea: share it with everyone?")}<small>${L("公开的想法别人可以点赞和评论，之后随时可以改回只自己看。","Public ideas can be liked and commented on. You can make it private any time.")}</small><div class="idaskb"><button class="btn primary" data-id-a="askpub">${L("公开","Public")}</button><button class="btn" data-id-a="askpriv">${L("只自己看","Only me")}</button></div></div></div>`
+      :`<div class="idcb">${first?"":`<span class="idtog"><button class="${pub?"on":""}" data-id-a="pub" data-v="1">${L("公开","Public")}</button><button class="${pub?"":"on"}" data-id-a="pub" data-v="0">${L("只自己看","Only me")}</button></span>`}<span class="idtog"><button class="${idDraft.anon?"":"on"}" data-id-a="anon" data-v="0">${L("署名","Named")}</button><button class="${idDraft.anon?"on":""}" data-id-a="anon" data-v="1">${L("匿名","Anon")}</button></span><button class="btn primary idpost" data-id-a="post" ${idBusy?"disabled":""}>${L("放进去","Post")}</button></div>`}</div>`
+      :`<div class="idlogin">${moodFace("letter")}<div><b>${L("登录后就能放想法、点赞和评论","Sign in to post, like and comment")}</b><span>${L("和同步用的是同一个账号","Same account as sync")}</span></div><button class="btn primary" data-id-a="login">${L("登录","Sign in")}</button></div>`}
+    ${idErr?`<p class="hint bd-err">${idErr}</p>`:""}
+    <div class="idlist">${list.map(ideaCard).join("")||`<div class="empty">${idTab==="all"?L("还没有人放想法，你来当第一个吧～","No ideas yet. Be the first～"):me?L("你还没放过想法","You haven't posted any ideas yet"):L("登录后能看到你自己的想法","Sign in to see your ideas")}</div>`}</div></div>`;
+  for(const k in keep){const el=pg.querySelector("#"+CSS.escape(k));if(el)el.value=keep[k]}
+  const t=pg.querySelector("#idText");if(t&&!keep.idText&&idDraft.text)t.value=idDraft.text;
+  if(foc){const el=pg.querySelector("#"+CSS.escape(foc));if(el){el.focus();try{el.setSelectionRange(el.value.length,el.value.length)}catch(_){}}}
+  pg.scrollTop=st;
+}
+async function idPost(pub){
+  const t=document.getElementById("idText"),text=(t?t.value:idDraft.text).trim();if(!text){t&&t.focus();return}
+  idBusy=true;renderIdeas();
+  try{const fs=await idFs();const name=(userName||(cloudUser&&cloudUser.displayName)||"").slice(0,30);
+    await fs.collection("ideas").add({uid:idMe(),name:idDraft.anon?"":name,anon:!!idDraft.anon,text:text.slice(0,1000),public:!!pub,status:"",likes:{},commentCount:0,createdAt:Date.now()});
+    idDraft.text="";const el=document.getElementById("idText");if(el)el.value="";if(!pub)idTab="mine";cheer(pub?L("放进想法箱啦，大家都能看到～","Posted. Everyone can see it～"):L("放好啦，只有你自己能看到","Saved. Only you can see it"),"happy")}
+  catch(e){cheer(L("没放进去，检查一下网络再试试","Couldn't post. Check your connection"))}
+  idBusy=false;renderIdeas()}
+document.addEventListener("input",e=>{if(e.target.id==="idText")idDraft.text=e.target.value});
+document.addEventListener("keydown",e=>{const m=e.target.id&&e.target.id.startsWith("idc-");if(m&&e.key==="Enter"&&!e.isComposing&&e.keyCode!==229){e.preventDefault();document.querySelector(`[data-id-a="csend"][data-id="${e.target.id.slice(4)}"]`)?.click()}});
+document.addEventListener("click",async e=>{
+  const b=e.target.closest("#idPage [data-id-a]");if(!b)return;const a=b.dataset.idA,id=b.dataset.id,me=idMe();
+  if(a!=="del")idSure=null;
+  if(a==="close"){closeIdeas();return}
+  if(a==="login"){openSignIn();return}
+  if(a==="tab"){idTab=b.dataset.v;renderIdeas();return}
+  if(a==="sort"){idSort=b.dataset.v;renderIdeas();return}
+  if(a==="pub"){idDraft.pub=b.dataset.v==="1";try{localStorage.setItem(IDEA_VIS,idDraft.pub?"pub":"priv")}catch(_){};renderIdeas();return}
+  if(a==="anon"){idDraft.anon=b.dataset.v==="1";renderIdeas();return}
+  if(a==="post"){const t=document.getElementById("idText");idDraft.text=t?t.value:"";if(!idDraft.text.trim()){t&&t.focus();return}
+    let first=false;try{first=!idAdmin()&&localStorage.getItem(IDEA_VIS)==null}catch(_){}
+    if(first){idAsk=true;renderIdeas();return}
+    const pub=idDraft.pub!=null?idDraft.pub:(()=>{try{return localStorage.getItem(IDEA_VIS)!=="priv"}catch(_){return true}})();idPost(pub);return}
+  if(a==="askpub"||a==="askpriv"){const pub=a==="askpub";try{localStorage.setItem(IDEA_VIS,pub?"pub":"priv")}catch(_){};idDraft.pub=pub;idAsk=false;idPost(pub);return}
+  if(a==="cm"){if(idOpenC.has(id))idOpenC.delete(id);else{idOpenC.add(id);idLoadC(id)}renderIdeas();return}
+  if(a==="canon"){idDraft.canon={...(idDraft.canon||{}),[id]:!(idDraft.canon||{})[id]};renderIdeas();return}
+  if(!me&&["like","csend"].includes(a)){openSignIn();return}
+  try{const fs=await idFs(),ref=fs.collection("ideas").doc(id),FV=firebase.firestore.FieldValue;
+    if(a==="like"){const x=idAll.find(y=>y.id===id)||idMine.find(y=>y.id===id);if(!x)return;const on=!(x.likes||{})[me];x.likes={...(x.likes||{})};if(on)x.likes[me]=true;else delete x.likes[me];renderIdeas();await ref.update({["likes."+me]:on?true:FV.delete()});return}
+    if(a==="csend"){const inp=document.getElementById("idc-"+id),text=(inp&&inp.value||"").trim();if(!text){inp&&inp.focus();return}
+      const anon=!!(idDraft.canon||{})[id],name=(userName||(cloudUser&&cloudUser.displayName)||"").slice(0,30);inp.value="";
+      const bt=fs.batch();bt.set(ref.collection("comments").doc(),{uid:me,name:anon?"":name,anon,text:text.slice(0,500),createdAt:Date.now()});bt.update(ref,{commentCount:FV.increment(1),lastCommentAt:Date.now()});await bt.commit();
+      try{localStorage.setItem(IDEA_SEEN,String(Date.now()))}catch(_){};return}
+    if(a==="cdel"){const bt=fs.batch();bt.delete(ref.collection("comments").doc(b.dataset.c));bt.update(ref,{commentCount:FV.increment(-1),lastCommentAt:Date.now()});await bt.commit();return}
+    if(a==="st"){const x=idAll.find(y=>y.id===id);await ref.update({status:x&&x.status===b.dataset.v?"":b.dataset.v});return}
+    if(a==="vis"){const x=idMine.find(y=>y.id===id)||idAll.find(y=>y.id===id);if(!x)return;await ref.update({public:!x.public,editedAt:Date.now()});return}
+    if(a==="del"){if(idSure!==id){idSure=id;renderIdeas();return}idSure=null;await ref.delete();return}
+  }catch(err){cheer(L("没成功，检查一下网络再试试","That didn't work. Check your connection"))}
+});
 function openSignIn(){
   if(!fb)return;
   let mode="in", err="";
