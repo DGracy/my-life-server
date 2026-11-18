@@ -1177,7 +1177,10 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 <script>
 /* ---------- language ---------- */
 let lang="zh";
-try{lang=localStorage.getItem("lifeos-lang")||((navigator.language||"").toLowerCase().startsWith("zh")?"zh":"en")}catch(e){lang=(navigator.language||"").toLowerCase().startsWith("zh")?"zh":"en"}
+{const navZh=()=>{try{return [...(navigator.languages||[]),navigator.language||""].some(x=>String(x).toLowerCase().startsWith("zh"))}catch(_){return false}};
+ // a shared letter opens in the sender's language (links carry it; older links are Chinese)
+ let shareLang=null;try{const q=new URLSearchParams(location.search);if(q.get("l"))shareLang=q.get("lang")==="en"?"en":"zh"}catch(_){}
+ try{lang=shareLang||localStorage.getItem("lifeos-lang")||(navZh()?"zh":"en")}catch(e){lang=shareLang||(navZh()?"zh":"en")}}
 let petNameV=""; try{petNameV=localStorage.getItem("lifeos-pet")||""}catch(_){}
 const petName=()=>petNameV||(lang==="en"?"Sprout":"小芽");
 const L=(zh,en)=>{const v=lang==="en"?en:zh;return typeof v==="string"&&v.includes("{pet}")?v.replace(/\{pet\}/g,petName()):v};
@@ -2246,7 +2249,7 @@ const shareApi={
   async body(id){if(window.__shareMock)return window.__shareMock.body(id);const s=await fb.fs.collection("sharedBody").doc(id).get({source:"server"});return s.exists?s.data():null}
 };
 const rid=()=>{const a="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789",r=new Uint8Array(14);crypto.getRandomValues(r);return [...r].map(x=>a[x%a.length]).join("")};
-const shareLink=id=>location.origin+location.pathname+"?l="+id;
+const shareLink=id=>location.origin+location.pathname+"?l="+id+"&lang="+(lang==="en"?"en":"zh");
 const STAMP_SVG=photo=>{let c="";for(let x=0;x<=70;x+=7)c+=`<circle cx="${x}" cy="0" r="2.6"/><circle cx="${x}" cy="84" r="2.6"/>`;for(let y=0;y<=84;y+=7)c+=`<circle cx="0" cy="${y}" r="2.6"/><circle cx="70" cy="${y}" r="2.6"/>`;
   const k=rid().slice(0,6);return `<svg viewBox="0 0 70 84" class="stampsvg" aria-hidden="true"><defs><mask id="sm${k}"><rect width="70" height="84" fill="#fff"/><g fill="#000">${c}</g></mask><linearGradient id="sg${k}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd1dc"/><stop offset="1" stop-color="#c7b6ff"/></linearGradient></defs><rect width="70" height="84" fill="#fff" mask="url(#sm${k})"/>${photo?`<image href="${photo}" x="7" y="7" width="56" height="70" preserveAspectRatio="xMidYMid slice"/>`:`<rect x="7" y="7" width="56" height="70" fill="url(#sg${k})"/><g transform="translate(11 18) scale(1.2)">${moodFace("love").replace(/^<svg[^>]*>/,"").replace(/<\/svg>$/,"")}</g>`}</svg>`};
 function shrinkPhoto(file){return new Promise((res,rej)=>{const fr=new FileReader();fr.onerror=rej;fr.onload=()=>{const im=new Image();im.onerror=rej;im.onload=()=>{const W=224,H=280,c=document.createElement("canvas");c.width=W;c.height=H;const g=c.getContext("2d");const sc=Math.max(W/im.width,H/im.height),w=im.width*sc,h=im.height*sc;g.drawImage(im,(W-w)/2,(H-h)/2,w,h);res(c.toDataURL("image/jpeg",.72))};im.src=fr.result};fr.readAsDataURL(file)})}
