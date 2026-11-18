@@ -590,7 +590,8 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .gear.sm{width:28px;height:28px;font-size:13px;display:grid;place-items:center}
 .st-mgr .smlist{display:flex;flex-direction:column;gap:6px}.smrow{display:flex;align-items:center;gap:6px;background:var(--surface-2);border-radius:12px;padding:6px 8px 6px 12px}.smrow .nm{flex:1;min-width:0;font-size:15px}
 .mini{width:30px;height:30px;border-radius:50%;border:0;background:var(--surface);color:var(--fg);font-size:14px;cursor:pointer}.mini:disabled{opacity:.3}.mini.del{color:var(--danger)}
-.idtop{display:flex;align-items:center;gap:12px}.idtop h2{margin:0;font-size:20px}
+.idtop{display:flex;align-items:center;gap:12px}.idtop h2{margin:0;font-size:26px;font-weight:500;font-family:var(--f-display);color:var(--fg)}
+#idPage .mbin{gap:16px}#idPage .mbin>.hint{font-size:14.5px;line-height:1.6}#idPage .seg3 button{font-size:15px;padding:7px 16px}#idPage .seg3.sm button{font-size:13.5px;padding:5px 13px}#idPage .idc p{font-size:16px}#idPage .idw{font-size:13.5px}#idPage .idm button{font-size:14px}#idPage .idco{font-size:14.5px}#idPage .idlogin b{font-size:15px}#idPage .idlogin span{font-size:13.5px}#idPage .idcomp textarea{font-size:16px;min-height:64px}#idPage .idc,#idPage .idcomp,#idPage .idlogin{padding:14px 16px;border-radius:20px}#idPage .empty{font-size:15px;padding:22px}
 .idbar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.seg3.sm button{font-size:12.5px;padding:4px 11px}
 .idcomp,.idlogin,.idc{background:var(--surface);border-radius:18px;padding:12px 14px;box-shadow:0 0 0 1.5px var(--line);display:flex;flex-direction:column;gap:8px}
 .idcomp textarea{width:100%;box-sizing:border-box;border:none;background:var(--surface-2);border-radius:12px;padding:10px 12px;font:inherit;font-size:15px;color:var(--fg);resize:vertical;min-height:56px}
@@ -1740,6 +1741,7 @@ const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
 let tourOn=null;
 function tourGo(go){
   if(mbOpen)closeMailbox();
+  if(idOpen)closeIdeas();
   if(go==="habit"){if(tab!=="habit"){tab="habit";render()}return}
   if(go==="journal"){if(tab!=="journal"){tab="journal";render()}return}
   if(go==="study"&&on("study")){if(tab!=="study"){tab="study";render()}}
@@ -1787,7 +1789,7 @@ function maybeTour(kind){
   if(kind==="new"&&(tourSeen("new")||tourSeen("full"))){if(newsPending().length)kind="news";else return}
   if(tourOn||(kind!=="news"&&tourSeen(kind)))return;
   let tries=0;const t=setInterval(()=>{tries++;if(tourOn||(kind==="news"?!newsPending().length:tourSeen(kind))){clearInterval(t);return}
-    if(!document.querySelector(".sheet-bg,#pomoPage:not([hidden])")&&!mbOpen&&loaded.t){clearInterval(t);startTour(kind)}else if(tries>120)clearInterval(t)},700);
+    if(!document.querySelector(".sheet-bg,#pomoPage:not([hidden]),.mbpage")&&!mbOpen&&!idOpen&&loaded.t){clearInterval(t);startTour(kind)}else if(tries>120)clearInterval(t)},700);
 }
 /* one-step tips the first time you open a spot */
 const TIPS=()=>[
@@ -1800,7 +1802,7 @@ const TIPS=()=>[
   {k:"bd",when:()=>tab==="journal",sel:".upc-add",pad:4,t:L("「{pet}记着呢」","“{pet} remembers”"),b:L("把家人朋友的生日、纪念日加进来，快到的时候{pet}会提醒你。","Add birthdays and anniversaries, and {pet} will remind you ahead of time.")}];
 let tipsSeen={}; try{tipsSeen=JSON.parse(localStorage.getItem(TIPS_KEY)||"{}")}catch(_){tipsSeen=null}
 function maybeTips(){
-  if(!tipsSeen||tourOn||mbOpen||!tourSeen("full")&&!tourSeen("new")||document.querySelector(".sheet-bg,.tour-ui,#pomoPage:not([hidden])"))return;
+  if(!tipsSeen||tourOn||mbOpen||idOpen||!tourSeen("full")&&!tourSeen("new")||document.querySelector(".sheet-bg,.tour-ui,#pomoPage:not([hidden])"))return;
   const s=TIPS().find(x=>!tipsSeen[x.k]&&x.when()&&document.querySelector(x.sel));if(!s)return;
   tipsSeen[s.k]=1;try{localStorage.setItem(TIPS_KEY,JSON.stringify(tipsSeen))}catch(_){}
   const el=document.querySelector(s.sel);const pad=s.pad??6;
@@ -2206,7 +2208,7 @@ function renderMailbox(){
     ${letters.length?"":`<p class="mbempty">${L("信箱还是空的，写第一封吧。","Your mailbox is empty. Write the first one.")}</p>`}
     <button class="link mbimp" data-mb="import">${L("＋ 抄进一封信（自己或朋友写的）","＋ Copy in a letter (yours or a friend's)")}</button></div>`;
 }
-function openMailbox(){if(!db)return;mbOpen=true;loadLetterFonts();renderMailbox();document.body.classList.add("mb-on")}
+function openMailbox(){if(!db)return;if(!tourOn)document.querySelectorAll(".tour-ui").forEach(x=>x.remove());mbOpen=true;loadLetterFonts();renderMailbox();document.body.classList.add("mb-on")}
 function closeMailbox(){mbOpen=false;document.getElementById("mbPage")?.remove();document.body.classList.remove("mb-on")}
 const defSig=x=>L(`—— ${lYmd(x.writtenAt||Date.now()).replace(/\d+日$/,"")}的我`,`— me, ${lYmd(x.writtenAt||Date.now())}`);
 const LSIZES={s:[15,30],m:[17,34],l:[21,40]};
@@ -4783,7 +4785,7 @@ function openSettings(){
 }
 $("#gear").addEventListener("click",openSettings);
 $("#mbBtn").addEventListener("click",()=>openMailbox());
-$("#idBtn").addEventListener("click",()=>openIdeas());
+$("#idBtn").addEventListener("click",()=>{if(!tourOn)openIdeas()});
 setTimeout(()=>{if(IS_WEB&&FIREBASE_CONFIG)$("#idBtn").hidden=false},0);
 
 /* ---------- the sprout's own name ---------- */
@@ -4890,7 +4892,7 @@ function startData(store){
   sub("letters",s=>{letters=s.docs.map(d=>({id:d.id,...d.data()}));mbDot();if(mbOpen)renderMailbox()});
   sub("sleep",s=>{const o={};s.docs.forEach(d=>{o[d.id]=d.data()});sleeps=o;render()});
   for(const [c,set] of [["meals",v=>meals=v],["rests",v=>rests=v],["eats",v=>eats=v],["fridge",v=>fridge=v],["tlog",v=>tlog=v],["courses",v=>courses=v]])sub(c,s=>{set(s.docs.map(d=>({id:d.id,...d.data()})));if(!spinning)render()});
-  sub("pomos",s=>{pomos=s.docs.map(d=>({id:d.id,...d.data()}));render();if(!pomoBooted){pomoBooted=true;setTimeout(()=>{let w=false;try{w=!!localStorage.getItem("lifeos-welcomed")}catch(_){};if(w||userName)maybeTour("new")},1500);if(P&&(P.phase==="focus"||P.phase==="break"))P.open=P.open!==false;renderPomo()}});
+  sub("pomos",s=>{pomos=s.docs.map(d=>({id:d.id,...d.data()}));render();if(!pomoBooted){pomoBooted=true;setTimeout(()=>{let w=false;try{w=!!localStorage.getItem("lifeos-welcomed")}catch(_){};if(w||userName)maybeTour("new")},400);if(P&&(P.phase==="focus"||P.phase==="break"))P.open=P.open!==false;renderPomo()}});
   sub("yearlyDays",s=>{yearlyDays=s.docs.map(d=>({id:d.id,...d.data()}));bdNotify();render()});
   sub("milestones",s=>{milestones=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.m=true;render()});
   sub("weekly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());weekly=m;if(ok(s))loaded.w=true;render()});
@@ -4964,19 +4966,19 @@ function authErr(e){const c=(e&&e.code)||"";
 /* ---------- idea box (web only, shared Firestore "ideas") ---------- */
 const IDEA_ADMIN="GPChhXtdJ9SVwezLCRRVafAcwbz2";
 const IDEA_SEEN="lifeos-idea-seen", IDEA_VIS="lifeos-idea-vis";
-let idOpen=false, idTab="all", idSort="new", idAll=[], idMine=[], idCm={}, idOpenC=new Set(), idBusy=false, idErr="", idUnsub=[], idDraft={text:"",pub:null,anon:false}, idAsk=false, idSure=null;
+var idOpen=false; let idTab="all", idSort="new", idAll=[], idMine=[], idCm={}, idOpenC=new Set(), idBusy=false, idErr="", idUnsub=[], idDraft={text:"",pub:null,anon:false}, idAsk=false, idSure=null;
 const idOK=()=>IS_WEB&&!!FIREBASE_CONFIG;
 const idMe=()=>cloudUser&&cloudUser.uid||null;
 const idAdmin=()=>idMe()===IDEA_ADMIN;
 const idAgo=ts=>{const m=Math.floor((Date.now()-ts)/6e4);if(m<1)return L("刚刚","just now");if(m<60)return L(`${m} 分钟前`,`${m} min ago`);const h=Math.floor(m/60);if(h<24)return L(`${h} 小时前`,`${h} h ago`);const d=Math.floor(h/24);if(d<2)return L("昨天","yesterday");if(d<30)return L(`${d} 天前`,`${d} days ago`);return lYmd(ts)};
 const idName=x=>x.anon||!x.name?L("匿名小芽","Anonymous sprout"):x.name;
 async function idFs(){if(!fb)fb=await loadFirebase();return fb.fs}
-async function openIdeas(){if(!idOK())return;idOpen=true;document.body.classList.add("mb-on");renderIdeas();try{localStorage.setItem(IDEA_SEEN,String(Date.now()))}catch(_){};idDot(false);
+async function openIdeas(){if(!idOK())return;if(!tourOn)document.querySelectorAll(".tour-ui").forEach(x=>x.remove());idOpen=true;document.body.classList.add("mb-on");renderIdeas();try{localStorage.setItem(IDEA_SEEN,String(Date.now()))}catch(_){};idDot(false);
   try{const fs=await idFs();idUnsub.forEach(f=>f());idUnsub=[];
-    idUnsub.push(fs.collection("ideas").where("public","==",true).limit(300).onSnapshot(s=>{idAll=s.docs.map(d=>({id:d.id,...d.data()}));idErr="";renderIdeas()},e=>{idErr=L("想法没读出来，可能是网络问题，或者 Firebase 规则还没加好。","Couldn't load ideas. Check your connection, or the Firebase rules.");renderIdeas()}));
+    idUnsub.push(fs.collection("ideas").where("public","==",true).limit(300).onSnapshot(s=>{idAll=s.docs.map(d=>({id:d.id,...d.data()}));idErr="";renderIdeas()},e=>{}));
     if(idMe())idUnsub.push(fs.collection("ideas").where("uid","==",idMe()).onSnapshot(s=>{idMine=s.docs.map(d=>({id:d.id,...d.data()}));renderIdeas()},()=>{}));
     idOpenC.forEach(id=>idLoadC(id));
-  }catch(e){idErr=L("连不上想法箱，检查一下网络再试试。","Can't reach the idea box. Check your connection.");renderIdeas()}}
+  }catch(e){}}
 function closeIdeas(){idOpen=false;idUnsub.forEach(f=>f());idUnsub=[];document.getElementById("idPage")?.remove();if(!mbOpen)document.body.classList.remove("mb-on");try{localStorage.setItem(IDEA_SEEN,String(Date.now()))}catch(_){}}
 async function idLoadC(id){try{const fs=await idFs();if(idCm[id]&&idCm[id].unsub)return;const unsub=fs.collection("ideas").doc(id).collection("comments").orderBy("createdAt").limit(200).onSnapshot(s=>{idCm[id]={unsub,list:s.docs.map(d=>({id:d.id,...d.data()}))};renderIdeas()},()=>{});idCm[id]={unsub,list:(idCm[id]||{}).list||[]}}catch(_){}}
 function idDot(on){const el=document.querySelector("#idBtn .mbdot");if(el)el.hidden=!on}
@@ -5008,7 +5010,6 @@ function renderIdeas(){
       ${idAsk?`<div class="idask">${moodFace("great")}<div>${L("第一次放想法：要公开给大家看吗？","Your first idea: share it with everyone?")}<small>${L("公开的想法别人可以点赞和评论，之后随时可以改回只自己看。","Public ideas can be liked and commented on. You can make it private any time.")}</small><div class="idaskb"><button class="btn primary" data-id-a="askpub">${L("公开","Public")}</button><button class="btn" data-id-a="askpriv">${L("只自己看","Only me")}</button></div></div></div>`
       :`<div class="idcb">${first?"":`<span class="idtog"><button class="${pub?"on":""}" data-id-a="pub" data-v="1">${L("公开","Public")}</button><button class="${pub?"":"on"}" data-id-a="pub" data-v="0">${L("只自己看","Only me")}</button></span>`}<span class="idtog"><button class="${idDraft.anon?"":"on"}" data-id-a="anon" data-v="0">${L("署名","Named")}</button><button class="${idDraft.anon?"on":""}" data-id-a="anon" data-v="1">${L("匿名","Anon")}</button></span><button class="btn primary idpost" data-id-a="post" ${idBusy?"disabled":""}>${L("放进去","Post")}</button></div>`}</div>`
       :`<div class="idlogin">${moodFace("letter")}<div><b>${L("登录后就能放想法、点赞和评论","Sign in to post, like and comment")}</b><span>${L("和同步用的是同一个账号","Same account as sync")}</span></div><button class="btn primary" data-id-a="login">${L("登录","Sign in")}</button></div>`}
-    ${idErr?`<p class="hint bd-err">${idErr}</p>`:""}
     <div class="idlist">${list.map(ideaCard).join("")||`<div class="empty">${idTab==="all"?L("还没有人放想法，你来当第一个吧～","No ideas yet. Be the first～"):me?L("你还没放过想法","You haven't posted any ideas yet"):L("登录后能看到你自己的想法","Sign in to see your ideas")}</div>`}</div></div>`;
   for(const k in keep){const el=pg.querySelector("#"+CSS.escape(k));if(el)el.value=keep[k]}
   const t=pg.querySelector("#idText");if(t&&!keep.idText&&idDraft.text)t.value=idDraft.text;
