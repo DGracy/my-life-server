@@ -585,8 +585,9 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .stchips.big .stc{font-size:15px;padding:7px 14px}
 .sgrp{display:flex;flex-direction:column}.sgh{display:flex;align-items:center;gap:6px;border:0;background:none;font:inherit;font-size:13.5px;font-weight:600;color:var(--muted);padding:10px 2px 4px;cursor:pointer;text-align:left}
 .sgh .ar{font-size:10px;width:10px}.sgh .c{font-family:var(--f-num);font-weight:500;font-size:12px;background:var(--surface-2);border-radius:999px;padding:0 8px}.sgh .c i{font-style:normal;color:var(--faint);margin-left:3px}
-.item:has(.mvst){grid-template-columns:auto auto 1fr auto auto auto!important}.mvst{border:1.5px solid var(--line);background:var(--surface);color:var(--muted);font:inherit;font-size:12px;padding:2px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}.mvst:hover{color:var(--life);border-color:var(--life)}
-.st .sti{font-style:normal;font-size:11px;color:var(--faint);margin-left:4px}
+.item:has(.mvst){grid-template-columns:auto auto 1fr auto auto auto!important}.mvst{border:0;background:none;color:var(--faint);font:inherit;font-size:12px;padding:0 4px;cursor:pointer;white-space:nowrap}.mvst:hover{color:var(--life)}
+.st .sti{font-style:normal;font-size:11.5px;color:var(--life-ink);background:var(--life-soft);border-radius:999px;padding:0 7px;margin-left:6px}.st.pick .sti{background:rgba(255,255,255,.3);color:inherit}
+.st.sted{display:inline-flex;align-items:center;gap:2px;padding-right:4px}.st.sted .stn{border:0;background:none;font:inherit;color:inherit;padding:0;cursor:pointer}.st.sted .x{border:0;background:none;font:inherit;color:var(--faint);cursor:pointer;padding:0 4px}
 .gear.sm{width:28px;height:28px;font-size:13px;display:grid;place-items:center}
 .st-mgr .smlist{display:flex;flex-direction:column;gap:6px}.smrow{display:flex;align-items:center;gap:6px;background:var(--surface-2);border-radius:12px;padding:6px 8px 6px 12px}.smrow .nm{flex:1;min-width:0;font-size:15px}
 .mini{width:30px;height:30px;border-radius:50%;border:0;background:var(--surface);color:var(--fg);font-size:14px;cursor:pointer}.mini:disabled{opacity:.3}.mini.del{color:var(--danger)}
@@ -1478,7 +1479,7 @@ function shopBoard(){
   const sts=[...staples].sort((a,b)=>(a.order||0)-(b.order||0));
   const stapleNames=new Set(sts.map(x=>x.name.trim().toLowerCase()));
   const chips=sts.map(st=>{const has=inList.has(st.name.trim().toLowerCase());
-    if(stapleEdit)return `<button class="st" data-act="stdel" data-id="${st.id}">${esc(st.name)} <span class="x">×</span></button>`;
+    if(stapleEdit)return stores.on&&stores.list.length?`<span class="st sted"><button class="stn" data-act="ststore" data-id="${st.id}" title="${L("点一下选在哪家买","Tap to pick a shop")}">${esc(st.name)}<i class="sti">${esc(storeName(storeOf(st)))} ▾</i></button><button class="x" data-act="stdel" data-id="${st.id}" aria-label="${L("删掉","Delete")}">×</button></span>`:`<button class="st" data-act="stdel" data-id="${st.id}">${esc(st.name)} <span class="x">×</span></button>`;
     return `<button class="st${pick.has(st.id)?" pick":""}${has?" inlist":""}" data-act="stpick" data-id="${st.id}" ${has?`title="${L("已在清单里","Already on the list")}"`:""}>${pick.has(st.id)?"✓ ":""}${esc(st.name)}${stores.on&&storeOf(st)?`<i class="sti">${esc(storeName(storeOf(st)))}</i>`:""}</button>`}).join("");
   const need=shop.filter(x=>!x.bought).sort((a,b)=>(a.order??1e6)-(b.order??1e6)||(a.createdAt||0)-(b.createdAt||0));
   const got=shop.filter(x=>x.bought).sort((a,b)=>(a.boughtAt||0)-(b.boughtAt||0));
@@ -3994,12 +3995,13 @@ async function addShop(name){
   const store=arguments[1]!=null?arguments[1]:"";
   return queued(ref.path,()=>ref.set({name,bought:false,createdAt:Date.now(),...(store?{store}:{})}));
 }
-function pickStore(x){
+function pickStore(x,kind){
   const bg=document.createElement("div");bg.className="sheet-bg";
   bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("在哪家买","Which shop")}"><h3>${L(`「${esc(x.name)}」在哪家买？`,`Where do you buy “${esc(x.name)}”?`)}</h3><div class="stchips big">${[...stores.list,{id:"",name:L("哪家都行","Any shop")}].map(st=>`<button class="stc${storeOf(x)===st.id?" on":""}" data-sp="${st.id}">${esc(st.name)}</button>`).join("")}</div><div class="sheet-actions"><span></span><button class="btn" data-sp="x">${L("取消","Cancel")}</button></div></div>`;
   document.body.appendChild(bg);
   bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-sp]");if(!b)return;bg.remove();if(b.dataset.sp==="x")return;const sid=b.dataset.sp;
-    x.store=sid;const r=db.doc("shop/"+x.id);queued(r.path,()=>r.update({store:sid}));const sp=staples.find(y=>norm(y.name)===norm(x.name));if(sp){sp.store=sid;const r2=db.doc("staples/"+sp.id);queued(r2.path,()=>r2.update({store:sid}))}render()});
+    x.store=sid;if(kind==="staple"){const r=db.doc("staples/"+x.id);queued(r.path,()=>r.update({store:sid}));render();return}
+    const r=db.doc("shop/"+x.id);queued(r.path,()=>r.update({store:sid}));const sp=staples.find(y=>norm(y.name)===norm(x.name));if(sp){sp.store=sid;const r2=db.doc("staples/"+sp.id);queued(r2.path,()=>r2.update({store:sid}))}render()});
 }
 function openStores(){
   let list=stores.list.map(x=>({...x}));const SUG=["Tesco","Sainsbury's","Lidl","Aldi","M&S","Waitrose","Co-op","Boots",L("亚超","Asian market")];
@@ -4478,6 +4480,7 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="stpick"){pick.has(id)?pick.delete(id):pick.add(id);render();return}
   if(act.dataset.act==="stclear"){pick.clear();render();return}
   if(act.dataset.act==="stedit"){stapleEdit=!stapleEdit;pick.clear();render();return}
+  if(act.dataset.act==="ststore"){const x=staples.find(y=>y.id===id);if(x)pickStore(x,"staple");return}
   if(act.dataset.act==="stdel"){const ref=db.doc("staples/"+id);queued(ref.path,()=>ref.delete());return}
   if(act.dataset.act==="stadd"){const sel=staples.filter(x=>pick.has(x.id)),names=sel.map(x=>x.name);pick.clear();render();for(const x of sel)await addShop(x.name,stores.on?storeOf(x):"");cheer(L(`放进清单 ${names.length} 样～`,`Added ${names.length} to the list～`));return}
   if(act.dataset.act==="shopsel"){shopStoreSel=act.dataset.id||"";render();$("#shopName")?.focus();return}
