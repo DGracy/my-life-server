@@ -4275,7 +4275,7 @@ function journalView(){
       ${on("work")?box(L("工作","Work"),"--work",list(D.work,"title")):""}
     </div>
     <div class="comment">
-      <div class="mini">${treeSVG(jBusy?"think":"happy",stageOf(curWater()),false)}</div>
+      <div class="mini">${dressSVG(null)}</div>
       <div class="body">
         <h4>${L("{pet}的评语","{pet} says")} <span class="hint">· ${L(`这天喝了 ${D.drops} 滴水`,`${D.drops} ${n_(D.drops,"drop","drops")} this day`)}</span></h4>
         <p>${jBusy?L("让我好好想想怎么夸你…","Thinking of nice things to say…"):esc(comment||localComment(D))}</p>
