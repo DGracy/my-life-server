@@ -362,6 +362,7 @@ body.pomo-open{overflow:hidden}
 .donebtn{border:2px solid var(--leaf);color:var(--leaf-2);background:var(--surface);border-radius:999px;padding:5px 12px;font:inherit;font-size:13px;font-weight:600;white-space:nowrap;flex:none}
 .ckd{width:22px;height:22px;border-radius:50%;background:var(--leaf);color:#fff;display:grid;place-items:center;font-size:12px;flex:none}
 #pomoPage .ctrls{display:flex;gap:14px;align-items:center;justify-content:center;width:100%}
+.cbtn.pipb{display:grid;place-items:center}.cbtn.pipb.on{color:var(--brand);box-shadow:0 0 0 2px var(--brand),var(--shadow)}
 .cbtn{width:56px;height:56px;border-radius:50%;border:none;background:var(--surface);box-shadow:var(--shadow);font-size:18px;color:var(--muted);padding:0}
 .cbtn.main{width:72px;height:72px;background:#ef5d6e;color:#fff;font-size:22px;box-shadow:0 5px 0 #c64454}.cbtn.main.up{background:#6c8ef5;box-shadow:0 5px 0 #3b5fd6}
 .nextbtn{border:none;background:#2fb38a;color:#fff;border-radius:999px;padding:0 30px;height:60px;box-shadow:0 5px 0 #1f8a69;font:inherit;font-size:16px;font-weight:700}
@@ -2601,7 +2602,49 @@ function pomoTick(){
     const arc=pg.querySelector(".arc");if(arc&&P.mode!=="up"||arc&&P.phase==="break"){const len=(P.phase==="focus"?P.focusMin:P.breakMin)*6e4;arc.setAttribute("stroke-dashoffset",String(779*Math.min(1,Math.max(0,elapsed()/len))))}}
   const pill=$("#pomoPill"); if(pill&&!pill.hidden){const b=pill.querySelector("b");if(b)b.textContent=P.phase==="break"?mmss(remain()):P.mode==="up"?mmss(elapsed()):mmss(remain())}
 }
-setInterval(pomoTick,1000);
+/* floating mini window (Document Picture-in-Picture, desktop Chrome/Edge) */
+let pipWin=null;
+const pipOK=()=>IS_WEB&&"documentPictureInPicture" in window&&!matchMedia("(pointer:coarse)").matches;
+const PIP_CSS=`*{box-sizing:border-box}html,body{margin:0;height:100%}body{font-family:"Noto Sans SC","PingFang SC",system-ui,sans-serif;background:#f6faff;color:#1f3156;display:flex;align-items:center;justify-content:center;overflow:hidden;user-select:none}
+.w{display:flex;align-items:center;gap:14px;padding:12px 16px;width:100%}
+.r{position:relative;width:96px;height:96px;flex:none}.r>svg.rg{position:absolute;inset:0;width:100%;height:100%}.r .pt{position:absolute;inset:13px;display:grid;place-items:center}.r .pt svg{width:70px;height:70px}
+.i{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}.i small{font-size:12px;color:#5b7099;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.i b{font-family:Fredoka,"Noto Sans SC",sans-serif;font-size:36px;font-weight:600;line-height:1.05;letter-spacing:.5px}
+.bs{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap}.bs button{border:0;font:inherit;font-size:12.5px;background:#fff;color:#1f3156;border-radius:999px;padding:4px 12px;box-shadow:0 2px 0 #d3e3f7;cursor:pointer}.bs button.p{background:#2fb38a;color:#fff;box-shadow:none}
+.end{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:12px;font-size:14px}
+@media (prefers-color-scheme:dark){body{background:#14223b;color:#eaf2ff}.i small{color:#a3b7d8}.bs button{background:#223558;color:#eaf2ff;box-shadow:none}}`;
+async function openPip(){
+  if(!pipOK()||!P)return;
+  if(pipWin){pipWin.focus();return}
+  try{pipWin=await documentPictureInPicture.requestWindow({width:300,height:150})}catch(_){pipWin=null;return}
+  const d=pipWin.document; d.title=L("小芽陪你专注","Focusing with {pet}").replaceAll("{pet}",petName());
+  const st=d.createElement("style");st.textContent=PIP_CSS;d.head.appendChild(st);
+  const lk=d.createElement("link");lk.rel="stylesheet";lk.href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=swap";d.head.appendChild(lk);
+  d.body.addEventListener("click",e=>{const b=e.target.closest("[data-pp]");if(!b)return;const a=b.dataset.pp;
+    if(a==="close"){pipWin.close();return}
+    if(!P)return;
+    if(a==="pause"){if(P.pausedAt){P.pausedTotal+=Date.now()-P.pausedAt;P.pausedAt=null;if(P.phase==="focus")wakeOn()}else{P.pausedAt=Date.now();wakeOff()}saveP();renderPomo();return}
+    if(a==="stop"){if(P.phase==="focus"){const r=recordSession();if(r.tomato)water($("#buddy"),1);endPomo(r.mins>=1?L(`专注了 ${fmtHM(r.mins)}${r.tomato?"，+1 个番茄":""}`,`Focused ${fmtHM(r.mins)}${r.tomato?", +1 tomato":""}`):null)}else endPomo();return}
+    if(a==="next"){toPick(false);return}});
+  pipWin.addEventListener("pagehide",()=>{pipWin=null;renderPomo()});
+  drawPip();renderPomo();
+}
+function drawPip(){
+  if(!pipWin)return; const d=pipWin.document;
+  if(!P||P.phase==="pick"){
+    d.body.innerHTML=`<div class="end">${SF.happy.replace("<svg ",'<svg width="44" height="44" ')}<div>${!P?L("这次专注结束啦","This session is over"):P.ended?L("休息结束啦，回到页面挑下一件事吧","Break's over. Head back to pick what's next"):L("回到页面挑下一件要专注的事","Head back to pick what to focus on next")}</div><div class="bs"><button data-pp="close">${L("关掉小窗","Close")}</button></div></div>`;d.body.dataset.k="end";return}
+  const brk=P.phase==="break", up=P.mode==="up"&&!brk, t=curTask();
+  const col=brk?"#2fb38a":up?"#6c8ef5":"#ef5d6e", bgc=brk?"#d6f1e6":up?"#e2e9ff":"#f3dfe3";
+  const lab=brk?L("休息中","Break"):P.pausedAt?L("暂停中","Paused"):(up?L("不计时","No timer"):L("专注中","Focusing"))+(t?` · ${esc(t.title)}`:"");
+  const btns=brk?`<button data-pp="next">${L("跳过休息","Skip break")}</button><button data-pp="stop">${L("结束","Stop")}</button>`:`<button data-pp="pause">${P.pausedAt?"▶ "+L("继续","Resume"):"❚❚ "+L("暂停","Pause")}</button><button data-pp="stop">■ ${L("结束","Stop")}</button>`;
+  const key=[P.phase,P.mode,!!P.pausedAt,t&&t.id,lang].join("|");
+  if(d.body.dataset.k!==key){d.body.dataset.k=key;
+    d.body.innerHTML=`<div class="w"><div class="r"><svg class="rg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#fff" opacity=".8"/><circle cx="50" cy="50" r="44" fill="none" stroke="${bgc}" stroke-width="6"/><circle class="arc" cx="50" cy="50" r="44" fill="none" stroke="${col}" stroke-width="6" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="0" transform="rotate(-90 50 50)"/></svg><div class="pt">${brk?PET_YOGA:PET_FOCUS}</div></div><div class="i"><small>${lab}</small><b class="tm"></b><div class="bs">${btns}</div></div></div>`}
+  const len=brk?P.breakMin*6e4:P.focusMin?P.focusMin*6e4:null;
+  const tm=d.querySelector(".tm");if(tm)tm.textContent=brk?mmss(remain()):up?mmss(elapsed()):mmss(remain());
+  const arc=d.querySelector(".arc");if(arc)arc.setAttribute("stroke-dashoffset",String(len?276.5*Math.min(1,Math.max(0,elapsed()/len)):0));
+}
+setInterval(()=>{pomoTick();if(pipWin)drawPip()},1000);
 if(IS_WEB&&/^https?:$/.test(location.protocol)&&"serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 /* page */
 function renderPomo(){
@@ -2613,7 +2656,7 @@ function renderPomo(){
   if(!pill.hidden){pill.className=P.phase==="break"?"brk":"";pill.innerHTML=`${P.phase==="break"?SF.happy:SF.focus}<span>${P.phase==="break"?L("休息中","Break"):P.pausedAt?L("暂停中","Paused"):L("专注中","Focusing")}</span><b>${P.phase==="break"?mmss(remain()):P.mode==="up"?mmss(elapsed()):mmss(remain())}</b><span class="bk">${L("回去","Open")} ›</span>`}
   pg.hidden=!(active&&P.open);
   document.body.classList.toggle("pomo-open",!pg.hidden);
-  pomoTick();
+  pomoTick(); if(pipWin)drawPip();
   if(pg.hidden){pg.innerHTML="";return}
   const t=curTask(), brk=P.phase==="break", up=P.mode==="up"&&!brk, n=tomatoesOn(todayStr());
   const len=brk?P.breakMin*6e4:P.focusMin?P.focusMin*6e4:null;
@@ -2625,8 +2668,9 @@ function renderPomo(){
   const sub=t&&P.subI!=null&&t.subs&&t.subs[P.subI];
   const what=brk?(P.doneTask?`<div class="what ok"><span class="ckd">✓</span><div><b>${esc(P.doneTask.title)}</b><i>${P.tomato?L("已完成 · 任务 +1 滴水 · 番茄 +1 滴水","Done · task +1 drop · tomato +1 drop"):L("已完成 · +1 滴水","Done · +1 drop")}</i></div></div>`:`<div class="what center">${P.long?L("去走走、喝点水，回来再接着做","Go for a walk, drink some water, then come back"):L("起来动一动、喝口水～","Get up, move a little, have some water～")}</div>`)
     :`<div class="what"><button class="wt" data-pm="pick">${TOM_ICON}<span><b>${sub?esc(sub.t):t?esc(t.title):L("单纯专注","Just focusing")}</b><i>${sub?L(`${esc(t.title)} · 第 ${P.subI+1} / ${t.subs.length} 步`,`${esc(t.title)} · step ${P.subI+1} of ${t.subs.length}`):(t?SPACE[t.space]+" · ":"")+L("点这里换一件事","Tap to switch")}</i></span></button>${t?`<button class="donebtn" data-pm="done">✓ ${L("做完了","Done")}</button>`:up?`<button class="donebtn" data-pm="stop">✓ ${L("做完了","Done")}</button>`:""}</div>`;
-  const ctrls=brk?`<button class="cbtn" data-pm="stop" aria-label="${L("结束","Stop")}">■</button><button class="nextbtn" data-pm="next">▶ ${L("接着做","Keep going")}</button><button class="cbtn" data-pm="pause" aria-label="${P.pausedAt?L("继续","Resume"):L("暂停","Pause")}">${P.pausedAt?"▶":"❚❚"}</button>`
-    :`<button class="cbtn" data-pm="stop" aria-label="${L("结束","Stop")}">■</button><button class="cbtn main${up?" up":""}" data-pm="pause" aria-label="${P.pausedAt?L("继续","Resume"):L("暂停","Pause")}">${P.pausedAt?"▶":"❚❚"}</button><button class="cbtn" data-pm="restart" aria-label="${L("重新开始","Restart")}">↻</button>`;
+  const pipBtn=pipOK()?`<button class="cbtn pipb${pipWin?" on":""}" data-pm="pip" aria-label="${L("小窗","Mini window")}" title="${L("变成一直浮在最上面的小窗","Pop out a window that stays on top")}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="11.5" y="11" width="7.5" height="6" rx="1.4" fill="currentColor"/></svg></button>`:"";
+  const ctrls=brk?`<button class="cbtn" data-pm="stop" aria-label="${L("结束","Stop")}">■</button><button class="nextbtn" data-pm="next">▶ ${L("接着做","Keep going")}</button><button class="cbtn" data-pm="pause" aria-label="${P.pausedAt?L("继续","Resume"):L("暂停","Pause")}">${P.pausedAt?"▶":"❚❚"}</button>${pipBtn}`
+    :`<button class="cbtn" data-pm="stop" aria-label="${L("结束","Stop")}">■</button><button class="cbtn main${up?" up":""}" data-pm="pause" aria-label="${P.pausedAt?L("继续","Resume"):L("暂停","Pause")}">${P.pausedAt?"▶":"❚❚"}</button><button class="cbtn" data-pm="restart" aria-label="${L("重新开始","Restart")}">↻</button>${pipBtn}`;
   const tm=brk?mmss(remain()):up?mmss(elapsed()):mmss(remain());
   pg.className=brk?"brk":up?"up":"";
   pg.innerHTML=`<div class="pp-in">
@@ -2659,6 +2703,7 @@ document.addEventListener("click",e=>{
   const a=b.dataset.pm; if(!P)return;
   if(a!=="menu"&&a!=="long"&&a!=="custom"&&a!=="customset")pomoMenu=false;
   if(a==="hide"){P.open=false;saveP();renderPomo();return}
+  if(a==="pip"){if(pipWin)pipWin.close();else openPip();return}
   if(a==="mode"){setMode(b.dataset.v);return}
   if(a==="menu"){pomoMenu=!pomoMenu;renderPomo();return}
   if(a==="custom"){setMode("custom");return}
