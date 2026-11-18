@@ -646,6 +646,7 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .wxres{position:absolute;inset:14px;border-radius:50%;background:radial-gradient(circle,rgba(120,60,40,0) 54%,rgba(120,60,40,.10) 64%,rgba(120,60,40,.05) 73%,rgba(120,60,40,0) 80%);opacity:0}.wxpeelov.go .wxres{animation:wxres 1.9s ease-out .2s both}@keyframes wxres{0%,30%{opacity:0}70%,100%{opacity:1}}
 .wxenv.open .wxpeel{opacity:0;transition:opacity .4s}
 .fvopen{margin-top:4px}
+.tli.tled{cursor:pointer;border-radius:10px}.tli.tled:hover{background:var(--surface-2)}.tli.tled .tt{text-decoration:underline dotted;text-underline-offset:3px;text-decoration-color:var(--faint)}
 .btnrow{display:flex;flex-wrap:wrap;gap:8px}.fpv{margin-top:8px;align-items:center;gap:6px}
 .tour-spot{position:fixed;z-index:89;border-radius:18px;box-shadow:0 0 0 9999px rgba(20,32,60,.55);pointer-events:none;transition:left .25s,top .25s,width .25s,height .25s}.tour-spot.soft{box-shadow:0 0 0 9999px rgba(20,32,60,.35)}
 .tour{position:fixed;z-index:91;width:min(300px,calc(100vw - 32px));box-sizing:border-box;background:#1f3156;color:#fff;border-radius:16px;padding:12px 14px;font-size:13.5px;line-height:1.55;box-shadow:0 10px 26px rgba(0,0,0,.25)}
@@ -2231,10 +2232,10 @@ const daysTo=s=>Math.round((new Date(s+"T12:00:00")-new Date(todayStr()+"T12:00:
 function mbDot(){const el=document.querySelector("#mbBtn .mbdot");if(el)el.hidden=!letters.some(lReady)}
 const MBOX=()=>`<svg viewBox="0 0 120 100" class="mbsvg" aria-hidden="true"><ellipse cx="62" cy="94" rx="52" ry="5" fill="color-mix(in srgb,var(--life) 30%,transparent)"/><rect x="80" y="44" width="7" height="50" rx="2" fill="#b98a5a"/><path d="M62 22h34a14 14 0 0 1 14 14v18H62z" fill="#ff7a7a"/><path d="M62 22a14 14 0 0 1 14 14v18H48V36a14 14 0 0 1 14-14z" fill="#ff9a9a"/><rect x="52" y="40" width="20" height="3" rx="1.5" fill="#d9575f"/><path d="M104 14v16" stroke="#8a6a4a" stroke-width="2"/><path d="M104 14h11l-3 4 3 4h-11z" fill="#ffd34d"/><g transform="rotate(-12 63 32)"><rect x="54" y="26" width="18" height="12" rx="2" fill="#fff"/><path d="M54.5 27l8.5 6 8.5-6" stroke="#ff8fb1" stroke-width="1.4" fill="none"/></g><g transform="translate(-4 28) scale(1.75)">${moodFace("great").replace(/^<svg[^>]*>/,"").replace(/<\/svg>$/,"")}</g></svg>`;
 function envRow(x){
-  if(x.kind==="send"&&x.shareId){const before=todayStr()<x.openOn;return `<button class="env sent" data-mb="sent" data-id="${x.id}"><span class="ic"><span class="icw">${sealSVG(x.seal,34,sealSeed(x.id))}</span></span><span class="et"><b>${L("寄给 ","To ")}${esc(x.toText||"")}</b><small>${L("写于 ","Written ")}${lYmd(x.writtenAt||Date.now())}</small></span><span class="tag">${before?L(`${lYmdS(x.openOn)}能拆 · 还有 ${daysTo(x.openOn)} 天`,`Opens ${lYmdS(x.openOn)} · ${daysTo(x.openOn)} days`):L("对方可以拆了","They can open it now")}</span></button>`}
+  if(x.kind==="send"&&x.shareId){const before=todayStr()<x.openOn;return `<button class="env sent" data-mb="sent" data-id="${x.id}"><span class="ic"><span class="icw">${sealSVG(x.seal,27,sealSeed(x.id))}</span></span><span class="et"><b>${L("寄给 ","To ")}${esc(x.toText||"")}</b><small>${L("写于 ","Written ")}${lYmd(x.writtenAt||Date.now())}</small></span><span class="tag">${before?L(`${lYmdS(x.openOn)}能拆 · 还有 ${daysTo(x.openOn)} 天`,`Opens ${lYmdS(x.openOn)} · ${daysTo(x.openOn)} days`):L("对方可以拆了","They can open it now")}</span></button>`}
   const ready=lReady(x), open=x.opened, sealed=x.sealed&&!open;
   const tag=!x.sealed?L("草稿 · 接着写","Draft · keep writing"):ready?L("可以拆啦！","Ready to open!"):sealed?L(`${x.kind==="bday"?"生日":x.kind==="year"?lYmdS(x.openOn).replace(/^\d+年/,""):lYmdS(x.openOn)}拆 · 还有 ${daysTo(x.openOn)} 天`,`Opens ${lYmdS(x.openOn)} · ${daysTo(x.openOn)} days`):L("再读一遍","Read again");
-  return `<button class="env${open?" open":""}${ready?" ready":""}${!x.sealed?" draft":""}${x.from?" fr":""}" data-mb="${!x.sealed?"edit":sealed&&!ready?"locked":"read"}" data-id="${x.id}"><span class="ic">${sealed&&!x.from?`<span class="icw">${sealSVG(x.seal,34,sealSeed(x.id))}</span>`:"<i></i>"}</span><span class="et"><b>${x.from?`${L("来自 ","From ")}${esc(x.from)} <span class="from">${L("朋友","Friend")}</span>`:`${L("致 ","To ")}${esc(letterTo(x))}`}</b><small>${L("写于 ","Written ")}${lYmd(x.writtenAt||x.createdAt||Date.now())}</small></span><span class="tag">${tag}</span></button>`;
+  return `<button class="env${open?" open":""}${ready?" ready":""}${!x.sealed?" draft":""}${x.from?" fr":""}" data-mb="${!x.sealed?"edit":sealed&&!ready?"locked":"read"}" data-id="${x.id}"><span class="ic">${sealed&&!x.from?`<span class="icw">${sealSVG(x.seal,27,sealSeed(x.id))}</span>`:"<i></i>"}</span><span class="et"><b>${x.from?`${L("来自 ","From ")}${esc(x.from)} <span class="from">${L("朋友","Friend")}</span>`:`${L("致 ","To ")}${esc(letterTo(x))}`}</b><small>${L("写于 ","Written ")}${lYmd(x.writtenAt||x.createdAt||Date.now())}</small></span><span class="tag">${tag}</span></button>`;
 }
 function renderMailbox(){
   let pg=document.getElementById("mbPage");
@@ -2688,17 +2689,17 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-co]");if(!
 function timelineItems(d){
   const it=[];
   const ck=checkins[d]||{};
-  for(const hid in ck){const v=ck[hid];if(typeof v!=="number")continue;const h=habits.find(x=>x.id===hid);if(!h)continue;it.push({t:v,k:"habit",txt:L(`打卡 · ${esc(h.name)}`,`Check-in · ${esc(h.name)}`)})}
-  tasks.filter(t=>!t.deleted&&t.slotDone&&t.repeat&&todOf(t.repeat).length).forEach(t=>todOf(t.repeat).forEach(([k,n])=>{const v=t.slotDone[k];if(v&&dayOf(v)===d)it.push({t:v,k:t.space,txt:L(`完成「${esc(t.title)}」（${n}）`,`Done: “${esc(t.title)}” (${n.toLowerCase()})`)})}));
-  tasks.filter(t=>t.done&&!t.deleted&&t.doneAt&&dayOf(t.doneAt)===d&&!(t.slotDone&&t.repeat&&todOf(t.repeat).length)).forEach(t=>it.push({t:t.doneAt,k:t.space,txt:L(`完成「${esc(t.title)}」`,`Done: “${esc(t.title)}”`)}));
+  for(const hid in ck){const v=ck[hid];if(typeof v!=="number")continue;const h=habits.find(x=>x.id===hid);if(!h)continue;it.push({t:v,k:"habit",txt:L(`打卡 · ${esc(h.name)}`,`Check-in · ${esc(h.name)}`),ed:`habit|${d}|${hid}`})}
+  tasks.filter(t=>!t.deleted&&t.slotDone&&t.repeat&&todOf(t.repeat).length).forEach(t=>todOf(t.repeat).forEach(([k,n])=>{const v=t.slotDone[k];if(v&&dayOf(v)===d)it.push({t:v,k:t.space,txt:L(`完成「${esc(t.title)}」（${n}）`,`Done: “${esc(t.title)}” (${n.toLowerCase()})`),ed:`slot|${t.id}|${k}`})}));
+  tasks.filter(t=>t.done&&!t.deleted&&t.doneAt&&dayOf(t.doneAt)===d&&!(t.slotDone&&t.repeat&&todOf(t.repeat).length)).forEach(t=>it.push({t:t.doneAt,k:t.space,txt:L(`完成「${esc(t.title)}」`,`Done: “${esc(t.title)}”`),ed:`task|${t.id}`}));
   pomos.filter(p=>p.day===d&&(+p.mins||0)>=1).forEach(p=>{const t=p.taskId&&tasks.find(x=>x.id===p.taskId);const st=p.end?p.end-(+p.mins)*6e4:p.start;
     it.push({t:st,mins:+p.mins,k:"pomo",txt:`${TOM_ICON}${L(`专注 ${Math.round(p.mins)} 分钟`,`Focused ${Math.round(p.mins)} min`)}${p.space?` <span class="tag ${p.space}">${BOARD_NAME(p.space)}</span>`:""}`,sub:t?esc(t.title):""})});
-  eats.filter(x=>x.day===d).forEach(x=>{const s=SLOTS().find(y=>y[0]===x.slot);it.push({t:x.at,k:"life",txt:`${s?s[2]:L("吃饭","Meal")} · ${esc(x.name)}`,eat:x.id})});
+  eats.filter(x=>x.day===d).forEach(x=>{const s=SLOTS().find(y=>y[0]===x.slot);it.push({t:x.at,k:"life",txt:`${s?s[2]:L("吃饭","Meal")} · ${esc(x.name)}`,eat:x.id,ed:`eat|${x.id}`})});
   const base=new Date(d+"T00:00:00");
   (on("classes")?coursesOn(d):[]).forEach(c=>{const st=new Date(base.getTime()+tmin(c.start)*6e4).getTime();it.push({t:st,mins:tmin(c.end)-tmin(c.start),k:"grey",txt:L(`上课 · ${esc(c.name)}`,`Class · ${esc(c.name)}`),sub:`${esc(c.start)}–${esc(c.end)}${c.loc?" · "+esc(c.loc):""}`})});
   {const sn=sleeps[d]||{},ln=sleeps[addDays(d,-1)]||{};
-    if(ln.wake)it.push({t:ln.wake,k:"sleep",txt:L("起床","Woke up"),sub:ln.bed?L(`睡了 ${durTxt(ln.wake-ln.bed)}`,`slept ${durTxt(ln.wake-ln.bed)}`):""});
-    if(sn.bed)it.push({t:sn.bed,k:"sleep",txt:L("去睡觉","Bedtime"),sub:""});}
+    if(ln.wake)it.push({t:ln.wake,k:"sleep",txt:L("起床","Woke up"),sub:ln.bed?L(`睡了 ${durTxt(ln.wake-ln.bed)}`,`slept ${durTxt(ln.wake-ln.bed)}`):"",ed:`sleep|${addDays(d,-1)}|wake`});
+    if(sn.bed)it.push({t:sn.bed,k:"sleep",txt:L("去睡觉","Bedtime"),sub:"",ed:`sleep|${d}|bed`});}
   tlog.filter(x=>x.day===d).forEach(x=>{const st=new Date(base.getTime()+tmin(x.start)*6e4).getTime();const m=x.end?tmin(x.end)-tmin(x.start):0;it.push({t:st,mins:m>0?m:0,k:x.space||"grey",txt:esc(x.title),sub:m>0?`${esc(x.start)}–${esc(x.end)}`:"",tl:x.id})});
   return it.sort((a,b)=>a.t-b.t);
 }
@@ -2707,7 +2708,7 @@ function timelineCard(d){
   const col=k=>({sleep:"#b9a4ff",habit:"var(--habit)",life:"var(--life)",study:"var(--study)",work:"var(--work)",pomo:"#ef5d6e",grey:"#aab6cf"})[k]||"#aab6cf";
   return `<div class="tline card"><div class="fhd"><h3>${d===todayStr()?L("今天的时间轴","Today's timeline"):L("这天的时间轴","Timeline")}</h3><button class="cbtn2" data-tl="new" data-d="${d}">＋ ${L("补一条","Add")}</button></div>
     ${it.length?`<div class="tlist">${it.map(x=>{const blk=x.mins>=10;const h=blk?Math.min(120,Math.max(34,Math.round(x.mins*.9))):0;
-      return `<div class="tli${blk?" blk":""}"${x.tl?` data-tl="edit" data-id="${x.tl}" role="button" tabindex="0"`:""}><span class="tt">${hhmm(x.t)}</span><span class="tm2"><i style="background:${col(x.k)};${blk?`height:${h}px`:""}"></i></span><span class="tx"><span>${x.txt}</span>${x.sub?`<small>${x.sub}</small>`:""}</span></div>`}).join("")}</div>`
+      return `<div class="tli${blk?" blk":""}${x.ed||x.tl?" tled":""}"${x.tl?` data-tl="edit" data-id="${x.tl}" role="button" tabindex="0"`:x.ed?` data-tle="${x.ed}" data-t="${x.t}" role="button" tabindex="0" title="${L("点一下改时间","Tap to change the time")}"`:""}><span class="tt">${hhmm(x.t)}</span><span class="tm2"><i style="background:${col(x.k)};${blk?`height:${h}px`:""}"></i></span><span class="tx"><span>${x.txt}</span>${x.sub?`<small>${x.sub}</small>`:""}</span></div>`}).join("")}</div>`
       :`<p class="hint" style="margin:0">${L("这天还没有带时间的记录。打卡、完成任务、番茄专注、吃饭都会自动出现在这里。","Nothing timed yet. Check-ins, finished tasks, focus sessions and meals show up here by themselves.")}</p>`}</div>`;
 }
 function openTl(d,id){
@@ -2730,6 +2731,30 @@ function openTl(d,id){
       const doc={day:d,title:st.title.trim().slice(0,60),start:st.start,end:st.end&&tmin(st.end)>tmin(st.start)?st.end:null,space:st.space||null};
       const r=x?db.doc("tlog/"+id):db.collection("tlog").doc();queued(r.path,()=>x?r.update(doc):r.set({...doc,createdAt:Date.now()}))}});
 }
+function openTlTime(ed,ts,label){
+  const [kind,a,b]=ed.split("|");
+  if(kind==="slot"){openSlotTime(a,b);return}
+  const old=new Date(+ts);const pad=v=>String(v).padStart(2,"0"),hl=h=>L(`${h<5?"凌晨":h<12?"上午":h<13?"中午":h<18?"下午":"晚上"} ${h<=12?h:h-12} 点`,`${h%12||12} ${h<12?"AM":"PM"}`);
+  const mins=[...new Set([...Array(12)].map((_,i)=>i*5).concat(old.getMinutes()))].sort((x,y)=>x-y);
+  const q=kind==="sleep"?(b==="bed"?L("几点去睡的？","When did you go to bed?"):L("几点起床的？","When did you get up?")):kind==="eat"?L("几点吃的？","When did you eat?"):L("这件事是几点完成的？","When did you finish it?");
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  bg.innerHTML=`<div class="sheet st-sheet" role="dialog" aria-label="${L("改时间","Change the time")}"><h3>${q}</h3><p class="hint" style="margin:0">${label}${L(` · 现在记的是 ${hhmm(+ts)}`,` · logged at ${hhmm(+ts)}`)}</p>
+    <div class="dtrow"><select id="st-h" aria-label="${L("几点","Hour")}">${[...Array(24)].map((_,h)=>`<option value="${h}" ${h===old.getHours()?"selected":""}>${hl(h)}</option>`).join("")}</select><select id="st-m" aria-label="${L("几分","Minute")}">${mins.map(m=>`<option value="${m}" ${m===old.getMinutes()?"selected":""}>${pad(m)} ${L("分","min")}</option>`).join("")}</select></div>
+    <p class="hint bd-err" id="st-err" hidden></p><div class="sheet-actions"><button class="btn" data-st="close">${L("取消","Cancel")}</button><button class="btn primary" data-st="save">${L("改好了","Save")}</button></div></div>`;
+  document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const bt=e.target.closest("[data-st]");if(!bt)return;if(bt.dataset.st==="close"){bg.remove();return}
+    const dt=new Date(old);dt.setHours(+bg.querySelector("#st-h").value,+bg.querySelector("#st-m").value,0,0);
+    if(kind==="sleep"&&b==="bed"&&dt.getHours()<12)dt.setDate(dt.getDate()+(old.getHours()<12?0:1));
+    if(kind==="sleep"&&b==="bed"&&dt.getHours()>=12&&old.getHours()<12)dt.setDate(dt.getDate()-1);
+    const nts=dt.getTime();
+    if(nts>Date.now()+60000){const er=bg.querySelector("#st-err");er.textContent=L("还没到这个时间哦","That time hasn't happened yet");er.hidden=false;return}
+    if(kind==="habit"){const cur={...(checkins[a]||{}),[b]:nts};checkins[a]=cur;const ref=db.doc("checkins/"+a);queued(ref.path,()=>db.mergeSet?ref.set({date:a,done:{[b]:nts}},{merge:true}):ref.set({date:a,done:cur}))}
+    if(kind==="task"){const t=tasks.find(x=>x.id===a);if(t){t.doneAt=nts;const ref=db.doc("tasks/"+a);queued(ref.path,()=>ref.update({doneAt:nts}))}}
+    if(kind==="eat"){const x=eats.find(y=>y.id===a);if(x){x.at=nts;const ref=db.doc("eats/"+a);queued(ref.path,()=>ref.update({at:nts}))}}
+    if(kind==="sleep"){const sl=sleeps[a]||{};if(b==="wake"&&sl.bed&&nts<=sl.bed||b==="bed"&&sl.wake&&nts>=sl.wake){const er=bg.querySelector("#st-err");er.textContent=L("起床要比睡觉晚哦","Wake-up has to be after bedtime");er.hidden=false;return}saveSleep(a,{[b]:nts})}
+    bg.remove();render();cheer(L(`改好啦，记成 ${hhmm(nts)}`,`Done. Now ${hhmm(nts)}`),"happy")});
+}
+document.addEventListener("click",e=>{const t=e.target.closest("[data-tle]");if(!t||!db)return;const lab=t.querySelector(".tx>span");openTlTime(t.dataset.tle,t.dataset.t,lab?lab.innerHTML:"")});
 document.addEventListener("click",e=>{const b=e.target.closest("[data-tl]");if(!b||!db)return;openTl(b.dataset.d||jDate||todayStr(),b.dataset.tl==="edit"?b.dataset.id:null)});
 /* ---------- weather (web only) ---------- */
 const IS_WEB=true;
@@ -4581,7 +4606,7 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="memoedittext"){const m=memos.find(x=>x.id===id);if(!m)return;const i=+act.dataset.i;
     inlineEdit(act,(m.items[i]||{}).t||"",v=>{const items=cloneItems(m.items);if(items[i]){items[i].t=v;memoUpdate(id,{items})}});return}
   if(act.dataset.act==="shopedittext"){const x=shop.find(y=>y.id===id);if(!x)return;
-    inlineEdit(act,x.name,v=>{x.name=v;const ref=db.doc("shop/"+id);queued(ref.path,()=>ref.update({name:v}))});return}
+    inlineEdit(act,x.name,v=>{const old=x.name;x.name=v;const ref=db.doc("shop/"+id);queued(ref.path,()=>ref.update({name:v}));const sp=staples.find(y=>norm(y.name)===norm(old));if(sp&&!staples.some(y=>y!==sp&&norm(y.name)===norm(v))){sp.name=v;const r2=db.doc("staples/"+sp.id);queued(r2.path,()=>r2.update({name:v}));render()}});return}
   if(act.dataset.act==="memoreset"){const m=memos.find(x=>x.id===id);if(m)memoUpdate(id,{items:cloneItems(m.items).map(x=>({...x,done:false,sub:x.sub.map(y=>({...y,done:false}))}))});return}
   if(act.dataset.act==="memosubopen"){const k=`${id}:${act.dataset.i}`;memoSubOpen=memoSubOpen===k?null:k;render();if(memoSubOpen){const el=document.getElementById(`memo-sub-${id}-${act.dataset.i}`);if(el)el.focus()}return}
   if(act.dataset.act==="memosubitem"||act.dataset.act==="memosubdel"){const m=memos.find(x=>x.id===id);if(!m)return;const items=cloneItems(m.items),i=+act.dataset.i,j=+act.dataset.j;if(!items[i])return;
