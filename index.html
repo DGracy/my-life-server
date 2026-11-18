@@ -4684,7 +4684,7 @@ function wishBoard(){
   const debts=done.filter(isDebt).sort((a,b)=>(a.doneAt||0)-(b.doneAt||0));
   const doneOther=done.filter(w=>w.kind!=="go"&&!isDebt(w));
   return `<div class="card wish-top">
-      <div class="card-head"><h3>${L("愿望清单","Wishlist")}</h3><span class="sub">${L("想要的、想去的、想做的，都先放在这里","Things to buy, places to go, things to do someday")}</span>${open.some(w=>w.kind!=="buy")?`<button class="btn w-dice" data-act="wishdraw">🎲 ${L("抽一个","Pick one")}</button>`:""}</div>
+      <div class="card-head"><h3>${L("愿望清单","Wishlist")}</h3>${open.some(w=>w.kind!=="buy")?`<button class="btn w-dice" data-act="wishdraw">🎲 ${L("抽一个","Pick one")}</button>`:""}</div>
       ${drawn}
       ${counts.length?`<p class="w-sum">${counts.map(([k,n])=>`${sproutIcon(k[0])} ${L(k[2],k[3])} <b>${n}</b>`).join(" · ")}${total?`<br>${L(`想买的加起来约 <b>${sumOf(0)}</b>，已经攒了 <b>${sumOf(1)}</b>`,`Things to buy add up to about <b>${sumOf(0)}</b>, with <b>${sumOf(1)}</b> saved`)}`:""}</p>`:""}
       ${fundCard()}
