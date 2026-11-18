@@ -1697,6 +1697,7 @@ NEWS_MORE.push(()=>({id:"1118b",steps:[
 const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
 let tourOn=null;
 function tourGo(go){
+  if(mbOpen)closeMailbox();
   if(go==="habit"){if(tab!=="habit"){tab="habit";render()}return}
   if(go==="journal"){if(tab!=="journal"){tab="journal";render()}return}
   if(go==="study"&&on("study")){if(tab!=="study"){tab="study";render()}}
@@ -1744,7 +1745,7 @@ function maybeTour(kind){
   if(kind==="new"&&(tourSeen("new")||tourSeen("full"))){if(newsPending().length)kind="news";else return}
   if(tourOn||(kind!=="news"&&tourSeen(kind)))return;
   let tries=0;const t=setInterval(()=>{tries++;if(tourOn||(kind==="news"?!newsPending().length:tourSeen(kind))){clearInterval(t);return}
-    if(!document.querySelector(".sheet-bg,#pomoPage:not([hidden])")&&loaded.t){clearInterval(t);startTour(kind)}else if(tries>120)clearInterval(t)},700);
+    if(!document.querySelector(".sheet-bg,#pomoPage:not([hidden])")&&!mbOpen&&loaded.t){clearInterval(t);startTour(kind)}else if(tries>120)clearInterval(t)},700);
 }
 /* one-step tips the first time you open a spot */
 const TIPS=()=>[
@@ -1757,7 +1758,7 @@ const TIPS=()=>[
   {k:"bd",when:()=>tab==="journal",sel:".upc-add",pad:4,t:L("「{pet}记着呢」","“{pet} remembers”"),b:L("把家人朋友的生日、纪念日加进来，快到的时候{pet}会提醒你。","Add birthdays and anniversaries, and {pet} will remind you ahead of time.")}];
 let tipsSeen={}; try{tipsSeen=JSON.parse(localStorage.getItem(TIPS_KEY)||"{}")}catch(_){tipsSeen=null}
 function maybeTips(){
-  if(!tipsSeen||tourOn||!tourSeen("full")&&!tourSeen("new")||document.querySelector(".sheet-bg,.tour-ui,#pomoPage:not([hidden])"))return;
+  if(!tipsSeen||tourOn||mbOpen||!tourSeen("full")&&!tourSeen("new")||document.querySelector(".sheet-bg,.tour-ui,#pomoPage:not([hidden])"))return;
   const s=TIPS().find(x=>!tipsSeen[x.k]&&x.when()&&document.querySelector(x.sel));if(!s)return;
   tipsSeen[s.k]=1;try{localStorage.setItem(TIPS_KEY,JSON.stringify(tipsSeen))}catch(_){}
   const el=document.querySelector(s.sel);const pad=s.pad??6;
