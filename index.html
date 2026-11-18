@@ -1183,6 +1183,7 @@ let lang="zh";
  try{lang=shareLang||localStorage.getItem("lifeos-lang")||(navZh()?"zh":"en")}catch(e){lang=shareLang||(navZh()?"zh":"en")}}
 let petNameV=""; try{petNameV=localStorage.getItem("lifeos-pet")||""}catch(_){}
 const petName=()=>petNameV||(lang==="en"?"Sprout":"小芽");
+const zhSp=n=>/[A-Za-z0-9.]$/.test(n||"")?n+" ":n||"";
 const L=(zh,en)=>{const v=lang==="en"?en:zh;return typeof v==="string"&&v.includes("{pet}")?v.replace(/\{pet\}/g,petName()):v};
 
 /* ---------- which boards are switched on (per browser) ---------- */
@@ -2264,7 +2265,7 @@ function openSent(id){
   bg.addEventListener("click",async e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-s]");if(!b)return;const a=b.dataset.s;
     if(a==="x"){bg.remove();return}
     if(a==="copy"){const v=shareLink(x.shareId);try{await navigator.clipboard.writeText(v);cheer(L("链接复制好啦","Link copied"))}catch(_){const el=bg.querySelector("#shLink");el.focus();el.select()}return}
-    if(a==="share"){try{await navigator.share({title:L(`${x.fromName||userName||""}给你写了一封信`,`A letter for you`),url:shareLink(x.shareId)})}catch(_){}return}
+    if(a==="share"){try{await navigator.share({title:L(`${zhSp(x.fromName||userName||"")}给你写了一封信`,`A letter for you`),url:shareLink(x.shareId)})}catch(_){}return}
     if(a==="edit"){bg.remove();openLetter(id);return}
     if(a==="revoke"){if(!sure){sure=true;draw();return}
       try{await shareApi.remove(x.shareId)}catch(err){cheer(L("没收回成功，检查一下网络再试试","Couldn't take it back. Check your connection and try again"));return}
@@ -2280,18 +2281,18 @@ async function friendView(id){
   let m=null;
   try{if(!window.__shareMock&&!fb)fb=await loadFirebase();m=await shareApi.meta(id)}catch(e){show(`<p class="fvmsg">${L("信没取到，检查一下网络再刷新试试。","Couldn't fetch the letter. Check your connection and refresh.")}</p>`);return}
   if(!m){show(`${MBOX()}<p class="fvmsg">${L("这封信找不到了，可能已经被收回了。","This letter can't be found. It may have been taken back.")}</p>`);return}
-  const from=esc(m.fromName||L("有人","Someone"));document.title=L(`${m.fromName||""}给你写了一封信`,`A letter for you`);
+  const from=esc(m.fromName||L("有人","Someone"));document.title=L(`${zhSp(m.fromName||"")}给你写了一封信`,`A letter for you`);
   const env=`<div class="envwrap"><div class="bigenv">${m.seal?`<span class="bigwx">${sealSVG(m.seal,92,4)}</span>`:"<i></i>"}</div><div class="fstamp">${STAMP_SVG(m.stamp)}</div><span class="spr">${moodFace("letter")}</span></div>`;
   let timer=null;
   const sealed=()=>{const ms=m.openAt-Date.now();if(ms<=0){clearInterval(timer);openGate();return}
     const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),mi=Math.floor(ms%36e5/6e4);
-    show(`${env}<h1>${L(`${from}给你写了一封信`,`${from} wrote you a letter`)}</h1><p>${L(`这封信要到 <b>${lYmdS(m.openOn)}</b> 才能拆开哦。`,`It opens on <b>${lYmdS(m.openOn)}</b>.`)}</p><div class="cd"><span><b>${d}</b><small>${L("天","days")}</small></span><span><b>${h}</b><small>${L("小时","hours")}</small></span><span><b>${mi}</b><small>${L("分","min")}</small></span></div>`)};
+    show(`${env}<h1>${L(`${zhSp(from)}给你写了一封信`,`${from} wrote you a letter`)}</h1><p>${L(`这封信要到 <b>${lYmdS(m.openOn)}</b> 才能拆开哦。`,`It opens on <b>${lYmdS(m.openOn)}</b>.`)}</p><div class="cd"><span><b>${d}</b><small>${L("天","days")}</small></span><span><b>${h}</b><small>${L("小时","hours")}</small></span><span><b>${mi}</b><small>${L("分","min")}</small></span></div>`)};
   const openIt=async()=>{let b=null;try{b=await shareApi.body(id)}catch(e){b=null}
     if(!b){if(m.openAt>Date.now()-6e4){m.openAt=Math.max(m.openAt,Date.now()+6e4);sealed();timer=setInterval(sealed,30000);return}show(`<p class="fvmsg">${L("信没取到，刷新一下试试。","Couldn't fetch the letter. Try refreshing.")}</p>`);return}
     show(`<div class="fvhd"><b>${L(`${from}写给你的信`,`A letter from ${from}`)}</b><small>${L(`写于 ${lYmd(m.writtenAt||Date.now())} · ${lYmdS(m.openOn)}拆开`,`Written ${lYmd(m.writtenAt||Date.now())} · opened ${lYmdS(m.openOn)}`)}</small></div>${paperHTML({paper:m.paper,font:m.font,sticker:m.sticker,align:m.align,fsz:m.fsz,ink:m.ink,head:b.head,la:b.la||[],lsz:b.lsz||[],lcol:b.lcol||[],photos:b.photos||[],body:b.body,sig:b.sig,toText:m.toName,kind:"send"},false)}`);
     if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{})};
   const openGate=()=>{if(!m.seal){openIt();return}
-    show(`${env}<h1>${L(`${from}给你写了一封信`,`${from} wrote you a letter`)}</h1><p>${L("可以拆啦！","You can open it now!")}</p><button class="btn primary fvopen">${L("揭开火漆","Open it")}</button>`);
+    show(`${env}<h1>${L(`${zhSp(from)}给你写了一封信`,`${from} wrote you a letter`)}</h1><p>${L("可以拆啦！","You can open it now!")}</p><button class="btn primary fvopen">${L("揭开火漆","Open it")}</button>`);
     v.querySelector(".fvopen").onclick=()=>peelOpen(m.seal,4,openIt)};
   if(m.openAt>Date.now()){sealed();timer=setInterval(sealed,30000)}else openGate();
 }
@@ -2469,6 +2470,7 @@ function openLetter(id,importMode,preset){
   st.headSet=st.head!=null;
   if(importMode){st.kind="old";st.toText="";st.wdate=addDays(t,-365);st.iw="done";st.iOpen=addDays(t,180);st.who="me";st.friend=""}
   if(st.kind==="custom"){st.custTo=st.toText||"";st.customOn=st.openOn}
+  if(!ex&&!st.fromName){try{st.fromName=localStorage.getItem("lifeos-fromname")||""}catch(_){}}
   if(st.kind==="send"){st.sendTo=st.toText||"";st.sendOn=st.openOn}
   if(!st.sendOn)st.sendOn=addDays(t,30);
   if(!st.customOn)st.customOn=addDays(t,365);
@@ -2486,7 +2488,7 @@ function openLetter(id,importMode,preset){
       <div class="lrow">${st.who==="friend"?`<label class="field"><span>${L("朋友的名字","Friend's name")}</span><input id="lfriend" maxlength="30" value="${esc(st.friend||"")}" placeholder="${L("比如：Lily","e.g. Lily")}"></label>`:`<label class="field"><span>${L("当时写给","It was to")}</span><input id="ltoText" maxlength="30" value="${esc(st.toText||"")}" placeholder="${L("比如：2025 年的我、22 岁的我","e.g. me in 2025, me at 22")}"></label>`}<label class="field"><span>${L("是哪天写的","Written on")}</span><input type="date" id="lwdate" max="${t}" value="${esc(st.wdate)}"></label></div>`
       :`<div class="opnd"><span>${L("写给","To")}</span><button class="${st.kind==="year"?"on":""}" data-lt="kind" data-v="year">${L("明年的我 · 1月1日拆","Next year's me · opens 1 Jan")}</button><button class="${st.kind==="bday"?"on":""}" data-lt="kind" data-v="bday">${L("下一岁的我 · 生日那天拆","A year older · opens on my birthday")}</button><button class="${st.kind==="custom"?"on":""}" data-lt="kind" data-v="custom">${L("自己选日子","Pick a date")}</button>${shareApi.ok()||st.kind==="send"?`<button class="${st.kind==="send"?"on":""}" data-lt="kind" data-v="send">${L("寄给朋友 ✉","Send to a friend ✉")}</button>`:""}</div>
         ${st.kind==="send"?`<div class="lrow"><label class="field"><span>${L("写给谁","To")}</span><input id="lsTo" maxlength="30" value="${esc(st.sendTo||"")}" placeholder="${L("比如：Lily","e.g. Lily")}"></label><label class="field"><span>${L("哪天能拆","Opens on")}</span><input type="date" id="lsOpen" min="${t}" value="${esc(st.sendOn)}"></label></div>
-        <div class="lrow"><label class="field"><span>${L("署名（信封上写谁寄的）","Your name on the envelope")}</span><input id="lsFrom" maxlength="30" value="${esc(st.fromName||"")}" placeholder="${esc(userName||L("你的名字","Your name"))}"></label>
+        <div class="lrow"><label class="field"><span>${L("朋友看到的称呼","How your friend sees you")}</span><input id="lsFrom" maxlength="30" value="${esc(st.fromName||"")}" placeholder="${L("比如：Gracy","e.g. Gracy")}"><small class="hint" id="lsFromPv">${L(`朋友打开会看到：「${esc(zhSp((st.fromName||"").trim()||userName||"你的朋友"))}给你写了一封信」`,`Your friend will see: "${esc((st.fromName||"").trim()||userName||"A friend")} wrote you a letter"`)}</small></label>
           <div class="field"><span>${L("邮票照片","Stamp photo")}</span><div class="strow"><span class="stprev">${STAMP_SVG(st.stamp)}</span><label class="btn stup">${st.stamp?L("换一张","Change"):L("上传照片","Upload")}<input type="file" accept="image/*" id="lsPhoto" hidden></label>${st.stamp?`<button class="link" data-lt="nostamp">${L("不用了","Remove")}</button>`:""}</div></div></div>
         <span class="hint">${st.sendOn<=t?L("封好以后会生成一个链接，对方点开马上就能看。","Seal it to get a link. They can read it straight away."):L(`封好以后会生成一个链接，你可以用微信、短信或邮件发过去。${lYmdS(st.sendOn)} 之前，对方只能看到信封和倒计时。`,`Seal it to get a link to send. Until ${lYmdS(st.sendOn)} they only see the envelope and a countdown.`)}</span>`:""}
         ${st.kind==="custom"?`<div class="lrow"><label class="field"><span>${L("哪天拆","Open on")}</span><input type="date" id="lopen" min="${addDays(t,1)}" value="${esc(st.customOn)}"></label><label class="field"><span>${L("写给","To")}</span><input id="lcustTo" maxlength="30" value="${esc(st.custTo||"")}" placeholder="${L("未来的我","future me")}"></label></div>`:""}
@@ -2537,7 +2539,7 @@ function openLetter(id,importMode,preset){
         if(!st.shareId&&!st._seal){openSealPicker(sl=>{st._seal=sl;sure=true;bt.click()});return}
         if(!sure){sure=true;bt.textContent=L("确定保存修改？","Save changes?");return}
         bt.disabled=true;bt.textContent=L("正在寄出…","Sending…");const seal=st._seal||st.seal||sealDef();
-        const sid=st.shareId||rid();const fromName=(st.fromName||"").trim()||userName||L("你的朋友","A friend");
+        const sid=st.shareId||rid();const fromName=(st.fromName||"").trim()||userName||L("你的朋友","A friend");try{if((st.fromName||"").trim())localStorage.setItem("lifeos-fromname",st.fromName.trim())}catch(_){}
         try{await shareApi.put(sid,{fromName,toName:st.sendTo.trim(),openOn:st.sendOn,stamp:st.stamp||"",paper:st.paper,font:st.font,sticker:st.sticker||"",align:st.align||"left",fsz:st.fsz||"m",ink:st.ink||"",seal,writtenAt:st.writtenAt||Date.now()},{body:(st.body||"").slice(0,20000),la:(st.la||[]).slice(0,2000),lsz:(st.lsz||[]).slice(0,2000),lcol:(st.lcol||[]).slice(0,2000),sig:(st.sig||"").trim().slice(0,40),head:st.head==null?null:String(st.head).slice(0,60),photos:(st.photos||[]).slice(0,3)})}
         catch(err){bt.disabled=false;sure=false;bt.textContent=L("没寄出去，再试一次","Didn't send. Try again");return}
         const lid=save({sealed:true,sealedAt:Date.now(),shareId:sid,fromName,seal});bg.remove();openSent(lid);return}
@@ -2547,7 +2549,7 @@ function openLetter(id,importMode,preset){
       const w=new Date((st.wdate||t)+"T12:00:00").getTime();const later=st.iw==="later"&&st.iOpen>t;
       save({kind:"old",...(st.who==="friend"?{from:st.friend.trim(),toText:L("我","me")}:{toText:(st.toText||"").trim()||L("那时候的我","me back then")}),writtenAt:w,openOn:later?st.iOpen:st.wdate,sealed:true,opened:!later,openedAt:later?null:Date.now(),imported:true});bg.remove();
       cheer(later?L(`封好放进信箱啦，${lYmdS(st.iOpen)}见～`,`Sealed in your mailbox. See you on ${lYmdS(st.iOpen)}～`):L("放进信箱啦","Added to your mailbox"));return}});
-  bg.addEventListener("input",e=>{if(e.target.id==="lsTo"){const lb=bg.querySelector("#lbody"),n=e.target.value.trim();if(lb)lb.dataset.ph=L(`想对${n||"TA"}说些什么？`,`What would you like to tell ${n||"them"}?`)}if(e.target.id==="lbody"){edNormalize(e.target);e.target.classList.toggle("isempty",!e.target.innerText.trim())}if(e.target.id==="lsigIn"){const el=bg.querySelector(".lsig");if(el){el.textContent=e.target.value.trim();el.classList.toggle("empty",!e.target.value.trim())}}if(e.target.id==="lhead"){st.headSet=true;st.head=e.target.value}
+  bg.addEventListener("input",e=>{if(e.target.id==="lsFrom"){const pv=bg.querySelector("#lsFromPv"),n=e.target.value.trim()||userName||L("你的朋友","A friend");if(pv)pv.textContent=L(`朋友打开会看到：「${zhSp(n)}给你写了一封信」`,`Your friend will see: "${n} wrote you a letter"`)}if(e.target.id==="lsTo"){const lb=bg.querySelector("#lbody"),n=e.target.value.trim();if(lb)lb.dataset.ph=L(`想对${n||"TA"}说些什么？`,`What would you like to tell ${n||"them"}?`)}if(e.target.id==="lbody"){edNormalize(e.target);e.target.classList.toggle("isempty",!e.target.innerText.trim())}if(e.target.id==="lsigIn"){const el=bg.querySelector(".lsig");if(el){el.textContent=e.target.value.trim();el.classList.toggle("empty",!e.target.value.trim())}}if(e.target.id==="lhead"){st.headSet=true;st.head=e.target.value}
     const hd=bg.querySelector("#lhead"),setH=v=>{if(hd&&!st.headSet)hd.value=L("致 ","Dear ")+v+L("：",",")};
     if(e.target.id==="lsTo")setH(e.target.value.trim()||L("你","you"));if(e.target.id==="lcustTo")setH(e.target.value.trim()||L("未来的我","future me"));if(e.target.id==="ltoText")setH(e.target.value.trim()||L("那时候的我","me back then"));});
   bg.addEventListener("change",async e=>{if(e.target.id==="lwdate"||e.target.id==="lsOpen"){grab();if(!importMode)calc();draw();return}
