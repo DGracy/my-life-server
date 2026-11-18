@@ -1586,10 +1586,12 @@ function render(){
   // keep whatever is being typed when live data re-renders the board
   const ae=document.activeElement, keep={};
   document.querySelectorAll("#main input[id], #main textarea[id]").forEach(el=>{if(el.type==="checkbox"||el.type==="file")return;if((el.classList.contains("gta")||el.dataset.jnote)&&el!==ae)return;keep[el.id]=el.value});
+  const openD=new Set([...document.querySelectorAll("#main details[data-keep][open]")].map(d=>d.dataset.keep)), sy=window.scrollY;
   const fid=ae&&ae.id&&ae.closest("#main")?ae.id:null; let ss=null,se=null; try{ss=ae.selectionStart;se=ae.selectionEnd}catch(_){}
   $("#main").innerHTML= tab==="habit"?habitBoard(): tab==="journal"?journalView(): tab==="forest"?forestView(): taskBoard(tab);
   $("#forestBtn").setAttribute("aria-pressed",String(tab==="forest"));
   for(const k in keep){const el=document.getElementById(k);if(el)el.value=keep[k]}
+  if(openD.size){document.querySelectorAll("#main details[data-keep]").forEach(d=>{if(openD.has(d.dataset.keep))d.open=true});if(Math.abs(window.scrollY-sy)>2)window.scrollTo(0,sy)}
   if(fid){const el=document.getElementById(fid);if(el){el.focus();try{if(ss!=null)el.setSelectionRange(ss,se)}catch(_){}}}
   document.querySelectorAll("#main .gta").forEach(autosz);
   renderBuddy();
@@ -1695,7 +1697,7 @@ function taskBoard(k){
       <div class="list">${items.length?items.map(taskRow).join(""):emptyBox(EMPTY[h.k])}</div></section>`;
   }).join("");
   const done=mine.filter(t=>t.done).sort((a,b)=>(b.doneAt||0)-(a.doneAt||0)).slice(0,50);
-  const doneBox=done.length?`<details class="done-box"><summary>${L(`已完成 ${done.length} 件`,`${done.length} done`)}</summary><div class="list">${done.map(taskRow).join("")}</div></details>`:"";
+  const doneBox=done.length?`<details class="done-box" data-keep="done-${k}"><summary>${L(`已完成 ${done.length} 件`,`${done.length} done`)}</summary><div class="list">${done.map(taskRow).join("")}</div></details>`:"";
   return `<div class="board" data-k="${k}">${k==="life"?lifeSeg():""}${k==="study"&&on("classes")?courseCard():""}${k==="study"||k==="work"?focusBar(k):""}${nudgeCard(k)}${groups}${doneBox}</div>`;
 }
 function streakOf(id){
@@ -4656,8 +4658,8 @@ function wishItem(w){
       <b>${esc(w.title)}${nextUp?`<span class="w-next">${L("下一笔先到这里","Next in line")}</span>`:""}</b>
       ${price?`<span class="w-money"><span>${saved?L(`已攒 ${money(saved,cur)} / ${money(price,cur)}`,`${money(saved,cur)} saved of ${money(price,cur)}`):money(price,cur)}${!w.done&&saved&&left?L(` · 还差 ${money(left,cur)}`,` · ${money(left,cur)} to go`):""}</span>${!w.done?`<span class="w-bar"><i style="width:${pct}%"></i></span>`:""}</span>`:""}
       ${w.line?`<small class="w-line">${esc(w.line)}</small>`:w.note?`<small>${esc(w.note)}</small>`:""}
-      ${w.done&&w.pre&&w.paidAt?`<small>${L("先买后补，已经补齐啦 🎉","Bought early, now paid back 🎉")}</small>`:""}
-      ${w.done&&w.doneAt?`<small>${L("实现于 ","Came true on ")}${fmtRange(dayOf(w.doneAt),dayOf(w.doneAt)).split(" – ")[0]}</small>`:""}
+      ${w.done&&w.pre&&w.paidAt?`<small>${L(`先买后补，${fmtRange(dayOf(w.paidAt),dayOf(w.paidAt)).split(" – ")[0]}补齐啦 🎉`,`Bought early, paid back on ${fmtRange(dayOf(w.paidAt),dayOf(w.paidAt)).split(" – ")[0]} 🎉`)}</small>`:""}
+      ${w.done&&w.doneAt?`<small>${w.pre?L("先买于 ","Bought on "):L("实现于 ","Came true on ")}${fmtRange(dayOf(w.doneAt),dayOf(w.doneAt)).split(" – ")[0]}</small>`:""}
     </button>
     ${w.link?`<a class="w-link" href="${esc(/^https?:\/\//.test(w.link)?w.link:"https://"+w.link)}" target="_blank" rel="noopener" aria-label="${L("打开链接","Open link")}">↗</a>`:""}
     ${!w.done&&w.kind==="buy"&&price?`<button class="w-more" data-act="wishmenu" data-id="${w.id}" aria-label="${L("更多","More")}">⋯</button>`:""}
@@ -4678,7 +4680,7 @@ function postcard(w,i){
 const WISH_TIPS={go:()=>L("这个周末就可以去看看","Could be a weekend plan"),do:()=>L("今天先花五分钟开个头？","Spend five minutes on it today?"),buy:()=>L("要不要先存一笔？","Save a little towards it?")};
 function wishBoard(){
   const open=wishes.filter(w=>!w.done).sort((a,b)=>wishOrd(a)-wishOrd(b));
-  const done=wishes.filter(w=>w.done).sort((a,b)=>(b.doneAt||0)-(a.doneAt||0));
+  const done=wishes.filter(w=>w.done).sort((a,b)=>((b.pre&&b.paidAt)||b.doneAt||0)-((a.pre&&a.paidAt)||a.doneAt||0));
   const buys=open.filter(w=>w.kind==="buy"&&+w.price);
   const byCur={}; buys.forEach(w=>{const c=w.cur||"£";byCur[c]=byCur[c]||[0,0];byCur[c][0]+=+w.price||0;byCur[c][1]+=Math.min(+w.saved||0,+w.price||0)});
   const curs=Object.keys(byCur), total=curs.length, sumOf=i=>curs.map(c=>money(byCur[c][i],c)).join(" + ");
@@ -4706,7 +4708,7 @@ function wishBoard(){
     </div>
     ${debts.length?`<section class="group"><h2><span class="badge"></span>${sproutIcon("buy")} ${L("先买了，还在补","Bought early, paying back")}<span class="cnt">${debts.length}</span></h2><div class="list">${debts.map(wishItem).join("")}</div></section>`:""}
     ${groups||emptyBox(L("还没有愿望。看到想要的东西、想去的地方，就先记在这里。","No wishes yet. When something catches your eye or a place calls you, note it here."))}
-    ${doneOther.length?`<details class="done-box"><summary>${L(`已经实现的愿望 ${doneOther.length}`,`${doneOther.length} wishes come true`)}</summary><div class="list">${doneOther.map(wishItem).join("")}</div></details>`:""}`;
+    ${doneOther.length?`<details class="done-box" data-keep="wishdone"><summary>${L(`已经实现的愿望 ${doneOther.length}`,`${doneOther.length} wishes come true`)}</summary><div class="list">${doneOther.map(wishItem).join("")}</div></details>`:""}`;
 }
 // move and zoom a photo inside a frame, then keep just that part
 function cropImg(src,aspect){return new Promise(res=>{
@@ -4768,7 +4770,7 @@ function fundCard(){
   if(!q.length&&!(wfund.pool>0)&&!(wfund.log||[]).length)return "";
   const lg=[...(wfund.log||[])].reverse().slice(0,12);
   return `<div class="wstats"><div class="ws-f"><small>${L("愿望基金","Wish fund")}</small><b>${money(wfund.pool||0,cur)}</b></div><div><small>${L("想买的还差","Still to save")}</small><b>${money(need,cur)}</b></div><div><small>${L("先买的要补","To pay back")}</small><b class="${owe?"ws-red":""}">${money(owe,cur)}</b></div><button class="btn wf-pay" data-act="fundpay">＋ ${L("有进账啦","Money in")}</button></div>
-    ${wfund.pool>0&&q.length||lg.length?`<div class="ws-sub">${wfund.pool>0&&q.length?`<button class="link" data-act="fundsplit">${L("把基金里的钱分出去","Share out the fund")}</button>`:""}${lg.length?`<details class="wf-log"><summary>${L("记录","History")}</summary><ul>${lg.map(l=>`<li>${fmtRange(dayOf(l.at),dayOf(l.at)).split(" – ")[0]} · ${esc(l.t)}</li>`).join("")}</ul></details>`:""}</div>`:""}`;
+    ${wfund.pool>0&&q.length||lg.length?`<div class="ws-sub">${wfund.pool>0&&q.length?`<button class="link" data-act="fundsplit">${L("把基金里的钱分出去","Share out the fund")}</button>`:""}${lg.length?`<details class="wf-log" data-keep="wflog"><summary>${L("记录","History")}</summary><ul>${lg.map(l=>`<li>${fmtRange(dayOf(l.at),dayOf(l.at)).split(" – ")[0]} · ${esc(l.t)}</li>`).join("")}</ul></details>`:""}</div>`:""}`;
 }
 const FUND_SRC="lifeos-fund-src",FUND_SRCS="lifeos-fund-srcs";
 function fundSrcs(){let a=[];try{a=JSON.parse(localStorage.getItem(FUND_SRCS)||"[]")}catch(_){}const base=L(["工资","兼职","奖学金","红包"],["Salary","Side job","Grant","Gift"]);return [...base,...a.filter(x=>!base.includes(x))]}
@@ -4881,11 +4883,11 @@ function openWish(id){
   const w=wishes.find(x=>x.id===id); if(!w||!db)return;
   const draft={...w,cur:w.cur||"£"}; let confirmDel=false;
   const bg=document.createElement("div"); bg.className="sheet-bg";
-  const grab=()=>{const dn=bg.querySelector("#we-done");if(dn&&dn.value)draft.doneDay=dn.value;draft.title=bg.querySelector("#we-title").value;draft.note=bg.querySelector("#we-note").value;draft.link=bg.querySelector("#we-link").value;const p=bg.querySelector("#we-price"),s=bg.querySelector("#we-saved"),c=bg.querySelector("#we-cur");if(p)draft.price=p.value;if(s)draft.saved=s.value;if(c)draft.cur=c.value};
+  const grab=()=>{const dn=bg.querySelector("#we-done");if(dn&&dn.value)draft.doneDay=dn.value;const pd=bg.querySelector("#we-paid");if(pd&&pd.value)draft.paidDay=pd.value;draft.title=bg.querySelector("#we-title").value;draft.note=bg.querySelector("#we-note").value;draft.link=bg.querySelector("#we-link").value;const p=bg.querySelector("#we-price"),s=bg.querySelector("#we-saved"),c=bg.querySelector("#we-cur");if(p)draft.price=p.value;if(s)draft.saved=s.value;if(c)draft.cur=c.value};
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑愿望","Edit wish")}">
     <input id="we-title" class="titlein" value="${esc(draft.title)}" maxlength="100" aria-label="${L("愿望","Wish")}">
     <div class="we-img"><label class="wm-slot sm">${draft.img?`<img src="${draft.img}" alt="">`:`<span>${L("配一张图","Add a picture")}</span>`}<input type="file" accept="image/*" id="we-file" hidden></label><span class="hint">${draft.img?`<button class="link" data-we="noimg">${L("不要这张图","Remove picture")}</button><br>`:""}${L("想买的放商品截图，想去的放一张风景照。","A product screenshot, or a photo of the place.")}${draft.done&&draft.kind==="go"?`<br><button class="link" data-we="memo">${L("换明信片上的照片和那句话","Change the postcard photo and line")}</button>`:""}</span></div>
-    ${draft.done?`<label class="field"><span>${draft.pre?L("什么时候买的","Bought on"):L("哪天实现的","Came true on")}</span><input id="we-done" type="date" max="${todayStr()}" value="${dayOf(draft.doneAt||Date.now())}"></label>`:""}
+    ${draft.done?`<div class="wa-row"><label class="field" style="flex:1"><span>${draft.pre?L("什么时候买的","Bought on"):L("哪天实现的","Came true on")}</span><input id="we-done" type="date" max="${todayStr()}" value="${dayOf(draft.doneAt||Date.now())}"></label>${draft.pre&&draft.paidAt?`<label class="field" style="flex:1"><span>${L("哪天补齐的","Paid back on")}</span><input id="we-paid" type="date" max="${todayStr()}" value="${dayOf(draft.paidAt)}"></label>`:""}</div>`:""}
     <label class="field"><span>${L("链接（可不填）","Link (optional)")}</span><input id="we-link" type="url" maxlength="500" value="${esc(draft.link||"")}" placeholder="${L("购物页面、攻略……","A shop page, a guide…")}"></label>
     <div class="field"><span>${L("类型","Type")}</span><div class="chips">${WISH_KINDS.map(k=>`<button class="chip hz${draft.kind===k[0]?" on":""}" data-we="kind" data-v="${k[0]}">${sproutIcon(k[0])}${L(k[2],k[3])}</button>`).join("")}</div></div>
     ${draft.kind==="buy"?`<div class="wa-row"><label class="field"><span>${L("货币","Currency")}</span><select id="we-cur" class="wish-sheet-cur">${curOptions(draft.cur)}</select></label><label class="field" style="flex:1"><span>${L("价格","Price")}</span><input id="we-price" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(draft.price||"")}"></label>
@@ -4908,7 +4910,8 @@ function openWish(id){
     const ref=db.doc("wishes/"+id);
     if(a==="del"){if(!confirmDel){confirmDel=true;draw();return}bg.remove();queued(ref.path,()=>ref.delete());return}
     if(a==="undo"){bg.remove();queued(ref.path,()=>ref.update({done:false,doneAt:null}));return}
-    if(a==="save"){const nd=draft.done&&draft.doneDay&&draft.doneDay!==dayOf(w.doneAt||0)?new Date(draft.doneDay+"T12:00:00").getTime():null;
+    if(a==="save"){if(draft.pre&&w.paidAt&&draft.paidDay&&draft.paidDay!==dayOf(w.paidAt)){const pt=new Date(draft.paidDay+"T12:00:00").getTime();queued(ref.path,()=>ref.update({paidAt:pt}))}
+      const nd=draft.done&&draft.doneDay&&draft.doneDay!==dayOf(w.doneAt||0)?new Date(draft.doneDay+"T12:00:00").getTime():null;
       if(nd){queued(ref.path,()=>ref.update({doneAt:nd}));if(w.pre){const tag=`「${w.title}」`;let hit=false;wfund.log=(wfund.log||[]).map(l=>{if(!hit&&(l.id===w.id&&l.k==="pre"||!l.id&&l.t&&l.t.includes(tag)&&/先买了|Bought/.test(l.t))){hit=true;return {...l,at:nd}}return l}).sort((x,y)=>x.at-y.at);if(hit)fundSave()}
         const mt=L("实现愿望：","Wish come true: ")+w.title,od=dayOf(w.doneAt||0);const m=milestones.find(x=>x.title===mt&&x.date===od);if(m&&m.id){const mr=db.doc("milestones/"+m.id);queued(mr.path,()=>mr.update({date:draft.doneDay}))}}
       bg.remove();queued(ref.path,()=>ref.update({title:(draft.title.trim()||w.title).slice(0,100),kind:draft.kind,note:(draft.note||"").slice(0,1000),img:draft.img||null,link:(draft.link||"").trim().slice(0,500)||null,
