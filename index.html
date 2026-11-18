@@ -4996,7 +4996,11 @@ function openWish(id){
   bg.querySelector("#we-title").focus();
 }
 const wishMsTitle=w=>L("实现愿望：","Wish come true: ")+w.title;
-function wishMsFind(w){const t=wishMsTitle(w),t2="实现愿望："+w.title,t3="Wish come true: "+w.title;return milestones.filter(x=>x.wid===w.id||x.title===t||x.title===t2||x.title===t3)}
+const wishMsCore=t=>String(t||"").replace(/^(实现愿望：|Wish come true: )/,"").replace(/^(去|Go to |Visit )/i,"").replace(/\s+/g,"").toLowerCase();
+function wishMsFind(w){const t=wishMsTitle(w),t2="实现愿望："+w.title,t3="Wish come true: "+w.title;const hit=milestones.filter(x=>x.wid===w.id||(!x.wid||x.wid===w.id)&&(x.title===t||x.title===t2||x.title===t3));if(hit.length)return hit;
+  // renamed since: same place/thing with a slightly different name (只认没被别的愿望认领的)
+  const c=wishMsCore(w.title);if(c.length<2)return [];
+  return milestones.filter(x=>!x.wid&&/^(实现愿望：|Wish come true: )/.test(x.title||"")&&(()=>{const k=wishMsCore(x.title);return k.length>=2&&(k===c||k.includes(c)||c.includes(k))})()&&!wishes.some(o=>o.id!==w.id&&o.done&&wishMsCore(o.title)===wishMsCore(x.title)&&wishMsCore(o.title)!==c))}
 function wishMsSet(w,day){const ex=wishMsFind(w);if(ex.length){ex.forEach((m,i)=>{const r=db.doc("milestones/"+m.id);if(i===0){if(m.date!==day||m.wid!==w.id)queued(r.path,()=>r.update({date:day,wid:w.id}))}else queued(r.path,()=>r.delete())});return}
   const m=db.collection("milestones").doc();queued(m.path,()=>m.set({date:day,title:wishMsTitle(w),wid:w.id,createdAt:Date.now()}))}
 function wishMsDrop(w){wishMsFind(w).forEach(m=>{const r=db.doc("milestones/"+m.id);queued(r.path,()=>r.delete())})}
@@ -5005,8 +5009,8 @@ let wishMsFixed=false;
 function wishMsMigrate(){if(wishMsFixed||!loaded.wi||!loaded.m||!db)return;wishMsFixed=true;try{if(localStorage.getItem("lifeos-wishms-v1"))return;localStorage.setItem("lifeos-wishms-v1","1")}catch(_){}
   wishes.filter(w=>w.done&&w.pre).forEach(w=>{if(w.paidAt)wishMsSet(w,dayOf(w.paidAt));else wishMsDrop(w)})}
 let wishMsSynced=false;
-function wishMsSync(){if(wishMsSynced||!loaded.wi||!loaded.m||!db)return;wishMsSynced=true;try{if(localStorage.getItem("lifeos-wishms-v2"))return;localStorage.setItem("lifeos-wishms-v2","1")}catch(_){}
-  wishes.filter(w=>w.done&&!w.pre&&w.doneAt).forEach(w=>{const day=dayOf(w.doneAt);if(wishMsFind(w).some(m=>m.date!==day))wishMsSet(w,day)})}
+function wishMsSync(){if(wishMsSynced||!loaded.wi||!loaded.m||!db)return;wishMsSynced=true;try{if(localStorage.getItem("lifeos-wishms-v3"))return;localStorage.setItem("lifeos-wishms-v3","1")}catch(_){}
+  wishes.filter(w=>w.done&&!w.pre&&w.doneAt).forEach(w=>{const day=dayOf(w.doneAt);if(wishMsFind(w).some(m=>m.date!==day||!m.wid))wishMsSet(w,day)})}
 async function wishCameTrue(id,el,pre){
   const w=wishes.find(x=>x.id===id); if(!w||!db)return;
   const r=el.getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/2,["#ffd34d",css("--pink"),css("--study"),css("--water")]);
