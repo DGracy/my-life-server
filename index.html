@@ -481,8 +481,8 @@ body.pomo-open{overflow:hidden}
 .pc-add{display:grid;place-items:center;min-height:150px;border:2px dashed #c9b190;background:transparent;box-shadow:none;color:#8a6c45;font-size:14px;transform:none}
 .cstamp{display:block;box-sizing:border-box;position:absolute;right:-8px;top:-10px;width:72px;padding:6px;transform:rotate(8deg);filter:drop-shadow(0 3px 4px rgba(0,0,0,.18));background:radial-gradient(circle,transparent 2.6px,#fff 3px) -4px -4px/8px 8px;z-index:1;pointer-events:none}
 .cs-in{display:flex;flex-direction:column;background:#fff;padding:3px}.cs-ph{display:block;line-height:0;aspect-ratio:1;overflow:hidden}.cs-ph svg{width:100%;height:100%;display:block}
-.cs-t{display:flex;justify-content:space-between;align-items:baseline;gap:2px;padding:2px 2px 0;font-family:"Caveat","LXGW WenKai TC",cursive;color:#c2414b;line-height:1}.cs-t b{font-size:11px;font-weight:600;overflow:hidden;white-space:nowrap}.cs-t i{font-style:normal;font-size:9px;color:#3b4a7a;white-space:nowrap}
-.cstamp.big{position:static;width:140px;transform:rotate(-3deg)}.cstamp.big .cs-t b{font-size:16px}.cstamp.big .cs-t i{font-size:12px}
+.cs-t{display:flex;justify-content:center;align-items:baseline;gap:2px;padding:2px 2px 0;font-family:"Caveat","LXGW WenKai TC",cursive;color:#c2414b;line-height:1}.cs-t b{font-size:11px;font-weight:600;overflow:hidden;white-space:nowrap}.cs-t i{font-style:normal;font-size:10px;color:#c2414b;white-space:nowrap}
+.cstamp.big{position:static;width:140px;transform:rotate(-3deg)}.cstamp.big .cs-t b{font-size:16px}.cstamp.big .cs-t i{font-size:15px}
 .wm-up,.we-img{display:flex;gap:14px;align-items:center}.wm-slot{width:140px;height:100px;flex:none;border-radius:14px;border:2px dashed var(--line);display:grid;place-items:center;color:var(--muted);font-size:13px;overflow:hidden;cursor:pointer}.wm-slot.sm{width:84px;height:62px}.wm-slot img{width:100%;height:100%;object-fit:cover}
 .wmemo h3{display:flex;align-items:center;gap:10px}.wmemo h3 .sf{width:36px;height:36px;flex:none}.wm-side{flex:1;min-width:0}
 .wishask{display:flex;gap:14px;margin:6px 0 0 6px}.wishask .link{font-size:13.5px}
@@ -4642,7 +4642,7 @@ function crayonDefs(){if(document.getElementById("crayonDefs"))return;const d=do
   d.innerHTML=`<svg width="0" height="0"><defs><filter id="crayon" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".06" numOctaves="2" seed="3" result="w"/><feDisplacementMap in="SourceGraphic" in2="w" scale="5" xChannelSelector="R" yChannelSelector="G" result="d"/><feComponentTransfer in="d" result="p"><feFuncR type="discrete" tableValues="0.15 0.45 0.75 0.95"/><feFuncG type="discrete" tableValues="0.15 0.45 0.75 0.95"/><feFuncB type="discrete" tableValues="0.2 0.5 0.8 0.97"/></feComponentTransfer><feTurbulence type="fractalNoise" baseFrequency="2.2 .35" numOctaves="3" seed="7" result="g"/><feColorMatrix in="g" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -1.6 1.05" result="gr"/><feComposite in="gr" in2="p" operator="in" result="gr2"/><feBlend in="gr2" in2="p" mode="screen"/></filter></defs></svg>`;document.body.appendChild(d)}
 function crayonStamp(w,big){crayonDefs();
   const place=(w.title||"").length>9?(w.title||"").slice(0,8)+"…":(w.title||"");
-  return `<span class="cstamp${big?" big":""}" aria-hidden="true"><span class="cs-in"><span class="cs-ph"><svg viewBox="0 0 100 100"><image href="${esc(w.photo||w.img)}" width="100" height="100" preserveAspectRatio="xMidYMid slice" filter="url(#crayon)"/></svg></span><span class="cs-t"><b>${esc(place)}</b><i>${dotDate(w.doneAt)}</i></span></span></span>`}
+  return `<span class="cstamp${big?" big":""}" aria-hidden="true"><span class="cs-in"><span class="cs-ph"><svg viewBox="0 0 100 100"><image href="${esc(w.photo||w.img)}" width="100" height="100" preserveAspectRatio="xMidYMid slice" filter="url(#crayon)"/></svg></span><span class="cs-t"><i>${dotDate(w.doneAt)}</i></span></span></span>`}
 function wishItem(w){
   const K=WISH_KINDS.find(k=>k[0]===w.kind)||WISH_KINDS[2];
   const price=+w.price||0, saved=Math.min(+w.saved||0,price||Infinity), cur=w.cur||"£";
@@ -4712,6 +4712,7 @@ function wishBoard(){
     ${doneOther.length?`<details class="done-box" data-keep="wishdone"><summary>${L(`已经实现的愿望 ${doneOther.length}`,`${doneOther.length} wishes come true`)}</summary><div class="list">${doneOther.map(wishItem).join("")}</div></details>`:""}`;
 }
 // move and zoom a photo inside a frame, then keep just that part
+function rot90(src){return new Promise(r=>{const i=new Image();i.onload=()=>{const c=document.createElement("canvas");c.width=i.naturalHeight;c.height=i.naturalWidth;const g=c.getContext("2d");g.translate(c.width,0);g.rotate(Math.PI/2);g.drawImage(i,0,0);r(c.toDataURL("image/jpeg",.9))};i.onerror=()=>r(src);i.src=src})}
 function cropImg(src,aspect){return new Promise(res=>{
   const im=new Image();im.onload=()=>{
     const bg=document.createElement("div");bg.className="sheet-bg crop-bg";
@@ -4722,7 +4723,7 @@ function cropImg(src,aspect){return new Promise(res=>{
     bg.innerHTML=`<div class="sheet crop" role="dialog" aria-label="${L("调整照片","Adjust photo")}"><h3>${L("拖动照片调整位置，滑动放大缩小","Drag to move, slide to zoom")}</h3>
       <div class="crop-f" style="width:${W}px;height:${H}px"><img src="${src}" alt="" draggable="false"></div>
       <label class="crop-z"><span>－</span><input type="range" min="1" max="3" step="0.01" value="1" aria-label="${L("缩放","Zoom")}"><span>＋</span></label>
-      <div class="sheet-actions"><button class="btn" data-cr="reset">${L("重置","Reset")}</button><span style="display:flex;gap:8px"><button class="btn" data-cr="x">${L("取消","Cancel")}</button><button class="btn primary" data-cr="ok">${L("就这样","Done")}</button></span></div></div>`;
+      <div class="sheet-actions"><span style="display:flex;gap:8px"><button class="btn" data-cr="rot" aria-label="${L("旋转","Rotate")}">↻ ${L("转一下","Rotate")}</button><button class="btn" data-cr="reset">${L("重置","Reset")}</button></span><span style="display:flex;gap:8px"><button class="btn" data-cr="x">${L("取消","Cancel")}</button><button class="btn primary" data-cr="ok">${L("就这样","Done")}</button></span></div></div>`;
     document.body.appendChild(bg);
     const f=bg.querySelector(".crop-f"),img=f.querySelector("img"),rg=bg.querySelector("input[type=range]");
     const draw=()=>{clamp();const s=base*z;img.style.width=im.naturalWidth*s+"px";img.style.height=im.naturalHeight*s+"px";img.style.transform=`translate(${x}px,${y}px)`};draw();
@@ -4736,6 +4737,7 @@ function cropImg(src,aspect){return new Promise(res=>{
       if(last){x+=e.clientX-last[0];y+=e.clientY-last[1];last=[e.clientX,e.clientY];draw()}});
     const end=e=>{pts.delete(e.pointerId);pinch=null;last=pts.size?[...pts.values()][0]:null};f.addEventListener("pointerup",end);f.addEventListener("pointercancel",end);
     bg.addEventListener("click",e=>{e.stopPropagation();const b=e.target.closest("[data-cr]");if(!b)return;const a=b.dataset.cr;
+      if(a==="rot"){rot90(src).then(r=>{bg.remove();cropImg(r,aspect).then(res)});return}
       if(a==="reset"){z=1;rg.value=1;x=(W-im.naturalWidth*base)/2;y=(H-im.naturalHeight*base)/2;draw();return}
       if(a==="x"){bg.remove();res(null);return}
       const s=base*z;
