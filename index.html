@@ -5009,7 +5009,14 @@ let wishMsFixed=false;
 function wishMsMigrate(){if(wishMsFixed||!loaded.wi||!loaded.m||!db)return;wishMsFixed=true;try{if(localStorage.getItem("lifeos-wishms-v1"))return;localStorage.setItem("lifeos-wishms-v1","1")}catch(_){}
   wishes.filter(w=>w.done&&w.pre).forEach(w=>{if(w.paidAt)wishMsSet(w,dayOf(w.paidAt));else wishMsDrop(w)})}
 let wishMsSynced=false;
-function wishMsSync(){if(wishMsSynced||!loaded.wi||!loaded.m||!db)return;wishMsSynced=true;try{if(localStorage.getItem("lifeos-wishms-v3"))return;localStorage.setItem("lifeos-wishms-v3","1")}catch(_){}
+function wishMsSync(){if(wishMsSynced||!loaded.wi||!loaded.m||!db)return;wishMsSynced=true;try{if(localStorage.getItem("lifeos-wishms-v4"))return;localStorage.setItem("lifeos-wishms-v4","1")}catch(_){}
+  const want=w=>w.done&&w.doneAt&&(!w.pre||w.paidAt),dayFor=w=>dayOf(w.pre?w.paidAt:w.doneAt);
+  // a wish renamed before moments remembered their wish (e.g. 挪威 → Norway): pair the leftover moment with it
+  const orphans=milestones.filter(m=>!m.wid&&/^(实现愿望：|Wish come true: )/.test(m.title||"")&&!wishes.some(w=>wishMsCore(w.title)===wishMsCore(m.title)));
+  const lone=wishes.filter(w=>want(w)&&!wishMsFind(w).length);
+  const pair=(m,w)=>{const r=db.doc("milestones/"+m.id),v={wid:w.id,title:wishMsTitle(w),date:dayFor(w)};Object.assign(m,v);queued(r.path,()=>r.update(v))};
+  if(orphans.length===1&&lone.length===1)pair(orphans[0],lone[0]);
+  else lone.forEach(w=>{const m=orphans.find(m=>!m.wid&&m.date===dayOf(w.doneAt));if(m)pair(m,w)});
   wishes.filter(w=>w.done&&!w.pre&&w.doneAt).forEach(w=>{const day=dayOf(w.doneAt);if(wishMsFind(w).some(m=>m.date!==day||!m.wid))wishMsSet(w,day)})}
 async function wishCameTrue(id,el,pre){
   const w=wishes.find(x=>x.id===id); if(!w||!db)return;
