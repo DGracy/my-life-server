@@ -523,6 +523,7 @@ body.pomo-open{overflow:hidden}
 .crop-f{position:relative;overflow:hidden;border-radius:12px;background:#000;touch-action:none;cursor:grab;box-shadow:0 0 0 2px var(--line)}.crop-f:active{cursor:grabbing}.crop-f img{position:absolute;left:0;top:0;max-width:none;user-select:none;-webkit-user-drag:none;transform-origin:0 0}
 .crop-z{display:flex;align-items:center;gap:10px;width:100%;max-width:320px;color:var(--muted)}.crop-z input{flex:1}.crop .sheet-actions{width:100%}
 .we-imga{display:flex;gap:14px;margin-bottom:4px;flex-wrap:wrap}.we-imga label.link{cursor:pointer}button.wm-slot{padding:0;background:none;font:inherit}
+.wm-dates .field{flex:1}.wm-dates input{width:100%;box-sizing:border-box}
 .wm-adj{display:block;font-size:13px;margin-bottom:6px}.wm-pre{display:block;font-size:12.5px;margin-bottom:4px}
 .polwall{position:relative;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22160%22%20height%3D%22160%22%3E%3Cfilter%20id%3D%22f%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%221.1%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22/%3E%3CfeColorMatrix%20values%3D%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%20.16%200%22/%3E%3C/filter%3E%3Crect%20width%3D%22160%22%20height%3D%22160%22%20filter%3D%22url%28%23f%29%22/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22160%22%20height%3D%22160%22%3E%3Cfilter%20id%3D%22f%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%222.4%22%20numOctaves%3D%222%22%20stitchTiles%3D%22stitch%22/%3E%3CfeColorMatrix%20values%3D%220%200%200%200%200%20%200%200%200%200%200%20%200%200%200%200%200%20%200%200%200%20.14%200%22/%3E%3C/filter%3E%3Crect%20width%3D%22160%22%20height%3D%22160%22%20filter%3D%22url%28%23f%29%22/%3E%3C/svg%3E"),var(--felt);border-radius:20px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05),inset 0 2px 10px rgba(0,0,0,.08);padding:20px 14px 16px;display:flex;flex-wrap:wrap;gap:22px 18px;align-items:flex-start;justify-content:center}
 .pol{position:relative;background:#fffdf7;color:#2b2a35;padding:7px 7px 0;box-shadow:0 8px 16px rgba(60,40,10,.2);transform:rotate(var(--r));cursor:pointer;transition:transform .2s}.pol:hover{transform:rotate(0) scale(1.03)}
@@ -4669,6 +4670,7 @@ const WISH_SCENES=[
 const hashN=s=>{let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return h};
 const wishScene=w=>`<svg viewBox="0 0 160 110" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${WISH_SCENES[hashN(w.id)%WISH_SCENES.length]}</svg>`;
 const wishImgTag=(src,alt)=>`<img src="${esc(src)}" alt="${esc(alt||"")}" loading="lazy">`;
+const dotRange=w=>{const a=new Date(w.doneAt||Date.now());if(!w.endAt||dayOf(w.endAt)<=dayOf(w.doneAt||0))return dotDate(w.doneAt);const b=new Date(w.endAt);return `${dotDate(w.doneAt)}–${b.getFullYear()!==a.getFullYear()?b.getFullYear()+".":""}${b.getMonth()+1}.${b.getDate()}`};
 const dotDate=t=>{const d=new Date(t||Date.now());return `${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()}`};
 // a stamp drawn in crayon from your own photo
 function crayonDefs(){if(document.getElementById("crayonDefs"))return;const d=document.createElement("div");d.id="crayonDefs";d.setAttribute("aria-hidden","true");d.style.cssText="position:absolute;width:0;height:0;overflow:hidden";
@@ -4676,7 +4678,7 @@ function crayonDefs(){if(document.getElementById("crayonDefs"))return;const d=do
 function crayonStamp(w,big){crayonDefs();
   const place=(w.title||"").length>9?(w.title||"").slice(0,8)+"…":(w.title||"");
   const sk=w.stampStyle==="sketch"&&w.stampImg;
-  return `<span class="cstamp${big?" big":""}" aria-hidden="true"><span class="cs-in"><span class="cs-ph">${sk?`<img src="${esc(w.stampImg)}" alt="">`:`<svg viewBox="0 0 100 100"><image href="${esc(w.photo||w.img)}" width="100" height="100" preserveAspectRatio="xMidYMid slice" filter="url(#crayon)"/></svg>`}</span><span class="cs-t"><i>${dotDate(w.doneAt)}</i></span></span></span>`}
+  return `<span class="cstamp${big?" big":""}" aria-hidden="true"><span class="cs-in"><span class="cs-ph">${sk?`<img src="${esc(w.stampImg)}" alt="">`:`<svg viewBox="0 0 100 100"><image href="${esc(w.photo||w.img)}" width="100" height="100" preserveAspectRatio="xMidYMid slice" filter="url(#crayon)"/></svg>`}</span><span class="cs-t"><i>${dotRange(w)}</i></span></span></span>`}
 function wishItem(w){
   const K=WISH_KINDS.find(k=>k[0]===w.kind)||WISH_KINDS[2];
   const price=+w.price||0, saved=Math.min(+w.saved||0,price||Infinity), cur=w.cur||"£";
@@ -4707,7 +4709,7 @@ let deckCur=0;
 // places you've been: a polaroid on the corkboard, the shape of your photo
 function polaroid(w){
   const back=wishFlip.has(w.id), rot=((hashN(w.id)%7)-3)*.9, pins=["#ef5d6e","#2f7cf6","#f0a63c","#2fb38a","#9a6cf0"], shape=w.shape||"land", pic=w.photo||w.img;
-  const face=back?`<div class="pol-ph pol-back"><span class="pc-l">${esc(w.line||L("去过啦。","Been there."))}</span><span class="pol-foot"><small>${dotDate(w.doneAt)}</small>${penBtn(w.id)}</span></div>`
+  const face=back?`<div class="pol-ph pol-back"><span class="pc-l">${esc(w.line||L("去过啦。","Been there."))}</span><span class="pol-foot"><small>${dotRange(w)}</small>${penBtn(w.id)}</span></div>`
     :`<div class="pol-ph">${pic?wishImgTag(pic,w.title):wishScene(w)}</div>`;
   return `<div class="pol ${shape}${back?" back":""}" style="--r:${rot}deg;--pc:${pins[hashN(w.id)%pins.length]}" data-act="wishflip" data-id="${w.id}" role="button" tabindex="0" aria-label="${esc(w.title)}"><span class="pin"></span>${face}${pic&&!back?crayonStamp(w):""}<div class="pol-cap">${esc(w.title)}</div></div>`;
 }
@@ -4909,20 +4911,23 @@ function wishDeposit(id){
 // when a wish comes true: a photo and a line (a place gets a postcard with a crayon stamp)
 function wishMemo(w){
   const bg=document.createElement("div");bg.className="sheet-bg";let photo=w.photo||w.img||"",line=w.line||"",shape=w.shape||(w.photo?"land":"sq"),style=w.stampStyle||"crayon",skImg=w.stampImg||"";
-  const go=w.kind==="go";
+  const go=w.kind==="go";let dFrom=dayOf(w.doneAt||Date.now()),dTo=w.endAt?dayOf(w.endAt):"";
+  const keepDates=()=>{const f=bg.querySelector("#wmFrom"),t=bg.querySelector("#wmTo");if(f&&f.value)dFrom=f.value;if(t)dTo=t.value};
   const mkSketch=async()=>{if(style==="sketch"&&photo&&!skImg){skImg=await sketchify(photo)||"";line=bg.querySelector("#wmLine")?.value??line;draw()}};
   const draw=()=>{bg.innerHTML=`<div class="sheet wmemo" role="dialog" aria-label="${L("实现愿望","Wish come true")}">
     <h3>${SF.happy||""}${go?L(`去过「${esc(w.title)}」啦！感觉怎么样？`,`You went to “${esc(w.title)}”! How was it?`):L(`「${esc(w.title)}」实现啦！感觉怎么样？`,`“${esc(w.title)}” came true! How does it feel?`)}</h3>
     <div class="wm-up"><label class="wm-slot${photo&&go?" "+shape:""}">${photo?`<img src="${photo}" alt="">`:`<span>${L("选一张照片","Pick a photo")}</span>`}<input type="file" accept="image/*" id="wmFile" hidden></label>
       <div class="wm-side">${go&&photo?`<div class="crop-seg sm">${[["crayon",L("蜡笔邮票","Crayon stamp")],["sketch",L("线稿邮票","Line-drawing stamp")]].map(([k,n])=>`<button data-wm="style" data-v="${k}" class="${k===style?"on":""}">${n}</button>`).join("")}</div>`:""}${!w.photo&&w.img&&photo===w.img?`<span class="hint wm-pre">${L("先用了你许愿时放的那张图，可以点左边换一张，或者调整位置。","Using the picture you added with the wish. Tap it to pick another, or adjust it.")}</span>`:""}${photo?`<button class="link wm-adj" data-wm="adj">${L("调整照片位置","Adjust photo")}</button>`:""}${photo&&go?crayonStamp({...w,photo,stampStyle:style,stampImg:skImg,doneAt:w.doneAt||Date.now()},true):photo?"":`<span class="hint">${go?L("选一张最喜欢的照片，它会变成明信片的正面，还会画成一枚蜡笔邮票贴在角上。","Pick your favourite photo. It becomes the front of the postcard and a crayon stamp in the corner."):L("可以放一张照片留作纪念。","Add a photo to remember it by.")}</span>`}</div></div>
+    ${go?`<div class="wa-row wm-dates"><label class="field"><span>${L("哪天去的","From")}</span><input id="wmFrom" type="date" max="${todayStr()}" value="${dFrom}"></label><label class="field"><span>${L("玩到哪天（一天就不用填）","Until (optional)")}</span><input id="wmTo" type="date" value="${dTo}"></label></div>`:""}
     <textarea id="wmLine" rows="2" maxlength="140" placeholder="${L("写一句话，比如：海风好大，薯条被海鸥抢了","One line, e.g. So windy, a seagull stole my chips")}">${esc(line)}</textarea>
     <div class="sheet-actions"><button class="btn" data-wm="skip">${L("先不写","Skip")}</button><button class="btn primary" data-wm="ok">${go?L("挂到明信片墙上","Pin it to the wall"):L("记下来","Save")}</button></div></div>`};
   draw();document.body.appendChild(bg);
-  bg.addEventListener("change",async e=>{if(e.target.id!=="wmFile")return;const f=e.target.files&&e.target.files[0];if(!f)return;line=bg.querySelector("#wmLine").value;try{const raw=await shrinkImg(f,1400,.85);const c=await cropImg(raw,null,{shapes:true});if(c){photo=c;shape=cropImg.shape;skImg="";draw();mkSketch()}}catch(_){}});
+  bg.addEventListener("change",async e=>{if(e.target.id!=="wmFile")return;const f=e.target.files&&e.target.files[0];if(!f)return;line=bg.querySelector("#wmLine").value;keepDates();try{const raw=await shrinkImg(f,1400,.85);const c=await cropImg(raw,null,{shapes:true});if(c){photo=c;shape=cropImg.shape;skImg="";draw();mkSketch()}}catch(_){}});
   bg.addEventListener("click",async e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-wm]");if(!b)return;
-    if(b.dataset.wm==="adj"){line=bg.querySelector("#wmLine").value;const c=await cropImg(photo,null,{shapes:true,shape});if(c){photo=c;shape=cropImg.shape;skImg="";draw();mkSketch()}return}
-    if(b.dataset.wm==="style"){line=bg.querySelector("#wmLine").value;style=b.dataset.v;draw();mkSketch();return}
-    if(b.dataset.wm==="ok"){line=bg.querySelector("#wmLine").value.replace(/\s+$/,"").replace(/^\s+/,"").slice(0,140);const r=db.doc("wishes/"+w.id);if(go&&photo&&style==="sketch"&&!skImg)skImg=await sketchify(photo)||"";const patch={photo:photo||null,line:line||null,shape:photo?shape:null,stampStyle:style,stampImg:style==="sketch"?skImg||null:null};queued(r.path,()=>r.update(patch));Object.assign(w,patch);render()}
+    if(b.dataset.wm==="adj"){line=bg.querySelector("#wmLine").value;keepDates();const c=await cropImg(photo,null,{shapes:true,shape});if(c){photo=c;shape=cropImg.shape;skImg="";draw();mkSketch()}return}
+    if(b.dataset.wm==="style"){line=bg.querySelector("#wmLine").value;keepDates();style=b.dataset.v;draw();mkSketch();return}
+    if(b.dataset.wm==="ok"){line=bg.querySelector("#wmLine").value.replace(/\s+$/,"").replace(/^\s+/,"").slice(0,140);const r=db.doc("wishes/"+w.id);if(go&&photo&&style==="sketch"&&!skImg)skImg=await sketchify(photo)||"";const patch={photo:photo||null,line:line||null,shape:photo?shape:null,stampStyle:style,stampImg:style==="sketch"?skImg||null:null};
+      if(go){keepDates();const st=new Date(dFrom+"T12:00:00").getTime();patch.doneAt=st;patch.endAt=dTo&&dTo>dFrom?new Date(dTo+"T12:00:00").getTime():null;wishMsSet(w,dFrom)}queued(r.path,()=>r.update(patch));Object.assign(w,patch);render()}
     bg.remove()});
 }
 // the sprout brings up a wish now and then (weekends for places and plans; savings when nearly there)
@@ -4951,11 +4956,11 @@ function openWish(id){
   const w=wishes.find(x=>x.id===id); if(!w||!db)return;
   const draft={...w,cur:w.cur||"£"}; let confirmDel=false;
   const bg=document.createElement("div"); bg.className="sheet-bg";
-  const grab=()=>{const dn=bg.querySelector("#we-done");if(dn&&dn.value)draft.doneDay=dn.value;const pd=bg.querySelector("#we-paid");if(pd&&pd.value)draft.paidDay=pd.value;draft.title=bg.querySelector("#we-title").value;draft.note=bg.querySelector("#we-note").value;draft.link=bg.querySelector("#we-link").value;const p=bg.querySelector("#we-price"),s=bg.querySelector("#we-saved"),c=bg.querySelector("#we-cur");if(p)draft.price=p.value;if(s)draft.saved=s.value;if(c)draft.cur=c.value};
+  const grab=()=>{const dn=bg.querySelector("#we-done");if(dn&&dn.value)draft.doneDay=dn.value;const pd=bg.querySelector("#we-paid");if(pd&&pd.value)draft.paidDay=pd.value;const ed=bg.querySelector("#we-end");if(ed)draft.endDay=ed.value;draft.title=bg.querySelector("#we-title").value;draft.note=bg.querySelector("#we-note").value;draft.link=bg.querySelector("#we-link").value;const p=bg.querySelector("#we-price"),s=bg.querySelector("#we-saved"),c=bg.querySelector("#we-cur");if(p)draft.price=p.value;if(s)draft.saved=s.value;if(c)draft.cur=c.value};
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑愿望","Edit wish")}">
     <input id="we-title" class="titlein" value="${esc(draft.title)}" maxlength="100" aria-label="${L("愿望","Wish")}">
     <div class="we-img">${draft.img?`<button class="wm-slot sm" data-we="adjimg" title="${L("点一下调整位置","Tap to adjust")}"><img src="${draft.img}" alt=""></button>`:`<label class="wm-slot sm"><span>${L("配一张图","Add a picture")}</span><input type="file" accept="image/*" id="we-file" hidden></label>`}<span class="hint">${draft.img?`<span class="we-imga"><button class="link" data-we="adjimg">${L("调整位置","Adjust")}</button><label class="link">${L("换一张","Change")}<input type="file" accept="image/*" id="we-file" hidden></label><button class="link" data-we="noimg">${L("不要这张图","Remove")}</button></span>`:""}${L("想买的放商品截图，想去的放一张风景照。","A product screenshot, or a photo of the place.")}${draft.done&&draft.kind==="go"?`<br><button class="link" data-we="memo">${L("换明信片上的照片和那句话","Change the postcard photo and line")}</button>`:""}</span></div>
-    ${draft.done?`<div class="wa-row"><label class="field" style="flex:1"><span>${draft.pre?L("什么时候买的","Bought on"):L("哪天实现的","Came true on")}</span><input id="we-done" type="date" max="${todayStr()}" value="${dayOf(draft.doneAt||Date.now())}"></label>${draft.pre&&draft.paidAt?`<label class="field" style="flex:1"><span>${L("哪天补齐的","Paid back on")}</span><input id="we-paid" type="date" max="${todayStr()}" value="${dayOf(draft.paidAt)}"></label>`:""}</div>`:""}
+    ${draft.done?`<div class="wa-row"><label class="field" style="flex:1"><span>${draft.pre?L("什么时候买的","Bought on"):draft.kind==="go"?L("哪天去的","From"):L("哪天实现的","Came true on")}</span><input id="we-done" type="date" max="${todayStr()}" value="${dayOf(draft.doneAt||Date.now())}"></label>${draft.kind==="go"?`<label class="field" style="flex:1"><span>${L("玩到哪天（一天就不用填）","Until (leave empty for one day)")}</span><input id="we-end" type="date" value="${draft.endAt?dayOf(draft.endAt):""}"></label>`:""}${draft.pre&&draft.paidAt?`<label class="field" style="flex:1"><span>${L("哪天补齐的","Paid back on")}</span><input id="we-paid" type="date" max="${todayStr()}" value="${dayOf(draft.paidAt)}"></label>`:""}</div>`:""}
     <label class="field"><span>${L("链接（可不填）","Link (optional)")}</span><input id="we-link" type="url" maxlength="500" value="${esc(draft.link||"")}" placeholder="${L("购物页面、攻略……","A shop page, a guide…")}"></label>
     <div class="field"><span>${L("类型","Type")}</span><div class="chips">${WISH_KINDS.map(k=>`<button class="chip hz${draft.kind===k[0]?" on":""}" data-we="kind" data-v="${k[0]}">${sproutIcon(k[0])}${L(k[2],k[3])}</button>`).join("")}</div></div>
     ${draft.kind==="buy"?`<div class="wa-row"><label class="field"><span>${L("货币","Currency")}</span><select id="we-cur" class="wish-sheet-cur">${curOptions(draft.cur)}</select></label><label class="field" style="flex:1"><span>${L("价格","Price")}</span><input id="we-price" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(draft.price||"")}"></label>
@@ -4979,24 +4984,29 @@ function openWish(id){
     const ref=db.doc("wishes/"+id);
     if(a==="del"){if(!confirmDel){confirmDel=true;draw();return}bg.remove();queued(ref.path,()=>ref.delete());return}
     if(a==="undo"){bg.remove();wishMsDrop(w);queued(ref.path,()=>ref.update({done:false,doneAt:null,pre:false,paidAt:null}));return}
-    if(a==="save"){if(draft.pre&&w.paidAt&&draft.paidDay&&draft.paidDay!==dayOf(w.paidAt)){const pt=new Date(draft.paidDay+"T12:00:00").getTime();queued(ref.path,()=>ref.update({paidAt:pt}));wishMsSet(w,draft.paidDay)}
+    if(a==="save"){if(draft.kind==="go"&&draft.done&&draft.endDay!==undefined){const st=draft.doneDay||dayOf(w.doneAt||Date.now());const et=draft.endDay&&draft.endDay>st?new Date(draft.endDay+"T12:00:00").getTime():null;if(et!==(w.endAt||null))queued(ref.path,()=>ref.update({endAt:et}))}
+      if(draft.pre&&w.paidAt&&draft.paidDay&&draft.paidDay!==dayOf(w.paidAt)){const pt=new Date(draft.paidDay+"T12:00:00").getTime();queued(ref.path,()=>ref.update({paidAt:pt}));wishMsSet(w,draft.paidDay)}
       const nd=draft.done&&draft.doneDay&&draft.doneDay!==dayOf(w.doneAt||0)?new Date(draft.doneDay+"T12:00:00").getTime():null;
       if(nd){queued(ref.path,()=>ref.update({doneAt:nd}));if(w.pre){const tag=`「${w.title}」`;let hit=false;wfund.log=(wfund.log||[]).map(l=>{if(!hit&&(l.id===w.id&&l.k==="pre"||!l.id&&l.t&&l.t.includes(tag)&&/先买了|Bought/.test(l.t))){hit=true;return {...l,at:nd}}return l}).sort((x,y)=>x.at-y.at);if(hit)fundSave()}
-        if(!w.pre)wishMsSet(w,draft.doneDay)}
+}
+      if(draft.done&&!w.pre){const day=draft.doneDay||dayOf(w.doneAt||Date.now()),nt=(draft.title.trim()||w.title).slice(0,100);wishMsSet(w,day);if(nt!==w.title)wishMsFind(w).forEach(m=>{const r=db.doc("milestones/"+m.id);queued(r.path,()=>r.update({title:wishMsTitle({...w,title:nt})}))})}
       bg.remove();queued(ref.path,()=>ref.update({title:(draft.title.trim()||w.title).slice(0,100),kind:draft.kind,note:(draft.note||"").slice(0,1000),img:draft.img||null,link:(draft.link||"").trim().slice(0,500)||null,
       cur:draft.cur,price:draft.kind==="buy"&&draft.price!==""&&draft.price!=null?Math.max(0,+draft.price):null,saved:draft.kind==="buy"&&draft.saved!==""&&draft.saved!=null?Math.max(0,+draft.saved):null}))}
   });
   bg.querySelector("#we-title").focus();
 }
 const wishMsTitle=w=>L("实现愿望：","Wish come true: ")+w.title;
-function wishMsFind(w){const t=wishMsTitle(w),t2="实现愿望："+w.title,t3="Wish come true: "+w.title;return milestones.filter(x=>x.title===t||x.title===t2||x.title===t3)}
-function wishMsSet(w,day){const ex=wishMsFind(w);if(ex.length){ex.forEach((m,i)=>{const r=db.doc("milestones/"+m.id);if(i===0){if(m.date!==day)queued(r.path,()=>r.update({date:day}))}else queued(r.path,()=>r.delete())});return}
-  const m=db.collection("milestones").doc();queued(m.path,()=>m.set({date:day,title:wishMsTitle(w),createdAt:Date.now()}))}
+function wishMsFind(w){const t=wishMsTitle(w),t2="实现愿望："+w.title,t3="Wish come true: "+w.title;return milestones.filter(x=>x.wid===w.id||x.title===t||x.title===t2||x.title===t3)}
+function wishMsSet(w,day){const ex=wishMsFind(w);if(ex.length){ex.forEach((m,i)=>{const r=db.doc("milestones/"+m.id);if(i===0){if(m.date!==day||m.wid!==w.id)queued(r.path,()=>r.update({date:day,wid:w.id}))}else queued(r.path,()=>r.delete())});return}
+  const m=db.collection("milestones").doc();queued(m.path,()=>m.set({date:day,title:wishMsTitle(w),wid:w.id,createdAt:Date.now()}))}
 function wishMsDrop(w){wishMsFind(w).forEach(m=>{const r=db.doc("milestones/"+m.id);queued(r.path,()=>r.delete())})}
 // things bought early become a moment on the day they're paid back (one-time tidy for ones marked before)
 let wishMsFixed=false;
 function wishMsMigrate(){if(wishMsFixed||!loaded.wi||!loaded.m||!db)return;wishMsFixed=true;try{if(localStorage.getItem("lifeos-wishms-v1"))return;localStorage.setItem("lifeos-wishms-v1","1")}catch(_){}
   wishes.filter(w=>w.done&&w.pre).forEach(w=>{if(w.paidAt)wishMsSet(w,dayOf(w.paidAt));else wishMsDrop(w)})}
+let wishMsSynced=false;
+function wishMsSync(){if(wishMsSynced||!loaded.wi||!loaded.m||!db)return;wishMsSynced=true;try{if(localStorage.getItem("lifeos-wishms-v2"))return;localStorage.setItem("lifeos-wishms-v2","1")}catch(_){}
+  wishes.filter(w=>w.done&&!w.pre&&w.doneAt).forEach(w=>{const day=dayOf(w.doneAt);if(wishMsFind(w).some(m=>m.date!==day))wishMsSet(w,day)})}
 async function wishCameTrue(id,el,pre){
   const w=wishes.find(x=>x.id===id); if(!w||!db)return;
   const r=el.getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/2,["#ffd34d",css("--pink"),css("--study"),css("--water")]);
@@ -5783,12 +5793,12 @@ function startData(store){
   for(const [c,set] of [["meals",v=>meals=v],["rests",v=>rests=v],["eats",v=>eats=v],["fridge",v=>fridge=v],["tlog",v=>tlog=v],["courses",v=>courses=v]])sub(c,s=>{set(s.docs.map(d=>({id:d.id,...d.data()})));if(!spinning)render()});
   sub("pomos",s=>{pomos=s.docs.map(d=>({id:d.id,...d.data()}));render();if(!pomoBooted){pomoBooted=true;setTimeout(()=>{let w=false;try{w=!!localStorage.getItem("lifeos-welcomed")}catch(_){};if(w||userName)maybeTour("new")},400);if(P&&(P.phase==="focus"||P.phase==="break"))P.open=P.open!==false;renderPomo()}});
   sub("yearlyDays",s=>{yearlyDays=s.docs.map(d=>({id:d.id,...d.data()}));bdNotify();render()});
-  sub("milestones",s=>{milestones=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.m=true;render();if(typeof wishMsMigrate==="function")wishMsMigrate()});
+  sub("milestones",s=>{milestones=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.m=true;render();if(typeof wishMsMigrate==="function"){wishMsMigrate();wishMsSync()}});
   sub("weekly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());weekly=m;if(ok(s))loaded.w=true;render()});
   sub("yearly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());yearly=m;if(ok(s))loaded.y=true;render()});
   sub("memos",s=>{memos=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.me=true;render()});
   sub("wishfund",s=>{const d=s.docs.find(x=>x.id==="main");wfund=d?{pool:0,cur:"£",log:[],...d.data()}:{pool:0,cur:"£",log:[]};if(lifeSub==="wish")render()});
-  sub("wishes",s=>{wishes=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.wi=true;render();wishMsMigrate()});
+  sub("wishes",s=>{wishes=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.wi=true;render();wishMsMigrate();wishMsSync()});
   sub("closet",s=>{const c={};let w=null;s.docs.forEach(d=>{if(d.id==="_wear"&&(+d.data().at||0)>=wearAt)w=d.data().wear;else c[d.id]=d.data()});closet=c;if(w&&typeof w==="object")setWear(w,false);else{dressFab();renderGardenProps()}updateCoinBtn();if(shOpen)renderShop()});
   sub("forest",s=>{forest=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.f=true;render()});
   sub("garden",s=>{const g=s.docs.find(d=>d.id==="current");if(g&&THEMES[g.data().theme])curTheme=g.data().theme;render()});
