@@ -614,6 +614,38 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .idcin{display:flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:14px;padding:4px 6px 4px 10px}.idcin input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:14px;color:var(--fg);outline:none}
 .idtg{border:0;font:inherit;font-size:12px;border-radius:999px;padding:3px 9px;background:var(--life);color:#fff;cursor:pointer}.idtg.on{background:var(--muted)}.idsend{border:0;background:none;font:inherit;font-size:13.5px;font-weight:600;color:var(--brand);cursor:pointer}
 .lk-sheet{z-index:1}.lk-sheet .btn{align-self:flex-start}
+/* wax seal */
+.env .ic .icw{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%) rotate(-8deg);line-height:0;z-index:1}
+.fv .bigwx{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%) rotate(-8deg);line-height:0}
+.wxsheet{gap:12px}.wxstage{padding-top:4px}
+.wxenv{position:relative;background:#f3e6cf;border-radius:12px;height:178px;box-shadow:inset 0 0 0 2px #e2cfae,0 4px 12px rgba(80,50,20,.12)}
+.wxflap{position:absolute;inset:0 0 auto;height:104px;background:linear-gradient(#efdfc2,#e6d2b0);clip-path:polygon(0 0,100% 0,50% 100%);border-radius:12px 12px 0 0;transform-origin:top;transition:transform .6s;z-index:2}
+.wxpos{position:absolute;left:50%;top:104px;transform:translate(-50%,-50%);z-index:3;line-height:0}
+.wxpaper{position:absolute;left:12%;right:12%;top:24px;height:120px;background:#fffaf0;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.12);z-index:1;padding:14px;font-family:'Ma Shan Zheng',serif;color:#3f2d1a;font-size:16px;line-height:1.6;opacity:0;transition:transform .8s .2s,opacity .3s .2s}
+.wxenv.open .wxflap{transform:scaleY(-1);z-index:0}.wxenv.open .wxpaper{transform:translateY(-80px);opacity:1}
+.wxsw{position:relative;width:104px;height:104px;transform:rotate(-8deg)}
+.wxrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.wxrow>b{font-size:13px;font-weight:500;color:var(--muted);width:2.6em;flex:none}
+.wxrow input{font:inherit;font-size:15px;border:2px solid var(--line);background:var(--bg-2);color:var(--fg);border-radius:12px;padding:6px 10px;width:96px}
+.wxsw-c{width:28px;height:28px;border-radius:50%;border:0;padding:0;cursor:pointer;background:radial-gradient(circle at 35% 30%,var(--l),var(--c) 60%,var(--d))}.wxsw-c.on{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--c)}
+.wxembs{display:flex;gap:4px;flex-wrap:wrap}.wxemb{border:0;background:none;padding:1px;border-radius:50%;cursor:pointer;line-height:0}.wxemb.on{box-shadow:0 0 0 2px var(--brand)}
+.wxtg{display:inline-flex;align-items:center;gap:8px;border:0;background:none;font:inherit;font-size:13.5px;color:var(--fg);cursor:pointer}.wxtg i{width:38px;height:22px;border-radius:999px;background:var(--line);position:relative}.wxtg i:after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .2s}.wxtg.on i{background:#c48b7a}.wxtg.on i:after{left:19px}
+.stamping .wxpud,.stamping .wxfin{position:absolute;inset:0}.stamping .wxpud{animation:wxpud 2.8s ease-out both}.stamping .wxfin{opacity:0;animation:wxfin 2.8s ease-out both}
+@keyframes wxpud{0%{transform:scale(.25);opacity:0}10%{opacity:1}18%{transform:scale(1)}49%{opacity:1}50%{opacity:0}100%{opacity:0}}
+@keyframes wxfin{0%,49%{opacity:0}50%{opacity:1;transform:scale(1.04)}64%{transform:scale(1)}100%{opacity:1}}
+.wxstmp{position:absolute;left:50%;top:50%;margin:-66px 0 0 -66px;line-height:0;animation:wxstmp 2.8s cubic-bezier(.45,0,.25,1) both;z-index:4}
+@keyframes wxstmp{0%,16%{transform:scale(3.2);opacity:0}26%{opacity:.95}44%{transform:scale(1);opacity:1}48%{transform:scale(.965)}60%{transform:scale(.965);opacity:1}82%{transform:scale(3);opacity:0}100%{transform:scale(3);opacity:0}}
+.wxsh{position:absolute;left:50%;top:50%;width:132px;height:132px;margin:-60px 0 0 -62px;border-radius:50%;background:rgba(40,20,5,.55);z-index:3;animation:wxsh 2.8s cubic-bezier(.45,0,.25,1) both}
+@keyframes wxsh{0%,16%{transform:scale(1.6) translate(14px,16px);filter:blur(22px);opacity:0}44%,60%{transform:scale(1.02) translate(3px,4px);filter:blur(4px);opacity:.55}82%,100%{transform:scale(1.6) translate(14px,16px);filter:blur(22px);opacity:0}}
+.wxpeelov{position:fixed;inset:0;z-index:90;background:rgba(20,30,50,.45);display:grid;place-items:center;opacity:0;transition:opacity .3s}.wxpeelov.go{opacity:1}.wxpeelov.out{opacity:0}
+.wxpeelbox{width:min(320px,86vw);padding-top:90px}
+.wxpeel{position:relative;width:104px;height:104px;perspective:520px;transform:rotate(-8deg)}
+.wxpl{position:absolute;inset:0;transform-origin:18% 16%;line-height:0}.wxpeelov.go .wxpl{animation:wxpl 1.9s cubic-bezier(.45,.05,.3,1) .2s both}
+@keyframes wxpl{0%{transform:none}14%{transform:rotate3d(1,-1,0,-10deg)}42%{transform:rotate3d(1,-1,0,-48deg) translateZ(10px)}66%{transform:rotate3d(1,-1,0,-66deg) translate(-10px,-16px) translateZ(22px);opacity:1}100%{transform:rotate3d(1,-1,0,-72deg) translate(-170px,-230px) translateZ(40px) rotate(-24deg);opacity:0}}
+.wxpsh{position:absolute;inset:8px;border-radius:50%;filter:blur(6px)}.wxpeelov.go .wxpsh{animation:wxpsh 1.9s ease-out .2s both}
+@keyframes wxpsh{0%{background:rgba(40,20,5,0)}40%{background:rgba(40,20,5,.28);transform:translate(8px,8px) scale(.95)}62%{background:rgba(40,20,5,.22);transform:translate(4px,6px) scale(.9)}100%{background:rgba(40,20,5,0);transform:translate(-40px,-60px) scale(.6)}}
+.wxres{position:absolute;inset:14px;border-radius:50%;background:radial-gradient(circle,rgba(120,60,40,0) 54%,rgba(120,60,40,.10) 64%,rgba(120,60,40,.05) 73%,rgba(120,60,40,0) 80%);opacity:0}.wxpeelov.go .wxres{animation:wxres 1.9s ease-out .2s both}@keyframes wxres{0%,30%{opacity:0}70%,100%{opacity:1}}
+.wxenv.open .wxpeel{opacity:0;transition:opacity .4s}
+.fvopen{margin-top:4px}
 .btnrow{display:flex;flex-wrap:wrap;gap:8px}.fpv{margin-top:8px;align-items:center;gap:6px}
 .tour-spot{position:fixed;z-index:89;border-radius:18px;box-shadow:0 0 0 9999px rgba(20,32,60,.55);pointer-events:none;transition:left .25s,top .25s,width .25s,height .25s}.tour-spot.soft{box-shadow:0 0 0 9999px rgba(20,32,60,.35)}
 .tour{position:fixed;z-index:91;width:min(300px,calc(100vw - 32px));box-sizing:border-box;background:#1f3156;color:#fff;border-radius:16px;padding:12px 14px;font-size:13.5px;line-height:1.55;box-shadow:0 10px 26px rgba(0,0,0,.25)}
@@ -1742,6 +1774,8 @@ NEWS_MORE.push(()=>({id:"1118c",steps:[
     {sel:"#gear",pad:4,t:L("新功能 · 按超市分组","New · Group by shop"),b:L("在设置里打开「按超市分组」，购物清单就会按 Tesco、亚超这样分开。加东西时选一下在哪家买，常买的东西会记住上次的店。","Turn on “Group by shop” in Settings and your shopping list splits by shop. Pick a shop when adding things; staples remember where you last bought them.")}]}));
 NEWS_MORE.push(()=>({id:"1118d",steps:[
     {sel:"#idBtn",pad:4,t:L("新功能 · 想法箱","New · Idea box"),b:L("想要什么功能、有什么吐槽，都可以放进 💡 想法箱。公开的想法大家都能看到、点赞和评论；有人评论你的想法时，💡 上会出现小红点。","Put feature wishes and gripes in the 💡 idea box. Public ideas can be liked and commented on, and a red dot appears when someone replies to yours."),web:1}]}));
+NEWS_MORE.push(()=>({id:"1118e",steps:[
+    {sel:"#mbBtn",pad:4,t:L("新功能 · 火漆印","New · Wax seals"),b:L("封信的时候可以选火漆的颜色和图案，也能刻上名字，盖章封好；到了日子拆信时，要先把火漆揭开。","When you seal a letter, pick a wax colour and design, or engrave your name. On the day it opens, you peel the seal off first.")}]}));
 const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
 let tourOn=null;
 function tourGo(go){
@@ -2177,16 +2211,19 @@ async function friendView(id){
   try{if(!window.__shareMock&&!fb)fb=await loadFirebase();m=await shareApi.meta(id)}catch(e){show(`<p class="fvmsg">${L("信没取到，检查一下网络再刷新试试。","Couldn't fetch the letter. Check your connection and refresh.")}</p>`);return}
   if(!m){show(`${MBOX()}<p class="fvmsg">${L("这封信找不到了，可能已经被收回了。","This letter can't be found. It may have been taken back.")}</p>`);return}
   const from=esc(m.fromName||L("有人","Someone"));document.title=L(`${m.fromName||""}给你写了一封信`,`A letter for you`);
-  const env=`<div class="envwrap"><div class="bigenv"><i></i></div><div class="fstamp">${STAMP_SVG(m.stamp)}</div><span class="spr">${moodFace("letter")}</span></div>`;
+  const env=`<div class="envwrap"><div class="bigenv">${m.seal?`<span class="bigwx">${sealSVG(m.seal,92,4)}</span>`:"<i></i>"}</div><div class="fstamp">${STAMP_SVG(m.stamp)}</div><span class="spr">${moodFace("letter")}</span></div>`;
   let timer=null;
-  const sealed=()=>{const ms=m.openAt-Date.now();if(ms<=0){clearInterval(timer);openIt();return}
+  const sealed=()=>{const ms=m.openAt-Date.now();if(ms<=0){clearInterval(timer);openGate();return}
     const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),mi=Math.floor(ms%36e5/6e4);
     show(`${env}<h1>${L(`${from}给你写了一封信`,`${from} wrote you a letter`)}</h1><p>${L(`这封信要到 <b>${lYmdS(m.openOn)}</b> 才能拆开哦。`,`It opens on <b>${lYmdS(m.openOn)}</b>.`)}</p><div class="cd"><span><b>${d}</b><small>${L("天","days")}</small></span><span><b>${h}</b><small>${L("小时","hours")}</small></span><span><b>${mi}</b><small>${L("分","min")}</small></span></div>`)};
   const openIt=async()=>{let b=null;try{b=await shareApi.body(id)}catch(e){b=null}
     if(!b){if(m.openAt>Date.now()-6e4){m.openAt=Math.max(m.openAt,Date.now()+6e4);sealed();timer=setInterval(sealed,30000);return}show(`<p class="fvmsg">${L("信没取到，刷新一下试试。","Couldn't fetch the letter. Try refreshing.")}</p>`);return}
     show(`<div class="fvhd"><b>${L(`${from}写给你的信`,`A letter from ${from}`)}</b><small>${L(`写于 ${lYmd(m.writtenAt||Date.now())} · ${lYmdS(m.openOn)}拆开`,`Written ${lYmd(m.writtenAt||Date.now())} · opened ${lYmdS(m.openOn)}`)}</small></div>${paperHTML({paper:m.paper,font:m.font,sticker:m.sticker,align:m.align,fsz:m.fsz,ink:m.ink,head:b.head,la:b.la||[],lsz:b.lsz||[],lcol:b.lcol||[],photos:b.photos||[],body:b.body,sig:b.sig,toText:m.toName,kind:"send"},false)}`);
     if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{})};
-  if(m.openAt>Date.now()){sealed();timer=setInterval(sealed,30000)}else openIt();
+  const openGate=()=>{if(!m.seal){openIt();return}
+    show(`${env}<h1>${L(`${from}给你写了一封信`,`${from} wrote you a letter`)}</h1><p>${L("可以拆啦！","You can open it now!")}</p><button class="btn primary fvopen">${L("揭开火漆","Open it")}</button>`);
+    v.querySelector(".fvopen").onclick=()=>peelOpen(m.seal,4,openIt)};
+  if(m.openAt>Date.now()){sealed();timer=setInterval(sealed,30000)}else openGate();
 }
 const lYmd=ts=>{const d=new Date(ts);return L(`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`,`${d.getDate()} ${MON[d.getMonth()]} ${d.getFullYear()}`)};
 const lYmdS=s=>lYmd(new Date(s+"T12:00:00").getTime());
@@ -2194,10 +2231,10 @@ const daysTo=s=>Math.round((new Date(s+"T12:00:00")-new Date(todayStr()+"T12:00:
 function mbDot(){const el=document.querySelector("#mbBtn .mbdot");if(el)el.hidden=!letters.some(lReady)}
 const MBOX=()=>`<svg viewBox="0 0 120 100" class="mbsvg" aria-hidden="true"><ellipse cx="62" cy="94" rx="52" ry="5" fill="color-mix(in srgb,var(--life) 30%,transparent)"/><rect x="80" y="44" width="7" height="50" rx="2" fill="#b98a5a"/><path d="M62 22h34a14 14 0 0 1 14 14v18H62z" fill="#ff7a7a"/><path d="M62 22a14 14 0 0 1 14 14v18H48V36a14 14 0 0 1 14-14z" fill="#ff9a9a"/><rect x="52" y="40" width="20" height="3" rx="1.5" fill="#d9575f"/><path d="M104 14v16" stroke="#8a6a4a" stroke-width="2"/><path d="M104 14h11l-3 4 3 4h-11z" fill="#ffd34d"/><g transform="rotate(-12 63 32)"><rect x="54" y="26" width="18" height="12" rx="2" fill="#fff"/><path d="M54.5 27l8.5 6 8.5-6" stroke="#ff8fb1" stroke-width="1.4" fill="none"/></g><g transform="translate(-4 28) scale(1.75)">${moodFace("great").replace(/^<svg[^>]*>/,"").replace(/<\/svg>$/,"")}</g></svg>`;
 function envRow(x){
-  if(x.kind==="send"&&x.shareId){const before=todayStr()<x.openOn;return `<button class="env sent" data-mb="sent" data-id="${x.id}"><span class="ic"><i></i></span><span class="et"><b>${L("寄给 ","To ")}${esc(x.toText||"")}</b><small>${L("写于 ","Written ")}${lYmd(x.writtenAt||Date.now())}</small></span><span class="tag">${before?L(`${lYmdS(x.openOn)}能拆 · 还有 ${daysTo(x.openOn)} 天`,`Opens ${lYmdS(x.openOn)} · ${daysTo(x.openOn)} days`):L("对方可以拆了","They can open it now")}</span></button>`}
+  if(x.kind==="send"&&x.shareId){const before=todayStr()<x.openOn;return `<button class="env sent" data-mb="sent" data-id="${x.id}"><span class="ic"><span class="icw">${sealSVG(x.seal,34,sealSeed(x.id))}</span></span><span class="et"><b>${L("寄给 ","To ")}${esc(x.toText||"")}</b><small>${L("写于 ","Written ")}${lYmd(x.writtenAt||Date.now())}</small></span><span class="tag">${before?L(`${lYmdS(x.openOn)}能拆 · 还有 ${daysTo(x.openOn)} 天`,`Opens ${lYmdS(x.openOn)} · ${daysTo(x.openOn)} days`):L("对方可以拆了","They can open it now")}</span></button>`}
   const ready=lReady(x), open=x.opened, sealed=x.sealed&&!open;
   const tag=!x.sealed?L("草稿 · 接着写","Draft · keep writing"):ready?L("可以拆啦！","Ready to open!"):sealed?L(`${x.kind==="bday"?"生日":x.kind==="year"?lYmdS(x.openOn).replace(/^\d+年/,""):lYmdS(x.openOn)}拆 · 还有 ${daysTo(x.openOn)} 天`,`Opens ${lYmdS(x.openOn)} · ${daysTo(x.openOn)} days`):L("再读一遍","Read again");
-  return `<button class="env${open?" open":""}${ready?" ready":""}${!x.sealed?" draft":""}${x.from?" fr":""}" data-mb="${!x.sealed?"edit":sealed&&!ready?"locked":"read"}" data-id="${x.id}"><span class="ic"><i></i></span><span class="et"><b>${x.from?`${L("来自 ","From ")}${esc(x.from)} <span class="from">${L("朋友","Friend")}</span>`:`${L("致 ","To ")}${esc(letterTo(x))}`}</b><small>${L("写于 ","Written ")}${lYmd(x.writtenAt||x.createdAt||Date.now())}</small></span><span class="tag">${tag}</span></button>`;
+  return `<button class="env${open?" open":""}${ready?" ready":""}${!x.sealed?" draft":""}${x.from?" fr":""}" data-mb="${!x.sealed?"edit":sealed&&!ready?"locked":"read"}" data-id="${x.id}"><span class="ic">${sealed&&!x.from?`<span class="icw">${sealSVG(x.seal,34,sealSeed(x.id))}</span>`:"<i></i>"}</span><span class="et"><b>${x.from?`${L("来自 ","From ")}${esc(x.from)} <span class="from">${L("朋友","Friend")}</span>`:`${L("致 ","To ")}${esc(letterTo(x))}`}</b><small>${L("写于 ","Written ")}${lYmd(x.writtenAt||x.createdAt||Date.now())}</small></span><span class="tag">${tag}</span></button>`;
 }
 function renderMailbox(){
   let pg=document.getElementById("mbPage");
@@ -2233,6 +2270,113 @@ function edLines(ed){const out=[];let cur=null;const blank={t:"",a:"",s:"",c:""}
 function edNormalize(ed){if([...ed.childNodes].every(n=>n.nodeType===1&&n.tagName==="DIV"))return;
   const sel=getSelection(),inEd=sel.rangeCount&&ed.contains(sel.anchorNode);const ls=edLines(ed);ed.innerHTML=ls.map(lineDiv).join("");
   if(inEd){const last=ed.lastChild;const r=document.createRange();r.selectNodeContents(last);r.collapse(false);sel.removeAllRanges();sel.addRange(r)}}
+const blob2=(r,seed,n=14,amp=2.6)=>{let p=[];for(let i=0;i<n;i++){const a=i/n*Math.PI*2;const rr=r+Math.sin(i*2.3+seed)*amp+Math.sin(i*1.1+seed*2.1)*amp*.8;p.push([100+Math.cos(a)*rr,100+Math.sin(a)*rr])}
+ let d=`M${((p[0][0]+p[n-1][0])/2).toFixed(1)} ${((p[0][1]+p[n-1][1])/2).toFixed(1)}`;for(let i=0;i<n;i++){const a=p[i],b=p[(i+1)%n];d+=`Q${a[0].toFixed(1)} ${a[1].toFixed(1)} ${((a[0]+b[0])/2).toFixed(1)} ${((a[1]+b[1])/2).toFixed(1)}`}return d+'Z'};
+// fine line-art emblems (stroke only), drawn inside r≈50
+const EMB2={
+ sprout:`<path d="M100 138V100"/><path d="M100 104c-4-16-17-25-33-24 1 17 14 26 33 24z"/><path d="M100 104c4-16 17-25 33-24-1 17-14 26-33 24z"/><path d="M100 103c-9-5-17-11-24-18M100 103c9-5 17-11 24-18"/><path d="M84 138q16-6 32 0"/>`,
+ heart:`<path d="M100 134C78 117 68 105 68 92c0-11 8-19 18-19 7 0 12 4 14 9 2-5 7-9 14-9 10 0 18 8 18 19 0 13-10 25-32 42z"/><path d="M100 122C86 111 80 103 80 95c0-6 4-10 9-10 5 0 8 3 11 8"/>`,
+ star:`<path d="M100 64l9.4 22 23.6 2.4-18 15.6 5.4 23L100 115l-20.4 12 5.4-23-18-15.6 23.6-2.4z"/><path d="M100 80v24M88 96h24" stroke-width="1.6"/>`,
+ moon:`<path d="M106 66a34 34 0 1 0 28 54a27 27 0 1 1-28-54z"/><path d="M128 74l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="M138 96l1.2 3 3 1.2-3 1.2-1.2 3-1.2-3-3-1.2 3-1.2z"/>`,
+ flower:[0,72,144,216,288].map(a=>`<path d="M100 98c-9-9-9-24 0-31 9 7 9 22 0 31z" transform="rotate(${a} 100 100)"/>`).join('')+`<circle cx="100" cy="100" r="5"/>`,
+ laurel:(()=>{let o="";const R=38;for(const side of [-1,1]){let d="";const pts=[];for(let k=0;k<=24;k++){const t=k/24,a=(90+side*(25+t*125))*Math.PI/180;pts.push([100+Math.cos(a)*R,100+Math.sin(a)*R])}o+=`<path d="M${pts.map(p=>p.map(v=>v.toFixed(1)).join(" ")).join("L")}"/>`;for(let k=2;k<=22;k+=3){const t=k/24,a=(90+side*(25+t*125)),ar=a*Math.PI/180,x=100+Math.cos(ar)*R,y=100+Math.sin(ar)*R;for(const off of [-1,1]){const rot=a+side*90+off*38;o+=`<ellipse cx="${(x+Math.cos(rot*Math.PI/180)*7).toFixed(1)}" cy="${(y+Math.sin(rot*Math.PI/180)*7).toFixed(1)}" rx="7" ry="3" transform="rotate(${rot.toFixed(0)} ${(x+Math.cos(rot*Math.PI/180)*7).toFixed(1)} ${(y+Math.sin(rot*Math.PI/180)*7).toFixed(1)})"/>`}}}return o})(),
+};
+const W2={red:["#8e1b22","#d4545a","#4a080c","酒红"],champ:["#c9ad7f","#f5e6c4","#7d6440","香槟"],rose:["#c48b7a","#f2cfc2","#7a4a3e","玫瑰金"]};
+let uid2=0;
+function wax2({color="red",emb="sprout",text=null,size=160,seed=1,wreath=false,plain=false}){
+ const id="wxs"+(++uid2),[base,light,dark]=W2[color];
+ const outer=blob2(84,seed);
+ const fs=text?(wreath?(text.length>2?16:text.length===2?21:30):(text.length>2?30:text.length===2?38:56)):0;
+ const tx=text?`<text x="100" y="${100+fs*.36}" text-anchor="middle" font-family="'Noto Serif SC','Songti SC',serif" font-size="${fs}" font-weight="600" letter-spacing="${text.length>1?2:0}">${text}</text>`:"";
+ const height=plain?`<path d="${outer}" fill="url(#${id}p)"/>`:`<path d="${outer}" fill="url(#${id}h)"/>${text?`<g opacity=".55" fill="#000" stroke="#000" stroke-width=".6">${tx}</g>`:""}${!text||wreath?`<g opacity=".55" fill="none" stroke="#000" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">${text?EMB2.laurel:EMB2[emb]}</g>`:""}`;
+ return `<svg class="wax" width="${size}" height="${size}" viewBox="0 0 200 200" aria-hidden="true"><defs>
+  <radialGradient id="${id}h" gradientUnits="userSpaceOnUse" cx="100" cy="100" r="86"><stop offset="0" stop-opacity=".28"/><stop offset=".66" stop-opacity=".28"/><stop offset=".72" stop-opacity=".7"/><stop offset=".8" stop-opacity="1"/><stop offset=".9" stop-opacity=".88"/><stop offset="1" stop-opacity=".25"/></radialGradient>
+  <radialGradient id="${id}p" gradientUnits="userSpaceOnUse" cx="100" cy="100" r="86"><stop offset="0" stop-opacity=".95"/><stop offset=".7" stop-opacity=".8"/><stop offset="1" stop-opacity=".2"/></radialGradient><radialGradient id="${id}c" cx="38%" cy="32%" r="78%"><stop offset="0" stop-color="${light}"/><stop offset=".5" stop-color="${base}"/><stop offset="1" stop-color="${dark}"/></radialGradient>
+  <filter id="${id}d" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+   <feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="h"/>
+   <feTurbulence type="fractalNoise" baseFrequency=".6" numOctaves="2" seed="${seed}" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .012 0" result="na"/>
+   <feComposite in="h" in2="na" operator="arithmetic" k2="1" k3="1" result="hm"/>
+   <feDiffuseLighting in="hm" surfaceScale="9" diffuseConstant="1.15" lighting-color="#fff"><feDistantLight azimuth="235" elevation="48"/></feDiffuseLighting>
+   <feComposite in2="SourceAlpha" operator="in"/></filter>
+  <filter id="${id}s" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+   <feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="h"/>
+   <feSpecularLighting in="h" surfaceScale="9" specularConstant="1.25" specularExponent="18" lighting-color="${light}"><feDistantLight azimuth="235" elevation="34"/></feSpecularLighting>
+   <feComposite in2="SourceAlpha" operator="in"/></filter>
+  <clipPath id="${id}k"><path d="${outer}"/></clipPath>
+ </defs>
+ <g style="filter:drop-shadow(0 4px 3px rgba(60,40,20,.28)) drop-shadow(0 1px 1px rgba(60,40,20,.25))"><g clip-path="url(#${id}k)">
+  <rect width="200" height="200" fill="url(#${id}c)"/>
+  <g filter="url(#${id}d)" style="mix-blend-mode:multiply">${height}</g>
+  <g filter="url(#${id}s)" style="mix-blend-mode:screen">${height}</g>
+ </g></g></svg>`}
+
+
+let sid2=0;
+function stamper2(size=132){const id="wxp"+(++sid2);
+ return `<svg class="stamper" viewBox="0 0 200 200" width="${size}" height="${size}" aria-hidden="true"><defs>
+  <radialGradient id="${id}b" cx="38%" cy="32%" r="80%"><stop offset="0" stop-color="#fff2c4"/><stop offset=".25" stop-color="#e6c674"/><stop offset=".6" stop-color="#b98f3c"/><stop offset="1" stop-color="#5e4212"/></radialGradient>
+  <radialGradient id="${id}w" cx="40%" cy="34%" r="75%"><stop offset="0" stop-color="#c98e57"/><stop offset=".55" stop-color="#8a5228"/><stop offset="1" stop-color="#3e200b"/></radialGradient>
+  <radialGradient id="${id}hb" gradientUnits="userSpaceOnUse" cx="100" cy="100" r="97"><stop offset=".7" stop-opacity=".25"/><stop offset=".8" stop-opacity=".9"/><stop offset=".9" stop-opacity="1"/><stop offset=".97" stop-opacity=".55"/><stop offset="1" stop-opacity=".1"/></radialGradient>
+  <radialGradient id="${id}hw" gradientUnits="userSpaceOnUse" cx="100" cy="100" r="68"><stop offset="0" stop-opacity="1"/><stop offset=".35" stop-opacity=".96"/><stop offset=".6" stop-opacity=".86"/><stop offset=".8" stop-opacity=".66"/><stop offset=".93" stop-opacity=".42"/><stop offset="1" stop-opacity=".25"/></radialGradient>
+  <filter id="${id}g" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".008 .16" numOctaves="3" seed="4" result="t"/><feColorMatrix in="t" type="matrix" values="0 0 0 0 .18  0 0 0 0 .09  0 0 0 0 .03  0 0 -2.4 0 1.35" result="g"/><feComposite in="g" in2="SourceGraphic" operator="in"/></filter>
+  <filter id="${id}l" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="1.4" result="h"/><feDiffuseLighting in="h" surfaceScale="12" diffuseConstant="1.1" lighting-color="#fff"><feDistantLight azimuth="235" elevation="50"/></feDiffuseLighting><feComposite in2="SourceAlpha" operator="in"/></filter>
+  <filter id="${id}s" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="1.4" result="h"/><feSpecularLighting in="h" surfaceScale="12" specularConstant="1.3" specularExponent="26" lighting-color="#fff6dc"><feDistantLight azimuth="235" elevation="38"/></feSpecularLighting><feComposite in2="SourceAlpha" operator="in"/></filter>
+  <clipPath id="${id}cb"><circle cx="100" cy="100" r="97"/></clipPath><clipPath id="${id}cw"><circle cx="100" cy="100" r="68"/></clipPath>
+ </defs>
+ <g clip-path="url(#${id}cb)"><circle cx="100" cy="100" r="97" fill="url(#${id}b)"/>
+  <g filter="url(#${id}l)" style="mix-blend-mode:multiply"><circle cx="100" cy="100" r="97" fill="url(#${id}hb)"/></g>
+  <g filter="url(#${id}s)" style="mix-blend-mode:screen"><circle cx="100" cy="100" r="97" fill="url(#${id}hb)"/></g>
+  <circle cx="100" cy="100" r="74" fill="none" stroke="rgba(60,40,10,.55)" stroke-width="3"/><circle cx="100" cy="100" r="76.5" fill="none" stroke="rgba(255,240,200,.45)" stroke-width="1.2"/>
+ </g>
+ <g clip-path="url(#${id}cw)"><circle cx="100" cy="100" r="68" fill="url(#${id}w)"/>
+  <rect x="20" y="20" width="160" height="160" fill="#000" filter="url(#${id}g)" opacity=".55" transform="rotate(-28 100 100)"/>
+  <g filter="url(#${id}l)" style="mix-blend-mode:multiply"><circle cx="100" cy="100" r="68" fill="url(#${id}hw)"/></g>
+  <g filter="url(#${id}s)" style="mix-blend-mode:screen" opacity=".85"><circle cx="100" cy="100" r="68" fill="url(#${id}hw)"/></g>
+  <ellipse cx="80" cy="74" rx="24" ry="12" fill="#fff" opacity=".22" transform="rotate(-35 80 74)"/>
+ </g>
+ <circle cx="100" cy="100" r="68.5" fill="none" stroke="rgba(40,20,5,.5)" stroke-width="1.5"/>
+ </svg>`}
+
+
+/* wax seals: picker, stamping, peeling */
+const SEAL_KEY="lifeos-seal";
+const SEAL_EMB=()=>[["sprout",L("小芽","Sprout")],["laurel",L("花环","Laurel")],["flower",L("花","Flower")],["heart",L("爱心","Heart")],["moon",L("月亮","Moon")],["star",L("星星","Star")]];
+const sealDef=()=>{try{const v=JSON.parse(localStorage.getItem(SEAL_KEY)||"null");if(v&&W2[v.c])return v}catch(_){}return {c:"red",e:"sprout",t:"",w:false}};
+const sealSeed=id=>{let h=0;for(const ch of String(id||"x"))h=(h*31+ch.charCodeAt(0))%997;return 1+h%9};
+function sealSVG(sl,size,seed){sl=sl&&W2[sl.c]?sl:{c:"red",e:"sprout"};return wax2({color:sl.c,emb:sl.e==="name"?null:sl.e,text:sl.e==="name"?((sl.t||"").trim()||"名"):null,wreath:!!sl.w,size,seed:seed||1})}
+const sealEnv=(inner,cls="")=>`<div class="wxenv ${cls}"><div class="wxpaper">${L("致 未来的我：","Dear future me,")}<br>${L("你好呀……","Hello…")}</div><div class="wxflap"></div><div class="wxpos">${inner}</div></div>`;
+function openSealPicker(onSeal){
+  const sl={...sealDef()};let busy=false;
+  const bg=document.createElement("div");bg.className="sheet-bg wxbg";bg.style.zIndex=70;
+  const draw=()=>{bg.innerHTML=`<div class="sheet wxsheet" role="dialog" aria-label="${L("选一个火漆","Pick a wax seal")}"><h3>${L("选一个火漆，封起来","Pick a wax seal")}</h3>
+    <div class="wxstage">${sealEnv(`<div class="wxsw">${sealSVG(sl,104,3)}</div>`)}</div>
+    <div class="wxrow"><b>${L("颜色","Colour")}</b>${Object.entries(W2).map(([k,v])=>`<button class="wxsw-c${sl.c===k?" on":""}" style="--c:${v[0]};--l:${v[1]};--d:${v[2]}" data-wx="c" data-v="${k}" aria-label="${v[3]}" title="${v[3]}"></button>`).join("")}</div>
+    <div class="wxrow"><b>${L("图案","Design")}</b><div class="wxembs">${SEAL_EMB().map(([k,n],i)=>`<button class="wxemb${sl.e===k?" on":""}" data-wx="e" data-v="${k}" aria-label="${n}" title="${n}">${sealSVG({c:sl.c,e:k},50,i+2)}</button>`).join("")}<button class="wxemb${sl.e==="name"?" on":""}" data-wx="e" data-v="name" aria-label="${L("刻字","Name")}" title="${L("刻字","Name")}">${sealSVG({c:sl.c,e:"name",t:sl.t||userName.slice(0,2)||"名",w:sl.w},50,9)}</button></div></div>
+    ${sl.e==="name"?`<div class="wxrow"><b>${L("刻字","Name")}</b><input id="wx-t" maxlength="3" value="${esc(sl.t||userName.slice(0,2)||"")}" placeholder="${L("1–3 个字或字母","1–3 letters")}"><button class="wxtg${sl.w?" on":""}" data-wx="w" role="switch" aria-checked="${!!sl.w}"><i></i>${L("外面加一圈花环","Add a laurel")}</button></div>`:""}
+    <div class="sheet-actions"><button class="btn" data-wx="x">${L("再改改信","Keep editing")}</button><button class="btn primary" data-wx="go">${L("盖上 ✉","Seal it ✉")}</button></div></div>`};
+  draw();document.body.appendChild(bg);
+  const grab=()=>{const t=bg.querySelector("#wx-t");if(t)sl.t=t.value.trim().slice(0,3)};
+  bg.addEventListener("input",e=>{if(e.target.id==="wx-t"){sl.t=e.target.value.trim().slice(0,3);const p=bg.querySelector(".wxsw");if(p)p.innerHTML=sealSVG(sl,104,3)}});
+  bg.addEventListener("click",e=>{if(busy)return;if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-wx]");if(!b)return;const a=b.dataset.wx;grab();
+    if(a==="x"){bg.remove();return}
+    if(a==="c"){sl.c=b.dataset.v;draw();return}
+    if(a==="e"){sl.e=b.dataset.v;if(sl.e==="name"&&!sl.t)sl.t=userName.slice(0,2);draw();return}
+    if(a==="w"){sl.w=!sl.w;draw();return}
+    if(a==="go"){if(sl.e==="name"&&!sl.t){bg.querySelector("#wx-t")?.focus();return}
+      busy=true;try{localStorage.setItem(SEAL_KEY,JSON.stringify(sl))}catch(_){}
+      const stg=bg.querySelector(".wxstage");stg.innerHTML=sealEnv(`<div class="wxsw stamping"><div class="wxpud">${wax2({color:sl.c,plain:true,size:104,seed:3})}</div><div class="wxfin">${sealSVG(sl,104,3)}</div><span class="wxsh"></span><div class="wxstmp">${stamper2(132)}</div></div>`);
+      bg.querySelectorAll(".wxrow,.sheet-actions").forEach(x=>x.style.visibility="hidden");
+      const done=()=>{bg.remove();onSeal({...sl})};
+      if(matchMedia("(prefers-reduced-motion: reduce)").matches)setTimeout(done,400);else setTimeout(done,2900);return}});
+}
+function peelOpen(sl,seed,cb){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches){cb();return}
+  const ov=document.createElement("div");ov.className="wxpeelov";ov.innerHTML=`<div class="wxpeelbox">${sealEnv(`<div class="wxpeel"><span class="wxres"></span><span class="wxpsh"></span><div class="wxpl">${sealSVG(sl,104,seed)}</div></div>`)}</div>`;
+  document.body.appendChild(ov);requestAnimationFrame(()=>ov.classList.add("go"));
+  setTimeout(()=>ov.querySelector(".wxenv")?.classList.add("open"),2000);
+  setTimeout(()=>{ov.classList.add("out");cb();setTimeout(()=>ov.remove(),350)},2800);
+}
+
 function paperHTML(x,editable){
   const st=x.sticker?`<span class="lsk">${moodFace(x.sticker)}</span>`:"";
   const sig=(x.sig||"").trim(), sz=LSIZES[x.fsz]||LSIZES.m, al=["center","right"].includes(x.align)?x.align:"left";
@@ -2315,14 +2459,14 @@ function openLetter(id,importMode,preset){
       if(st.kind==="send"){
         if(!(st.sendTo||"").trim()){bg.querySelector("#lsTo")?.focus();return}
         if(!st.sendOn||st.sendOn<t){bg.querySelector("#lsOpen")?.focus();return}
-        if(!sure){sure=true;bt.textContent=st.shareId?L("确定保存修改？","Save changes?"):L("确定封好寄出？","Seal and send?");return}
-        bt.disabled=true;bt.textContent=L("正在寄出…","Sending…");
+        if(!st.shareId&&!st._seal){openSealPicker(sl=>{st._seal=sl;sure=true;bt.click()});return}
+        if(!sure){sure=true;bt.textContent=L("确定保存修改？","Save changes?");return}
+        bt.disabled=true;bt.textContent=L("正在寄出…","Sending…");const seal=st._seal||st.seal||sealDef();
         const sid=st.shareId||rid();const fromName=(st.fromName||"").trim()||userName||L("你的朋友","A friend");
-        try{await shareApi.put(sid,{fromName,toName:st.sendTo.trim(),openOn:st.sendOn,stamp:st.stamp||"",paper:st.paper,font:st.font,sticker:st.sticker||"",align:st.align||"left",fsz:st.fsz||"m",ink:st.ink||"",writtenAt:st.writtenAt||Date.now()},{body:(st.body||"").slice(0,20000),la:(st.la||[]).slice(0,2000),lsz:(st.lsz||[]).slice(0,2000),lcol:(st.lcol||[]).slice(0,2000),sig:(st.sig||"").trim().slice(0,40),head:st.head==null?null:String(st.head).slice(0,60),photos:(st.photos||[]).slice(0,3)})}
+        try{await shareApi.put(sid,{fromName,toName:st.sendTo.trim(),openOn:st.sendOn,stamp:st.stamp||"",paper:st.paper,font:st.font,sticker:st.sticker||"",align:st.align||"left",fsz:st.fsz||"m",ink:st.ink||"",seal,writtenAt:st.writtenAt||Date.now()},{body:(st.body||"").slice(0,20000),la:(st.la||[]).slice(0,2000),lsz:(st.lsz||[]).slice(0,2000),lcol:(st.lcol||[]).slice(0,2000),sig:(st.sig||"").trim().slice(0,40),head:st.head==null?null:String(st.head).slice(0,60),photos:(st.photos||[]).slice(0,3)})}
         catch(err){bt.disabled=false;sure=false;bt.textContent=L("没寄出去，再试一次","Didn't send. Try again");return}
-        const lid=save({sealed:true,sealedAt:Date.now(),shareId:sid,fromName});bg.remove();openSent(lid);return}
-      if(!sure){sure=true;bt.textContent=L("确定封起来？","Seal it for sure?");return}
-      save({sealed:true,sealedAt:Date.now()});bg.remove();cheer(L(`封好啦！${lYmdS(st.openOn)}见～`,`Sealed! See you on ${lYmdS(st.openOn)}～`),"happy");return}
+        const lid=save({sealed:true,sealedAt:Date.now(),shareId:sid,fromName,seal});bg.remove();openSent(lid);return}
+      openSealPicker(sl=>{save({sealed:true,sealedAt:Date.now(),seal:sl});bg.remove();cheer(L(`封好啦！${lYmdS(st.openOn)}见～`,`Sealed! See you on ${lYmdS(st.openOn)}～`),"happy")});return}
     if(a==="imp"){if(!(st.body||"").trim()){bg.querySelector("#lbody").focus();return}
       if(st.who==="friend"&&!(st.friend||"").trim()){bg.querySelector("#lfriend").focus();return}
       const w=new Date((st.wdate||t)+"T12:00:00").getTime();const later=st.iw==="later"&&st.iOpen>t;
@@ -2386,7 +2530,7 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-mb]");if(!
   if(a==="new"){openLetter();return}
   if(a==="import"){openLetter(null,true);return}
   if(a==="edit"){openLetter(id);return}
-  if(a==="read"){openRead(id);return}
+  if(a==="read"){const x=letters.find(l=>l.id===id);if(x&&!x.opened&&x.sealed&&!x.from){peelOpen(x.seal,sealSeed(x.id),()=>openRead(id));return}openRead(id);return}
   if(a==="sent"){openSent(id);return}
   if(a==="locked"){openLocked(id);return}});
 function openLocked(id){
