@@ -580,6 +580,16 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .fest-snow{position:fixed;inset:0;pointer-events:none;z-index:2;overflow:hidden}
 .fest-snow i{position:absolute;top:-12px;width:var(--s);height:var(--s);border-radius:50%;background:#fff;box-shadow:0 0 3px rgba(150,170,200,.6);opacity:.85;animation:fsn var(--t) linear infinite;animation-delay:var(--dl)}
 @keyframes fsn{to{transform:translate(var(--x),105vh)}}
+.stchips{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0 2px}.stchips .hint{margin:0}
+.stc{border:1.5px solid var(--line);background:var(--surface);color:var(--fg);font:inherit;font-size:13px;border-radius:999px;padding:3px 11px;cursor:pointer}.stc.on{background:var(--life);border-color:var(--life);color:#fff}
+.stchips.big .stc{font-size:15px;padding:7px 14px}
+.sgrp{display:flex;flex-direction:column}.sgh{display:flex;align-items:center;gap:6px;border:0;background:none;font:inherit;font-size:13.5px;font-weight:600;color:var(--muted);padding:10px 2px 4px;cursor:pointer;text-align:left}
+.sgh .ar{font-size:10px;width:10px}.sgh .c{font-family:var(--f-num);font-weight:500;font-size:12px;background:var(--surface-2);border-radius:999px;padding:0 8px}.sgh .c i{font-style:normal;color:var(--faint);margin-left:3px}
+.item:has(.mvst){grid-template-columns:auto auto 1fr auto auto auto!important}.mvst{border:0;background:none;color:var(--faint);font:inherit;font-size:12px;padding:0 4px;cursor:pointer;white-space:nowrap}.mvst:hover{color:var(--life)}
+.st .sti{font-style:normal;font-size:11px;color:var(--faint);margin-left:4px}
+.gear.sm{width:28px;height:28px;font-size:13px;display:grid;place-items:center}
+.st-mgr .smlist{display:flex;flex-direction:column;gap:6px}.smrow{display:flex;align-items:center;gap:6px;background:var(--surface-2);border-radius:12px;padding:6px 8px 6px 12px}.smrow .nm{flex:1;min-width:0;font-size:15px}
+.mini{width:30px;height:30px;border-radius:50%;border:0;background:var(--surface);color:var(--fg);font-size:14px;cursor:pointer}.mini:disabled{opacity:.3}.mini.del{color:var(--danger)}
 .btnrow{display:flex;flex-wrap:wrap;gap:8px}.fpv{margin-top:8px;align-items:center;gap:6px}
 .tour-spot{position:fixed;z-index:89;border-radius:18px;box-shadow:0 0 0 9999px rgba(20,32,60,.55);pointer-events:none;transition:left .25s,top .25s,width .25s,height .25s}.tour-spot.soft{box-shadow:0 0 0 9999px rgba(20,32,60,.35)}
 .tour{position:fixed;z-index:91;width:min(300px,calc(100vw - 32px));box-sizing:border-box;background:#1f3156;color:#fff;border-radius:16px;padding:12px 14px;font-size:13.5px;line-height:1.55;box-shadow:0 10px 26px rgba(0,0,0,.25)}
@@ -1447,13 +1457,14 @@ function shopBoard(){
   const stapleNames=new Set(sts.map(x=>x.name.trim().toLowerCase()));
   const chips=sts.map(st=>{const has=inList.has(st.name.trim().toLowerCase());
     if(stapleEdit)return `<button class="st" data-act="stdel" data-id="${st.id}">${esc(st.name)} <span class="x">×</span></button>`;
-    return `<button class="st${pick.has(st.id)?" pick":""}${has?" inlist":""}" data-act="stpick" data-id="${st.id}" ${has?`title="${L("已在清单里","Already on the list")}"`:""}>${pick.has(st.id)?"✓ ":""}${esc(st.name)}</button>`}).join("");
+    return `<button class="st${pick.has(st.id)?" pick":""}${has?" inlist":""}" data-act="stpick" data-id="${st.id}" ${has?`title="${L("已在清单里","Already on the list")}"`:""}>${pick.has(st.id)?"✓ ":""}${esc(st.name)}${stores.on&&storeOf(st)?`<i class="sti">${esc(storeName(storeOf(st)))}</i>`:""}</button>`}).join("");
   const need=shop.filter(x=>!x.bought).sort((a,b)=>(a.order??1e6)-(b.order??1e6)||(a.createdAt||0)-(b.createdAt||0));
   const got=shop.filter(x=>x.bought).sort((a,b)=>(a.boughtAt||0)-(b.boughtAt||0));
   const row=x=>`<div class="item${x.bought?" got":""}" ${x.bought?"":`data-row data-id="${x.id}"`}>
       ${x.bought?`<span class="grip-space"></span>`:gripBtn()}
       <button class="check${x.bought?" on":""}" data-act="shopbuy" data-id="${x.id}" aria-label="${x.bought?L("标记为没买","Mark as not bought"):L("标记为已买","Mark as bought")}">${CHECK}</button>
       <button class="nm" data-act="shopedittext" data-id="${x.id}" title="${L("点一下修改","Tap to edit")}">${esc(x.name)}</button>
+      ${stores.on&&stores.list.length&&!x.bought?`<button class="mvst" data-act="shopmv" data-id="${x.id}" aria-label="${L("换一家店","Move to another shop")}" title="${L("换一家店","Move to another shop")}">${L("换店","Move")}</button>`:""}
       <button class="star${stapleNames.has(x.name.trim().toLowerCase())?" on":""}" data-act="shopstar" data-id="${x.id}" aria-label="${L("设为常买","Save as a staple")}">★</button>
       <button class="del" data-act="shopdel" data-id="${x.id}" aria-label="${L("从清单删除","Remove from list")}">×</button></div>`;
   return `<div class="shop-hd"><span class="fic">${FI.BASKET}</span><h3>${L("购物清单","Shopping list")}</h3></div><div class="card">
@@ -1463,13 +1474,16 @@ function shopBoard(){
       ${pick.size&&!stapleEdit?`<div><button class="btn life" data-act="stadd">${L(`加入清单（${pick.size}）`,`Add to list (${pick.size})`)}</button> <button class="link" data-act="stclear">${L("取消选择","Clear")}</button></div>`:""}
     </div>
     <div class="card">
-      <div class="card-head"><h3>${L("下次去超市","Next shop")}</h3><span class="sub">${need.length?L(`还要买 ${need.length} 样`,`${need.length} to buy`):L("清单是空的","The list is empty")}</span></div>
+      <div class="card-head"><h3>${L("下次去超市","Next shop")}</h3><span class="sub">${need.length?L(`还要买 ${need.length} 样`,`${need.length} to buy`):L("清单是空的","The list is empty")}</span>${stores.on?`<span class="right"><button class="gear sm" data-act="storemgr" aria-label="${L("管理商店","Manage shops")}" title="${L("管理商店","Manage shops")}">⚙️</button></span>`:""}</div>
       <form class="shop-add" id="shopForm">
         <input type="text" id="shopName" placeholder="${L("要买什么？可以一次写好几样，用逗号隔开","What do you need? Add several at once, separated by commas")}" maxlength="200" aria-label="${L("要买的东西","Item to buy")}">
         <label><input type="checkbox" id="shopStaple"> ${L("设为常买","Save as staple")}</label>
         <button class="btn life" type="submit">${L("添加","Add")}</button>
       </form>
-      <div class="items"><div class="items-need" data-sort="shop">${need.map(row).join("")}</div>${need.length?"":(got.length?"":emptyBox(L("想到要买的就记在这里，到了超市一样样勾掉。","Note things down as you think of them, then tick them off at the shop.")))}${got.map(row).join("")}</div>
+      ${stores.on&&stores.list.length?`<div class="stchips" role="radiogroup" aria-label="${L("在哪家买","Which shop")}"><span class="hint">${L("在哪家买：","Where:")}</span>${stores.list.map(st=>`<button type="button" class="stc${shopStoreSel===st.id?" on":""}" data-act="shopsel" data-id="${st.id}" aria-pressed="${shopStoreSel===st.id}">${esc(st.name)}</button>`).join("")}<button type="button" class="stc${!shopStoreSel?" on":""}" data-act="shopsel" data-id="" aria-pressed="${!shopStoreSel}">${L("哪家都行","Any")}</button></div>`:""}
+      ${stores.on?`<div class="items">${[...stores.list.map(st=>st.id),""].map(gid=>{const n=need.filter(x=>storeOf(x)===gid),g=got.filter(x=>storeOf(x)===gid);if(!n.length&&!g.length)return "";const fold=!!stores.fold[gid||"_any"];
+          return `<div class="sgrp"><button class="sgh" data-act="shopfold" data-id="${gid||"_any"}" aria-expanded="${!fold}"><span class="ar">${fold?"▸":"▾"}</span>${esc(storeName(gid))}<span class="c">${n.length}${g.length?`<i>+${g.length}</i>`:""}</span></button>${fold?"":`<div class="items-need" data-sort="shop">${n.map(row).join("")}</div>${g.map(row).join("")}`}</div>`}).join("")||emptyBox(L("想到要买的就记在这里，到了超市一样样勾掉。","Note things down as you think of them, then tick them off at the shop."))}</div>`
+      :`<div class="items"><div class="items-need" data-sort="shop">${need.map(row).join("")}</div>${need.length?"":(got.length?"":emptyBox(L("想到要买的就记在这里，到了超市一样样勾掉。","Note things down as you think of them, then tick them off at the shop.")))}${got.map(row).join("")}</div>`}
       ${got.length?`<div class="shop-foot"><span>${L(`已经买了 ${got.length} 样`,`${got.length} bought`)}</span><button class="btn life" data-act="tripdone">${L("这趟买完了 · 清掉已买的","Done shopping · clear bought items")}</button></div>`:""}
     </div>
     <p class="hint">${L("每完成一趟采购，{pet}喝 1 滴水。","Each finished shopping trip gives {pet} 1 drop of water.")}</p>${foodCard()}${fridgeCard()}`;
@@ -1698,6 +1712,8 @@ NEWS_MORE.push(()=>({id:"1118b",steps:[
     {sel:"#mbBtn",pad:4,t:L("新功能 · 信可以更自由了","New · More ways to write"),b:L("写信时可以<em>改抬头</em>（也可以不要抬头），选<em>居中 / 靠右</em>、字的大小和颜色，还能<em>贴 3 张照片</em>。字体也多了文楷、粉圆和小薇。","Letters can now have <em>any heading</em> (or none), <em>centred or right-aligned</em> text, text size and colour, and <em>up to 3 photos</em>. New fonts too.")},
     {go:"study",sel:".focusbar",t:L("新功能 · 专注小窗","New · Focus mini window"),b:L("在电脑的 Chrome 或 Edge 上专注时，点按钮那排最右边的小窗图标，倒计时会浮在所有窗口上面。","On desktop Chrome or Edge, tap the mini-window button while focusing and the timer floats above every window."),web:1},
     {sel:"#gear",pad:4,t:L("新功能 · 节日和同步","New · Holidays & sync"),b:L("过节的时候小芽会换装，不想要可以在设置里关掉。同步也搬进了设置里，⚙️ 上有蓝色小勾就是在同步。","{pet} dresses up on holidays; turn it off in Settings. Sync moved into Settings too: a blue tick on ⚙️ means you're synced.")}]}));
+NEWS_MORE.push(()=>({id:"1118c",steps:[
+    {sel:"#gear",pad:4,t:L("新功能 · 按超市分组","New · Group by shop"),b:L("在设置里打开「按超市分组」，购物清单就会按 Tesco、亚超这样分开。加东西时选一下在哪家买，常买的东西会记住上次的店。","Turn on “Group by shop” in Settings and your shopping list splits by shop. Pick a shop when adding things; staples remember where you last bought them.")}]}));
 const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
 let tourOn=null;
 function tourGo(go){
@@ -3926,11 +3942,45 @@ async function addInbox(){
 
 /* ---------- shopping ---------- */
 const norm=x=>x.trim().toLowerCase();
+const STORES_KEY="lifeos-stores";
+let stores={on:false,list:[],fold:{}}; try{const v=JSON.parse(localStorage.getItem(STORES_KEY)||"null");if(v)stores={on:!!v.on,list:Array.isArray(v.list)?v.list:[],fold:v.fold||{}}}catch(_){}
+let shopStoreSel="";
+function setStores(o,sync=true){stores={on:!!o.on,list:(o.list||[]).slice(0,30),fold:o.fold||{}};try{localStorage.setItem(STORES_KEY,JSON.stringify(stores))}catch(_){};if(sync&&db&&db.meta)db.meta.set({stores},{merge:true}).catch(()=>{});render()}
+const storeOf=x=>x&&x.store&&stores.list.some(s=>s.id===x.store)?x.store:"";
+const storeName=id=>(stores.list.find(s=>s.id===id)||{}).name||L("哪家都行","Any shop");
 async function addShop(name){
   name=name.trim().slice(0,80); if(!name)return;
   if(shop.some(x=>norm(x.name)===norm(name)&&!x.bought))return;
   const ref=db.collection("shop").doc();
-  return queued(ref.path,()=>ref.set({name,bought:false,createdAt:Date.now()}));
+  const store=arguments[1]!=null?arguments[1]:"";
+  return queued(ref.path,()=>ref.set({name,bought:false,createdAt:Date.now(),...(store?{store}:{})}));
+}
+function pickStore(x){
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("在哪家买","Which shop")}"><h3>${L(`「${esc(x.name)}」在哪家买？`,`Where do you buy “${esc(x.name)}”?`)}</h3><div class="stchips big">${[...stores.list,{id:"",name:L("哪家都行","Any shop")}].map(st=>`<button class="stc${storeOf(x)===st.id?" on":""}" data-sp="${st.id}">${esc(st.name)}</button>`).join("")}</div><div class="sheet-actions"><span></span><button class="btn" data-sp="x">${L("取消","Cancel")}</button></div></div>`;
+  document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-sp]");if(!b)return;bg.remove();if(b.dataset.sp==="x")return;const sid=b.dataset.sp;
+    x.store=sid;const r=db.doc("shop/"+x.id);queued(r.path,()=>r.update({store:sid}));const sp=staples.find(y=>norm(y.name)===norm(x.name));if(sp){sp.store=sid;const r2=db.doc("staples/"+sp.id);queued(r2.path,()=>r2.update({store:sid}))}render()});
+}
+function openStores(){
+  let list=stores.list.map(x=>({...x}));const SUG=["Tesco","Sainsbury's","Lidl","Aldi","M&S","Waitrose","Co-op","Boots",L("亚超","Asian market")];
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  const draw=()=>{bg.innerHTML=`<div class="sheet st-mgr" role="dialog" aria-label="${L("管理商店","Manage shops")}"><h3>${L("常去的商店","Your shops")}</h3>
+    <p class="hint" style="margin:0">${L("清单会按这个顺序分组，可以按你逛的顺序排。","The list is grouped in this order, so put them in the order you visit.")}</p>
+    <div class="smlist">${list.map((st,i)=>`<div class="smrow"><span class="nm">${esc(st.name)}</span><button class="mini" data-sm="up" data-i="${i}" ${i?"":"disabled"} aria-label="${L("往上","Up")}">↑</button><button class="mini" data-sm="down" data-i="${i}" ${i<list.length-1?"":"disabled"} aria-label="${L("往下","Down")}">↓</button><button class="mini del" data-sm="del" data-i="${i}" aria-label="${L("删除","Delete")}">×</button></div>`).join("")||`<span class="hint">${L("还没有商店，在下面加一个吧","No shops yet. Add one below")}</span>`}</div>
+    <div class="cap-row"><input id="sm-new" maxlength="20" placeholder="${L("商店名字，比如 Tesco","Shop name, e.g. Tesco")}"><button class="btn" data-sm="add">${L("加","Add")}</button></div>
+    <div class="stchips">${SUG.filter(n=>!list.some(x=>norm(x.name)===norm(n))).map(n=>`<button class="stc" data-sm="sug" data-n="${esc(n)}">＋ ${esc(n)}</button>`).join("")}</div>
+    <div class="sheet-actions"><span></span><button class="btn primary" data-sm="ok">${L("好了","Done")}</button></div></div>`};
+  const add=n=>{n=(n||"").trim().slice(0,20);if(!n||list.some(x=>norm(x.name)===norm(n))||list.length>=30)return;list.push({id:rid().slice(0,8),name:n});draw();bg.querySelector("#sm-new")?.focus()};
+  draw();document.body.appendChild(bg);
+  bg.addEventListener("keydown",e=>{if(e.target.id==="sm-new"&&e.key==="Enter"&&!e.isComposing&&e.keyCode!==229){e.preventDefault();add(e.target.value)}});
+  bg.addEventListener("click",e=>{if(e.target===bg){setStores({...stores,list});bg.remove();return}const b=e.target.closest("[data-sm]");if(!b)return;const a=b.dataset.sm,i=+b.dataset.i;
+    if(a==="add"){add(bg.querySelector("#sm-new").value);return}
+    if(a==="sug"){add(b.dataset.n);return}
+    if(a==="up"&&i>0){[list[i-1],list[i]]=[list[i],list[i-1]];draw();return}
+    if(a==="down"&&i<list.length-1){[list[i+1],list[i]]=[list[i],list[i+1]];draw();return}
+    if(a==="del"){const gone=list[i];list.splice(i,1);if(shopStoreSel===gone.id)shopStoreSel="";shop.filter(x=>x.store===gone.id).forEach(x=>{x.store="";const r=db.doc("shop/"+x.id);queued(r.path,()=>r.update({store:""}))});draw();return}
+    if(a==="ok"){setStores({...stores,list});bg.remove();return}});
 }
 async function addStaple(name){
   name=name.trim().slice(0,40); if(!name||staples.some(x=>norm(x.name)===norm(name)))return;
@@ -4390,7 +4440,11 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="stclear"){pick.clear();render();return}
   if(act.dataset.act==="stedit"){stapleEdit=!stapleEdit;pick.clear();render();return}
   if(act.dataset.act==="stdel"){const ref=db.doc("staples/"+id);queued(ref.path,()=>ref.delete());return}
-  if(act.dataset.act==="stadd"){const names=staples.filter(x=>pick.has(x.id)).map(x=>x.name);pick.clear();render();for(const n of names)await addShop(n);cheer(L(`放进清单 ${names.length} 样～`,`Added ${names.length} to the list～`));return}
+  if(act.dataset.act==="stadd"){const sel=staples.filter(x=>pick.has(x.id)),names=sel.map(x=>x.name);pick.clear();render();for(const x of sel)await addShop(x.name,stores.on?storeOf(x):"");cheer(L(`放进清单 ${names.length} 样～`,`Added ${names.length} to the list～`));return}
+  if(act.dataset.act==="shopsel"){shopStoreSel=act.dataset.id||"";render();$("#shopName")?.focus();return}
+  if(act.dataset.act==="shopfold"){const f={...stores.fold};const k=act.dataset.id;if(f[k])delete f[k];else f[k]=true;setStores({...stores,fold:f});return}
+  if(act.dataset.act==="storemgr"){openStores();return}
+  if(act.dataset.act==="shopmv"){const x=shop.find(y=>y.id===id);if(!x)return;pickStore(x);return}
   if(act.dataset.act==="shopbuy"){const x=shop.find(y=>y.id===id);if(!x)return;const ref=db.doc("shop/"+id);const nb=!x.bought;queued(ref.path,()=>ref.update({bought:nb,boughtAt:nb?Date.now():null}));if(nb)noteBought(x.name);return}
   if(act.dataset.act==="shopdel"){const ref=db.doc("shop/"+id);queued(ref.path,()=>ref.delete());return}
   if(act.dataset.act==="shopstar"){const x=shop.find(y=>y.id===id);if(!x)return;const st=staples.find(y=>norm(y.name)===norm(x.name));
@@ -4501,7 +4555,8 @@ document.addEventListener("submit",async e=>{
   if(e.target.id==="shopForm"){e.preventDefault();if(!db)return;
     const names=splitItems($("#shopName").value), st=$("#shopStaple").checked;
     $("#shopName").value="";
-    for(const n of names){await addShop(n);if(st)await addStaple(n)}
+    const sid=stores.on&&stores.list.some(x=>x.id===shopStoreSel)?shopStoreSel:"";
+    for(const n of names){await addShop(n,sid);if(st)await addStaple(n);if(sid){const sp=staples.find(y=>norm(y.name)===norm(n));if(sp&&sp.store!==sid){const r=db.doc("staples/"+sp.id);queued(r.path,()=>r.update({store:sid}))}}}
     $("#shopName").focus();return}
   if(e.target.id!=="habitForm")return; e.preventDefault();
   const name=$("#habitName").value.trim(); if(!name||!db)return; $("#habitName").value="";
@@ -4637,6 +4692,7 @@ function openSettings(){
       <span class="hint">${wx.lat!=null?L(`现在用的是：${esc(wx.city||"当前位置")}。`,`Using: ${esc(wx.city||"your location")}.`):L("还没有位置。识别得不对的话，在这里搜城市改一下。","No location yet. If it's wrong, search for your city here.")} ${L("位置只存在这台设备上。","Your location stays on this device.")}</span></div>`:""}
     <div class="field"><span>${L("几点该睡觉","Bedtime")}</span><div class="until-row"><input type="time" id="set-bed" value="${esc(kept.bed??bedTime)}"><button class="chip hz${(kept.bed??bedTime)?"":" on"}" data-set="nobed">${L("不提醒","Off")}</button></div><span class="hint">${L("过了这个时间，{pet}会提醒你该睡啦。","After this time {pet} will remind you to go to bed.")}</span></div>
     <div class="field"><span>${L("我的生日（写给下一岁的信会在这天拆）","My birthday (letters to a year-older me open then)")}</span><div class="drow">${(()=>{const b=bdParts();return `<select id="set-bm"><option value="">${L("月","Month")}</option>${[...Array(12)].map((_,i)=>`<option value="${i+1}" ${b&&b.m===i+1?"selected":""}>${L(`${i+1} 月`,MON[i])}</option>`).join("")}</select><select id="set-bd"><option value="">${L("日","Day")}</option>${[...Array(31)].map((_,i)=>`<option value="${i+1}" ${b&&b.d===i+1?"selected":""}>${L(`${i+1} 日`,String(i+1))}</option>`).join("")}</select><input id="set-by" inputmode="numeric" maxlength="4" placeholder="${L("年（可不填）","Year (optional)")}" value="${b&&b.y?b.y:""}">`})()}</div></div>
+    <div class="field"><span>${L("购物清单","Shopping list")}</span><div class="btnrow"><button class="chip hz${stores.on?" on":""}" data-set="stores" aria-pressed="${stores.on}">${stores.on?"✓ ":""}${L("按超市分组","Group by shop")}</button></div></div>
     <div class="field"><span>${L("冰箱：放多久提醒我","Fridge: remind me after")}</span><div class="shelfset">${SHELF.map(([k,,d,zh,en])=>`<label><span>${L(zh,en)}</span><select data-shelf="${k}">${[1,2,3,4,5,7,10,14,21,30,60,0].map(v=>`<option value="${v}" ${shelfDays(k)===v?"selected":""}>${v?L(v>=30&&v%30===0?`${v/30} 个月`:v>=7&&v%7===0?`${v/7} 周`:`${v} 天`,v>=30&&v%30===0?`${v/30} mo`:v>=7&&v%7===0?`${v/7} wk`:`${v} d`):L("不提醒","Never")}${v===d?L("（默认）"," (default)"):""}</option>`).join("")}</select></label>`).join("")}</div></div>
     <div class="field"><span>${L("节日装扮","Festival dress-up")}</span><div class="btnrow"><button class="chip hz${festOff?"":" on"}" data-set="fest" aria-pressed="${!festOff}">${festOff?"":"✓ "}${L("过节时小芽换装","Dress up {pet} on holidays").replaceAll("{pet}",petName())}</button></div></div>
     <div class="field"><span>${L("功能介绍","Tour")}</span><div><div class="btnrow"><button class="btn" data-set="tour">${L("重新看一遍介绍","Replay the tour")}</button><button class="btn" data-set="news">${L("最近的新功能","What's new")}</button></div></div></div>
@@ -4666,6 +4722,7 @@ function openSettings(){
     if(a==="lang"){keep();setLang(b.dataset.v);draw();return}
     if(a==="nobed"){bg.querySelector("#set-bed").value="";return}
     if(a==="tour"){bg.remove();setTimeout(()=>startTour("full"),250);return}
+    if(a==="stores"){const on=!stores.on;setStores({...stores,on});b.classList.toggle("on",on);b.setAttribute("aria-pressed",String(on));b.textContent=(on?"✓ ":"")+L("按超市分组","Group by shop");if(on&&!stores.list.length){bg.remove();tab="life";lifeSub="shop";render();setTimeout(openStores,200)}return}
     if(a==="fest"){festOff=!festOff;try{localStorage.setItem(FEST_KEY,festOff?"off":"on")}catch(_){}b.classList.toggle("on",!festOff);b.setAttribute("aria-pressed",String(!festOff));b.textContent=(festOff?"":"✓ ")+L("过节时小芽换装","Dress up {pet} on holidays").replaceAll("{pet}",petName());festApplied="x";applyFest();return}
     if(a==="festpv"){festPreview=b.dataset.v;festApplied="x";bg.remove();applyFest();snack(L("这是预览","This is a preview"),L(`${FEST()[festPreview].n}那天会是这样，刷新页面也会恢复`,`How ${FEST()[festPreview].n} will look. Refreshing ends it too`),L("关掉预览","End preview"),()=>{festPreview=null;festApplied="x";applyFest();renderBuddy()});return}
     if(a==="news"){bg.remove();try{const o=JSON.parse(localStorage.getItem(TOUR_KEY)||"{}");delete o["nf:"+NEWS().slice(-1)[0].id];localStorage.setItem(TOUR_KEY,JSON.stringify(o))}catch(_){}setTimeout(()=>startTour("news"),250);return}
@@ -4848,6 +4905,7 @@ async function onSignedIn(user){
     if(m.shelf)setShelf(m.shelf,false);
     if(m.bedTime!=null)setBedTime(m.bedTime,false);
     if(m.birthday!=null)setBirthday(m.birthday,false);
+    if(m.stores)setStores(m.stores,false);
     startData(store);
     if(n&&!asked)openMergeAsk(store,localData,n,user.uid);
   }
