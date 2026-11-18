@@ -538,7 +538,22 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .tli .tx{display:flex;flex-direction:column;padding-bottom:10px;line-height:22px;min-width:0;overflow-wrap:anywhere}.tli .tx .mt{width:16px;height:16px;vertical-align:-3px;margin-right:4px}.tli .tx small{color:var(--muted);font-size:12.5px;line-height:1.4}
 .tli .tag{font-size:11px;border-radius:999px;padding:0 6px;margin-left:4px;background:#ffe4e7;color:#c44a5a}
 .tour-block{position:fixed;inset:0;z-index:88}
-.btnrow{display:flex;flex-wrap:wrap;gap:8px}
+/* festivals */
+@media (prefers-color-scheme:light){:root[data-fest]:not([data-theme=dark]):not([data-tod=night]) body{background:var(--fest-bg)}:root[data-fest]:not([data-theme=dark]):not([data-tod=night]) #appName{color:var(--fest-t)}}
+:root[data-fest][data-theme=light]:not([data-tod=night]) body{background:var(--fest-bg)}:root[data-fest][data-theme=light]:not([data-tod=night]) #appName{color:var(--fest-t)}
+:root[data-fest] #appName::after{content:"";display:inline-block;width:1.15em;height:1.15em;margin-left:6px;vertical-align:-.18em;background:var(--fest-ic) center/contain no-repeat}
+.fab.fest{background:var(--surface);box-shadow:inset 0 0 0 4px var(--fest-ring),0 5px 0 rgba(0,0,0,.14),0 10px 24px rgba(30,80,160,.2)}
+.fab.fest svg{width:72px;height:72px;margin:0}
+.festbtn{margin-top:4px;font-size:13.5px;color:var(--fest-t,var(--brand));font-weight:600;padding:0;align-self:flex-start}
+.fest-lights{position:absolute;left:18px;right:18px;top:-6px;height:14px;display:flex;justify-content:space-between;pointer-events:none;z-index:1}
+.fest-lights:before{content:"";position:absolute;left:-4px;right:-4px;top:3px;height:8px;border-top:1.5px solid #6b8f5a;border-radius:50%}
+.fest-lights i{position:relative;width:7px;height:10px;border-radius:50% 50% 45% 45%;background:var(--c);margin-top:5px;box-shadow:0 0 6px var(--c)}
+@media (prefers-reduced-motion:no-preference){.fest-lights i{animation:fbl 1.6s ease-in-out infinite;animation-delay:var(--d)}}
+@keyframes fbl{50%{opacity:.45;box-shadow:none}}
+.fest-snow{position:fixed;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+.fest-snow i{position:absolute;top:-12px;width:var(--s);height:var(--s);border-radius:50%;background:#fff;box-shadow:0 0 3px rgba(150,170,200,.6);opacity:.85;animation:fsn var(--t) linear infinite;animation-delay:var(--dl)}
+@keyframes fsn{to{transform:translate(var(--x),105vh)}}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px}.fpv{margin-top:8px;align-items:center;gap:6px}
 .tour-spot{position:fixed;z-index:89;border-radius:18px;box-shadow:0 0 0 9999px rgba(20,32,60,.55);pointer-events:none;transition:left .25s,top .25s,width .25s,height .25s}.tour-spot.soft{box-shadow:0 0 0 9999px rgba(20,32,60,.35)}
 .tour{position:fixed;z-index:91;width:min(300px,calc(100vw - 32px));box-sizing:border-box;background:#1f3156;color:#fff;border-radius:16px;padding:12px 14px;font-size:13.5px;line-height:1.55;box-shadow:0 10px 26px rgba(0,0,0,.25)}
 .tour::after{content:"";position:absolute;left:var(--ax,40px);border:9px solid transparent}.tour.dn::after{top:-8px;border-top:0;border-bottom-color:#1f3156}.tour.up::after{bottom:-8px;border-bottom:0;border-top-color:#1f3156}
@@ -1177,6 +1192,90 @@ function buddyState(){
   if(!(journal[todayStr()]||{}).note)return {...base,mood:"happy",say:L("晚上好，今天辛苦了。点右上角「小结」看看你今天做了什么吧。","Good evening, you worked hard today. Tap Today at the top to see what you got done.")};
   return {...base,mood:"happy",say:L("晚上好，今天辛苦了。还有什么想记下来的吗？","Good evening, you worked hard today. Anything else to jot down?")};
 }
+/* ---------- festival dress-up ---------- */
+const FEST_KEY="lifeos-fest";
+let festOff=false; try{festOff=localStorage.getItem(FEST_KEY)==="off"}catch(_){}
+let festPreview=null;
+const LUNAR={cny:{2026:"02-17",2027:"02-06",2028:"01-26",2029:"02-13",2030:"02-03",2031:"01-23",2032:"02-11"},dw:{2026:"06-19",2027:"06-09",2028:"05-28",2029:"06-16",2030:"06-05",2031:"06-24",2032:"06-12"},qx:{2026:"08-19",2027:"08-08",2028:"08-26",2029:"08-16",2030:"08-05",2031:"08-24",2032:"08-12"},zq:{2026:"09-25",2027:"09-15",2028:"10-03",2029:"09-22",2030:"09-12",2031:"10-01",2032:"09-19"}};
+function easterOf(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=((h+l-7*m+114)%31)+1;return `${y}-${String(mo).padStart(2,"0")}-${String(da).padStart(2,"0")}`}
+const fHeart=(x,y,s,c)=>`<path transform="translate(${x} ${y}) scale(${s})" d="M0 2.2C0-.6 3.6-1.4 4 1.6 4.4-1.4 8-.6 8 2.2 8 5 4 7.5 4 7.5S0 5 0 2.2z" fill="${c}"/>`;
+const fStar=(x,y,r,c)=>`<path transform="translate(${x} ${y}) scale(${r})" d="M0-5l1.4 3.2 3.6.4-2.7 2.4.8 3.5L0 2.7-3.1 4.5l.8-3.5L-5-1.4l3.6-.4z" fill="${c}"/>`;
+const fCone=(c1,c2,c3)=>`<g transform="translate(60 38)"><path d="M0 -43L26 0Q0 6.9 -26 0z" fill="${c1}"/><path d="M-8.3 -28.4q8.3 3.4 16.6 0M-16.6 -14.2q16.6 4.3 33.3 0" stroke="${c2}" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="0" cy="-43" r="5" fill="${c3}"/></g>`;
+const FEST=()=>{const nm=userName||L("你","you");return {
+ ny:{n:L("元旦","New Year's Day"),bg:"#eef0ff",t:"#2f3f8f",ring:"#2f3f8f",cover:1,tip:L("新年快乐！小芽戴上了派对帽，今年也一起加油～","Happy New Year! {pet} put on a party hat. Let's make this year a good one～"),
+  ic:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34">${[0,45,90,135,180,225,270,315].map((a,i)=>`<path d="M17 17L17 4" stroke="${['#f0c14b','#ef5d6e','#6aa8f0','#5cc98f'][i%4]}" stroke-width="2.5" stroke-linecap="round" transform="rotate(${a} 17 17)"/>`).join('')}<circle cx="17" cy="17" r="3" fill="#f0c14b"/></svg>`,
+  acc:fCone("#6aa8f0","#f0c14b","#ef5d6e")+fStar(18,40,1,"#f0c14b")+fStar(102,34,.9,"#ef5d6e")},
+ val:{n:L("情人节","Valentine's Day"),bg:"#fff0f4",t:"#d6336c",ring:"#ff8fb1",tip:L("情人节快乐，今天也要好好爱自己哦。","Happy Valentine's Day. Be extra kind to yourself today."),
+  ic:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34">${fHeart(5,6,3,"#ef5d6e")}</svg>`,acc:fHeart(36,90,4.2,"#ef3d5e")+fHeart(10,24,1.4,"#ff8fb1")+fHeart(96,20,1.2,"#ff8fb1")},
+ cny:{n:L("春节","Lunar New Year"),bg:"#fff1e8",t:"#c8102e",ring:"#c8102e",tip:L("新年快乐，恭喜发财！小芽给你包了个红包。","Happy Lunar New Year! {pet} has a red envelope for you."),
+  ic:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34"><path d="M17 2v4" stroke="#b8860b" stroke-width="2"/><ellipse cx="17" cy="17" rx="11" ry="10" fill="#e2323d"/><path d="M11 9v16M17 7v20M23 9v16" stroke="#b81d27" stroke-width="1.2"/><rect x="12" y="6" width="10" height="3" rx="1" fill="#f0c14b"/><rect x="12" y="26" width="10" height="3" rx="1" fill="#f0c14b"/><path d="M17 29v4" stroke="#f0c14b" stroke-width="2"/></svg>`,
+  acc:`<g transform="rotate(-10 60 96)"><rect x="44" y="84" width="32" height="32" rx="4" fill="#e2323d"/><circle cx="60" cy="96" r="7" fill="#f0c14b"/><text x="60" y="100" font-size="10" text-anchor="middle" fill="#c8102e" font-weight="700">福</text></g>`},
+ yx:{n:L("元宵节","Lantern Festival"),bg:"#fff6e8",t:"#c2410c",ring:"#f08a3c",tip:L("元宵节快乐！记得吃汤圆，团团圆圆～","Happy Lantern Festival! Have some tangyuan～"),
+  ic:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34"><path d="M5 18Q17 30 29 18z" fill="#fff" stroke="#e6c9a8" stroke-width="1.5"/><circle cx="12" cy="16" r="4" fill="#fff" stroke="#eee"/><circle cx="19" cy="15" r="4" fill="#ffd1dc"/><circle cx="24" cy="17" r="3.5" fill="#fff" stroke="#eee"/></svg>`,
+  acc:`<g transform="translate(0 4)"><path d="M34 98Q60 124 86 98z" fill="#fff" stroke="#e6c9a8" stroke-width="2"/><circle cx="50" cy="96" r="7" fill="#fff" stroke="#eee"/><circle cx="62" cy="94" r="7" fill="#ffd1dc"/><circle cx="72" cy="97" r="6" fill="#fff" stroke="#eee"/></g>`},
+ easter:{n:L("复活节","Easter"),bg:"#f3fbf0",t:"#3f8f5b",ring:"#9fd9a8",tip:L("Happy Easter！小芽戴上兔耳朵去找彩蛋啦。","Happy Easter! {pet} put on bunny ears to hunt for eggs."),
+  ic:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34"><ellipse cx="17" cy="18" rx="10" ry="13" fill="#c7b6ff"/><path d="M8 14q4 3 9 0t9 0M8 22q4 3 9 0t9 0" stroke="#fff" stroke-width="2.2" fill="none"/></svg>`,
+  acc:`<ellipse cx="44" cy="12" rx="8" ry="22" fill="#fff" transform="rotate(-12 44 30)"/><ellipse cx="44" cy="14" rx="4" ry="15" fill="#ffc6d6" transform="rotate(-12 44 30)"/><ellipse cx="76" cy="12" rx="8" ry="22" fill="#fff" transform="rotate(12 76 30)"/><ellipse cx="76" cy="14" rx="4" ry="15" fill="#ffc6d6" transform="rotate(12 76 30)"/><ellipse cx="96" cy="104" rx="10" ry="13" fill="#ffe08a" stroke="#c7b6ff" stroke-width="3"/>`},
+ dw:{n:L("端午节","Dragon Boat Festival"),bg:"#eef8ef",t:"#2f7a46",ring:"#4caf72",tip:L("端午安康！小芽抱着一个粽子，你今天吃的是甜粽还是咸粽？","Happy Dragon Boat Festival! {pet} is hugging a zongzi. Sweet or savoury for you?"),
+  ic:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34"><path d="M17 4L30 28H4z" fill="#3f9a5b"/><path d="M10 18h14M8 23h18" stroke="#b8d98a" stroke-width="2"/></svg>`,
+  acc:`<g transform="translate(60 96) scale(1.3)"><path d="M0-17Q3-17 5-13L15 6Q17 11 12 11H-12Q-17 11-15 6L-5-13Q-3-17 0-17z" fill="#4caf72"/><path d="M-9-2L9-2M-12 5L12 5" stroke="#8fd19e" stroke-width="2"/><path d="M-3-14L6 10" stroke="#3a8f5a" stroke-width="1.6"/><path d="M-13 1Q0 -3 13 1" stroke="#c98a4e" stroke-width="2.6" fill="none"/><ellipse cx="-17" cy="4" rx="5.5" ry="4.5" fill="#ffe08a" stroke="#f0c869" stroke-width="1"/><ellipse cx="17" cy="4" rx="5.5" ry="4.5" fill="#ffe08a" stroke="#f0c869" stroke-width="1"/></g>`},
+ qx:{n:L("七夕","Qixi"),bg:"#f4efff",t:"#7a4fc0",ring:"#8b6cf0",tip:L("七夕快乐，愿你被喜欢的人和事温柔对待。","Happy Qixi. May the people and things you love be gentle with you."),
+  ic:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34">${fStar(9,10,1.2,"#f0c14b")}${fStar(26,8,.9,"#f0c14b")}<path d="M4 26Q17 14 30 26" stroke="#c7b6ff" stroke-width="3" fill="none"/></svg>`,
+  acc:fStar(16,26,1.6,"#f0c14b")+fStar(104,22,1.3,"#f0c14b")+fStar(108,48,.9,"#fff")+fHeart(48,94,3,"#c7b6ff")},
+ zq:{n:L("中秋节","Mid-Autumn Festival"),bg:"#eef1fb",t:"#3a4a8a",ring:"#3a4a8a",tip:L("中秋快乐！今晚的月亮很圆，记得抬头看看。","Happy Mid-Autumn! The moon is full tonight, take a look."),
+  ic:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34"><circle cx="17" cy="17" r="12" fill="#f0c14b"/><circle cx="22" cy="13" r="2" fill="#e0a92c"/><circle cx="13" cy="21" r="1.5" fill="#e0a92c"/></svg>`,
+  acc:`<g transform="translate(0 4)"><circle cx="60" cy="100" r="16" fill="#d9a03a"/><circle cx="60" cy="100" r="11" fill="none" stroke="#b5791f" stroke-width="2" stroke-dasharray="3 3"/><circle cx="60" cy="100" r="4" fill="#b5791f"/></g><circle cx="104" cy="22" r="10" fill="#f0c14b"/>`},
+ gq:{n:L("国庆节","National Day"),bg:"#fff3f0",t:"#c8102e",ring:"#e2323d",tip:L("国庆快乐！假期好好休息，出去走走吧。","Happy National Day! Rest up and get outside."),
+  ic:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34"><path d="M6 4v28" stroke="#8a6a4a" stroke-width="2"/><rect x="7" y="5" width="22" height="15" fill="#e2323d"/>${fStar(12,10,.8,"#f0c14b")}</svg>`,
+  acc:`<path d="M96 40v74" stroke="#8a6a4a" stroke-width="3"/><path d="M97 42h22v15H97z" fill="#e2323d"/>${fStar(102,48,.7,"#f0c14b")}`},
+ hw:{n:L("万圣节","Halloween"),bg:"#fff4e8",t:"#c2570c",ring:"#5b3a74",cover:1,tip:L("Happy Halloween！不给糖就捣蛋～","Happy Halloween! Trick or treat～"),
+  ic:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34"><path d="M17 4c-7 0-11 6-11 14v12l4-3 3 3 4-3 4 3 3-3 4 3V18c0-8-4-14-11-14z" fill="#fff" stroke="#ccc"/><circle cx="13" cy="15" r="2" fill="#333"/><circle cx="21" cy="15" r="2" fill="#333"/></svg>`,
+  acc:`<g transform="translate(60 38)"><ellipse cx="0" cy="0" rx="42" ry="7.6" fill="#4a2f63"/><path d="M-22.7 0Q-16.8 -28.8 1.7 -38.4Q10.1 -43.2 21.8 -48Q10.1 -29.8 22.7 0z" fill="#5b3a74"/><path d="M-21.8 -5.8Q0 -9.6 22.7 -5.8L22.7 -1Q0 -4.8 -22.7 -1z" fill="#f08a3c"/></g>`},
+ xmas:{n:L("圣诞节","Christmas"),bg:"#fbf1e6",t:"#ad2a2a",ring:"#d23a3a",cover:1,big:1,tip:L("圣诞快乐！小芽戴好圣诞帽，等着拆礼物啦。","Merry Christmas! {pet} has its Santa hat on and is waiting to open presents."),
+  ic:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 52"><rect x="17" y="40" width="6" height="9" rx="1" fill="#a0672f"/><path d="M20 4 L34 22 H26 L36 34 H26 L38 44 H2 L14 34 H4 L14 22 H6z" fill="#2f9a5b"/><path d="M20 0l1.6 3.4 3.6.5-2.6 2.5.6 3.6L20 8.3 16.8 10l.6-3.6-2.6-2.5 3.6-.5z" fill="#ffd34d"/><circle cx="14" cy="30" r="2" fill="#e2323d"/><circle cx="26" cy="38" r="2" fill="#4aa8ff"/></svg>`,
+  acc:`<g transform="translate(60 40)"><path d="M-35 0Q-29.4 -40 3.5 -40Q28 -40 39 -16L42 6L30.8 0z" fill="#e2323d"/><path d="M-38 2Q0 -7.2 38 2" stroke="#e3d6c6" stroke-width="12" stroke-linecap="round" fill="none"/><path d="M-38 2Q0 -7.2 38 2" stroke="#fffaf2" stroke-width="9" stroke-linecap="round" fill="none"/><circle cx="42" cy="8" r="7" fill="#fffaf2" stroke="#e3d6c6" stroke-width="1.5"/></g>`},
+ bday:{n:L("你的生日","Your birthday"),bg:"#fff5f8",t:"#c2577a",ring:"#ff8fb1",cover:1,tip:L(`生日快乐，${nm}！又长大一岁啦，今天你最大。`,`Happy birthday, ${nm}! Today is all about you.`),
+  ic:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3.2q1.6 1.7 0 3.2-1.6-1.5 0-3.2z" fill="#ff9a3d"/><rect x="11.2" y="6.4" width="1.6" height="3.6" rx=".6" fill="#8b6cf0"/><rect x="4.5" y="10" width="15" height="4.6" rx="2.2" fill="#ff8fb1"/><rect x="3.5" y="14" width="17" height="6.5" rx="2.6" fill="#ffe08a"/></svg>`,
+  acc:fCone("#8b6cf0","#ffd34d","#ff8fb1")+`<g transform="translate(66 84) scale(.8)"><ellipse cx="22" cy="36" rx="28" ry="5" fill="#e9e4f5"/><rect x="0" y="12" width="44" height="24" rx="6" fill="#fff6e8"/><path d="M0 18q0-6 6-6h32q6 0 6 6v3q-3 5-6 0-3 6-7 0-3 6-7 0-4 6-7 0-3 6-7 0-3 5-7 0z" fill="#ff8fb1"/><circle cx="10" cy="28" r="2.4" fill="#ef5d6e"/><circle cx="22" cy="30" r="2.4" fill="#ef5d6e"/><circle cx="34" cy="28" r="2.4" fill="#ef5d6e"/><rect x="10" y="0" width="3.5" height="12" rx="1.5" fill="#6aa8f0"/><rect x="20.3" y="-2" width="3.5" height="14" rx="1.5" fill="#ffd34d"/><rect x="30.5" y="0" width="3.5" height="12" rx="1.5" fill="#5cc98f"/><path d="M11.7-6q3 3 0 5-3-2 0-5zM22-8q3 3 0 5-3-2 0-5zM32.2-6q3 3 0 5-3-2 0-5z" fill="#ff9a3d"/></g>`},
+ anniv:{n:L("重要纪念日","Anniversary"),bg:"#fff7ef",t:"#b5651d",ring:"#f0a35c",tip:"",btn:1,
+  ic:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34">${fHeart(5,4,3,"#ff8fb1")}<path d="M17 25v8" stroke="#b5651d" stroke-width="1.5"/></svg>`,
+  acc:`<path d="M100 40v60" stroke="#b5651d" stroke-width="1.5"/>${fHeart(86,8,3.6,"#ef5d6e")}`}}};
+function festKeyOn(d){
+  const y=+d.slice(0,4), md=d.slice(5);
+  if(birthday&&birthday.slice(5)===md)return {k:"bday"};
+  const an=yearlyDays.find(x=>x.type==="anniv"&&+x.month===+md.slice(0,2)&&+x.day===+md.slice(3));
+  if(an){const n=an.year?y-an.year:0;return {k:"anniv",tip:n>0?L(`今天是「${an.name}」${n} 周年，要不要写封信记下来？`,`It's ${n} ${n_(n,"year","years")} since “${an.name}” today. Write a letter about it?`):L(`今天是「${an.name}」，要不要写封信记下来？`,`Today is “${an.name}”. Write a letter about it?`)}}
+  if(md==="01-01")return {k:"ny"}; if(md==="02-14")return {k:"val"};
+  const cny=LUNAR.cny[y]; if(cny){const c=`${y}-${cny}`;if(d>=addDays(c,-1)&&d<=addDays(c,2))return {k:"cny"};if(d===addDays(c,14))return {k:"yx"}}
+  if(d===easterOf(y))return {k:"easter"};
+  if(LUNAR.dw[y]&&md===LUNAR.dw[y])return {k:"dw"}; if(LUNAR.qx[y]&&md===LUNAR.qx[y])return {k:"qx"}; if(LUNAR.zq[y]&&md===LUNAR.zq[y])return {k:"zq"};
+  if(md>="10-01"&&md<="10-03")return {k:"gq"}; if(md==="10-31")return {k:"hw"}; if(md>="12-24"&&md<="12-26")return {k:"xmas"};
+  return null}
+function festNow(){if(festPreview)return {k:festPreview,tip:festPreview==="anniv"?L("今天是「和 Lily 认识」3 周年，要不要写封信记下来？","It's 3 years since “Met Lily” today. Write a letter about it?"):""};if(festOff)return null;return festKeyOn(todayStr())}
+let festApplied="", fabPlain=null;
+const fesc=s=>encodeURIComponent(s).replace(/'/g,"%27");
+function applyFest(){
+  const f=festNow(), key=f?f.k+"|"+(f.tip||"")+"|"+userName+"|"+lang:"";
+  const say=$("#say"); let fb=$("#festBtn");
+  if(f){const d=FEST()[f.k];const tip=(f.tip||d.tip).replaceAll("{pet}",petName());say.textContent=tip;
+    if(d.btn){if(!fb){fb=document.createElement("button");fb.id="festBtn";fb.className="link festbtn";fb.onclick=()=>{openMailbox();setTimeout(()=>openLetter(null,false,{kind:"custom"}),60)};say.closest(".bubble").after(fb)}fb.textContent=L("写封信 ✉","Write a letter ✉")}else fb?.remove()}
+  else fb?.remove();
+  if(key===festApplied)return; festApplied=key;
+  const root=document.documentElement, fab=$("#fab");
+  document.querySelectorAll(".fest-snow,.fest-lights").forEach(x=>x.remove());
+  if(!f){delete root.dataset.fest;["--fest-bg","--fest-t","--fest-ring","--fest-ic"].forEach(p=>root.style.removeProperty(p));if(fabPlain!==null){fab.innerHTML=fabPlain;fab.classList.remove("fest");fabPlain=null}return}
+  const d=FEST()[f.k];
+  root.dataset.fest=f.k;root.style.setProperty("--fest-bg",d.bg);root.style.setProperty("--fest-t",d.t);root.style.setProperty("--fest-ring",d.ring);root.style.setProperty("--fest-ic",`url("data:image/svg+xml,${fesc(d.ic)}")`);
+  if(fabPlain===null)fabPlain=fab.innerHTML;
+  const svg=fab.querySelector("svg"), st=svg?svg.getAttribute("style")||"":"";
+  const tmp=document.createElement("div");tmp.innerHTML=fabPlain;const parts=[...tmp.querySelector("svg").children].filter(x=>!x.classList.contains("tw"));
+  const base=parts.map((x,i)=>d.cover&&i<3?"":x.outerHTML).join("");
+  fab.classList.add("fest");
+  fab.innerHTML=`<svg viewBox="0 0 120 120" aria-hidden="true" style="${st}"><defs><clipPath id="festclip"><circle cx="60" cy="60" r="55"/></clipPath></defs><g clip-path="url(#festclip)"><g transform="translate(60 66) scale(.8) translate(-60 -66)">${base}${d.acc}</g></g></svg>`;
+  if(d.big){
+    const g=$(".garden");if(g){const li=document.createElement("div");li.className="fest-lights";li.setAttribute("aria-hidden","true");li.innerHTML=[...Array(14)].map((_,i)=>`<i style="--c:${["#e2323d","#f0c14b","#2f9a5b","#4aa8ff"][i%4]};--d:${(i%4)*.4}s"></i>`).join("");g.prepend(li)}
+    if(!matchMedia("(prefers-reduced-motion: reduce)").matches){const sn=document.createElement("div");sn.className="fest-snow";sn.setAttribute("aria-hidden","true");sn.innerHTML=[...Array(22)].map((_,i)=>`<i style="left:${(i*4.6+3)%100}%;--s:${4+(i*7)%6}px;--t:${9+(i*5)%9}s;--dl:-${(i*3.7)%12}s;--x:${(i%2?1:-1)*(10+i%4*6)}px"></i>`).join("");document.body.appendChild(sn)}}
+}
 const PET_KEY="lifeos-pet";
 let lastBuddy="", lastStage=null;
 function renderBuddy(){
@@ -1192,6 +1291,7 @@ function renderBuddy(){
   $("#forestN").textContent=forest.length; $("#forestBtn").title=L(`我的森林，${forest.length} 棵树`,`My forest, ${forest.length} ${n_(forest.length,"tree","trees")}`);
   $("#plantBtn").hidden=!(loaded.t&&loaded.f&&s.stage===STAGES.length-1);
   const fs=document.querySelector("#fab svg"); if(fs)fs.setAttribute("style",themeStyle(curTheme));
+  applyFest();
   if(loaded.t&&loaded.c&&loaded.f){
     if(lastStage!==null&&s.stage>lastStage){
       lastStage=s.stage; levelUp(s.stage);
@@ -2041,10 +2141,11 @@ function paperHTML(x,editable){
   const sig=(x.sig||"").trim();
   return `<div class="lp lp-${x.paper||"kraft"}" style="font-family:${lfont(x.font)}">${x.from||x.who==="friend"?"":`<div class="lto">${L("致 ","Dear ")}${esc(letterTo(x))}${L("：",",")}</div>`}${editable?`<textarea class="lbody" id="lbody" rows="3" placeholder="${L("想对那时候的自己说些什么？","What would you like to tell yourself?")}">${esc(x.body||"")}</textarea>`:`<div class="lbody rd">${esc(x.body||"").replace(/\n/g,"<br>")}</div>`}<div class="lsig${sig?"":" empty"}">${esc(sig)}</div><div class="ltail"></div>${st}</div>`;
 }
-function openLetter(id,importMode){
+function openLetter(id,importMode,preset){
   const ex=id?letters.find(x=>x.id===id):null; if(id&&!ex)return;
   const t=todayStr(), y=+t.slice(0,4);
   const st=ex?{...ex}:{kind:"year",paper:"kraft",font:"brush",sticker:"great",body:"",writtenAt:Date.now()};
+  if(preset&&!ex)Object.assign(st,preset);
   if(importMode){st.kind="old";st.toText="";st.wdate=addDays(t,-365);st.iw="done";st.iOpen=addDays(t,180);st.who="me";st.friend=""}
   if(st.kind==="custom"){st.custTo=st.toText||"";st.customOn=st.openOn}
   if(st.kind==="send"){st.sendTo=st.toText||"";st.sendOn=st.openOn}
@@ -4380,6 +4481,8 @@ function openSettings(){
     <div class="field"><span>${L("几点该睡觉","Bedtime")}</span><div class="until-row"><input type="time" id="set-bed" value="${esc(kept.bed??bedTime)}"><button class="chip hz${(kept.bed??bedTime)?"":" on"}" data-set="nobed">${L("不提醒","Off")}</button></div><span class="hint">${L("过了这个时间，{pet}会提醒你该睡啦。","After this time {pet} will remind you to go to bed.")}</span></div>
     <div class="field"><span>${L("我的生日（写给下一岁的信会在这天拆）","My birthday (letters to a year-older me open then)")}</span><div class="drow">${(()=>{const b=bdParts();return `<select id="set-bm"><option value="">${L("月","Month")}</option>${[...Array(12)].map((_,i)=>`<option value="${i+1}" ${b&&b.m===i+1?"selected":""}>${L(`${i+1} 月`,MON[i])}</option>`).join("")}</select><select id="set-bd"><option value="">${L("日","Day")}</option>${[...Array(31)].map((_,i)=>`<option value="${i+1}" ${b&&b.d===i+1?"selected":""}>${L(`${i+1} 日`,String(i+1))}</option>`).join("")}</select><input id="set-by" inputmode="numeric" maxlength="4" placeholder="${L("年（可不填）","Year (optional)")}" value="${b&&b.y?b.y:""}">`})()}</div></div>
     <div class="field"><span>${L("冰箱：放多久提醒我","Fridge: remind me after")}</span><div class="shelfset">${SHELF.map(([k,,d,zh,en])=>`<label><span>${L(zh,en)}</span><select data-shelf="${k}">${[1,2,3,4,5,7,10,14,21,30,60,0].map(v=>`<option value="${v}" ${shelfDays(k)===v?"selected":""}>${v?L(v>=30&&v%30===0?`${v/30} 个月`:v>=7&&v%7===0?`${v/7} 周`:`${v} 天`,v>=30&&v%30===0?`${v/30} mo`:v>=7&&v%7===0?`${v/7} wk`:`${v} d`):L("不提醒","Never")}${v===d?L("（默认）"," (default)"):""}</option>`).join("")}</select></label>`).join("")}</div></div>
+    <div class="field"><span>${L("节日装扮","Festival dress-up")}</span><div class="btnrow"><button class="chip hz${festOff?"":" on"}" data-set="fest" aria-pressed="${!festOff}">${festOff?"":"✓ "}${L("过节时小芽换装","Dress up {pet} on holidays").replaceAll("{pet}",petName())}</button></div>
+      <div class="btnrow fpv"><span class="hint">${L("看看效果：","Preview:")}</span>${Object.entries(FEST()).map(([k,v])=>`<button class="tchip sm" data-set="festpv" data-v="${k}">${v.n}</button>`).join("")}</div></div>
     <div class="field"><span>${L("功能介绍","Tour")}</span><div><div class="btnrow"><button class="btn" data-set="tour">${L("重新看一遍介绍","Replay the tour")}</button><button class="btn" data-set="news">${L("最近的新功能","What's new")}</button></div></div></div>
     <label class="field chk"><span>${L("番茄钟提示音","Timer sound")}</span><span class="chkrow"><input type="checkbox" id="set-sound" ${(kept.snd??pset.sound)?"checked":""}> ${L("专注、休息结束时轻轻叮一声（默认关）","A soft ding when focus or a break ends (off by default)")}</span></label>
     ${IS_WEB?`    <div class="field"><span>${L("备份","Backup")}</span>
@@ -4407,6 +4510,8 @@ function openSettings(){
     if(a==="lang"){keep();setLang(b.dataset.v);draw();return}
     if(a==="nobed"){bg.querySelector("#set-bed").value="";return}
     if(a==="tour"){bg.remove();setTimeout(()=>startTour("full"),250);return}
+    if(a==="fest"){festOff=!festOff;try{localStorage.setItem(FEST_KEY,festOff?"off":"on")}catch(_){}b.classList.toggle("on",!festOff);b.setAttribute("aria-pressed",String(!festOff));b.textContent=(festOff?"":"✓ ")+L("过节时小芽换装","Dress up {pet} on holidays").replaceAll("{pet}",petName());festApplied="x";applyFest();return}
+    if(a==="festpv"){festPreview=b.dataset.v;festApplied="x";bg.remove();applyFest();snack(L("这是预览","This is a preview"),L(`${FEST()[festPreview].n}那天会是这样，刷新页面也会恢复`,`How ${FEST()[festPreview].n} will look. Refreshing ends it too`),L("关掉预览","End preview"),()=>{festPreview=null;festApplied="x";applyFest();renderBuddy()});return}
     if(a==="news"){bg.remove();try{const o=JSON.parse(localStorage.getItem(TOUR_KEY)||"{}");delete o["nf:"+NEWS()[0].id];localStorage.setItem(TOUR_KEY,JSON.stringify(o))}catch(_){}setTimeout(()=>startTour("news"),250);return}
     if(a==="citysearch"){const q=bg.querySelector("#set-city").value.trim();const box=bg.querySelector("#set-cityres");if(!q)return;box.innerHTML=`<span class="hint">${L("搜索中…","Searching…")}</span>`;
       searchCity(q).then(res=>{bg._city=res;box.innerHTML=res.length?res.map((c,i)=>`<button data-set="citypick" data-i="${i}"><span>${esc(c.name)}</span><small>${esc(c.area)}</small></button>`).join(""):`<span class="hint">${L("没找到，换个写法试试（英文城市名更容易找到）","Nothing found. Try another spelling.")}</span>`}).catch(()=>{box.innerHTML=`<span class="hint">${L("搜索失败，检查一下网络","Search failed. Check your connection.")}</span>`});return}
