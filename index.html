@@ -502,6 +502,7 @@ body.pomo-open{overflow:hidden}
 .wish.debt{background:color-mix(in srgb,var(--danger) 10%,var(--surface))}.w-tag{font-size:12px;color:var(--danger);font-weight:600;white-space:nowrap}.wish.debt .w-bar i{background:linear-gradient(90deg,#ff9fb1,var(--danger))}
 .wfs h3{display:flex;align-items:center;gap:10px}.wfs h3 .sf{width:34px;height:34px;flex:none}
 .wf-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:14px}.wf-row label{display:flex;align-items:center;gap:6px}.wf-row input,.wf-row select{font:inherit;border:1.5px solid var(--line);border-radius:10px;padding:7px 10px;width:110px;background:var(--surface);color:var(--fg)}.wf-row input[type=date]{width:auto;background:var(--surface);color:var(--fg)}.wf-row select{width:auto}
+.wf-src{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.wf-src button{border:1.5px solid var(--line);background:var(--surface);font:inherit;font-size:13.5px;padding:5px 12px;border-radius:999px;color:var(--fg);cursor:pointer}.wf-src button.on{border-color:#f0a63c;background:color-mix(in srgb,#f0a63c 16%,var(--surface));font-weight:600}.wf-src input{width:90px!important;padding:5px 10px!important;border-radius:999px!important;font-size:13.5px}
 .wf-seg{display:flex;gap:4px;background:var(--surface-2);border-radius:999px;padding:3px}.wf-seg button{border:0;background:none;font:inherit;font-size:13.5px;padding:6px 12px;border-radius:999px;color:var(--fg);cursor:pointer}.wf-seg button.on{background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:600}
 .wf-flow{display:flex;flex-direction:column;gap:6px;background:var(--surface-2);border-radius:14px;padding:10px 12px;font-size:14px}.wf-flow div{display:flex;justify-content:space-between;gap:8px}.wf-flow .x{color:var(--muted);font-size:12.5px}
 /* sprout coins & shop */
@@ -1892,7 +1893,7 @@ const NEWS_BASE=()=>[
     {go:"journal",sel:".dtabs",t:L("新功能 · 感恩日记","New · Gratitude journal"),b:L("<em>感恩日记</em>每天写三件让你感激或开心的小事，再选一个明天想做的小行动；想自由写就切到<em>今日感想</em>。","In the <em>Gratitude</em> tab, note three small things you're grateful for, and maybe one small step for tomorrow. Switch to <em>Reflection</em> to write freely.")},
     {go:"study",sel:".board .task",t:L("新功能 · 任务","New · Tasks"),b:L("截止日期可以精确到<em>几点</em>，快到了会显示还剩几小时；每天要做两次的事（比如早晚吃药），重复里可以选<em>早 / 中 / 晚</em>。","Deadlines can have a <em>time</em>, with hours left shown as it gets close. For things you do twice a day, pick <em>morning / noon / evening</em> in Repeat.")}]}];
 NEWS_MORE.push(()=>({id:"1118i",steps:[
-    {go:"lifewish",sel:"#wishForm",pad:4,t:L("新功能 · 愿望基金","New · Wish fund"),b:L("发工资时点「<em>＋ 发工资啦</em>」记一笔，钱会按你拖好的顺序自动分：先补「先买了」的，再给排在最前面的愿望。想买的愿望右边的「⋯」里可以选「<em>先买了，之后补</em>」，也可以手动存一笔。","When you get paid, tap <em>＋ Got paid</em>. The money flows in your order: first paying back things you bought early, then the wish at the top. The ⋯ on a wish lets you mark it <em>bought early</em> or add savings by hand.")}]}));
+    {go:"lifewish",sel:"#wishForm",pad:4,t:L("新功能 · 愿望基金","New · Wish fund"),b:L("有进账时（工资、兼职、奖学金都行）点「<em>＋ 有进账啦</em>」记一笔，钱会按你拖好的顺序自动分：先补「先买了」的，再给排在最前面的愿望。想买的愿望右边的「⋯」里可以选「<em>先买了，之后补</em>」，也可以手动存一笔。","When money comes in (pay, a side job, a grant), tap <em>＋ Money in</em>. The money flows in your order: first paying back things you bought early, then the wish at the top. The ⋯ on a wish lets you mark it <em>bought early</em> or add savings by hand.")}]}));
 NEWS_MORE.push(()=>({id:"1118h",steps:[
     {go:"lifewish",sel:"#wishTitle",pad:4,t:L("新功能 · 愿望清单改版","New · Wishlist refresh"),b:L("想去的地方变成了<em>明信片墙</em>，去过以后选一张照片，会画成一枚蜡笔邮票贴在角上。想买的可以点「<em>＋存一笔</em>」记攒了多少；按住 ⋮⋮ 能拖动排序；左边捧着相框的{pet}可以给愿望配图；🎲 随机抽一个。周末{pet}还会偶尔提起你的愿望。","Places to go are now a <em>postcard wall</em>: add a photo once you've been and it becomes a crayon stamp. Tap <em>＋Save</em> to log savings, hold ⋮⋮ to reorder, {pet} holding a frame adds a picture, 🎲 picks one at random. {pet} may bring up a wish at weekends.")}]}));
 NEWS_MORE.push(()=>({id:"1118g",steps:[
@@ -4727,24 +4728,30 @@ function fundCard(){
   if(!q.length&&!(wfund.pool>0)&&!(wfund.log||[]).length)return "";
   const lg=[...(wfund.log||[])].reverse().slice(0,12);
   return `<div class="wfund"><span class="wf-jar">${SF.happy||""}</span><div class="wf-t"><small>${L("愿望基金里还没分出去的","Unassigned in your wish fund")}</small><b>${money(wfund.pool||0,cur)}</b><small>${owe?`<span class="wf-owe">${L(`先买的还要补 ${money(owe,cur)}`,`${money(owe,cur)} to pay back`)}</span> · `:""}${need?L(`想买的还差 ${money(need,cur)}`,`${money(need,cur)} to go on things to buy`):q.length?"":L("都攒够啦","All covered")}</small></div>
-    <span class="wf-a">${wfund.pool>0&&q.length?`<button class="btn" data-act="fundsplit">${L("把基金分出去","Share it out")}</button>`:""}<button class="btn wf-pay" data-act="fundpay">＋ ${L("发工资啦","Got paid")}</button></span>
+    <span class="wf-a">${wfund.pool>0&&q.length?`<button class="btn" data-act="fundsplit">${L("把基金分出去","Share it out")}</button>`:""}<button class="btn wf-pay" data-act="fundpay">＋ ${L("有进账啦","Money in")}</button></span>
     ${lg.length?`<details class="wf-log"><summary>${L("记录","History")}</summary><ul>${lg.map(l=>`<li>${fmtRange(dayOf(l.at),dayOf(l.at)).split(" – ")[0]} · ${esc(l.t)}</li>`).join("")}</ul></details>`:""}</div>`;
 }
+const FUND_SRC="lifeos-fund-src",FUND_SRCS="lifeos-fund-srcs";
+function fundSrcs(){let a=[];try{a=JSON.parse(localStorage.getItem(FUND_SRCS)||"[]")}catch(_){}const base=L(["工资","兼职","奖学金","红包"],["Salary","Side job","Grant","Gift"]);return [...base,...a.filter(x=>!base.includes(x))]}
+function fundSrc(){try{return localStorage.getItem(FUND_SRC)||""}catch(_){return ""}}
 function openFund(fromPool){
   const cur=fundCur();let mode="auto",pick="";
   const bg=document.createElement("div");bg.className="sheet-bg";
-  const amt0=fromPool?r2(wfund.pool):"";
+  const amt0=fromPool?r2(wfund.pool):"";let src=fundSrc();
   const preview=()=>{const a=+bg.querySelector("#wfAmt").value||0;pick=bg.querySelector("#wfPick")?.value||pick;const {out,left}=fundPlan(a,mode,pick);
     bg.querySelector("#wfFlow").innerHTML=(out.map(([w,g])=>`<div><span>${w.done?L(`补「${esc(w.title)}」`,`Pay back “${esc(w.title)}”`):L(`给「${esc(w.title)}」`,`To “${esc(w.title)}”`)}</span><b>${money(g,cur)}</b></div>`).join("")||"")+(left>0?`<div><span>${fromPool?L("还留在基金里","Stays in the fund"):L("留在基金里","Kept in the fund")}</span><b>${money(left,cur)}</b></div>`:"")+`<div class="x">${L("顺序：先补先买了的，再给想买里排在最前面的。","Order: pay back early buys first, then the wish at the top of your list.")}</div>`};
   const q=fundQueue(cur);
   bg.innerHTML=`<div class="sheet wfs" role="dialog" aria-label="${L("愿望基金","Wish fund")}"><h3>${SF.happy||""}${fromPool?L("把基金里的钱分出去","Share out the fund"):L("这次放多少进愿望基金？","How much goes into the wish fund?")}</h3>
-    <div class="wf-row">${fromPool?"":`<label>${L("哪天的工资","Paid on")}<input id="wfDate" type="date" value="${todayStr()}" max="${todayStr()}"></label><label>${L(`这次兼职拿到 ${cur}`,`Paid this time ${cur}`)}<input id="wfWage" type="number" min="0" step="0.01" inputmode="decimal" placeholder="${L("可不填","optional")}"></label>`}<label>${fromPool?L(`分出去 ${cur}`,`Share out ${cur}`):L(`放进基金 ${cur}`,`Into the fund ${cur}`)}<input id="wfAmt" type="number" min="0" step="0.01" inputmode="decimal" value="${amt0}"></label></div>
+    <div class="wf-row">${fromPool?"":`<label>${L("哪一天","Date")}<input id="wfDate" type="date" value="${todayStr()}" max="${todayStr()}"></label></div>
+    <div class="wf-row"><span>${L("是什么钱：","From:")}</span><div class="wf-src">${fundSrcs().map(x=>`<button data-src="${esc(x)}" class="${x===fundSrc()?"on":""}">${esc(x)}</button>`).join("")}<input id="wfSrcNew" maxlength="12" placeholder="${L("＋ 其他","＋ Other")}"></div></div>
+    <div class="wf-row"><label>${L(`这次拿到 ${cur}`,`Received ${cur}`)}<input id="wfWage" type="number" min="0" step="0.01" inputmode="decimal" placeholder="${L("可不填","optional")}"></label>`}<label>${fromPool?L(`分出去 ${cur}`,`Share out ${cur}`):L(`放进基金 ${cur}`,`Into the fund ${cur}`)}<input id="wfAmt" type="number" min="0" step="0.01" inputmode="decimal" value="${amt0}"></label></div>
     <div class="wf-row"><span>${L("怎么分：","How:")}</span><div class="wf-seg">${[["auto",L("按顺序自动分","In order")],...(fromPool?[]:[["keep",L("先放着","Keep it")]]),["pick",L("指定给…","Choose…")]].map(([k,n])=>`<button data-m="${k}" class="${k==="auto"?"on":""}">${n}</button>`).join("")}</div><select id="wfPick" hidden>${q.map(w=>`<option value="${w.id}">${esc(w.title)}</option>`).join("")}</select></div>
     <div class="wf-flow" id="wfFlow"></div>
     <div class="sheet-actions"><span></span><span style="display:flex;gap:8px"><button class="btn" data-wf="x">${L("取消","Cancel")}</button><button class="btn primary" data-wf="ok">${fromPool?L("分出去","Share it out"):L("放进去","Add")}</button></span></div></div>`;
   document.body.appendChild(bg);preview();bg.querySelector("#wfAmt").focus();
   bg.addEventListener("input",preview);bg.addEventListener("change",preview);
   bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}
+    const sb=e.target.closest("[data-src]");if(sb){src=sb.dataset.src;bg.querySelector("#wfSrcNew").value="";bg.querySelectorAll("[data-src]").forEach(x=>x.classList.toggle("on",x===sb));return}
     const m=e.target.closest("[data-m]");if(m){mode=m.dataset.m;bg.querySelectorAll("[data-m]").forEach(x=>x.classList.toggle("on",x===m));bg.querySelector("#wfPick").hidden=mode!=="pick";preview();return}
     const b=e.target.closest("[data-wf]");if(!b)return;if(b.dataset.wf==="x"){bg.remove();return}
     const a=r2(+bg.querySelector("#wfAmt").value||0);if(!(a>0)){bg.querySelector("#wfAmt").focus();return}
@@ -4752,10 +4759,11 @@ function openFund(fromPool){
     const dv=bg.querySelector("#wfDate")?.value, at=dv&&dv<todayStr()?new Date(dv+"T12:00:00").getTime():Date.now();
     const {out,left}=fundPlan(a,mode,bg.querySelector("#wfPick").value);fundApply(out,at);
     const wage=fromPool?0:r2(+bg.querySelector("#wfWage")?.value||0);
+    if(!fromPool){const nw=(bg.querySelector("#wfSrcNew")?.value||"").trim();if(nw)src=nw;if(src){try{localStorage.setItem(FUND_SRC,src);const list=fundSrcs();if(!list.includes(src))localStorage.setItem(FUND_SRCS,JSON.stringify([...list,src].slice(-8)))}catch(_){}}}
     wfund.pool=fromPool?r2(wfund.pool-a+left):r2((wfund.pool||0)+left);
     const parts=out.map(([w,g])=>`${w.title} ${money(g,cur)}`);
     const t=fromPool?L(`从基金分出 ${money(a-left,cur)} → ${parts.join("，")}`,`Shared ${money(a-left,cur)} from the fund → ${parts.join(", ")}`)
-      :L(`${wage?`兼职 ${money(wage,cur)}，`:""}放进基金 ${money(a,cur)}${parts.length?" → "+parts.join("，"):""}${left>0?`，留 ${money(left,cur)}`:""}`,`${wage?`Paid ${money(wage,cur)}, `:""}${money(a,cur)} into the fund${parts.length?" → "+parts.join(", "):""}${left>0?`, ${money(left,cur)} kept`:""}`);
+      :L(`${src||wage?`${src||L("进账","Money in")}${wage?" "+money(wage,cur):""}，`:""}放进基金 ${money(a,cur)}${parts.length?" → "+parts.join("，"):""}${left>0?`，留 ${money(left,cur)}`:""}`,`${src||wage?`${src||"Money in"}${wage?" "+money(wage,cur):""}, `:""}${money(a,cur)} into the fund${parts.length?" → "+parts.join(", "):""}${left>0?`, ${money(left,cur)} kept`:""}`);
     wfund.log=[...(wfund.log||[]),{at,t}].sort((x,y)=>x.at-y.at);fundSave();bg.remove();
     const paid=out.filter(([w])=>w.pre&&w.paidAt).map(([w])=>w.title), full=out.filter(([w])=>!w.done&&+w.saved>=+w.price).map(([w])=>w.title);
     cheer(paid.length?L(`「${paid[0]}」补齐啦！🎉`,`“${paid[0]}” is paid back! 🎉`):full.length?L(`「${full[0]}」攒够啦！🎉`,`You've saved enough for “${full[0]}”! 🎉`):L("放进去啦，一点点攒～","In it goes. Bit by bit～"),paid.length||full.length?"cheer":"happy");
