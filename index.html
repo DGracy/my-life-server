@@ -3923,12 +3923,15 @@ function dressSVG(fit,size,w){
   const L2=wornLayers(w||wornSet(fit));
   return `<svg viewBox="-6 -14 132 146" ${size?`width="${size}" height="${Math.round(size*146/132)}"`:""} aria-hidden="true" style="${themeStyle(curTheme)}">${L2.cover?"":MINI_LEAF}${MINI_BASE}${L2.face||MINI_FACE}${L2.over}</svg>`;
 }
-// the floating button wears your outfit (holiday looks take over on their day)
+// the floating button stays as it is; holiday looks still dress it up
 let fabDressKey="", FAB0=null;
 function dressFab(){
   const fab=$("#fab");if(!fab)return;
   if(festNow()){fabDressKey="";return}
   if(FAB0===null)FAB0=fabPlain!==null?fabPlain:fab.innerHTML;
+  // the floating button keeps its default look (only holidays dress it up)
+  if(fab.querySelector("#dressclip")){fab.innerHTML=FAB0;const s=fab.querySelector("svg");if(s)s.setAttribute("style",themeStyle(curTheme))}
+  return;
   const w=wornSet(null), key=JSON.stringify([...DRESS.map(s=>w[s]),curTheme]);
   if(key===fabDressKey&&!fab.classList.contains("fest"))return; fabDressKey=key;
   const Ly=wornLayers(w);
