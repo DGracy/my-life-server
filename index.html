@@ -462,7 +462,7 @@ body.pomo-open{overflow:hidden}
 .w-pop{background:var(--surface-2);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;margin:-4px 0 4px 30px}
 .w-pop .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px}.w-pop input{font:inherit;border:1.5px solid var(--line);border-radius:10px;padding:6px 10px;width:110px;background:var(--surface);color:var(--fg)}
 .w-pop ul{margin:0;padding:0;list-style:none;font-size:12.5px;color:var(--muted);display:flex;flex-direction:column;gap:2px;font-family:var(--f-num)}
-.w-line{color:var(--fg)!important;font-style:italic}
+.w-line{color:var(--fg)!important;font-style:italic;white-space:pre-wrap}
 .ghint{font-size:12.5px;color:var(--muted);margin:-4px 0 2px 4px}
 .w-dice{margin-left:auto;font-size:13.5px;padding:6px 12px}
 .w-drawn{display:flex;align-items:center;gap:12px;background:var(--surface-2);border-radius:16px;padding:10px 14px;margin-top:4px}.w-drawn-f .sf{width:40px;height:40px}.w-drawn>div{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}.w-drawn small{color:var(--muted);font-size:12.5px}.w-drawn b{font-size:16px}.w-drawn-a{display:flex;gap:6px;align-items:center}
@@ -475,9 +475,9 @@ body.pomo-open{overflow:hidden}
 .pc-ph{border-radius:3px;overflow:hidden;line-height:0;aspect-ratio:16/11}.pc-ph svg,.pc-ph img{width:100%;height:100%;object-fit:cover;display:block}
 .pc-cap{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:7px}.pc-cap b{font-size:14px;overflow-wrap:anywhere}
 .pc-tag{font-size:11px;color:#7a8bb0;border:1.4px dashed #b9c4dc;border-radius:4px;padding:1px 6px;white-space:nowrap}
-.pc-back{aspect-ratio:16/11;display:flex;flex-direction:column;gap:4px;padding:6px 8px;background:repeating-linear-gradient(#fffdf7 0 22px,#ece5d3 22px 23px);border-radius:3px;overflow:auto}
-.pc-l{font-family:"Caveat","LXGW WenKai TC","Kaiti SC",cursive;font-size:16px;color:#3b4a7a;flex:1;line-height:1.4}.pc-d{font-size:11px;color:#8a8fa8}.pc-d a{color:#2f7cf6}
-.pc-acts{display:flex;gap:6px;flex-wrap:wrap}.pc-acts .btn{padding:4px 10px;font-size:12.5px}
+.pc-back{aspect-ratio:16/11;display:flex;flex-direction:column;gap:6px;padding:10px 14px 8px 18px;background:#fffdf7 repeating-linear-gradient(transparent 0 25px,#ece5d3 25px 26px);background-position:0 10px;background-attachment:local;border-radius:3px;overflow:auto;box-shadow:inset 3px 0 0 #f3c6c6}
+.pc-l{font-family:"Caveat","LXGW WenKai TC","Kaiti SC",cursive;font-size:16px;color:#3b4a7a;flex:1;line-height:26px;white-space:pre-wrap;overflow-wrap:anywhere}.pc-d{font-size:11px;color:#8a8fa8;text-align:right}.pc-d a{color:#2f7cf6}
+.pc-acts{display:flex;gap:14px;justify-content:flex-end}.pc-acts button{border:0;background:none;font:inherit;font-size:12.5px;color:#2f7cf6;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(47,124,246,.35)}.pc-acts button.go{color:#2a8a5a}
 .pc-add{display:grid;place-items:center;min-height:150px;border:2px dashed #c9b190;background:transparent;box-shadow:none;color:#8a6c45;font-size:14px;transform:none}
 .cstamp{display:block;box-sizing:border-box;position:absolute;right:-8px;top:-10px;width:72px;padding:6px;transform:rotate(8deg);filter:drop-shadow(0 3px 4px rgba(0,0,0,.18));background:radial-gradient(circle,transparent 2.6px,#fff 3px) -4px -4px/8px 8px;z-index:1;pointer-events:none}
 .cs-in{display:flex;flex-direction:column;background:#fff;padding:3px}.cs-ph{display:block;line-height:0;aspect-ratio:1;overflow:hidden}.cs-ph svg{width:100%;height:100%;display:block}
@@ -4671,7 +4671,7 @@ function postcard(w,i){
   const back=wishFlip.has(w.id), rot=((hashN(w.id)%7)-3)*.8, pins=["#ef5d6e","#2f7cf6","#f0a63c","#2fb38a","#9a6cf0"];
   const pic=w.photo?wishImgTag(w.photo,w.title):w.img?wishImgTag(w.img,w.title):wishScene(w);
   const face=back?`<div class="pc-back"><span class="pc-l">${w.done?esc(w.line||L("去过啦。","Been there.")):esc(w.note||L("还没去呢。","Not yet."))}</span><span class="pc-d">${w.done?dotDate(w.doneAt):L("想去","Want to go")}${w.link?` · <a href="${esc(/^https?:\/\//.test(w.link)?w.link:"https://"+w.link)}" target="_blank" rel="noopener">${L("链接","Link")} ↗</a>`:""}</span>
-      <span class="pc-acts"><button class="btn" data-act="wishedit" data-id="${w.id}">${L("编辑","Edit")}</button>${w.done?"":`<button class="btn primary" data-act="wishdone" data-id="${w.id}">${L("去过了 ✓","Been there ✓")}</button>`}</span></div>`
+      <span class="pc-acts"><button data-act="wishedit" data-id="${w.id}">${L("编辑","Edit")}</button>${w.done?"":`<button class="go" data-act="wishdone" data-id="${w.id}">${L("去过了 ✓","Been there ✓")}</button>`}</span></div>`
     :`<div class="pc-ph">${pic}</div>`;
   return `<div class="pc${w.done?" been":""}${back?" back":""}" style="--r:${rot}deg;--pc:${pins[hashN(w.id)%pins.length]}" data-did="${w.id}" data-act="wishflip" data-id="${w.id}" role="button" tabindex="0" aria-label="${esc(w.title)}">
     <span class="pin"></span>${w.done?"":`<span class="wgrip pcgrip" aria-label="${L("按住拖动","Drag")}">⋮⋮</span>`}${face}
@@ -4857,7 +4857,7 @@ function wishMemo(w){
   bg.addEventListener("change",async e=>{if(e.target.id!=="wmFile")return;const f=e.target.files&&e.target.files[0];if(!f)return;line=bg.querySelector("#wmLine").value;try{const raw=await shrinkImg(f,1400,.85);const c=await cropImg(raw,16/11);if(c){photo=c;draw()}}catch(_){}});
   bg.addEventListener("click",async e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-wm]");if(!b)return;
     if(b.dataset.wm==="adj"){line=bg.querySelector("#wmLine").value;const c=await cropImg(photo,16/11);if(c){photo=c;draw()}return}
-    if(b.dataset.wm==="ok"){line=bg.querySelector("#wmLine").value.trim().slice(0,140);const r=db.doc("wishes/"+w.id);queued(r.path,()=>r.update({photo:photo||null,line:line||null}));w.photo=photo;w.line=line;render()}
+    if(b.dataset.wm==="ok"){line=bg.querySelector("#wmLine").value.replace(/\s+$/,"").replace(/^\s+/,"").slice(0,140);const r=db.doc("wishes/"+w.id);queued(r.path,()=>r.update({photo:photo||null,line:line||null}));w.photo=photo;w.line=line;render()}
     bg.remove()});
 }
 // the sprout brings up a wish now and then (weekends for places and plans; savings when nearly there)
