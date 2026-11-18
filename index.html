@@ -501,7 +501,7 @@ body.pomo-open{overflow:hidden}
 .w-next{font-size:11.5px;font-weight:600;background:color-mix(in srgb,#f0a63c 18%,var(--surface));color:#a25a12;border-radius:999px;padding:1px 8px;margin-left:6px;white-space:nowrap}
 .wish.debt{background:color-mix(in srgb,var(--danger) 10%,var(--surface))}.w-tag{font-size:12px;color:var(--danger);font-weight:600;white-space:nowrap}.wish.debt .w-bar i{background:linear-gradient(90deg,#ff9fb1,var(--danger))}
 .wfs h3{display:flex;align-items:center;gap:10px}.wfs h3 .sf{width:34px;height:34px;flex:none}
-.wf-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:14px}.wf-row label{display:flex;align-items:center;gap:6px}.wf-row input,.wf-row select{font:inherit;border:1.5px solid var(--line);border-radius:10px;padding:7px 10px;width:110px;background:var(--surface);color:var(--fg)}.wf-row select{width:auto}
+.wf-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:14px}.wf-row label{display:flex;align-items:center;gap:6px}.wf-row input,.wf-row select{font:inherit;border:1.5px solid var(--line);border-radius:10px;padding:7px 10px;width:110px;background:var(--surface);color:var(--fg)}.wf-row input[type=date]{width:auto;background:var(--surface);color:var(--fg)}.wf-row select{width:auto}
 .wf-seg{display:flex;gap:4px;background:var(--surface-2);border-radius:999px;padding:3px}.wf-seg button{border:0;background:none;font:inherit;font-size:13.5px;padding:6px 12px;border-radius:999px;color:var(--fg);cursor:pointer}.wf-seg button.on{background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:600}
 .wf-flow{display:flex;flex-direction:column;gap:6px;background:var(--surface-2);border-radius:14px;padding:10px 12px;font-size:14px}.wf-flow div{display:flex;justify-content:space-between;gap:8px}.wf-flow .x{color:var(--muted);font-size:12.5px}
 /* sprout coins & shop */
@@ -4715,8 +4715,8 @@ function fundPlan(a,mode,pick){
   for(const w of q){if(left<=0)break;const need=r2(+w.price-(+w.saved||0));if(need<=0)continue;const g=Math.min(need,left);out.push([w,r2(g)]);left=r2(left-g)}
   return {out,left};
 }
-function fundApply(out,src){
-  const at=Date.now();
+function fundApply(out,at){
+  at=at||Date.now();
   for(const [w,g] of out){const deps=[...(w.deps||[]),{at,a:g,f:1}].slice(-200),saved=r2((+w.saved||0)+g),patch={deps,saved};
     if(w.pre&&saved>=+w.price)patch.paidAt=at;Object.assign(w,patch);const r=db.doc("wishes/"+w.id);queued(r.path,()=>r.update(patch))}
 }
@@ -4738,10 +4738,9 @@ function openFund(fromPool){
     bg.querySelector("#wfFlow").innerHTML=(out.map(([w,g])=>`<div><span>${w.done?L(`补「${esc(w.title)}」`,`Pay back “${esc(w.title)}”`):L(`给「${esc(w.title)}」`,`To “${esc(w.title)}”`)}</span><b>${money(g,cur)}</b></div>`).join("")||"")+(left>0?`<div><span>${fromPool?L("还留在基金里","Stays in the fund"):L("留在基金里","Kept in the fund")}</span><b>${money(left,cur)}</b></div>`:"")+`<div class="x">${L("顺序：先补先买了的，再给想买里排在最前面的。","Order: pay back early buys first, then the wish at the top of your list.")}</div>`};
   const q=fundQueue(cur);
   bg.innerHTML=`<div class="sheet wfs" role="dialog" aria-label="${L("愿望基金","Wish fund")}"><h3>${SF.happy||""}${fromPool?L("把基金里的钱分出去","Share out the fund"):L("这次放多少进愿望基金？","How much goes into the wish fund?")}</h3>
-    <div class="wf-row">${fromPool?"":`<label>${L(`这次兼职拿到 ${cur}`,`Paid this time ${cur}`)}<input id="wfWage" type="number" min="0" step="0.01" inputmode="decimal" placeholder="${L("可不填","optional")}"></label>`}<label>${fromPool?L(`分出去 ${cur}`,`Share out ${cur}`):L(`放进基金 ${cur}`,`Into the fund ${cur}`)}<input id="wfAmt" type="number" min="0" step="0.01" inputmode="decimal" value="${amt0}"></label></div>
+    <div class="wf-row">${fromPool?"":`<label>${L("哪天的工资","Paid on")}<input id="wfDate" type="date" value="${todayStr()}" max="${todayStr()}"></label><label>${L(`这次兼职拿到 ${cur}`,`Paid this time ${cur}`)}<input id="wfWage" type="number" min="0" step="0.01" inputmode="decimal" placeholder="${L("可不填","optional")}"></label>`}<label>${fromPool?L(`分出去 ${cur}`,`Share out ${cur}`):L(`放进基金 ${cur}`,`Into the fund ${cur}`)}<input id="wfAmt" type="number" min="0" step="0.01" inputmode="decimal" value="${amt0}"></label></div>
     <div class="wf-row"><span>${L("怎么分：","How:")}</span><div class="wf-seg">${[["auto",L("按顺序自动分","In order")],...(fromPool?[]:[["keep",L("先放着","Keep it")]]),["pick",L("指定给…","Choose…")]].map(([k,n])=>`<button data-m="${k}" class="${k==="auto"?"on":""}">${n}</button>`).join("")}</div><select id="wfPick" hidden>${q.map(w=>`<option value="${w.id}">${esc(w.title)}</option>`).join("")}</select></div>
     <div class="wf-flow" id="wfFlow"></div>
-    <p class="hint">${L("这里只是记账，不会动你真实的银行账户。工资多少只给你自己看。","This is just your own record; it never touches a real bank account.")}</p>
     <div class="sheet-actions"><span></span><span style="display:flex;gap:8px"><button class="btn" data-wf="x">${L("取消","Cancel")}</button><button class="btn primary" data-wf="ok">${fromPool?L("分出去","Share it out"):L("放进去","Add")}</button></span></div></div>`;
   document.body.appendChild(bg);preview();bg.querySelector("#wfAmt").focus();
   bg.addEventListener("input",preview);bg.addEventListener("change",preview);
@@ -4750,13 +4749,14 @@ function openFund(fromPool){
     const b=e.target.closest("[data-wf]");if(!b)return;if(b.dataset.wf==="x"){bg.remove();return}
     const a=r2(+bg.querySelector("#wfAmt").value||0);if(!(a>0)){bg.querySelector("#wfAmt").focus();return}
     if(fromPool&&a>r2(wfund.pool)){bg.querySelector("#wfAmt").value=r2(wfund.pool);preview();return}
-    const {out,left}=fundPlan(a,mode,bg.querySelector("#wfPick").value);fundApply(out);
+    const dv=bg.querySelector("#wfDate")?.value, at=dv&&dv<todayStr()?new Date(dv+"T12:00:00").getTime():Date.now();
+    const {out,left}=fundPlan(a,mode,bg.querySelector("#wfPick").value);fundApply(out,at);
     const wage=fromPool?0:r2(+bg.querySelector("#wfWage")?.value||0);
     wfund.pool=fromPool?r2(wfund.pool-a+left):r2((wfund.pool||0)+left);
     const parts=out.map(([w,g])=>`${w.title} ${money(g,cur)}`);
     const t=fromPool?L(`从基金分出 ${money(a-left,cur)} → ${parts.join("，")}`,`Shared ${money(a-left,cur)} from the fund → ${parts.join(", ")}`)
       :L(`${wage?`兼职 ${money(wage,cur)}，`:""}放进基金 ${money(a,cur)}${parts.length?" → "+parts.join("，"):""}${left>0?`，留 ${money(left,cur)}`:""}`,`${wage?`Paid ${money(wage,cur)}, `:""}${money(a,cur)} into the fund${parts.length?" → "+parts.join(", "):""}${left>0?`, ${money(left,cur)} kept`:""}`);
-    wfund.log=[...(wfund.log||[]),{at:Date.now(),t}];fundSave();bg.remove();
+    wfund.log=[...(wfund.log||[]),{at,t}].sort((x,y)=>x.at-y.at);fundSave();bg.remove();
     const paid=out.filter(([w])=>w.pre&&w.paidAt).map(([w])=>w.title), full=out.filter(([w])=>!w.done&&+w.saved>=+w.price).map(([w])=>w.title);
     cheer(paid.length?L(`「${paid[0]}」补齐啦！🎉`,`“${paid[0]}” is paid back! 🎉`):full.length?L(`「${full[0]}」攒够啦！🎉`,`You've saved enough for “${full[0]}”! 🎉`):L("放进去啦，一点点攒～","In it goes. Bit by bit～"),paid.length||full.length?"cheer":"happy");
     render()});
