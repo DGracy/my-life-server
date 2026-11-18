@@ -490,6 +490,20 @@ body.pomo-open{overflow:hidden}
 :root[data-theme="dark"],:root:not([data-theme])[data-tod="night"]{--cork:#3a3226}
 @media(max-width:520px){.pcwall{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 10px;padding:16px 10px}.cstamp:not(.big){width:52px;padding:4px;right:-4px;top:-8px}.cstamp:not(.big) .cs-t{display:none}.w-pop{margin-left:0}
  .wish.wish{flex-wrap:wrap;gap:8px}.wish.wish .w-main{flex:1 1 140px}.wish.wish .w-save{margin-left:40px}}
+.wfund{background:color-mix(in srgb,#f0a63c 15%,var(--surface));color:color-mix(in srgb,#8a5a10 80%,var(--fg));border-radius:18px;padding:12px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+:root[data-theme="dark"] .wfund,:root:not([data-theme])[data-tod="night"] .wfund{background:#3d3018;color:#ffd88a}:root[data-theme="dark"] .w-next,:root:not([data-theme])[data-tod="night"] .w-next{background:#3d3018;color:#ffd88a}
+.wf-jar .sf{width:44px;height:44px}.wf-t{flex:1;min-width:170px;display:flex;flex-direction:column;gap:2px}.wf-t b{font-size:22px;font-family:var(--f-num)}.wf-t small{font-size:12.5px;opacity:.9}.wf-owe{color:var(--danger);font-weight:600}
+.wf-a{display:flex;gap:8px;flex-wrap:wrap}.wf-pay{background:#f0a63c;color:#fff;border-color:#f0a63c;font-weight:600}
+.wf-log{width:100%;font-size:12.5px}.wf-log summary{cursor:pointer;opacity:.85}.wf-log ul{margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:2px;color:var(--muted)}
+.w-more{border:0;background:none;font:inherit;color:var(--muted);font-size:20px;cursor:pointer;padding:2px 6px;line-height:1}
+.w-menu{display:flex;flex-direction:column;align-self:flex-end;margin:-4px 4px 4px auto;background:var(--surface);border-radius:14px;box-shadow:0 8px 20px rgba(20,40,80,.16),0 0 0 1px var(--line);overflow:hidden;width:max-content;max-width:100%}
+.w-menu button{border:0;background:none;font:inherit;text-align:left;padding:10px 16px;font-size:14px;color:var(--fg);cursor:pointer}.w-menu button:hover{background:var(--surface-2)}
+.w-next{font-size:11.5px;font-weight:600;background:color-mix(in srgb,#f0a63c 18%,var(--surface));color:#a25a12;border-radius:999px;padding:1px 8px;margin-left:6px;white-space:nowrap}
+.wish.debt{background:color-mix(in srgb,var(--danger) 10%,var(--surface))}.w-tag{font-size:12px;color:var(--danger);font-weight:600;white-space:nowrap}.wish.debt .w-bar i{background:linear-gradient(90deg,#ff9fb1,var(--danger))}
+.wfs h3{display:flex;align-items:center;gap:10px}.wfs h3 .sf{width:34px;height:34px;flex:none}
+.wf-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:14px}.wf-row label{display:flex;align-items:center;gap:6px}.wf-row input,.wf-row select{font:inherit;border:1.5px solid var(--line);border-radius:10px;padding:7px 10px;width:110px;background:var(--surface);color:var(--fg)}.wf-row select{width:auto}
+.wf-seg{display:flex;gap:4px;background:var(--surface-2);border-radius:999px;padding:3px}.wf-seg button{border:0;background:none;font:inherit;font-size:13.5px;padding:6px 12px;border-radius:999px;color:var(--fg);cursor:pointer}.wf-seg button.on{background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:600}
+.wf-flow{display:flex;flex-direction:column;gap:6px;background:var(--surface-2);border-radius:14px;padding:10px 12px;font-size:14px}.wf-flow div{display:flex;justify-content:space-between;gap:8px}.wf-flow .x{color:var(--muted);font-size:12.5px}
 /* sprout coins & shop */
 .coin-btn{margin-left:0}.coin-btn .coin{flex:none}
 .stage .forest-btn+.coin-btn{margin-left:4px}
@@ -538,7 +552,7 @@ body.pomo-open{overflow:hidden}
 .fgarden{background:linear-gradient(#e8f6ff,#f4fbff)}.fs-gnd{position:absolute;left:-10px;right:-10px;bottom:-14px;height:40px;border-radius:50%;background:#cfeec4}
 .fgarden .fs-tree{position:absolute;right:16px;bottom:6px;width:76px;height:76px}.fgarden .fs-tree svg{width:100%;height:100%}.fgarden .fs-pal{position:absolute;left:58px;bottom:4px}
 .fs-p{position:absolute;width:36px;height:36px}.fs-p svg{width:100%;height:100%}.fgarden .gp0{left:14px;bottom:6px}.fgarden .gp1{left:116px;bottom:4px;width:30px;height:30px}.fgarden .gp2{right:2px;bottom:2px;width:30px;height:30px}
-.fdesk{background:linear-gradient(#fff6e8,#ffeedd)}.fdesk .fs-pal{position:absolute;left:50%;bottom:22px;transform:translateX(-50%)}.fs-top{position:absolute;left:0;right:0;bottom:0;width:100%;height:34px}
+.fdesk{background:linear-gradient(#fff6e8,#ffeedd)}.fdesk .fs-pal{position:absolute;left:50%;bottom:12px;transform:translateX(-50%)}.fdesk .fs-chair{position:absolute;left:50%;bottom:20px;width:88px;height:64px;transform:translateX(-50%);border-radius:18px 18px 6px 6px;background:#c98a4e}.fs-top{position:absolute;left:0;right:0;bottom:0;width:100%;height:34px}
 .fdesk .dp0{left:22px;bottom:14px}.fdesk .dp1{right:22px;bottom:14px}
 .sh-fit .fitinfo{width:100%;display:flex;flex-direction:column;gap:8px;align-items:center}.sh-fit h3{margin:0;font-size:16px}.sh-fit .hint{margin:0;font-size:13px;color:#5b7099;text-align:center;line-height:1.6}
 .sh-fit .flist{width:100%;display:flex;flex-direction:column;gap:6px}.sh-fit .row{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.8);border-radius:12px;padding:6px 10px;font-size:14px}.sh-fit .row>span:first-child{flex:1}.sh-fit .row i{font-style:normal;color:#5b7099;font-size:12.5px;margin-left:6px}
@@ -1877,6 +1891,8 @@ const NEWS_BASE=()=>[
     {go:"journal",sel:".moodc",t:L("新功能 · 心情","New · Mood"),b:L("小结里可以选今天的心情，用小芽的表情来表示。","Pick today's mood in Today, with one of {pet}'s faces.")},
     {go:"journal",sel:".dtabs",t:L("新功能 · 感恩日记","New · Gratitude journal"),b:L("<em>感恩日记</em>每天写三件让你感激或开心的小事，再选一个明天想做的小行动；想自由写就切到<em>今日感想</em>。","In the <em>Gratitude</em> tab, note three small things you're grateful for, and maybe one small step for tomorrow. Switch to <em>Reflection</em> to write freely.")},
     {go:"study",sel:".board .task",t:L("新功能 · 任务","New · Tasks"),b:L("截止日期可以精确到<em>几点</em>，快到了会显示还剩几小时；每天要做两次的事（比如早晚吃药），重复里可以选<em>早 / 中 / 晚</em>。","Deadlines can have a <em>time</em>, with hours left shown as it gets close. For things you do twice a day, pick <em>morning / noon / evening</em> in Repeat.")}]}];
+NEWS_MORE.push(()=>({id:"1118i",steps:[
+    {go:"lifewish",sel:"#wishForm",pad:4,t:L("新功能 · 愿望基金","New · Wish fund"),b:L("发工资时点「<em>＋ 发工资啦</em>」记一笔，钱会按你拖好的顺序自动分：先补「先买了」的，再给排在最前面的愿望。想买的愿望右边的「⋯」里可以选「<em>先买了，之后补</em>」，也可以手动存一笔。","When you get paid, tap <em>＋ Got paid</em>. The money flows in your order: first paying back things you bought early, then the wish at the top. The ⋯ on a wish lets you mark it <em>bought early</em> or add savings by hand.")}]}));
 NEWS_MORE.push(()=>({id:"1118h",steps:[
     {go:"lifewish",sel:"#wishTitle",pad:4,t:L("新功能 · 愿望清单改版","New · Wishlist refresh"),b:L("想去的地方变成了<em>明信片墙</em>，去过以后选一张照片，会画成一枚蜡笔邮票贴在角上。想买的可以点「<em>＋存一笔</em>」记攒了多少；按住 ⋮⋮ 能拖动排序；左边捧着相框的{pet}可以给愿望配图；🎲 随机抽一个。周末{pet}还会偶尔提起你的愿望。","Places to go are now a <em>postcard wall</em>: add a photo once you've been and it becomes a crayon stamp. Tap <em>＋Save</em> to log savings, hold ⋮⋮ to reorder, {pet} holding a frame adds a picture, 🎲 picks one at random. {pet} may bring up a wish at weekends.")}]}));
 NEWS_MORE.push(()=>({id:"1118g",steps:[
@@ -4098,7 +4114,7 @@ function renderShop(){
   const gp=(w.garden||[]).filter(k=>onFit(k)||isWorn(k)).slice(0,3), dp=(w.desk||[]).filter(k=>onFit(k)||isWorn(k)).slice(0,2);
   const pv=k=>`<svg viewBox="0 0 60 60" aria-hidden="true">${SHOPI[k].svg}</svg>`;
   const gScene=gp.length?`<div class="fscene fgarden" aria-label="${L("花园里的样子","In your garden")}"><span class="fs-gnd"></span><span class="fs-tree">${treeSVG("happy",stageOf(curWater()),false)}</span><span class="fs-pal">${dressSVG(shFit,58)}</span>${gp.map((k,i)=>`<span class="fs-p gp${i}">${pv(k)}</span>`).join("")}<small>${L("花园里","Garden")}</small></div>`:"";
-  const dScene=dp.length?`<div class="fscene fdesk" aria-label="${L("书桌上的样子","On your desk")}"><span class="fs-pal">${dressSVG(shFit,64)}</span><svg class="fs-top" viewBox="0 0 160 40" preserveAspectRatio="none" aria-hidden="true"><path d="M10 4H150L160 26H0Z" fill="#e6b27a"/><path d="M0 26H160V32H0Z" fill="#c98a4e"/></svg>${dp.map((k,i)=>`<span class="fs-p dp${i}">${pv(k)}</span>`).join("")}<small>${L("自习室的书桌","Study desk")}</small></div>`:"";
+  const dScene=dp.length?`<div class="fscene fdesk" aria-label="${L("书桌上的样子","On your desk")}"><span class="fs-chair"></span><span class="fs-pal">${dressSVG(shFit,64)}</span><svg class="fs-top" viewBox="0 0 160 40" preserveAspectRatio="none" aria-hidden="true"><path d="M10 4H150L160 26H0Z" fill="#e6b27a"/><path d="M0 26H160V32H0Z" fill="#c98a4e"/></svg>${dp.map((k,i)=>`<span class="fs-p dp${i}">${pv(k)}</span>`).join("")}<small>${L("自习室的书桌","Study desk")}</small></div>`:"";
   const fit=`<div class="sh-fit"><div class="fitpic">${big}${gScene}${dScene}</div>
     <div class="fitinfo"><h3>${fk.length?L(`试穿中 ${fk.length} 件`,`Trying on ${fk.length}`):pet(L("{pet}现在的样子","How {pet} looks now"))}</h3>${fk.length?`<div class="flist">${list}</div>`:`<p class="hint">${L("点右边的东西就能试穿，可以叠着穿，搭好了一起买。","Tap anything to try it on. Mix and match, then buy them together.")}</p>`}
     ${fk.length||shBought?`<div class="facts">${fk.length?`<button class="btn" data-sh="clr">${L("全脱下","Clear")}</button>`:""}<button class="btn primary" data-sh="buy" ${canBuy?"":"disabled"}>${btn}</button></div>`:""}</div></div>`;
@@ -4619,19 +4635,23 @@ function wishItem(w){
   const pct=price?Math.round(saved/price*100):0, left=price?Math.max(0,price-saved):0;
   const pic=w.photo||w.img;
   const pop=wishSaveOpen===w.id&&!w.done?`<div class="w-pop"><div class="row"><span>${L(`这次存了 ${cur}`,`Saved this time ${cur}`)}</span><input type="number" id="wDep" min="0" step="0.01" inputmode="decimal" placeholder="10"><button class="btn primary" data-act="wishdep" data-id="${w.id}">${L("存进去","Add")}</button></div>${(w.deps||[]).length?`<ul>${[...w.deps].reverse().slice(0,8).map(d=>`<li>${fmtRange(dayOf(d.at),dayOf(d.at)).split(" – ")[0]} · +${money(d.a,cur)}</li>`).join("")}</ul>`:""}</div>`:"";
+  const debt=w.done&&w.pre&&price&&saved<price, nextUp=!w.done&&fundQueue(cur)[0]?.id===w.id;
+  const menu=wishMenu===w.id&&!w.done?`<div class="w-menu"><button data-act="wishpre" data-id="${w.id}">${L("先买了，之后补","Bought it early, pay back later")}</button><button data-act="wishsave" data-id="${w.id}">${L("＋ 手动存一笔","＋ Add savings by hand")}</button><button data-act="wishedit" data-id="${w.id}">${L("编辑","Edit")}</button></div>`:"";
+  if(debt)return `<div class="wish k-buy debt" data-did="${w.id}">${pic?`<span class="w-th">${wishImgTag(pic,w.title)}</span>`:`<span class="w-ic" aria-hidden="true">${sproutIcon("buy")}</span>`}<button class="w-main" data-act="wishedit" data-id="${w.id}"><b>${esc(w.title)} <span class="w-tag">${L(`先买了 · 还要补 ${money(left,cur)}`,`Bought early · ${money(left,cur)} to pay back`)}</span></b><span class="w-bar"><i style="width:${pct}%"></i></span><small>${L(`已经补了 ${money(saved,cur)} / ${money(price,cur)}`,`${money(saved,cur)} of ${money(price,cur)} paid back`)}</small></button></div>`;
   return `<div class="wish k-${K[0]}${w.done?" done":""}" data-did="${w.id}">
     ${w.done?"":`<span class="wgrip" aria-label="${L("按住拖动排序","Drag to reorder")}" title="${L("按住拖动排序","Drag to reorder")}">⋮⋮</span>`}
     ${pic?`<span class="w-th">${wishImgTag(pic,w.title)}</span>`:`<span class="w-ic" aria-hidden="true">${sproutIcon(K[0])}</span>`}
     <button class="w-main" data-act="wishedit" data-id="${w.id}">
-      <b>${esc(w.title)}</b>
+      <b>${esc(w.title)}${nextUp?`<span class="w-next">${L("下一笔先到这里","Next in line")}</span>`:""}</b>
       ${price?`<span class="w-money"><span>${saved?L(`已攒 ${money(saved,cur)} / ${money(price,cur)}`,`${money(saved,cur)} saved of ${money(price,cur)}`):money(price,cur)}${!w.done&&saved&&left?L(` · 还差 ${money(left,cur)}`,` · ${money(left,cur)} to go`):""}</span>${!w.done?`<span class="w-bar"><i style="width:${pct}%"></i></span>`:""}</span>`:""}
       ${w.line?`<small class="w-line">${esc(w.line)}</small>`:w.note?`<small>${esc(w.note)}</small>`:""}
+      ${w.done&&w.pre&&w.paidAt?`<small>${L("先买后补，已经补齐啦 🎉","Bought early, now paid back 🎉")}</small>`:""}
       ${w.done&&w.doneAt?`<small>${L("实现于 ","Came true on ")}${fmtRange(dayOf(w.doneAt),dayOf(w.doneAt)).split(" – ")[0]}</small>`:""}
     </button>
     ${w.link?`<a class="w-link" href="${esc(/^https?:\/\//.test(w.link)?w.link:"https://"+w.link)}" target="_blank" rel="noopener" aria-label="${L("打开链接","Open link")}">↗</a>`:""}
-    ${!w.done&&w.kind==="buy"&&price?`<button class="w-save" data-act="wishsave" data-id="${w.id}">${L("＋存一笔","＋Save")}</button>`:""}
+    ${!w.done&&w.kind==="buy"&&price?`<button class="w-more" data-act="wishmenu" data-id="${w.id}" aria-label="${L("更多","More")}">⋯</button>`:""}
     ${w.done?`<span class="w-star">${milestoneFace()}</span>`:`<button class="w-done" data-act="wishdone" data-id="${w.id}" aria-label="${L("这个愿望实现了","This wish came true")}">✓</button>`}
-  </div>${pop}`;
+  </div>${menu}${pop}`;
 }
 function postcard(w,i){
   const back=wishFlip.has(w.id), rot=((hashN(w.id)%7)-3)*.8, pins=["#ef5d6e","#2f7cf6","#f0a63c","#2fb38a","#9a6cf0"];
@@ -4659,11 +4679,14 @@ function wishBoard(){
     return arr.length?`<section class="group"><h2><span class="badge"></span>${sproutIcon(k[0])} ${L(k[2],k[3])}<span class="cnt">${arr.length}</span></h2>${arr.length>1?`<p class="ghint">${L("按住左边的 ⋮⋮ 可以上下拖","Hold ⋮⋮ to reorder")}</p>`:""}<div class="list" data-dlist="${k[0]}">${arr.map(wishItem).join("")}</div></section>`:""}).join("");
   const dw=wishDrawn&&wishes.find(w=>w.id===wishDrawn&&!w.done);
   const drawn=dw?`<div class="w-drawn">${SF.happy?`<span class="w-drawn-f">${SF.happy}</span>`:""}<div><small>${L("抽到了","You drew")} · ${L((WISH_KINDS.find(k=>k[0]===dw.kind)||WISH_KINDS[2])[2],(WISH_KINDS.find(k=>k[0]===dw.kind)||WISH_KINDS[2])[3])}</small><b>${esc(dw.title)}</b><small>${(WISH_TIPS[dw.kind]||WISH_TIPS.do)()}</small></div><span class="w-drawn-a"><button class="btn" data-act="wishdraw">${L("换一个","Another")}</button><button class="mini" data-act="wishundraw" aria-label="${L("收起","Close")}">×</button></span></div>`:"";
-  const doneOther=done.filter(w=>w.kind!=="go");
+  const isDebt=w=>w.pre&&+w.price&&(+w.saved||0)<+w.price;
+  const debts=done.filter(isDebt).sort((a,b)=>(a.doneAt||0)-(b.doneAt||0));
+  const doneOther=done.filter(w=>w.kind!=="go"&&!isDebt(w));
   return `<div class="card wish-top">
       <div class="card-head"><h3>${L("愿望清单","Wishlist")}</h3><span class="sub">${L("想要的、想去的、想做的，都先放在这里","Things to buy, places to go, things to do someday")}</span>${open.some(w=>w.kind!=="buy")?`<button class="btn w-dice" data-act="wishdraw">🎲 ${L("抽一个","Pick one")}</button>`:""}</div>
       ${drawn}
       ${counts.length?`<p class="w-sum">${counts.map(([k,n])=>`${sproutIcon(k[0])} ${L(k[2],k[3])} <b>${n}</b>`).join(" · ")}${total?`<br>${L(`想买的加起来约 <b>${sumOf(0)}</b>，已经攒了 <b>${sumOf(1)}</b>`,`Things to buy add up to about <b>${sumOf(0)}</b>, with <b>${sumOf(1)}</b> saved`)}`:""}</p>`:""}
+      ${fundCard()}
       <form class="wish-add" id="wishForm">
         <div class="chips">${WISH_KINDS.map(k=>`<button type="button" class="chip hz${wishKind===k[0]?" on":""}" data-act="wishkind" data-v="${k[0]}">${sproutIcon(k[0])}${L(k[2],k[3])}</button>`).join("")}</div>
         <div class="wa-row"><label class="w-imgbtn${wishNewImg?" has":""}" title="${L("配一张图（可不放）","Add a picture (optional)")}">${wishNewImg?`<img src="${wishNewImg}" alt="">`:`<svg class="w-pf" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 7V3" stroke="#3faa74" stroke-width="2" stroke-linecap="round"/><path d="M20 5c-3 0-4.6-1.6-4.6-3.8 3 0 4.6 1.6 4.6 3.8zM20 5c3 0 4.6-1.6 4.6-3.8-3 0-4.6 1.6-4.6 3.8z" fill="#5cc98f"/><ellipse cx="20" cy="15" rx="11" ry="9.5" fill="#ffe08a"/><circle cx="16" cy="13.5" r="1.7" fill="#3a3350"/><circle cx="24" cy="13.5" r="1.7" fill="#3a3350"/><path d="M18 17q2 1.6 4 0" stroke="#3a3350" stroke-width="1.2" fill="none" stroke-linecap="round"/><ellipse cx="12.5" cy="16.5" rx="2" ry="1.2" fill="#ff8fb1" opacity=".8"/><ellipse cx="27.5" cy="16.5" rx="2" ry="1.2" fill="#ff8fb1" opacity=".8"/><rect x="8" y="19" width="24" height="18" rx="2.5" fill="#e6b27a"/><rect x="10.5" y="21.5" width="19" height="13" rx="1.2" fill="#dff3ff"/><path d="M10.5 34.5l6-7 4 4.5 3-3 6 5.5z" fill="#7fcf6a"/><circle cx="25" cy="25" r="2" fill="#ffd36b"/><circle cx="8.5" cy="28" r="2.6" fill="#ffe08a" stroke="#f0c75a" stroke-width=".8"/><circle cx="31.5" cy="28" r="2.6" fill="#ffe08a" stroke="#f0c75a" stroke-width=".8"/></svg>`}<input type="file" accept="image/*" id="wishImg" hidden></label><input type="text" id="wishTitle" maxlength="100" value="${esc(wishDraftT)}" placeholder="${{buy:L("比如：一台拍立得","e.g. An instant camera"),go:L("比如：去冰岛看极光","e.g. See the northern lights in Iceland"),do:L("比如：学会冲浪","e.g. Learn to surf")}[wishKind]}" aria-label="${L("愿望","Wish")}">
@@ -4671,9 +4694,76 @@ function wishBoard(){
           <button class="btn wish-btn" type="submit">${L("许愿","Add")}</button></div>
       </form>
     </div>
+    ${debts.length?`<section class="group"><h2><span class="badge"></span>${sproutIcon("buy")} ${L("先买了，还在补","Bought early, paying back")}<span class="cnt">${debts.length}</span></h2><div class="list">${debts.map(wishItem).join("")}</div></section>`:""}
     ${groups||emptyBox(L("还没有愿望。看到想要的东西、想去的地方，就先记在这里。","No wishes yet. When something catches your eye or a place calls you, note it here."))}
     ${doneOther.length?`<details class="done-box"><summary>${L(`已经实现的愿望 ${doneOther.length}`,`${doneOther.length} wishes come true`)}</summary><div class="list">${doneOther.map(wishItem).join("")}</div></details>`:""}`;
 }
+/* ---------- wish fund: wages go in once, then flow to wishes in order ---------- */
+let wfund={pool:0,cur:"£",log:[]}, wishMenu=null;
+const fundCur=()=>wfund.cur||"£";
+const r2=n=>Math.round((+n||0)*100)/100;
+// who gets money next: things bought early (oldest first), then open wishes in your order
+function fundQueue(cur){
+  cur=cur||fundCur();
+  const debt=wishes.filter(w=>w.done&&w.pre&&+w.price&&(+w.saved||0)<+w.price&&(w.cur||"£")===cur).sort((a,b)=>(a.doneAt||0)-(b.doneAt||0));
+  const open=wishes.filter(w=>!w.done&&w.kind==="buy"&&+w.price&&(+w.saved||0)<+w.price&&(w.cur||"£")===cur).sort((a,b)=>wishOrd(a)-wishOrd(b));
+  return [...debt,...open];
+}
+function fundPlan(a,mode,pick){
+  a=r2(a);const out=[];if(mode==="keep"||!(a>0))return {out,left:Math.max(0,a)};
+  let left=a;const q=mode==="pick"?fundQueue().filter(w=>w.id===pick):fundQueue();
+  for(const w of q){if(left<=0)break;const need=r2(+w.price-(+w.saved||0));if(need<=0)continue;const g=Math.min(need,left);out.push([w,r2(g)]);left=r2(left-g)}
+  return {out,left};
+}
+function fundApply(out,src){
+  const at=Date.now();
+  for(const [w,g] of out){const deps=[...(w.deps||[]),{at,a:g,f:1}].slice(-200),saved=r2((+w.saved||0)+g),patch={deps,saved};
+    if(w.pre&&saved>=+w.price)patch.paidAt=at;Object.assign(w,patch);const r=db.doc("wishes/"+w.id);queued(r.path,()=>r.update(patch))}
+}
+function fundSave(){const r=db.collection("wishfund").doc("main");const v={pool:r2(wfund.pool),cur:fundCur(),log:(wfund.log||[]).slice(-120)};queued(r.path,()=>r.set(v))}
+function fundCard(){
+  const cur=fundCur(),q=fundQueue(cur);
+  const owe=q.filter(w=>w.done).reduce((s,w)=>s+(+w.price-(+w.saved||0)),0),need=q.filter(w=>!w.done).reduce((s,w)=>s+(+w.price-(+w.saved||0)),0);
+  if(!q.length&&!(wfund.pool>0)&&!(wfund.log||[]).length)return "";
+  const lg=[...(wfund.log||[])].reverse().slice(0,12);
+  return `<div class="wfund"><span class="wf-jar">${SF.happy||""}</span><div class="wf-t"><small>${L("愿望基金里还没分出去的","Unassigned in your wish fund")}</small><b>${money(wfund.pool||0,cur)}</b><small>${owe?`<span class="wf-owe">${L(`先买的还要补 ${money(owe,cur)}`,`${money(owe,cur)} to pay back`)}</span> · `:""}${need?L(`想买的还差 ${money(need,cur)}`,`${money(need,cur)} to go on things to buy`):q.length?"":L("都攒够啦","All covered")}</small></div>
+    <span class="wf-a">${wfund.pool>0&&q.length?`<button class="btn" data-act="fundsplit">${L("把基金分出去","Share it out")}</button>`:""}<button class="btn wf-pay" data-act="fundpay">＋ ${L("发工资啦","Got paid")}</button></span>
+    ${lg.length?`<details class="wf-log"><summary>${L("记录","History")}</summary><ul>${lg.map(l=>`<li>${fmtRange(dayOf(l.at),dayOf(l.at)).split(" – ")[0]} · ${esc(l.t)}</li>`).join("")}</ul></details>`:""}</div>`;
+}
+function openFund(fromPool){
+  const cur=fundCur();let mode="auto",pick="";
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  const amt0=fromPool?r2(wfund.pool):"";
+  const preview=()=>{const a=+bg.querySelector("#wfAmt").value||0;pick=bg.querySelector("#wfPick")?.value||pick;const {out,left}=fundPlan(a,mode,pick);
+    bg.querySelector("#wfFlow").innerHTML=(out.map(([w,g])=>`<div><span>${w.done?L(`补「${esc(w.title)}」`,`Pay back “${esc(w.title)}”`):L(`给「${esc(w.title)}」`,`To “${esc(w.title)}”`)}</span><b>${money(g,cur)}</b></div>`).join("")||"")+(left>0?`<div><span>${fromPool?L("还留在基金里","Stays in the fund"):L("留在基金里","Kept in the fund")}</span><b>${money(left,cur)}</b></div>`:"")+`<div class="x">${L("顺序：先补先买了的，再给想买里排在最前面的。","Order: pay back early buys first, then the wish at the top of your list.")}</div>`};
+  const q=fundQueue(cur);
+  bg.innerHTML=`<div class="sheet wfs" role="dialog" aria-label="${L("愿望基金","Wish fund")}"><h3>${SF.happy||""}${fromPool?L("把基金里的钱分出去","Share out the fund"):L("这次放多少进愿望基金？","How much goes into the wish fund?")}</h3>
+    <div class="wf-row">${fromPool?"":`<label>${L(`这次兼职拿到 ${cur}`,`Paid this time ${cur}`)}<input id="wfWage" type="number" min="0" step="0.01" inputmode="decimal" placeholder="${L("可不填","optional")}"></label>`}<label>${fromPool?L(`分出去 ${cur}`,`Share out ${cur}`):L(`放进基金 ${cur}`,`Into the fund ${cur}`)}<input id="wfAmt" type="number" min="0" step="0.01" inputmode="decimal" value="${amt0}"></label></div>
+    <div class="wf-row"><span>${L("怎么分：","How:")}</span><div class="wf-seg">${[["auto",L("按顺序自动分","In order")],...(fromPool?[]:[["keep",L("先放着","Keep it")]]),["pick",L("指定给…","Choose…")]].map(([k,n])=>`<button data-m="${k}" class="${k==="auto"?"on":""}">${n}</button>`).join("")}</div><select id="wfPick" hidden>${q.map(w=>`<option value="${w.id}">${esc(w.title)}</option>`).join("")}</select></div>
+    <div class="wf-flow" id="wfFlow"></div>
+    <p class="hint">${L("这里只是记账，不会动你真实的银行账户。工资多少只给你自己看。","This is just your own record; it never touches a real bank account.")}</p>
+    <div class="sheet-actions"><span></span><span style="display:flex;gap:8px"><button class="btn" data-wf="x">${L("取消","Cancel")}</button><button class="btn primary" data-wf="ok">${fromPool?L("分出去","Share it out"):L("放进去","Add")}</button></span></div></div>`;
+  document.body.appendChild(bg);preview();bg.querySelector("#wfAmt").focus();
+  bg.addEventListener("input",preview);bg.addEventListener("change",preview);
+  bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}
+    const m=e.target.closest("[data-m]");if(m){mode=m.dataset.m;bg.querySelectorAll("[data-m]").forEach(x=>x.classList.toggle("on",x===m));bg.querySelector("#wfPick").hidden=mode!=="pick";preview();return}
+    const b=e.target.closest("[data-wf]");if(!b)return;if(b.dataset.wf==="x"){bg.remove();return}
+    const a=r2(+bg.querySelector("#wfAmt").value||0);if(!(a>0)){bg.querySelector("#wfAmt").focus();return}
+    if(fromPool&&a>r2(wfund.pool)){bg.querySelector("#wfAmt").value=r2(wfund.pool);preview();return}
+    const {out,left}=fundPlan(a,mode,bg.querySelector("#wfPick").value);fundApply(out);
+    const wage=fromPool?0:r2(+bg.querySelector("#wfWage")?.value||0);
+    wfund.pool=fromPool?r2(wfund.pool-a+left):r2((wfund.pool||0)+left);
+    const parts=out.map(([w,g])=>`${w.title} ${money(g,cur)}`);
+    const t=fromPool?L(`从基金分出 ${money(a-left,cur)} → ${parts.join("，")}`,`Shared ${money(a-left,cur)} from the fund → ${parts.join(", ")}`)
+      :L(`${wage?`兼职 ${money(wage,cur)}，`:""}放进基金 ${money(a,cur)}${parts.length?" → "+parts.join("，"):""}${left>0?`，留 ${money(left,cur)}`:""}`,`${wage?`Paid ${money(wage,cur)}, `:""}${money(a,cur)} into the fund${parts.length?" → "+parts.join(", "):""}${left>0?`, ${money(left,cur)} kept`:""}`);
+    wfund.log=[...(wfund.log||[]),{at:Date.now(),t}];fundSave();bg.remove();
+    const paid=out.filter(([w])=>w.pre&&w.paidAt).map(([w])=>w.title), full=out.filter(([w])=>!w.done&&+w.saved>=+w.price).map(([w])=>w.title);
+    cheer(paid.length?L(`「${paid[0]}」补齐啦！🎉`,`“${paid[0]}” is paid back! 🎉`):full.length?L(`「${full[0]}」攒够啦！🎉`,`You've saved enough for “${full[0]}”! 🎉`):L("放进去啦，一点点攒～","In it goes. Bit by bit～"),paid.length||full.length?"cheer":"happy");
+    render()});
+}
+function wishPre(id,el){const w=wishes.find(x=>x.id===id);if(!w)return;const r=db.doc("wishes/"+id);queued(r.path,()=>r.update({pre:true}));w.pre=true;wishMenu=null;
+  const cur=w.cur||"£";wfund.log=[...(wfund.log||[]),{at:Date.now(),t:L(`先买了「${w.title}」，还要补 ${money(+w.price-(+w.saved||0),cur)}`,`Bought “${w.title}” early, ${money(+w.price-(+w.saved||0),cur)} to pay back`)}];fundSave();wishCameTrue(id,el)}
+
 // drag to reorder (lists and the postcard wall)
 document.addEventListener("pointerdown",e=>{
   const g=e.target.closest(".wgrip");if(!g)return;const it=g.closest("[data-did]"),list=it&&it.closest("[data-dlist]");if(!list)return;
@@ -5077,7 +5167,11 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="wishkind"){wishKind=act.dataset.v;render();const el=document.getElementById("wishTitle");if(el)el.focus();return}
   if(act.dataset.act==="wishedit"){openWish(id);return}
   if(act.dataset.act==="wishdone"){wishCameTrue(id,act);return}
-  if(act.dataset.act==="wishsave"){wishSaveOpen=wishSaveOpen===id?null:id;render();setTimeout(()=>$("#wDep")?.focus(),30);return}
+  if(act.dataset.act==="wishmenu"){wishMenu=wishMenu===id?null:id;wishSaveOpen=null;render();return}
+  if(act.dataset.act==="wishpre"){wishPre(id,act);return}
+  if(act.dataset.act==="fundpay"){openFund(false);return}
+  if(act.dataset.act==="fundsplit"){openFund(true);return}
+  if(act.dataset.act==="wishsave"){wishMenu=null;wishSaveOpen=wishSaveOpen===id?null:id;render();setTimeout(()=>$("#wDep")?.focus(),30);return}
   if(act.dataset.act==="wishdep"){wishDeposit(id);return}
   if(act.dataset.act==="wishflip"){if(e.target.closest("a,.wgrip"))return;wishFlip.has(id)?wishFlip.delete(id):wishFlip.add(id);render();return}
   if(act.dataset.act==="wishdraw"){const pool=wishes.filter(w=>!w.done&&w.kind!=="buy"&&w.id!==wishDrawn);const all=pool.length?pool:wishes.filter(w=>!w.done&&w.kind!=="buy");wishDrawn=all.length?all[Math.floor(Math.random()*all.length)].id:null;render();return}
@@ -5497,7 +5591,7 @@ const FIREBASE_CONFIG={
   appId:"1:1053547899054:web:49caab221ae4f4171c253f"
 };
 const FB_VER="10.12.2";
-const COLS=["letters","tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","memos","yearlyDays","pomos","meals","rests","eats","fridge","tlog","courses","sleep"];
+const COLS=["letters","tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","wishfund","closet","memos","yearlyDays","pomos","meals","rests","eats","fridge","tlog","courses","sleep"];
 const CLOUD_KEY="lifeos-cloud-uid";
 let fb=null, cloudUser=null, cloudState=FIREBASE_CONFIG?"loading":"off"; // off | loading | unavailable | signedout | signedin
 let localDB=null, unsubs=[];
@@ -5559,6 +5653,7 @@ function startData(store){
   sub("weekly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());weekly=m;if(ok(s))loaded.w=true;render()});
   sub("yearly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());yearly=m;if(ok(s))loaded.y=true;render()});
   sub("memos",s=>{memos=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.me=true;render()});
+  sub("wishfund",s=>{const d=s.docs.find(x=>x.id==="main");wfund=d?{pool:0,cur:"£",log:[],...d.data()}:{pool:0,cur:"£",log:[]};if(lifeSub==="wish")render()});
   sub("wishes",s=>{wishes=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.wi=true;render()});
   sub("closet",s=>{const c={};let w=null;s.docs.forEach(d=>{if(d.id==="_wear"&&(+d.data().at||0)>=wearAt)w=d.data().wear;else c[d.id]=d.data()});closet=c;if(w&&typeof w==="object")setWear(w,false);else{dressFab();renderGardenProps()}updateCoinBtn();if(shOpen)renderShop()});
   sub("forest",s=>{forest=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.f=true;render()});
