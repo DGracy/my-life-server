@@ -505,6 +505,12 @@ body.pomo-open{overflow:hidden}
 .wf-src{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.wf-src button{border:1.5px solid var(--line);background:var(--surface);font:inherit;font-size:13.5px;padding:5px 12px;border-radius:999px;color:var(--fg);cursor:pointer}.wf-src button.on{border-color:#f0a63c;background:color-mix(in srgb,#f0a63c 16%,var(--surface));font-weight:600}.wf-src input{width:90px!important;padding:5px 10px!important;border-radius:999px!important;font-size:13.5px}
 .wf-seg{display:flex;gap:4px;background:var(--surface-2);border-radius:999px;padding:3px}.wf-seg button{border:0;background:none;font:inherit;font-size:13.5px;padding:6px 12px;border-radius:999px;color:var(--fg);cursor:pointer}.wf-seg button.on{background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:600}
 .wf-flow{display:flex;flex-direction:column;gap:6px;background:var(--surface-2);border-radius:14px;padding:10px 12px;font-size:14px}.wf-flow div{display:flex;justify-content:space-between;gap:8px}.wf-flow .x{color:var(--muted);font-size:12.5px}
+.wstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:8px;align-items:stretch}.wstats>div{background:var(--surface-2);border-radius:12px;padding:7px 11px;display:flex;flex-direction:column;gap:1px;min-width:0}.wstats small{font-size:11.5px;color:var(--muted)}.wstats b{font-size:16px;font-family:var(--f-num);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wstats .ws-red{color:var(--danger)}
+.wstats .ws-f{background:color-mix(in srgb,#f0a63c 16%,var(--surface));color:#8a5a10}.wstats .ws-f small{color:inherit;opacity:.8}.wstats .wf-pay{align-self:center}
+:root[data-theme="dark"] .wstats .ws-f,:root:not([data-theme])[data-tod="night"] .wstats .ws-f{background:#3d3018;color:#ffd88a}
+.ws-sub{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;margin-top:-4px}.ws-sub .link{font-size:13px}.ws-sub .wf-log{width:auto;flex:1}
+.wish-top .wish-add{border-top:1.5px dashed var(--line);padding-top:12px}
+@media(max-width:460px){.wstats{grid-template-columns:repeat(3,minmax(0,1fr))}.wstats .wf-pay{grid-column:1/-1}}
 /* sprout coins & shop */
 .coin-btn{margin-left:0}.coin-btn .coin{flex:none}
 .stage .forest-btn+.coin-btn{margin-left:4px}
@@ -4686,7 +4692,6 @@ function wishBoard(){
   return `<div class="card wish-top">
       <div class="card-head"><h3>${L("愿望清单","Wishlist")}</h3>${open.some(w=>w.kind!=="buy")?`<button class="btn w-dice" data-act="wishdraw">🎲 ${L("抽一个","Pick one")}</button>`:""}</div>
       ${drawn}
-      ${counts.length?`<p class="w-sum">${counts.map(([k,n])=>`${sproutIcon(k[0])} ${L(k[2],k[3])} <b>${n}</b>`).join(" · ")}${total?`<br>${L(`想买的加起来约 <b>${sumOf(0)}</b>，已经攒了 <b>${sumOf(1)}</b>`,`Things to buy add up to about <b>${sumOf(0)}</b>, with <b>${sumOf(1)}</b> saved`)}`:""}</p>`:""}
       ${fundCard()}
       <form class="wish-add" id="wishForm">
         <div class="chips">${WISH_KINDS.map(k=>`<button type="button" class="chip hz${wishKind===k[0]?" on":""}" data-act="wishkind" data-v="${k[0]}">${sproutIcon(k[0])}${L(k[2],k[3])}</button>`).join("")}</div>
@@ -4727,9 +4732,8 @@ function fundCard(){
   const owe=q.filter(w=>w.done).reduce((s,w)=>s+(+w.price-(+w.saved||0)),0),need=q.filter(w=>!w.done).reduce((s,w)=>s+(+w.price-(+w.saved||0)),0);
   if(!q.length&&!(wfund.pool>0)&&!(wfund.log||[]).length)return "";
   const lg=[...(wfund.log||[])].reverse().slice(0,12);
-  return `<div class="wfund"><span class="wf-jar">${SF.happy||""}</span><div class="wf-t"><small>${L("愿望基金里还没分出去的","Unassigned in your wish fund")}</small><b>${money(wfund.pool||0,cur)}</b><small>${owe?`<span class="wf-owe">${L(`先买的还要补 ${money(owe,cur)}`,`${money(owe,cur)} to pay back`)}</span> · `:""}${need?L(`想买的还差 ${money(need,cur)}`,`${money(need,cur)} to go on things to buy`):q.length?"":L("都攒够啦","All covered")}</small></div>
-    <span class="wf-a">${wfund.pool>0&&q.length?`<button class="btn" data-act="fundsplit">${L("把基金分出去","Share it out")}</button>`:""}<button class="btn wf-pay" data-act="fundpay">＋ ${L("有进账啦","Money in")}</button></span>
-    ${lg.length?`<details class="wf-log"><summary>${L("记录","History")}</summary><ul>${lg.map(l=>`<li>${fmtRange(dayOf(l.at),dayOf(l.at)).split(" – ")[0]} · ${esc(l.t)}</li>`).join("")}</ul></details>`:""}</div>`;
+  return `<div class="wstats"><div class="ws-f"><small>${L("愿望基金","Wish fund")}</small><b>${money(wfund.pool||0,cur)}</b></div><div><small>${L("想买的还差","Still to save")}</small><b>${money(need,cur)}</b></div><div><small>${L("先买的要补","To pay back")}</small><b class="${owe?"ws-red":""}">${money(owe,cur)}</b></div><button class="btn wf-pay" data-act="fundpay">＋ ${L("有进账啦","Money in")}</button></div>
+    ${wfund.pool>0&&q.length||lg.length?`<div class="ws-sub">${wfund.pool>0&&q.length?`<button class="link" data-act="fundsplit">${L("把基金里的钱分出去","Share out the fund")}</button>`:""}${lg.length?`<details class="wf-log"><summary>${L("记录","History")}</summary><ul>${lg.map(l=>`<li>${fmtRange(dayOf(l.at),dayOf(l.at)).split(" – ")[0]} · ${esc(l.t)}</li>`).join("")}</ul></details>`:""}</div>`:""}`;
 }
 const FUND_SRC="lifeos-fund-src",FUND_SRCS="lifeos-fund-srcs";
 function fundSrcs(){let a=[];try{a=JSON.parse(localStorage.getItem(FUND_SRCS)||"[]")}catch(_){}const base=L(["工资","兼职","奖学金","红包"],["Salary","Side job","Grant","Gift"]);return [...base,...a.filter(x=>!base.includes(x))]}
