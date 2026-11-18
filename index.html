@@ -506,6 +506,7 @@ body.pomo-open{overflow:hidden}
  .sh-fit{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:3;border-radius:20px 20px 0 0;flex-direction:row;align-items:center;padding:10px max(14px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));box-shadow:0 -6px 20px rgba(20,40,80,.15)}
  .sh-fit .big svg{width:64px;height:71px}.sh-fit .big.fxon{padding:2px 6px 0}.sh-fit .fprops,.sh-fit .flist,.sh-fit .hint{display:none}.sh-fit .fitinfo{flex-direction:row;flex-wrap:wrap;align-items:center}.sh-fit h3{flex:1;font-size:14.5px}.sh-fit .facts{width:auto}.sh-fit .facts .btn{padding:8px 12px;font-size:14px}}
 .buddy.withpal{width:168px}.buddy .btree{position:absolute;right:0;top:0;width:104px;height:104px;display:block}.buddy .btree svg{width:100%;height:100%}
+.gnd{position:absolute;left:-6px;right:-4px;bottom:-4px;height:26px;pointer-events:none;line-height:0}.gnd svg{width:100%;height:100%}
 .bpal{position:absolute;left:0;bottom:-2px;width:64px;line-height:0;cursor:pointer;transform-origin:50% 100%;z-index:1}.bpal.hop{animation:palhop .6s ease-out}
 @keyframes palhop{0%,100%{transform:translateY(0)}40%{transform:translateY(-12px) rotate(-4deg)}70%{transform:translateY(0) scaleY(.94)}}
 @media (prefers-reduced-motion:reduce){.bpal.hop{animation:none}}
@@ -3941,7 +3942,7 @@ const PAL_SAYS=()=>L(["嘿嘿，好看吗？","今天也一起加油吧！","给
 let palKey="";
 function renderPal(){
   const b=$("#buddy");if(!b)return;let p=$("#bpal");
-  if(!p){p=document.createElement("span");p.id="bpal";p.className="bpal";b.appendChild(p);b.classList.add("withpal")}
+  if(!p){const g=document.createElement("span");g.className="gnd";g.setAttribute("aria-hidden","true");g.innerHTML=`<svg viewBox="0 0 180 26" preserveAspectRatio="none"><ellipse cx="90" cy="15" rx="88" ry="10" fill="color-mix(in srgb,var(--leaf) 30%,var(--surface))"/><ellipse cx="90" cy="13" rx="80" ry="6" fill="color-mix(in srgb,var(--leaf) 18%,var(--surface))"/><path d="M14 14l-2-6M14 14l1-7M14 14l4-5M78 18l-2-5M78 18l1-6M78 18l3-4M166 13l-2-6M166 13l1-7M166 13l4-5" stroke="var(--leaf)" stroke-width="1.8" stroke-linecap="round"/></svg>`;b.prepend(g);p=document.createElement("span");p.id="bpal";p.className="bpal";b.appendChild(p);b.classList.add("withpal")}
   const w=wornSet(null),key=JSON.stringify([...DRESS.map(s=>w[s]),w.garden,curTheme]);
   if(key===palKey&&p.innerHTML)return;palKey=key;
   p.innerHTML=dressSVG(null,64,w);
