@@ -514,9 +514,9 @@ body.pomo-open{overflow:hidden}
 .ws-sub{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;margin-top:-4px}.ws-sub .link{font-size:13px}.ws-sub .wf-log{width:auto;flex:1}
 .wish-top .wish-add{border-top:1.5px dashed var(--line);padding-top:12px}
 @media(max-width:560px){#wishForm .wa-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:8px;align-items:center}
- #wishForm .wa-row:has(#wishCur){grid-template-columns:44px 52px minmax(0,1fr) auto;grid-template-areas:"img t t t" "cur cur p btn"}
+ #wishForm .wa-row:has(#wishCur){grid-template-columns:repeat(6,minmax(0,1fr));grid-template-areas:"img t t t t t" "cur cur p p btn btn"}
  #wishForm .wa-row:has(#wishCur) .w-imgbtn{grid-area:img}#wishForm .wa-row:has(#wishCur) #wishTitle{grid-area:t}#wishForm .wa-row:has(#wishCur) #wishCur{grid-area:cur}#wishForm .wa-row:has(#wishCur) #wishPrice{grid-area:p}#wishForm .wa-row:has(#wishCur) .wish-btn{grid-area:btn}
- #wishForm .wa-row>*{min-width:0;width:auto;margin:0}#wishForm #wishTitle,#wishForm #wishPrice,#wishForm #wishCur{width:100%;box-sizing:border-box}}
+ #wishForm .wa-row>*{min-width:0;width:auto;margin:0}#wishForm .wa-row:has(#wishCur) .wish-btn{width:100%}#wishForm #wishTitle,#wishForm #wishPrice,#wishForm #wishCur{width:100%;box-sizing:border-box}}
 .wish-add>.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.wish-add>.chips .chip{justify-content:center;font-size:15px;padding-block:7px;gap:6px}.wish-add>.chips .chip .sic{width:34px;height:34px;margin:-8px 0 -8px -6px}
 @media(max-width:460px){.wstats{grid-template-columns:repeat(3,minmax(0,1fr))}.wstats .wf-pay{grid-column:1/-1}}
 .crop-bg{z-index:90}.crop{align-items:center;gap:14px;max-width:380px}.crop h3{font-size:15px;font-weight:600;text-align:center;margin:0}
