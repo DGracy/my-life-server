@@ -513,6 +513,10 @@ body.pomo-open{overflow:hidden}
 :root[data-theme="dark"] .wstats .ws-f,:root:not([data-theme])[data-tod="night"] .wstats .ws-f{background:#3d3018;color:#ffd88a}
 .ws-sub{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;margin-top:-4px}.ws-sub .link{font-size:13px}.ws-sub .wf-log{width:auto;flex:1}
 .wish-top .wish-add{border-top:1.5px dashed var(--line);padding-top:12px}
+@media(max-width:560px){#wishForm .wa-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:8px;align-items:center}
+ #wishForm .wa-row:has(#wishCur){grid-template-columns:44px 52px minmax(0,1fr) auto;grid-template-areas:"img t t t" "cur cur p btn"}
+ #wishForm .wa-row:has(#wishCur) .w-imgbtn{grid-area:img}#wishForm .wa-row:has(#wishCur) #wishTitle{grid-area:t}#wishForm .wa-row:has(#wishCur) #wishCur{grid-area:cur}#wishForm .wa-row:has(#wishCur) #wishPrice{grid-area:p}#wishForm .wa-row:has(#wishCur) .wish-btn{grid-area:btn}
+ #wishForm .wa-row>*{min-width:0;width:auto;margin:0}#wishForm #wishTitle,#wishForm #wishPrice,#wishForm #wishCur{width:100%;box-sizing:border-box}}
 .wish-add>.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.wish-add>.chips .chip{justify-content:center;font-size:15px;padding-block:7px;gap:6px}.wish-add>.chips .chip .sic{width:34px;height:34px;margin:-8px 0 -8px -6px}
 @media(max-width:460px){.wstats{grid-template-columns:repeat(3,minmax(0,1fr))}.wstats .wf-pay{grid-column:1/-1}}
 .crop-bg{z-index:90}.crop{align-items:center;gap:14px;max-width:380px}.crop h3{font-size:15px;font-weight:600;text-align:center;margin:0}
@@ -4707,12 +4711,18 @@ function polaroid(w){
     :`<div class="pol-ph">${pic?wishImgTag(pic,w.title):wishScene(w)}</div>`;
   return `<div class="pol ${shape}${back?" back":""}" style="--r:${rot}deg;--pc:${pins[hashN(w.id)%pins.length]}" data-act="wishflip" data-id="${w.id}" role="button" tabindex="0" aria-label="${esc(w.title)}"><span class="pin"></span>${face}${pic&&!back?crayonStamp(w):""}<div class="pol-cap">${esc(w.title)}</div></div>`;
 }
+// flip the stack in place (no redraw, so nothing else on the page blinks)
+function deckMove(k){const box=$("#goDeck");if(!box){deckCur+=k;render();return}const cards=[...box.querySelectorAll(".dk-card")],n=cards.length;if(n<2)return;
+  const top=box.querySelector(".dk-card.top");if(top){top.style.transform=`translate(${k>0?-200:220}px,-8px) rotate(${k>0?-12:12}deg)`;top.style.opacity="0"}
+  deckCur=((deckCur+k)%n+n)%n;
+  setTimeout(()=>{cards.forEach(c=>{const i=+c.dataset.i,d=(i-deckCur+n)%n;c.classList.toggle("top",d===0);c.style.zIndex=n-d;c.style.opacity=d>3?0:1;c.style.transform=d===0?"translate(0,0) rotate(0)":`translate(${d*6}px,${d*7}px) rotate(${(d%2?3:-3)*Math.min(d,2)}deg)`;if(d===0)c.removeAttribute("aria-hidden");else c.setAttribute("aria-hidden","true")});
+    box.parentElement.parentElement.querySelectorAll(".dk-dots i").forEach((x,i)=>x.classList.toggle("on",i===deckCur))},170)}
 // places you haven't been: a stack of cards you flip through
 function goDeck(list){
   if(!list.length)return `<button class="pc-add solo" data-act="wishkind" data-v="go">＋ ${L("想去一个地方","Add a place")}</button>`;
   deckCur=((deckCur%list.length)+list.length)%list.length;
   const cards=list.map((w,i)=>{const d=(i-deckCur+list.length)%list.length;const tr=d===0?"translate(0,0) rotate(0)":`translate(${d*6}px,${d*7}px) rotate(${(d%2?3:-3)*Math.min(d,2)}deg)`;
-    return `<div class="dk-card${d===0?" top":""}" style="z-index:${list.length-d};transform:${tr};opacity:${d>3?0:1}" ${d===0?"":`aria-hidden="true"`}><div class="dk-ph">${w.img?wishImgTag(w.img,w.title):wishScene(w)}</div><div class="dk-cap"><b>${esc(w.title)}</b>${w.note?`<small>${esc(w.note)}</small>`:""}</div><div class="dk-acts">${penBtn(w.id)}${w.link?`<a class="w-link" href="${esc(/^https?:\/\//.test(w.link)?w.link:"https://"+w.link)}" target="_blank" rel="noopener">↗</a>`:""}<button class="dk-go" data-act="wishdone" data-id="${w.id}">${L("去过了 ✓","Been there ✓")}</button></div></div>`}).join("");
+    return `<div class="dk-card${d===0?" top":""}" data-i="${i}" style="z-index:${list.length-d};transform:${tr};opacity:${d>3?0:1}" ${d===0?"":`aria-hidden="true"`}><div class="dk-ph">${w.img?wishImgTag(w.img,w.title):wishScene(w)}</div><div class="dk-cap"><b>${esc(w.title)}</b>${w.note?`<small>${esc(w.note)}</small>`:""}</div><div class="dk-acts">${penBtn(w.id)}${w.link?`<a class="w-link" href="${esc(/^https?:\/\//.test(w.link)?w.link:"https://"+w.link)}" target="_blank" rel="noopener">↗</a>`:""}<button class="dk-go" data-act="wishdone" data-id="${w.id}">${L("去过了 ✓","Been there ✓")}</button></div></div>`}).join("");
   return `<div class="deckw">${list.length>1?`<button class="dk-nav" data-act="deck" data-v="-1" aria-label="${L("上一张","Previous")}">‹</button>`:""}<div class="deck" id="goDeck">${cards}</div>${list.length>1?`<button class="dk-nav" data-act="deck" data-v="1" aria-label="${L("下一张","Next")}">›</button>`:""}</div>
     ${list.length>1?`<div class="dk-dots">${list.map((_,i)=>`<i class="${i===deckCur?"on":""}"></i>`).join("")}</div>`:""}<div class="dk-add"><button class="link" data-act="wishkind" data-v="go">＋ ${L("想去一个地方","Add a place")}</button></div>`;
 }
@@ -4868,7 +4878,7 @@ function wishPre(id,el){const w=wishes.find(x=>x.id===id);if(!w)return;const r=d
   const cur=w.cur||"£";wfund.log=[...(wfund.log||[]),{at:Date.now(),id:w.id,k:"pre",t:L(`先买了「${w.title}」，还要补 ${money(+w.price-(+w.saved||0),cur)}`,`Bought “${w.title}” early, ${money(+w.price-(+w.saved||0),cur)} to pay back`)}];fundSave();wishCameTrue(id,el,true)}
 
 // swipe the stack of places left and right
-{let sx=null;document.addEventListener("pointerdown",e=>{sx=e.target.closest("#goDeck")&&!e.target.closest("button,a")?e.clientX:null});document.addEventListener("pointerup",e=>{if(sx==null)return;const dx=e.clientX-sx;sx=null;if(Math.abs(dx)>40){deckCur+=dx<0?1:-1;render()}})}
+{let sx=null;document.addEventListener("pointerdown",e=>{sx=e.target.closest("#goDeck")&&!e.target.closest("button,a")?e.clientX:null});document.addEventListener("pointerup",e=>{if(sx==null)return;const dx=e.clientX-sx;sx=null;if(Math.abs(dx)>40)deckMove(dx<0?1:-1)})}
 // drag to reorder (lists and the postcard wall)
 document.addEventListener("pointerdown",e=>{
   const g=e.target.closest(".wgrip");if(!g)return;const it=g.closest("[data-did]"),list=it&&it.closest("[data-dlist]");if(!list)return;
@@ -5298,7 +5308,7 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="wishdep"){wishDeposit(id);return}
   if(act.dataset.act==="wishflip"){if(e.target.closest("a,.wgrip"))return;wishFlip.has(id)?wishFlip.delete(id):wishFlip.add(id);render();return}
   if(act.dataset.act==="wishdraw"){const pool=wishes.filter(w=>!w.done&&w.kind!=="buy"&&w.id!==wishDrawn);const all=pool.length?pool:wishes.filter(w=>!w.done&&w.kind!=="buy");wishDrawn=all.length?all[Math.floor(Math.random()*all.length)].id:null;render();return}
-  if(act.dataset.act==="deck"){deckCur+=+act.dataset.v;render();return}
+  if(act.dataset.act==="deck"){deckMove(+act.dataset.v);return}
   if(act.dataset.act==="wishundraw"){wishDrawn=null;render();return}
   if(act.dataset.act==="focus"){startFocus(id);return}
   if(act.dataset.act==="focusstart"){const t=defaultTask(act.dataset.space);startFocus(t?t.id:null);return}
