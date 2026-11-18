@@ -611,6 +611,7 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .idcms{display:flex;flex-direction:column;gap:6px}.idco{background:var(--surface-2);border-radius:12px;padding:7px 11px;font-size:13.5px;line-height:1.55;overflow-wrap:anywhere}.idco b{margin-right:5px}
 .idcin{display:flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:14px;padding:4px 6px 4px 10px}.idcin input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:14px;color:var(--fg);outline:none}
 .idtg{border:0;font:inherit;font-size:12px;border-radius:999px;padding:3px 9px;background:var(--life);color:#fff;cursor:pointer}.idtg.on{background:var(--muted)}.idsend{border:0;background:none;font:inherit;font-size:13.5px;font-weight:600;color:var(--brand);cursor:pointer}
+.lk-sheet{z-index:1}.lk-sheet .btn{align-self:flex-start}
 .btnrow{display:flex;flex-wrap:wrap;gap:8px}.fpv{margin-top:8px;align-items:center;gap:6px}
 .tour-spot{position:fixed;z-index:89;border-radius:18px;box-shadow:0 0 0 9999px rgba(20,32,60,.55);pointer-events:none;transition:left .25s,top .25s,width .25s,height .25s}.tour-spot.soft{box-shadow:0 0 0 9999px rgba(20,32,60,.35)}
 .tour{position:fixed;z-index:91;width:min(300px,calc(100vw - 32px));box-sizing:border-box;background:#1f3156;color:#fff;border-radius:16px;padding:12px 14px;font-size:13.5px;line-height:1.55;box-shadow:0 10px 26px rgba(0,0,0,.25)}
@@ -2383,7 +2384,20 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-mb]");if(!
   if(a==="edit"){openLetter(id);return}
   if(a==="read"){openRead(id);return}
   if(a==="sent"){openSent(id);return}
-  if(a==="locked"){const x=letters.find(l=>l.id===id);if(x)cheer(L(`还没到时候哦，${lYmdS(x.openOn)}才能拆～`,`Not yet. It opens on ${lYmdS(x.openOn)}～`));return}});
+  if(a==="locked"){openLocked(id);return}});
+function openLocked(id){
+  const x=letters.find(l=>l.id===id);if(!x)return;let sure=false;const fresh=x.sealedAt&&Date.now()-x.sealedAt<864e5;
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  const draw=()=>{bg.innerHTML=`<div class="sheet lk-sheet" role="dialog" aria-label="${L("封好的信","Sealed letter")}"><h3>${L(`致 ${esc(letterTo(x))}`,`To ${esc(letterTo(x))}`)}</h3>
+    <p class="hint" style="margin:0">${L(`还没到时候哦，${lYmdS(x.openOn)}才能拆～`,`Not yet. It opens on ${lYmdS(x.openOn)}～`)}</p>
+    ${fresh?`<button class="btn" data-lk="unseal">${L("刚刚封错了，改回草稿","Sealed by mistake? Back to draft")}</button><span class="hint" style="margin:-4px 0 0">${L("封好 24 小时内可以反悔","You can undo within 24 hours of sealing")}</span>`:""}
+    <div class="sheet-actions"><button class="btn danger" data-lk="del">${sure?L("确定删掉？删了就找不回来了","Delete for good?"):L("删掉这封信","Delete this letter")}</button><button class="btn primary" data-lk="x">${L("好的","OK")}</button></div></div>`};
+  draw();document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-lk]");if(!b)return;const a=b.dataset.lk;
+    if(a==="x"){bg.remove();return}
+    if(a==="unseal"){const r=db.doc("letters/"+id);x.sealed=false;x.sealedAt=null;queued(r.path,()=>r.update({sealed:false,sealedAt:null}));bg.remove();mbDot();if(mbOpen)renderMailbox();cheer(L("改回草稿啦，想改就改～","Back to a draft～"));return}
+    if(a==="del"){if(!sure){sure=true;draw();return}const r=db.doc("letters/"+id);letters=letters.filter(l=>l.id!==id);queued(r.path,()=>r.delete());bg.remove();mbDot();if(mbOpen)renderMailbox();cheer(L("删掉啦","Deleted"));return}});
+}
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&mbOpen&&!document.querySelector(".sheet-bg"))closeMailbox()});
 const SLQ=()=>[["good",L("睡饱了","Slept well")],["ok",L("还行","OK")],["bad",L("没睡好","Poorly")],["nightmare",L("做噩梦了","Nightmare")]];
 const slQ=k=>{const x=sleeps[k]||{};return "q" in x?x.q:((journal[addDays(k,1)]||{}).sleepq||null)};
