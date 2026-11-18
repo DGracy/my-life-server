@@ -501,6 +501,7 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .due.hot{background:color-mix(in srgb,#ff8f5c 22%,var(--surface));color:#c2410c;font-weight:600}
 .lsigin{border:2px solid var(--line);border-radius:12px;background:var(--bg-2);padding:7px 12px;font:inherit;color:var(--fg)}
 .lrow{display:flex;gap:10px;flex-wrap:wrap}.lrow .field{flex:1;min-width:140px}
+.bdage:empty{display:none}.bdage{display:block;font-size:13px;color:var(--ink2,#6b7a99);margin-top:4px}.lrow .field{min-width:0}.lrow .field input{min-width:0;width:100%;box-sizing:border-box}@media(max-width:520px){.lrow .field{flex:1 1 100%}}
 .ovl-letter{position:fixed;inset:0;background:rgba(30,34,60,.45);display:grid;place-items:center;z-index:80;padding:16px}.ovl-letter .ovc{background:var(--surface);border-radius:26px;padding:22px 22px 18px;width:min(330px,100%);text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
 .ovl-letter h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:21px}.ovl-letter p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}.ovl-letter .btn{padding:9px 26px}
 .jfoot{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-top:2px}.jfoot .saved{margin-right:auto}.jfoot .jsave{padding:7px 18px}
@@ -840,6 +841,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .mi-subcount{font-family:var(--f-num);font-size:11.5px;color:var(--muted);background:var(--surface-2);border-radius:999px;padding:0 7px}
 .mi-plus{border:none;background:none;color:var(--habit-ink);font-size:16px;width:24px;height:24px;padding:0;border-radius:8px;line-height:1;opacity:.7}
 .mi-plus:hover,.mi-plus.on{opacity:1;background:color-mix(in srgb,var(--habit) 18%,transparent)}
+.subt{cursor:text;border-radius:6px}.subt:hover{background:color-mix(in srgb,var(--brand) 8%,transparent)}.subwrap .subed{flex:1;min-width:0}
 .memo-subadd{margin:0 0 6px 60px}
 .memo-subadd input{width:100%;border:none;border-bottom:2px dashed color-mix(in srgb,var(--habit) 50%,transparent);background:transparent;padding:5px 2px;font-size:13.5px}
 .memo-subadd input:focus{outline:none;border-bottom-color:var(--habit)}
@@ -2037,7 +2039,7 @@ function openLetter(id,importMode){
     else if(st.kind==="bday"){const nb=nextBday(t);st.openOn=nb;const b=bdParts();st.age=b&&b.y&&nb?+nb.slice(0,4)-b.y:null}
     else if(st.kind==="custom"){st.openOn=st.customOn;st.toYear=null;st.age=null}
     else if(st.kind==="send"){st.openOn=st.sendOn;st.toText=st.sendTo;st.toYear=null;st.age=null}};
-  const draw=()=>{grab();if(!importMode)calc();const b=bdParts();
+  const draw=()=>{const _sh=bg.querySelector(".sheet"),_st=_sh?_sh.scrollTop:0,_bst=bg.scrollTop;grab();if(!importMode)calc();const b=bdParts();
     const sw=LPAPERS().map(([k,n])=>`<button class="pp${st.paper===k?" on":""}" data-lt="paper" data-v="${k}" aria-pressed="${st.paper===k}"><i class="lp-${k}"></i>${n}</button>`).join("");
     bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("写一封信","Write a letter")}"><h3>${importMode?L("抄进一封信","Copy in a letter"):ex?L("接着写","Keep writing"):L("写一封信","Write a letter")}</h3>
       ${importMode?`<div class="opnd"><span>${L("谁写的","Written by")}</span><button class="${st.who==="me"?"on":""}" data-lt="who" data-v="me">${L("我自己","Me")}</button><button class="${st.who==="friend"?"on":""}" data-lt="who" data-v="friend">${L("朋友","A friend")}</button></div>
@@ -2057,7 +2059,8 @@ function openLetter(id,importMode){
       ${paperHTML({...st,writtenAt:importMode?new Date(st.wdate+"T12:00:00").getTime():st.writtenAt,toText:importMode?(st.toText||L("那时候的我","me back then")):st.kind==="send"?(st.sendTo||"").trim():st.kind==="custom"?(st.custTo||"").trim():null},true)}
       ${importMode?`<div class="opnd"><span>${L("什么时候拆","Open")}</span><button class="${st.iw==="done"?"on":""}" data-lt="iw" data-v="done">${L("已经拆过了","Already opened")}</button><button class="${st.iw==="later"?"on":""}" data-lt="iw" data-v="later">${L("还没到日子","Not yet")}</button>${st.iw==="later"?`<input type="date" id="limpOpen" class="lsigin" min="${addDays(t,1)}" value="${esc(st.iOpen)}">`:""}</div>`:`<span class="hint">${L("封起来之前可以随时回来改。封起来以后，到那天才能拆开。","Edit any time before sealing. Once sealed, it opens on the day.")}</span>`}
       <div class="sheet-actions">${ex?`<button class="btn danger" data-lt="del">${sure?L("再点一次删除","Tap again to delete"):L("删掉","Delete")}</button>`:"<span></span>"}<span style="display:flex;gap:8px">${importMode?`<button class="btn" data-lt="x">${L("取消","Cancel")}</button><button class="btn primary" data-lt="imp">${L("放进信箱","Add to mailbox")}</button>`:`<button class="btn" data-lt="draft">${L("先存着","Save draft")}</button><button class="btn primary" data-lt="seal">${st.kind==="send"?(st.shareId?L("保存修改","Save changes"):L("封好，生成链接 ✉","Seal & get link ✉")):L("封起来 ✉","Seal it ✉")}</button>`}</span></div></div>`;
-    const ta=bg.querySelector("#lbody");if(ta){autosz(ta);requestAnimationFrame(()=>autosz(ta))}};
+    const ta=bg.querySelector("#lbody");if(ta){autosz(ta);requestAnimationFrame(()=>autosz(ta))}
+     const _ns=bg.querySelector(".sheet");if(_ns&&_st)_ns.scrollTop=_st;if(_bst){bg.scrollTop=_bst;requestAnimationFrame(()=>{bg.scrollTop=_bst})}};
   const body=()=>({...(st.kind==="custom"?{toText:(st.custTo||"").trim()}:{}),...(st.kind==="send"?{toText:(st.sendTo||"").trim(),fromName:(st.fromName||"").trim(),stamp:st.stamp||""}:{}),sig:(st.sig||"").trim().slice(0,40),kind:st.kind,toYear:st.toYear||null,age:st.age||null,openOn:st.openOn||null,paper:st.paper,font:st.font,sticker:st.sticker||"",body:(st.body||"").slice(0,20000),writtenAt:st.writtenAt||Date.now(),updatedAt:Date.now()});
   const save=extra=>{const ref=ex?db.doc("letters/"+ex.id):db.collection("letters").doc();const full={...(ex||{}),...body(),...extra};delete full.id;const local={id:ref.id,...full};letters=[...letters.filter(x=>x.id!==ref.id),local];queued(ref.path,()=>ref.set(full));mbDot();if(mbOpen)renderMailbox();return ref.id};
   bg.addEventListener("click",async e=>{if(e.target===bg){grab();if(!ex&&!importMode&&(st.body||"").trim()){save({sealed:false});cheer(L("先帮你存成草稿了","Saved as a draft"))}bg.remove();return}
@@ -2350,6 +2353,11 @@ async function fetchWx(force){
   renderWx();
 }
 async function searchCity(q){
+  if(/[\u3400-\u9fff]/.test(q)){
+    try{const r=await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=jsonv2&limit=6&addressdetails=1&accept-language=zh-CN`);const j=await r.json();
+      const out=(j||[]).filter(x=>x.lat&&x.lon).map(x=>{const a=x.address||{};return {name:a.city||a.town||a.village||a.county||a.state||x.name||(x.display_name||"").split(",")[0],area:[a.state&&a.state!==(a.city||a.town)?a.state:null,a.country].filter(Boolean).join(", "),lat:+(+x.lat).toFixed(3),lon:+(+x.lon).toFixed(3)}});
+      if(out.length)return out}catch(_){}
+  }
   const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=6&language=${lang==="en"?"en":"zh"}&format=json`);
   const j=await r.json(); return (j.results||[]).map(x=>({name:x.name,area:[x.admin1,x.country].filter(Boolean).join(", "),lat:+x.latitude.toFixed(3),lon:+x.longitude.toFixed(3)}));
 }
@@ -2716,7 +2724,7 @@ function resumeTask(t){
   cheer(L("恢复啦，接着来～","Back on. Let's go～"));
 }
 /* subtasks */
-let subOpen=new Set(), subAdding=null;
+let subOpen=new Set(), subAdding=null, subEditing=null;
 function subsBlock(t){
   const s=t.subs||[]; if(t.done||!s.length&&subAdding!==t.id)return "";
   const next=s.findIndex(x=>!x.done);
@@ -2724,7 +2732,7 @@ function subsBlock(t){
   const rows=[]; let hidden=0;
   s.forEach((x,i)=>{
     if(!x.done&&i!==next&&!open){hidden++;return}
-    rows.push(`<div class="sub${x.done?" d":""}${i===next?" nx":""}"><button class="c" data-act="subtoggle" data-id="${t.id}" data-i="${i}" aria-label="${x.done?L("标记为没做完","Mark as not done"):L("这一步做完了","Mark step done")}">${x.done?"✓":""}</button><span class="tx"><span>${esc(x.t)}</span>${i===next?`<em>${L("下一步","Next")}</em>`:""}</span>${i===next&&typeof startFocus==="function"?`<button class="go" data-act="substart" data-id="${t.id}" data-i="${i}">▶ ${L("开始","Start")}</button>`:""}</div>`)});
+    rows.push(`<div class="sub${x.done?" d":""}${i===next?" nx":""}"><button class="c" data-act="subtoggle" data-id="${t.id}" data-i="${i}" aria-label="${x.done?L("标记为没做完","Mark as not done"):L("这一步做完了","Mark step done")}">${x.done?"✓":""}</button><span class="tx">${subEditing&&subEditing.id===t.id&&subEditing.i===i?`<input class="subin subed" id="subed-${t.id}-${i}" data-subedit="${t.id}" data-i="${i}" maxlength="120" value="${esc(x.t)}">`:`<span class="subt" data-act="subedit" data-id="${t.id}" data-i="${i}" title="${L("点一下改这一步","Tap to edit")}">${esc(x.t)}</span>`}${i===next?`<em>${L("下一步","Next")}</em>`:""}</span>${i===next&&typeof startFocus==="function"?`<button class="go" data-act="substart" data-id="${t.id}" data-i="${i}">▶ ${L("开始","Start")}</button>`:""}</div>`)});
   return `<div class="subwrap">${rows.join("")}
     ${hidden?`<button class="more" data-act="subopen" data-id="${t.id}">${L(`还有 ${hidden} 步 · 展开`,`${hidden} more ${n_(hidden,"step","steps")} · show`)}</button>`:open&&s.filter(x=>!x.done).length>1?`<button class="more" data-act="subopen" data-id="${t.id}">${L("收起","Show less")}</button>`:""}
     ${subAdding===t.id?`<input class="subin" id="subin-${t.id}" data-subadd="${t.id}" maxlength="120" placeholder="${L("加一步，回车保存","Add a step, press Enter")}">`:`<button class="addsub" data-act="subadd" data-id="${t.id}">＋ ${L("自己加一步","Add a step")}</button>`}</div>`;
@@ -2804,7 +2812,7 @@ function openSplit(id){
     <div class="say2">${IDEA_FACE}<span>${busy?L("{pet}在想怎么拆…","{pet} is thinking…"):L("不用一口气做完～先做第一步就好，做完再看下一步。","No need to do it all at once～ Just start with step one.")}</span></div>
     <div class="gran"><span>${L("拆得","Size")}</span>${[["coarse",L("粗一点","Bigger")],["just",L("刚刚好","Just right")],["fine",L("细一点","Smaller")]].map(([k,n])=>`<button class="chip hz${gran===k?" on":""}" data-s="gran" data-v="${k}">${n}</button>`).join("")}</div>
     <div class="steps">${steps.map((x,i)=>`<div class="step${i===0?" first":""}"><span class="n">${i+1}</span><input value="${esc(x)}" maxlength="120" aria-label="${L(`第 ${i+1} 步`,`Step ${i+1}`)}"><button class="x" data-s="del" data-i="${i}" aria-label="${L("删掉这一步","Remove step")}">×</button></div>`).join("")}
-      ${steps.length<8?`<button class="addsub" data-s="add">＋ ${L("加一步","Add a step")}</button>`:""}</div>
+      ${steps.length<50?`<button class="addsub" data-s="add">＋ ${L("加一步","Add a step")}</button>`:""}</div>
     <p class="hint" style="margin:0">${L("第一步很小，马上就能开始。","Step one is tiny, so you can start right away.")}</p>
     <div class="sheet-actions"><button class="btn" data-s="again" ${busy?"disabled":""}>${L("换一种拆法","Try another way")}</button><button class="btn primary" data-s="ok" ${busy?"disabled":""}>${L("就这样拆","Use these")}</button></div></div>`};
   const regen=async()=>{
@@ -2812,12 +2820,13 @@ function openSplit(id){
     else{steps=splitSteps(t.title,gran,variant);draw()}};
   draw(); document.body.appendChild(bg);
   if(sample&&!(t.subs||[]).some(x=>!x.done))regen();
+  bg.addEventListener("keydown",e=>{if(e.key!=="Enter"||e.isComposing||e.keyCode===229||!e.target.closest(".step"))return;e.preventDefault();grab();const ins=[...bg.querySelectorAll(".step input")],i=ins.indexOf(e.target);steps.splice(i+1,0,"");draw();bg.querySelectorAll(".step input")[i+1]?.focus()});
   bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("button[data-s]");if(!b||busy)return;grab();const a=b.dataset.s;
     if(a==="gran"){gran=b.dataset.v;regen();return}
     if(a==="again"){variant++;regen();return}
     if(a==="del"){steps.splice(+b.dataset.i,1);draw();return}
     if(a==="add"){steps.push("");draw();const ins=bg.querySelectorAll(".step input");ins[ins.length-1]?.focus();return}
-    if(a==="ok"){const clean=steps.map(x=>x.trim()).filter(Boolean).slice(0,8);bg.remove();
+    if(a==="ok"){const clean=steps.map(x=>x.trim()).filter(Boolean).slice(0,50);bg.remove();
       const subs=[...keepDone,...clean.map(x=>({t:x.slice(0,120),done:false}))];
       subOpen.delete(t.id);setSubs(t,subs);try{const off=JSON.parse(localStorage.getItem(NUDGE_KEY)||"[]");off.push(t.id);localStorage.setItem(NUDGE_KEY,JSON.stringify(off.slice(-200)))}catch(_){}
       cheer(clean.length?L(`拆好啦！先做第一步：${clean[0]}`,`All set! Start with: ${clean[0]}`):L("好的","OK"))}
@@ -2988,7 +2997,7 @@ function bdNext(x,from){
 }
 const bdTitle=x=>x.type==="birthday"?L(`${x.name}${/[A-Za-z0-9]$/.test(x.name)?" ":""}的生日`,`${x.name}'s birthday`):x.name;
 function bdDateStr(x){const m=+x.month,d=+x.day;return x.year?L(`${x.year}年${m}月${d}日`,`${MON[m-1]} ${d}, ${x.year}`):L(`${m}月${d}日`,`${MON[m-1]} ${d}`)}
-function bdSub(x,nx){const n=nx.n;let s=bdDateStr(x);if(n!=null&&n>0)s+=" · "+(x.type==="birthday"?L(`${n} 岁`,`turns ${n}`):L(`${n} 周年`,`${n} ${n_(n,"year","years")}`));return s}
+function bdSub(x,nx){const n=nx.n;let s=bdDateStr(x);if(n!=null&&n>0&&x.type!=="birthday")s+=" · "+L(`${n} 周年`,`${n} ${n_(n,"year","years")}`);return s}
 const bdIn=d=>d===0?L("就是今天","Today!"):d===1?L("明天","Tomorrow"):L(`还有 ${d} 天`,`in ${d} days`);
 function bdOnDay(d){const y=+d.slice(0,4),m=+d.slice(5,7),dd=+d.slice(8,10);return yearlyDays.filter(x=>+x.month===m&&bdDayIn(x,y)===dd)}
 function bdSection(){
@@ -3008,6 +3017,7 @@ function bdReminder(){
   if(nx.days===0)return x.type==="birthday"?L(`今天是${nm}，记得说生日快乐～`,`It's ${nm} today. Don't forget to say happy birthday!`):L(`今天是「${nm}」，值得好好过一下～`,`Today is "${nm}". Make it a nice one!`);
   return x.type==="birthday"?L(`还有 ${nx.days} 天就是${nm}啦，要不要准备礼物？`,`${nm} is in ${nx.days} ${n_(nx.days,"day","days")}. Time to think about a gift?`):L(`还有 ${nx.days} 天就是「${nm}」啦。`,`"${nm}" is in ${nx.days} ${n_(nx.days,"day","days")}.`);
 }
+function bdAge(st){const y=+st.year,m=+st.month,d=+st.day;if(st.type!=="birthday"||!(y>1900&&m&&d))return"";const t=new Date();let a=t.getFullYear()-y;if(t.getMonth()+1<m||(t.getMonth()+1===m&&t.getDate()<d))a--;if(a<0)return"";return L(`现在 ${a} 岁，下次生日满 ${a+1} 岁`,`${a} now, turning ${a+1} next`)}
 function openBd(id){
   const old=id?yearlyDays.find(x=>x.id===id):null;
   const st=old?{...old}:{type:"birthday",name:"",month:"",day:"",year:"",remind:3,color:""};
@@ -3025,7 +3035,7 @@ function openBd(id){
     <div class="tchips">${TYPES.map(([k,n])=>`<button type="button" class="tchip${st.type===k?" on":""}" data-b="type" data-v="${k}">${BD_IC[k]}${n}</button>`).join("")}</div>
     <label class="field"><span>${st.type==="birthday"?L("是谁的生日？","Whose birthday?"):L("纪念什么？","What's the occasion?")}</span><input id="bd-name" maxlength="40" value="${esc(st.name||"")}" placeholder="${st.type==="birthday"?L("比如：妈妈","e.g. Mum"):L("比如：和 Lily 认识","e.g. Met Lily")}"></label>
     <div class="field"><span>${L("日期","Date")}</span><div class="drow">${lang==="en"?mSel+dSel+ySel:ySel+mSel+dSel}</div>
-      <span class="hint">${st.type==="birthday"?L("年份可以不填，填了会显示几岁","Year is optional. Add it to show their age"):L("年份可以不填，填了会显示第几周年","Year is optional. Add it to count the years")}</span></div>
+      <span class="hint">${st.type==="birthday"?L("年份可以不填。填了也不会在外面显示年龄，只在这里看得到","Year is optional. Their age only shows here, never on the list"):L("年份可以不填，填了会显示第几周年","Year is optional. Add it to count the years")}</span><span class="bdage" id="bd-age">${bdAge(st)}</span></div>
     <div class="field"><span>${L("颜色","Colour")}</span><div class="cdots">${BD_COLORS.map(c=>`<button type="button" class="cdot${c===col?" on":""}" data-b="col" data-v="${c}" style="--c:${c}" aria-label="${c}" aria-pressed="${c===col}"></button>`).join("")}</div></div>
     <div class="field"><span>${L("提前提醒我","Remind me")}</span><div class="tchips">${REM.map(([v,n])=>`<button type="button" class="tchip sm${+st.remind===v?" on":""}" data-b="rem" data-v="${v}">${n}</button>`).join("")}</div></div>
     <p class="hint bd-err" id="bd-err" hidden></p>
@@ -3033,6 +3043,7 @@ function openBd(id){
     ${old?`<button class="link danger-link" data-b="del">${sure?L("再点一次，确定删除","Tap again to delete"):L("删除这个日子","Delete this date")}</button>`:""}
   </div>`};
   draw(); document.body.appendChild(bg); if(!old)setTimeout(()=>bg.querySelector("#bd-name")?.focus(),30);
+  bg.addEventListener("input",e=>{if(["bd-y","bd-m","bd-d"].includes(e.target.id)){grab();const el=bg.querySelector("#bd-age");if(el)el.textContent=bdAge(st)}});bg.addEventListener("change",e=>{if(["bd-m","bd-d"].includes(e.target.id)){grab();const el=bg.querySelector("#bd-age");if(el)el.textContent=bdAge(st)}});
   bg.addEventListener("click",e=>{
     if(e.target===bg){bg.remove();return}
     const b=e.target.closest("[data-b]"); if(!b)return; const a=b.dataset.b;
@@ -4068,6 +4079,7 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="pickrest"){P=null;saveP();stopFlash();document.title=BASE_TITLE();render();return}
   if(act.dataset.act==="subtoggle"){const t=tasks.find(x=>x.id===id);if(t)toggleSub(t,+act.dataset.i,act);return}
   if(act.dataset.act==="subopen"){subOpen.has(id)?subOpen.delete(id):subOpen.add(id);render();return}
+  if(act.dataset.act==="subedit"){subEditing={id,i:+act.dataset.i};render();setTimeout(()=>{const el=document.getElementById(`subed-${id}-${act.dataset.i}`);if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length)}},0);return}
   if(act.dataset.act==="subadd"){subAdding=id;render();setTimeout(()=>document.getElementById("subin-"+id)?.focus(),0);return}
   if(act.dataset.act==="substart"){if(typeof startFocus==="function")startFocus(id,+act.dataset.i);return}
   if(act.dataset.act==="split"){openSplit(id);return}
@@ -4154,9 +4166,14 @@ document.addEventListener("click",async e=>{
 });
 document.addEventListener("keydown",e=>{const id=e.target.dataset&&e.target.dataset.subadd;if(!id)return;
   if(e.key==="Escape"){subAdding=null;render();return}
-  if(e.key==="Enter"){e.preventDefault();const v=e.target.value.trim();const t=tasks.find(x=>x.id===id);if(!t)return;
+  if(e.key==="Enter"){if(e.isComposing||e.keyCode===229)return;e.preventDefault();const v=e.target.value.trim();const t=tasks.find(x=>x.id===id);if(!t)return;
     if(!v){subAdding=null;render();return}
     setSubs(t,[...(t.subs||[]).map(x=>({...x})),{t:v.slice(0,120),done:false}]);setTimeout(()=>document.getElementById("subin-"+id)?.focus(),0)}});
+function saveSubEdit(el){if(!subEditing)return;const t=tasks.find(x=>x.id===el.dataset.subedit),i=+el.dataset.i;subEditing=null;if(!t||!t.subs||!t.subs[i]){render();return}
+  const v=el.value.trim();const subs=t.subs.map(x=>({...x}));if(!v)subs.splice(i,1);else subs[i].t=v.slice(0,120);setSubs(t,subs)}
+document.addEventListener("keydown",e=>{if(!e.target.dataset||!e.target.dataset.subedit)return;if(e.key==="Escape"){subEditing=null;render();return}
+  if(e.key==="Enter"){if(e.isComposing||e.keyCode===229)return;e.preventDefault();saveSubEdit(e.target)}});
+document.addEventListener("focusout",e=>{if(e.target.dataset&&e.target.dataset.subedit&&subEditing)saveSubEdit(e.target)});
 document.addEventListener("focusout",e=>{const id=e.target.dataset&&e.target.dataset.subadd;if(id&&!e.target.value.trim())setTimeout(()=>{if(subAdding===id&&document.activeElement?.dataset?.subadd!==id){subAdding=null;render()}},150)});
 $("#buddy").addEventListener("click",()=>cheer((lang==="en"?["Hehe, that tickles～",`I'm ${petName()}, ${userName?userName+"'s":"your"} little tree.`,"Keep watering me and I'll grow big and bloom!","Remember to eat well today!"]:["嘿嘿，戳我干嘛～",`我是${petName()}，${userName||"你"}的小树。`,"多浇水，我会长成大树开花的！","今天也要好好吃饭！"])[Math.floor(Math.random()*4)]));
 document.addEventListener("change",e=>{if(e.target.id==="wishCur"){wishCur=e.target.value;try{localStorage.setItem("los-cur",wishCur)}catch(_){}}});
@@ -4319,6 +4336,9 @@ function boardChips(){
       return `<button class="chip hz${boards[k]&&!off?" on":""}" data-set="board" data-v="${k}" ${off?'disabled style="opacity:.45"':""} aria-pressed="${boards[k]&&!off}">${boards[k]&&!off?"✓ ":""}${L(zh,en)}</button>`}).join("");
 }
 function langChips(attr="data-set"){return [["zh","中文"],["en","English"]].map(([k,n])=>`<button class="chip hz${lang===k?" on":""}" ${attr}="lang" data-v="${k}">${n}</button>`).join("")}
+let downInSheet=false;
+document.addEventListener("pointerdown",e=>{downInSheet=!!(e.target.closest&&e.target.closest(".sheet,.capture,.ovc,.rc-sheet"))},true);
+document.addEventListener("click",e=>{if(downInSheet&&e.target.classList&&(e.target.classList.contains("sheet-bg")||e.target.classList.contains("cap-wrap")||e.target.classList.contains("ovl-letter"))){e.stopImmediatePropagation();e.preventDefault()}downInSheet=false},true);
 function openSettings(){
   let confirmWipe=false, kept={};
   const bg=document.createElement("div"); bg.className="sheet-bg";
