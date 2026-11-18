@@ -538,6 +538,7 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .tli .tx{display:flex;flex-direction:column;padding-bottom:10px;line-height:22px;min-width:0;overflow-wrap:anywhere}.tli .tx .mt{width:16px;height:16px;vertical-align:-3px;margin-right:4px}.tli .tx small{color:var(--muted);font-size:12.5px;line-height:1.4}
 .tli .tag{font-size:11px;border-radius:999px;padding:0 6px;margin-left:4px;background:#ffe4e7;color:#c44a5a}
 .tour-block{position:fixed;inset:0;z-index:88}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px}
 .tour-spot{position:fixed;z-index:89;border-radius:18px;box-shadow:0 0 0 9999px rgba(20,32,60,.55);pointer-events:none;transition:left .25s,top .25s,width .25s,height .25s}.tour-spot.soft{box-shadow:0 0 0 9999px rgba(20,32,60,.35)}
 .tour{position:fixed;z-index:91;width:min(300px,calc(100vw - 32px));box-sizing:border-box;background:#1f3156;color:#fff;border-radius:16px;padding:12px 14px;font-size:13.5px;line-height:1.55;box-shadow:0 10px 26px rgba(0,0,0,.25)}
 .tour::after{content:"";position:absolute;left:var(--ax,40px);border:9px solid transparent}.tour.dn::after{top:-8px;border-top:0;border-bottom-color:#1f3156}.tour.up::after{bottom:-8px;border-bottom:0;border-top-color:#1f3156}
@@ -1545,6 +1546,7 @@ const TOUR_FULL=()=>[
   {go:"study",sel:".cls,.cls-empty",t:L("今天的课","Today's classes"),b:L("把课程表加进来，每天在这里看今天有什么课。可以手动加，也能导入学校课表的 .ics 文件。","Add your timetable to see today's classes here. Add them by hand or import your school's .ics file.")},
   {go:"lifeshop",sel:".food",t:L("吃 & 买","Food"),b:L("不知道吃什么就转一下转盘。下面还有<em>冰箱</em>，记着食材放了几天；<em>购物清单</em>买到了能直接放进冰箱。","Can't decide what to eat? Spin the wheel. Below are your <em>fridge</em>, which tracks how long things have been in, and your <em>shopping list</em>.")},
   {sel:"#jbtn",pad:4,t:L("小结","Today"),b:L("每天看看做了什么：<em>时间轴</em>、值得记住的大小事，还有「{pet}记着呢」帮你记生日和纪念日。","See your day: the <em>timeline</em>, moments worth remembering, and “{pet} remembers” for birthdays and anniversaries.")},
+  {sel:"#mbBtn",pad:4,t:L("信箱","Mailbox"),b:L("给以后的自己写封信，封好后到了日子才能拆：可以写给明年、下一个生日，或者自己挑一天。也能寄给朋友。","Write a letter to your future self. It stays sealed until the day you pick: next year, your next birthday, or any date. You can send one to a friend too.")},
   {sel:"#gear",pad:4,t:L("设置","Settings"),b:L("改名字、天气城市、新的一天从几点开始，登录同步手机和电脑。想再看这段介绍，也在这里。","Your name, weather city, when a new day starts, and sync. You can replay this tour here too.")}];
 const TOUR_NEW=()=>{const f=TOUR_FULL();return [
   {sel:"#wx",pad:4,t:L("新功能 · 天气","New · Weather"),b:f[1].b},
@@ -1554,14 +1556,27 @@ const TOUR_NEW=()=>{const f=TOUR_FULL();return [
   {go:"lifeshop",sel:".food",t:L("新功能 · 吃 & 买","New · Food"),b:f[7].b},
   {sel:"#jbtn",pad:4,t:L("新功能 · 小结","New · Today"),b:L("小结里多了<em>时间轴</em>和「{pet}记着呢」（生日、纪念日）；里程碑可以打星星了。","Today now has a <em>timeline</em> and “{pet} remembers” for birthdays; moments can get stars.")},
   {sel:"#gear",pad:4,t:L("设置","Settings"),b:L("想再看一遍介绍，就在设置里点「重新看一遍介绍」。","Replay this tour any time from Settings.")}]};
+/* what's new: one batch per release; each batch shows once to people who already know the app */
+const NEWS=()=>[
+  {id:"1118",steps:[
+    {sel:"#mbBtn",pad:4,t:L("新功能 · 信箱","New · Mailbox"),b:L("给以后的自己写封信，封好后到了日子才能拆：写给明年、下一个生日，或者自己挑一天。以前写的信也能放进来，还能寄给朋友。","Write to your future self. Letters stay sealed until their day: next year, your next birthday, or a date you pick. Add old letters too, or send one to a friend.")},
+    {go:"habit",sel:".slp",alt:".board[data-k=habit]",t:L("新功能 · 睡眠","New · Sleep"),b:L("睡前和早上起床的时候，打卡页最上面会出现睡眠卡片，点一下就记下几点睡、几点起，还能选睡得怎么样。","Around bedtime and when you wake up, a sleep card appears at the top of Habits. One tap logs when you slept or woke, and you can rate how you slept.")},
+    {go:"journal",sel:".moodc",t:L("新功能 · 心情","New · Mood"),b:L("小结里可以选今天的心情，用小芽的表情来表示。","Pick today's mood in Today, with one of {pet}'s faces.")},
+    {go:"journal",sel:".dtabs",t:L("新功能 · 感恩日记","New · Gratitude journal"),b:L("<em>感恩日记</em>每天写三件让你感激或开心的小事，再选一个明天想做的小行动；想自由写就切到<em>今日感想</em>。","In the <em>Gratitude</em> tab, note three small things you're grateful for, and maybe one small step for tomorrow. Switch to <em>Reflection</em> to write freely.")},
+    {go:"study",sel:".board .task",t:L("新功能 · 任务","New · Tasks"),b:L("截止日期可以精确到<em>几点</em>，快到了会显示还剩几小时；每天要做两次的事（比如早晚吃药），重复里可以选<em>早 / 中 / 晚</em>。","Deadlines can have a <em>time</em>, with hours left shown as it gets close. For things you do twice a day, pick <em>morning / noon / evening</em> in Repeat.")}]}];
+const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
 let tourOn=null;
 function tourGo(go){
+  if(go==="habit"){if(tab!=="habit"){tab="habit";render()}return}
+  if(go==="journal"){if(tab!=="journal"){tab="journal";render()}return}
   if(go==="study"&&on("study")){if(tab!=="study"){tab="study";render()}}
   else if(go==="lifeshop"&&on("life")&&on("shop")){if(tab!=="life"||lifeSub!=="shop"){tab="life";lifeSub="shop";render()}}
 }
-function tourVisible(s){if(s.go==="study"&&!on("study"))return false;if(s.go==="lifeshop"&&!(on("life")&&on("shop")))return false;if(!s.go)return !!document.querySelector(s.sel);return true}
+function tourVisible(s){if(s.go==="habit"||s.go==="journal")return true;if(s.go==="study"&&!on("study"))return false;if(s.go==="lifeshop"&&!(on("life")&&on("shop")))return false;if(!s.go)return !!document.querySelector(s.sel);return true}
 function startTour(kind){
-  const steps=(kind==="new"?TOUR_NEW():TOUR_FULL()).filter(x=>on("classes")||!/\.cls/.test(x.sel));
+  const news=kind==="news"?newsPending():[];
+  const steps=(kind==="news"?news.flatMap(n=>n.steps):kind==="new"?TOUR_NEW():TOUR_FULL()).filter(x=>on("classes")||!/\.cls/.test(x.sel));
+  const qs=s=>document.querySelector(s.sel)||(s.alt?document.querySelector(s.alt):null);
   const prevTab=tab, prevSub=lifeSub;
   document.querySelectorAll(".tour-ui").forEach(x=>x.remove());
   const block=document.createElement("div");block.className="tour-ui tour-block";
@@ -1570,9 +1585,9 @@ function startTour(kind){
   document.body.append(block,spot,tip);
   let i=-1;
   const end=()=>{tourOn=null;document.querySelectorAll(".tour-ui").forEach(x=>x.remove());window.removeEventListener("resize",place);window.removeEventListener("scroll",place,true);document.removeEventListener("keydown",key);
-    tourMark(kind);if(kind==="full")tourMark("new");tab=prevTab;lifeSub=prevSub;render()};
+    tourMark(kind);if(kind==="full"){tourMark("new");NEWS().forEach(n=>tourMark("nf:"+n.id))}if(kind==="news")news.forEach(n=>tourMark("nf:"+n.id));tab=prevTab;lifeSub=prevSub;render()};
   const key=e=>{if(e.key==="Escape")end();if(e.key==="ArrowRight")go(1);if(e.key==="ArrowLeft")go(-1)};
-  function place(){const s=steps[i];if(!s)return;const el=document.querySelector(s.sel);if(!el)return;
+  function place(){const s=steps[i];if(!s)return;const el=qs(s);if(!el)return;
     const pad=s.pad??6, r=el.getBoundingClientRect();
     Object.assign(spot.style,{left:r.left-pad+"px",top:r.top-pad+"px",width:r.width+pad*2+"px",height:r.height+pad*2+"px",borderRadius:(r.height<70?999:18)+"px"});
     const w=tip.offsetWidth,h=tip.offsetHeight, below=r.bottom+pad+16+h<innerHeight||r.top-pad-16-h<0;
@@ -1582,10 +1597,10 @@ function startTour(kind){
     tip.style.setProperty("--ax",Math.min(w-28,Math.max(12,r.left+r.width/2-left-9))+"px")}
   function go(d){
     let j=i+d; while(j>=0&&j<steps.length&&!tourVisible(steps[j]))j+=d;
-    if(j>=steps.length){end();cheer(kind==="new"?L("新功能就这些啦，慢慢玩～","That's what's new. Have fun～"):L("介绍完啦！先从打个卡开始吧～","That's the tour! Start with a check-in～"));return}
+    if(j>=steps.length){end();cheer(kind!=="full"?L("新功能就这些啦，慢慢玩～","That's what's new. Have fun～"):L("介绍完啦！先从打个卡开始吧～","That's the tour! Start with a check-in～"));return}
     if(j<0)return;
     i=j; const s=steps[i]; tourGo(s.go);
-    requestAnimationFrame(()=>{const el=document.querySelector(s.sel);if(!el){go(d||1);return}
+    requestAnimationFrame(()=>{const el=qs(s);if(!el){go(d||1);return}
       const r=el.getBoundingClientRect();if(getComputedStyle(el).position!=="fixed"&&(r.top<70||r.bottom>innerHeight-230))window.scrollTo({top:scrollY+r.top-Math.max(80,innerHeight*.18),behavior:"instant"});
       const n=steps.filter(tourVisible).length, k=steps.slice(0,i+1).filter(tourVisible).length;
       tip.innerHTML=`<div class="th">${SF.star}<b>${s.t}</b></div><div class="tb">${s.b}</div><div class="row"><span class="cnt">${k} / ${n}</span><button class="skip" data-tr="skip">${L("跳过","Skip")}</button>${k>1?`<button class="prev" data-tr="prev">${L("上一步","Back")}</button>`:""}<button class="next" data-tr="next">${k===n?L("开始吧","Let's go"):L("下一步","Next")}</button></div>`;
@@ -1596,8 +1611,9 @@ function startTour(kind){
   tourOn=kind; go(1);
 }
 function maybeTour(kind){
-  if(tourOn||tourSeen(kind)||(kind==="new"&&tourSeen("full")))return;
-  let tries=0;const t=setInterval(()=>{tries++;if(tourOn||tourSeen(kind)){clearInterval(t);return}
+  if(kind==="new"&&(tourSeen("new")||tourSeen("full"))){if(newsPending().length)kind="news";else return}
+  if(tourOn||(kind!=="news"&&tourSeen(kind)))return;
+  let tries=0;const t=setInterval(()=>{tries++;if(tourOn||(kind==="news"?!newsPending().length:tourSeen(kind))){clearInterval(t);return}
     if(!document.querySelector(".sheet-bg,#pomoPage:not([hidden])")&&loaded.t){clearInterval(t);startTour(kind)}else if(tries>120)clearInterval(t)},700);
 }
 /* one-step tips the first time you open a spot */
@@ -1606,6 +1622,8 @@ const TIPS=()=>[
   {k:"wish",when:()=>tab==="life"&&lifeSub==="wish",sel:"#wishTitle",pad:4,t:L("愿望清单","Wishlist"),b:L("想买的、想去的、想做的都记在这里。实现了就点一下，{pet}会帮你庆祝。","Things to buy, places to go, things to do. Tap one when it comes true and {pet} will celebrate.")},
   {k:"memo",when:()=>tab==="life"&&lifeSub==="memo",sel:".board[data-k=life] [data-act=memonew]",pad:4,t:L("备忘","Notes"),b:L("出门清单、待买的书……可以写成勾选清单，用完一键重置再用。","Packing lists, books to read… make them checklists and reset them to reuse.")},
   {k:"ms",when:()=>tab==="journal",sel:".ms-starrow",t:L("给大事打星星","Star your big moments"),b:L("记下一件事之前，点星星选它有多重要。三颗星的事，明年今天{pet}会陪你庆祝。","Before adding a moment, tap the stars to say how big it is. Three-star moments get celebrated on the same day next year.")},
+  {k:"grat",when:()=>tab==="journal",sel:".dtabs",pad:4,t:L("感恩日记","Gratitude journal"),b:L("每天写三件让你感激或开心的小事，大小都行。想自由写，就切到「今日感想」。","Write three small things you're grateful for today, big or small. Switch to Reflection to write freely.")},
+  {k:"sleep",when:()=>tab==="habit",sel:".slp",t:L("睡眠卡片","Sleep card"),b:L("睡前和起床时它会出现在这里，点一下记下时间，{pet}会帮你算睡了多久。","It shows up here at bedtime and when you wake. One tap logs the time and {pet} works out how long you slept.")},
   {k:"bd",when:()=>tab==="journal",sel:".upc-add",pad:4,t:L("「{pet}记着呢」","“{pet} remembers”"),b:L("把家人朋友的生日、纪念日加进来，快到的时候{pet}会提醒你。","Add birthdays and anniversaries, and {pet} will remind you ahead of time.")}];
 let tipsSeen={}; try{tipsSeen=JSON.parse(localStorage.getItem(TIPS_KEY)||"{}")}catch(_){tipsSeen=null}
 function maybeTips(){
@@ -4362,7 +4380,7 @@ function openSettings(){
     <div class="field"><span>${L("几点该睡觉","Bedtime")}</span><div class="until-row"><input type="time" id="set-bed" value="${esc(kept.bed??bedTime)}"><button class="chip hz${(kept.bed??bedTime)?"":" on"}" data-set="nobed">${L("不提醒","Off")}</button></div><span class="hint">${L("过了这个时间，{pet}会提醒你该睡啦。","After this time {pet} will remind you to go to bed.")}</span></div>
     <div class="field"><span>${L("我的生日（写给下一岁的信会在这天拆）","My birthday (letters to a year-older me open then)")}</span><div class="drow">${(()=>{const b=bdParts();return `<select id="set-bm"><option value="">${L("月","Month")}</option>${[...Array(12)].map((_,i)=>`<option value="${i+1}" ${b&&b.m===i+1?"selected":""}>${L(`${i+1} 月`,MON[i])}</option>`).join("")}</select><select id="set-bd"><option value="">${L("日","Day")}</option>${[...Array(31)].map((_,i)=>`<option value="${i+1}" ${b&&b.d===i+1?"selected":""}>${L(`${i+1} 日`,String(i+1))}</option>`).join("")}</select><input id="set-by" inputmode="numeric" maxlength="4" placeholder="${L("年（可不填）","Year (optional)")}" value="${b&&b.y?b.y:""}">`})()}</div></div>
     <div class="field"><span>${L("冰箱：放多久提醒我","Fridge: remind me after")}</span><div class="shelfset">${SHELF.map(([k,,d,zh,en])=>`<label><span>${L(zh,en)}</span><select data-shelf="${k}">${[1,2,3,4,5,7,10,14,21,30,60,0].map(v=>`<option value="${v}" ${shelfDays(k)===v?"selected":""}>${v?L(v>=30&&v%30===0?`${v/30} 个月`:v>=7&&v%7===0?`${v/7} 周`:`${v} 天`,v>=30&&v%30===0?`${v/30} mo`:v>=7&&v%7===0?`${v/7} wk`:`${v} d`):L("不提醒","Never")}${v===d?L("（默认）"," (default)"):""}</option>`).join("")}</select></label>`).join("")}</div></div>
-    <div class="field"><span>${L("功能介绍","Tour")}</span><div><button class="btn" data-set="tour">${L("重新看一遍介绍","Replay the tour")}</button></div></div>
+    <div class="field"><span>${L("功能介绍","Tour")}</span><div><div class="btnrow"><button class="btn" data-set="tour">${L("重新看一遍介绍","Replay the tour")}</button><button class="btn" data-set="news">${L("最近的新功能","What's new")}</button></div></div></div>
     <label class="field chk"><span>${L("番茄钟提示音","Timer sound")}</span><span class="chkrow"><input type="checkbox" id="set-sound" ${(kept.snd??pset.sound)?"checked":""}> ${L("专注、休息结束时轻轻叮一声（默认关）","A soft ding when focus or a break ends (off by default)")}</span></label>
     ${IS_WEB?`    <div class="field"><span>${L("备份","Backup")}</span>
       <p class="hint" style="margin:0">${L("数据只存在这个浏览器里。换手机、换浏览器或清理浏览器数据之前，先导出一份备份。","Your data lives only in this browser. Export a backup before switching phones or browsers, or clearing browser data.")}</p>
@@ -4389,6 +4407,7 @@ function openSettings(){
     if(a==="lang"){keep();setLang(b.dataset.v);draw();return}
     if(a==="nobed"){bg.querySelector("#set-bed").value="";return}
     if(a==="tour"){bg.remove();setTimeout(()=>startTour("full"),250);return}
+    if(a==="news"){bg.remove();try{const o=JSON.parse(localStorage.getItem(TOUR_KEY)||"{}");delete o["nf:"+NEWS()[0].id];localStorage.setItem(TOUR_KEY,JSON.stringify(o))}catch(_){}setTimeout(()=>startTour("news"),250);return}
     if(a==="citysearch"){const q=bg.querySelector("#set-city").value.trim();const box=bg.querySelector("#set-cityres");if(!q)return;box.innerHTML=`<span class="hint">${L("搜索中…","Searching…")}</span>`;
       searchCity(q).then(res=>{bg._city=res;box.innerHTML=res.length?res.map((c,i)=>`<button data-set="citypick" data-i="${i}"><span>${esc(c.name)}</span><small>${esc(c.area)}</small></button>`).join(""):`<span class="hint">${L("没找到，换个写法试试（英文城市名更容易找到）","Nothing found. Try another spelling.")}</span>`}).catch(()=>{box.innerHTML=`<span class="hint">${L("搜索失败，检查一下网络","Search failed. Check your connection.")}</span>`});return}
     if(a==="citypick"){const c=(bg._city||[])[+b.dataset.i];if(!c)return;wx.lat=c.lat;wx.lon=c.lon;wx.city=c.name;wx.on=true;saveWx();bg.querySelector("#set-cityres").innerHTML=`<span class="hint">${L(`好，改成 ${esc(c.name)} 了`,`Switched to ${esc(c.name)}`)}</span>`;bg.querySelector("#set-city").value=c.name;fetchWx(true);return}
