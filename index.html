@@ -514,6 +514,7 @@ body.pomo-open{overflow:hidden}
 .crop-bg{z-index:90}.crop{align-items:center;gap:14px;max-width:380px}.crop h3{font-size:15px;font-weight:600;text-align:center;margin:0}
 .crop-f{position:relative;overflow:hidden;border-radius:12px;background:#000;touch-action:none;cursor:grab;box-shadow:0 0 0 2px var(--line)}.crop-f:active{cursor:grabbing}.crop-f img{position:absolute;left:0;top:0;max-width:none;user-select:none;-webkit-user-drag:none;transform-origin:0 0}
 .crop-z{display:flex;align-items:center;gap:10px;width:100%;max-width:320px;color:var(--muted)}.crop-z input{flex:1}.crop .sheet-actions{width:100%}
+.we-imga{display:flex;gap:14px;margin-bottom:4px;flex-wrap:wrap}.we-imga label.link{cursor:pointer}button.wm-slot{padding:0;background:none;font:inherit}
 .wm-adj{display:block;font-size:13px;margin-bottom:6px}.wm-pre{display:block;font-size:12.5px;margin-bottom:4px}
 /* sprout coins & shop */
 .coin-btn{margin-left:0}.coin-btn .coin{flex:none}
@@ -4886,7 +4887,7 @@ function openWish(id){
   const grab=()=>{const dn=bg.querySelector("#we-done");if(dn&&dn.value)draft.doneDay=dn.value;const pd=bg.querySelector("#we-paid");if(pd&&pd.value)draft.paidDay=pd.value;draft.title=bg.querySelector("#we-title").value;draft.note=bg.querySelector("#we-note").value;draft.link=bg.querySelector("#we-link").value;const p=bg.querySelector("#we-price"),s=bg.querySelector("#we-saved"),c=bg.querySelector("#we-cur");if(p)draft.price=p.value;if(s)draft.saved=s.value;if(c)draft.cur=c.value};
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑愿望","Edit wish")}">
     <input id="we-title" class="titlein" value="${esc(draft.title)}" maxlength="100" aria-label="${L("愿望","Wish")}">
-    <div class="we-img"><label class="wm-slot sm">${draft.img?`<img src="${draft.img}" alt="">`:`<span>${L("配一张图","Add a picture")}</span>`}<input type="file" accept="image/*" id="we-file" hidden></label><span class="hint">${draft.img?`<button class="link" data-we="noimg">${L("不要这张图","Remove picture")}</button><br>`:""}${L("想买的放商品截图，想去的放一张风景照。","A product screenshot, or a photo of the place.")}${draft.done&&draft.kind==="go"?`<br><button class="link" data-we="memo">${L("换明信片上的照片和那句话","Change the postcard photo and line")}</button>`:""}</span></div>
+    <div class="we-img">${draft.img?`<button class="wm-slot sm" data-we="adjimg" title="${L("点一下调整位置","Tap to adjust")}"><img src="${draft.img}" alt=""></button>`:`<label class="wm-slot sm"><span>${L("配一张图","Add a picture")}</span><input type="file" accept="image/*" id="we-file" hidden></label>`}<span class="hint">${draft.img?`<span class="we-imga"><button class="link" data-we="adjimg">${L("调整位置","Adjust")}</button><label class="link">${L("换一张","Change")}<input type="file" accept="image/*" id="we-file" hidden></label><button class="link" data-we="noimg">${L("不要这张图","Remove")}</button></span>`:""}${L("想买的放商品截图，想去的放一张风景照。","A product screenshot, or a photo of the place.")}${draft.done&&draft.kind==="go"?`<br><button class="link" data-we="memo">${L("换明信片上的照片和那句话","Change the postcard photo and line")}</button>`:""}</span></div>
     ${draft.done?`<div class="wa-row"><label class="field" style="flex:1"><span>${draft.pre?L("什么时候买的","Bought on"):L("哪天实现的","Came true on")}</span><input id="we-done" type="date" max="${todayStr()}" value="${dayOf(draft.doneAt||Date.now())}"></label>${draft.pre&&draft.paidAt?`<label class="field" style="flex:1"><span>${L("哪天补齐的","Paid back on")}</span><input id="we-paid" type="date" max="${todayStr()}" value="${dayOf(draft.paidAt)}"></label>`:""}</div>`:""}
     <label class="field"><span>${L("链接（可不填）","Link (optional)")}</span><input id="we-link" type="url" maxlength="500" value="${esc(draft.link||"")}" placeholder="${L("购物页面、攻略……","A shop page, a guide…")}"></label>
     <div class="field"><span>${L("类型","Type")}</span><div class="chips">${WISH_KINDS.map(k=>`<button class="chip hz${draft.kind===k[0]?" on":""}" data-we="kind" data-v="${k[0]}">${sproutIcon(k[0])}${L(k[2],k[3])}</button>`).join("")}</div></div>
@@ -4905,6 +4906,7 @@ function openWish(id){
     const b=e.target.closest("[data-we]"); if(!b)return; const a=b.dataset.we; grab();
     if(a==="kind"){draft.kind=b.dataset.v;draw();return}
     if(a==="noimg"){draft.img=null;draw();return}
+    if(a==="adjimg"){cropImg(draft.img,1).then(c=>{if(c){draft.img=c;draw()}});return}
     if(a==="memo"){bg.remove();wishMemo(w);return}
     if(a==="close"){bg.remove();return}
     const ref=db.doc("wishes/"+id);
