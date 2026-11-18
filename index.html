@@ -470,6 +470,7 @@ body.pomo-open{overflow:hidden}
 .lp .lto{min-height:var(--lh)}.lp .lsig{text-align:right;margin-right:60px}.lp .ltail{height:calc(var(--lh)*1)}
 .lp .lbody{display:block;width:100%;border:none;background:none;outline:none;resize:none;padding:0;margin:0;font:inherit;line-height:var(--lh);color:inherit;min-height:calc(var(--lh)*3);overflow:hidden;border-radius:0}
 .lp .lbody.rd{min-height:var(--lh)}
+.lp:has(.lsk) .lsig.empty+.ltail{height:calc(var(--lh)*2)}
 .lp .lsk{position:absolute;right:10px;bottom:8px;width:60px;height:60px;transform:rotate(8deg);pointer-events:none}.lp .lsk svg{width:100%;height:100%}
 .lp-kraft{background-color:#ead7b8;background-image:repeating-linear-gradient(to bottom,transparent 0 calc(var(--lh,34px) - 1px),rgba(138,106,74,.3) calc(var(--lh,34px) - 1px) var(--lh,34px));color:#3f2d1a;box-shadow:inset 0 0 0 2px #d9bf96}
 .lp-cream{background-color:#fffaf2;background-image:repeating-linear-gradient(to bottom,transparent 0 calc(var(--lh,34px) - 1px),rgba(255,143,177,.3) calc(var(--lh,34px) - 1px) var(--lh,34px));color:#3a3350;box-shadow:inset 0 0 0 2px #f3e3cf}
@@ -477,7 +478,10 @@ body.pomo-open{overflow:hidden}
 .lp-red{background-color:#fffdf7;background-image:repeating-linear-gradient(to bottom,transparent 0 calc(var(--lh,34px) - 1px),rgba(214,72,60,.45) calc(var(--lh,34px) - 1px) var(--lh,34px));color:#2b2b2b;box-shadow:inset 0 0 0 2px #e9a69c,inset 0 0 0 8px #fffdf7,inset 0 0 0 9.5px rgba(214,72,60,.55)}.lp.lp-red{border-radius:6px;padding-left:26px;padding-right:26px}
 .lp-sky{background-color:#f0f8ff;background-image:radial-gradient(#b9dcf7 1.3px,transparent 1.6px);background-size:17px 17px;color:#23405e;box-shadow:inset 0 0 0 2px #cfe6fa}
 .pps .lp-kraft,.pps .lp-cream,.pps .lp-xuan,.pps .lp-red{--lh:10px}.pps .lp-sky{background-size:8px 8px}.pps .lp-red{box-shadow:inset 0 0 0 4px #fffdf7,inset 0 0 0 5px rgba(214,72,60,.6)}
-.lp .lto,.lp .lbody{text-align:var(--la,left)}
+.lp .lto{text-align:left}.lp .lbody>div[data-a=c]{text-align:center}.lp .lbody>div[data-a=r]{text-align:right}
+.lp .lce{position:relative;min-height:calc(var(--lh)*3);outline:none;white-space:pre-wrap;cursor:text}
+.lp .lce.isempty::before{content:attr(data-ph);position:absolute;left:0;top:0;opacity:.45;pointer-events:none}
+.lp .lbody.rd>div{min-height:var(--lh)}.alrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .lp .ltoin{display:block;width:100%;border:none;background:none;outline:none;padding:0;margin:0;font:inherit;line-height:var(--lh);height:var(--lh);color:inherit;border-bottom:1.5px dashed color-mix(in srgb,currentColor 35%,transparent);border-radius:0}
 .lp .ltoin::placeholder{color:currentColor;opacity:.4}
 .lphs{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:flex-start;padding:10px 0 8px}
@@ -2135,7 +2139,7 @@ async function friendView(id){
     show(`${env}<h1>${L(`${from}给你写了一封信`,`${from} wrote you a letter`)}</h1><p>${L(`这封信要到 <b>${lYmdS(m.openOn)}</b> 才能拆开哦。`,`It opens on <b>${lYmdS(m.openOn)}</b>.`)}</p><div class="cd"><span><b>${d}</b><small>${L("天","days")}</small></span><span><b>${h}</b><small>${L("小时","hours")}</small></span><span><b>${mi}</b><small>${L("分","min")}</small></span></div>`)};
   const openIt=async()=>{let b=null;try{b=await shareApi.body(id)}catch(e){b=null}
     if(!b){if(m.openAt>Date.now()-6e4){m.openAt=Math.max(m.openAt,Date.now()+6e4);sealed();timer=setInterval(sealed,30000);return}show(`<p class="fvmsg">${L("信没取到，刷新一下试试。","Couldn't fetch the letter. Try refreshing.")}</p>`);return}
-    show(`<div class="fvhd"><b>${L(`${from}写给你的信`,`A letter from ${from}`)}</b><small>${L(`写于 ${lYmd(m.writtenAt||Date.now())} · ${lYmdS(m.openOn)}拆开`,`Written ${lYmd(m.writtenAt||Date.now())} · opened ${lYmdS(m.openOn)}`)}</small></div>${paperHTML({paper:m.paper,font:m.font,sticker:m.sticker,align:m.align,fsz:m.fsz,ink:m.ink,head:b.head,photos:b.photos||[],body:b.body,sig:b.sig,toText:m.toName,kind:"send"},false)}`);
+    show(`<div class="fvhd"><b>${L(`${from}写给你的信`,`A letter from ${from}`)}</b><small>${L(`写于 ${lYmd(m.writtenAt||Date.now())} · ${lYmdS(m.openOn)}拆开`,`Written ${lYmd(m.writtenAt||Date.now())} · opened ${lYmdS(m.openOn)}`)}</small></div>${paperHTML({paper:m.paper,font:m.font,sticker:m.sticker,align:m.align,fsz:m.fsz,ink:m.ink,head:b.head,la:b.la||[],photos:b.photos||[],body:b.body,sig:b.sig,toText:m.toName,kind:"send"},false)}`);
     if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{})};
   if(m.openAt>Date.now()){sealed();timer=setInterval(sealed,30000)}else openIt();
 }
@@ -2170,13 +2174,24 @@ const defSig=x=>L(`—— ${lYmd(x.writtenAt||Date.now()).replace(/\d+日$/,"")}
 const LSIZES={s:[15,30],m:[17,34],l:[21,40]};
 const LINKS=()=>[["#2b2622",L("墨黑","Ink black")],["#5a3a22",L("深棕","Dark brown")],["#7a4e2d",L("咖啡","Coffee")],["#b5452f",L("砖红","Brick")],["#c2185b",L("胭脂","Rouge")],["#d9668c",L("樱粉","Sakura")],["#d9701f",L("橘子","Orange")],["#b8860b",L("姜黄","Turmeric")],["#6b7a2a",L("橄榄","Olive")],["#2f7a55",L("松绿","Pine")],["#1f8080",L("青碧","Teal")],["#2f4f8f",L("靛蓝","Indigo")],["#3b7fc4",L("天蓝","Sky")],["#7a5aa6",L("紫藤","Wisteria")],["#6b6b72",L("烟灰","Smoke")]];
 const lHeadDef=x=>`${L("致 ","Dear ")}${letterTo(x)}${L("：",",")}`;
+const LA={c:"center",r:"right"};
+function lLines(x){const ls=(x.body||"").split("\n"),la=x.la||[],def=x.align==="center"?"c":x.align==="right"?"r":"";return ls.map((t,i)=>({t,a:la[i]!=null?la[i]:def}))}
+const lLinesHTML=x=>lLines(x).map(l=>`<div${l.a?` data-a="${l.a}"`:""}>${esc(l.t)||"<br>"}</div>`).join("");
+function edLines(ed){const out=[];let cur=null;const push=(t,a)=>{String(t).split("\n").forEach(p=>out.push({t:p,a}))};
+  ed.childNodes.forEach(n=>{if(n.nodeType===1&&(n.tagName==="DIV"||n.tagName==="P")){if(cur!==null){out.push(cur);cur=null}let t=n.innerText;if(t.endsWith("\n"))t=t.slice(0,-1);push(t,n.dataset.a||"")}
+    else if(n.nodeType===1&&n.tagName==="BR"){out.push(cur||{t:"",a:""});cur=null}
+    else{const t=n.textContent||"";cur=cur?{t:cur.t+t,a:cur.a}:{t,a:""}}});
+  if(cur!==null)out.push(cur);return out.length?out:[{t:"",a:""}]}
+function edNormalize(ed){if([...ed.childNodes].every(n=>n.nodeType===1&&n.tagName==="DIV"))return;
+  const sel=getSelection(),inEd=sel.rangeCount&&ed.contains(sel.anchorNode);const ls=edLines(ed);ed.innerHTML=ls.map(l=>`<div${l.a?` data-a="${l.a}"`:""}>${esc(l.t)||"<br>"}</div>`).join("");
+  if(inEd){const last=ed.lastChild;const r=document.createRange();r.selectNodeContents(last);r.collapse(false);sel.removeAllRanges();sel.addRange(r)}}
 function paperHTML(x,editable){
   const st=x.sticker?`<span class="lsk">${moodFace(x.sticker)}</span>`:"";
   const sig=(x.sig||"").trim(), sz=LSIZES[x.fsz]||LSIZES.m, al=["center","right"].includes(x.align)?x.align:"left";
   const head=x.head!=null?x.head:lHeadDef(x);
   const sty=`font-family:${lfont(x.font)};font-size:${sz[0]}px;--lh:${sz[1]}px;${x.ink?`color:${x.ink};`:""}--la:${al}`;
   const ph=(x.photos||[]).length?`<div class="lphs n${x.photos.length}">${x.photos.map((p,i)=>`<figure class="lph" style="--r:${[-2.5,2,-1.2][i%3]}deg"><img src="${p}" alt="${L("信里的照片","Photo in the letter")}">${editable?`<button type="button" class="lphx" data-lt="phdel" data-v="${i}" aria-label="${L("删掉这张","Remove photo")}">×</button>`:""}</figure>`).join("")}</div>`:"";
-  return `<div class="lp lp-${x.paper||"kraft"}" style="${sty}">${x.from||x.who==="friend"?"":editable?`<input class="lto ltoin" id="lhead" maxlength="60" value="${esc(head)}" placeholder="${L("（没有抬头，想写就点这里）","(No heading. Tap to add one)")}" aria-label="${L("抬头","Heading")}">`:head.trim()?`<div class="lto">${esc(head)}</div>`:""}${editable?`<textarea class="lbody" id="lbody" rows="3" placeholder="${L("想对那时候的自己说些什么？","What would you like to tell yourself?")}">${esc(x.body||"")}</textarea>`:`<div class="lbody rd">${esc(x.body||"").replace(/\n/g,"<br>")}</div>`}${ph}<div class="lsig${sig?"":" empty"}">${esc(sig)}</div><div class="ltail"></div>${st}</div>`;
+  return `<div class="lp lp-${x.paper||"kraft"}" style="${sty}">${x.from||x.who==="friend"?"":editable?`<input class="lto ltoin" id="lhead" maxlength="60" value="${esc(head)}" placeholder="${L("（没有抬头，想写就点这里）","(No heading. Tap to add one)")}" aria-label="${L("抬头","Heading")}">`:head.trim()?`<div class="lto">${esc(head)}</div>`:""}${editable?`<div class="lbody lce${(x.body||"").trim()?"":" isempty"}" id="lbody" contenteditable="true" role="textbox" aria-multiline="true" data-ph="${L("想对那时候的自己说些什么？","What would you like to tell yourself?")}">${lLinesHTML(x)}</div>`:`<div class="lbody rd">${lLinesHTML(x)}</div>`}${ph}<div class="lsig${sig?"":" empty"}">${esc(sig)}</div><div class="ltail"></div>${st}</div>`;
 }
 function shrinkImg(file,max=1000,q=.72){return new Promise((res,rej)=>{const fr=new FileReader();fr.onerror=rej;fr.onload=()=>{const im=new Image();im.onerror=rej;im.onload=()=>{let w=im.naturalWidth,h=im.naturalHeight;const k=Math.min(1,max/Math.max(w,h));w=Math.round(w*k);h=Math.round(h*k);const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(im,0,0,w,h);let out=c.toDataURL("image/jpeg",q);if(out.length>230000)out=c.toDataURL("image/jpeg",.55);res(out)};im.src=fr.result};fr.readAsDataURL(file)})}
 function openLetter(id,importMode,preset){
@@ -2190,9 +2205,9 @@ function openLetter(id,importMode,preset){
   if(st.kind==="send"){st.sendTo=st.toText||"";st.sendOn=st.openOn}
   if(!st.sendOn)st.sendOn=addDays(t,30);
   if(!st.customOn)st.customOn=addDays(t,365);
-  let sure=false, bdEdit=false;
+  let sure=false, bdEdit=false, lastRange=null;
   const bg=document.createElement("div"); bg.className="sheet-bg lsheet";
-  const grab=()=>{const b=bg.querySelector("#lbody");if(b)st.body=b.value;const sg=bg.querySelector("#lsigIn");if(sg)st.sig=sg.value;const tt=bg.querySelector("#ltoText");if(tt)st.toText=tt.value;const wd=bg.querySelector("#lwdate");if(wd&&wd.value)st.wdate=wd.value;const co=bg.querySelector("#lopen");if(co&&co.value)st.customOn=co.value;const ct=bg.querySelector("#lcustTo");if(ct)st.custTo=ct.value;const io=bg.querySelector("#limpOpen");if(io&&io.value)st.iOpen=io.value;const fn=bg.querySelector("#lfriend");if(fn)st.friend=fn.value;const sT=bg.querySelector("#lsTo");if(sT)st.sendTo=sT.value;const sO=bg.querySelector("#lsOpen");if(sO&&sO.value)st.sendOn=sO.value;const sF=bg.querySelector("#lsFrom");if(sF)st.fromName=sF.value;const hd=bg.querySelector("#lhead");if(hd&&st.headSet)st.head=hd.value};
+  const grab=()=>{const b=bg.querySelector("#lbody");if(b){const ls=edLines(b);st.body=ls.map(l=>l.t).join("\n");st.la=ls.map(l=>l.a);if(!st.la.some(Boolean))st.la=[];st.align="left"}const sg=bg.querySelector("#lsigIn");if(sg)st.sig=sg.value;const tt=bg.querySelector("#ltoText");if(tt)st.toText=tt.value;const wd=bg.querySelector("#lwdate");if(wd&&wd.value)st.wdate=wd.value;const co=bg.querySelector("#lopen");if(co&&co.value)st.customOn=co.value;const ct=bg.querySelector("#lcustTo");if(ct)st.custTo=ct.value;const io=bg.querySelector("#limpOpen");if(io&&io.value)st.iOpen=io.value;const fn=bg.querySelector("#lfriend");if(fn)st.friend=fn.value;const sT=bg.querySelector("#lsTo");if(sT)st.sendTo=sT.value;const sO=bg.querySelector("#lsOpen");if(sO&&sO.value)st.sendOn=sO.value;const sF=bg.querySelector("#lsFrom");if(sF)st.fromName=sF.value;const hd=bg.querySelector("#lhead");if(hd&&st.headSet)st.head=hd.value};
   const calc=()=>{if(st.kind==="year"){st.toYear=y+1;st.openOn=`${y+1}-01-01`;st.age=null}
     else if(st.kind==="bday"){const nb=nextBday(t);st.openOn=nb;const b=bdParts();st.age=b&&b.y&&nb?+nb.slice(0,4)-b.y:null}
     else if(st.kind==="custom"){st.openOn=st.customOn;st.toYear=null;st.age=null}
@@ -2213,7 +2228,7 @@ function openLetter(id,importMode,preset){
       <div class="lsec"><span>${L("信纸","Paper")}</span><div class="pps">${sw}</div></div>
       <div class="lsec"><span>${L("字体","Font")}</span><div class="fts">${LFONTS().map(([k,n,f])=>`<button class="${st.font===k?"on":""}" data-lt="font" data-v="${k}" style="font-family:${f}">${n}</button>`).join("")}</div></div>
       <div class="lsec"><span>${L("字的样子","Text style")}</span><div class="lsty">
-        <div class="seg3">${[["left",L("靠左","Left")],["center",L("居中","Centre")],["right",L("靠右","Right")]].map(([k,n])=>`<button class="${(st.align||"left")===k?"on":""}" data-lt="align" data-v="${k}" aria-pressed="${(st.align||"left")===k}">${n}</button>`).join("")}</div>
+        <div class="alrow"><div class="seg3">${[["left",L("靠左","Left")],["center",L("居中","Centre")],["right",L("靠右","Right")]].map(([k,n])=>`<button type="button" data-lt="align" data-v="${k}" aria-pressed="false">${n}</button>`).join("")}</div><span class="hint">${L("选中几行或把光标放在那一行，只改这几行","Select lines or put the cursor on one; only those change")}</span></div>
         <div class="seg3">${[["s",L("小","S")],["m",L("中","M")],["l",L("大","L")]].map(([k,n])=>`<button class="${(st.fsz||"m")===k?"on":""}" data-lt="fsz" data-v="${k}" aria-pressed="${(st.fsz||"m")===k}">${n}</button>`).join("")}</div>
         <div class="inks"><button class="ink dflt${!st.ink?" on":""}" data-lt="ink" data-v="" aria-label="${L("跟着信纸","Paper default")}" title="${L("跟着信纸","Paper default")}"></button>${LINKS().map(([c,n])=>`<button class="ink${st.ink===c?" on":""}" style="--c:${c}" data-lt="ink" data-v="${c}" aria-label="${n}" title="${n}"></button>`).join("")}<label class="ink cust${st.ink&&!LINKS().some(x=>x[0]===st.ink)?" on":""}" title="${L("自己调颜色","Pick any colour")}" style="${st.ink&&!LINKS().some(x=>x[0]===st.ink)?`--c:${st.ink}`:""}"><input type="color" id="linkc" value="${esc(st.ink||"#3f2d1a")}" aria-label="${L("自己调颜色","Pick any colour")}"></label></div>
       </div></div>
@@ -2224,9 +2239,9 @@ function openLetter(id,importMode,preset){
       ${(importMode&&st.who==="friend")?"":`<div class="lhchips"><span class="hint">${L("点信纸第一行可以改抬头","Tap the first line to change the heading")}</span>${st.head!=null?`<button class="chip sm2" data-lt="headdef">${L("恢复默认","Reset")}</button>`:""}${st.head!==""?`<button class="chip sm2" data-lt="headnone">${L("不要抬头","No heading")}</button>`:""}</div>`}
       ${importMode?`<div class="opnd"><span>${L("什么时候拆","Open")}</span><button class="${st.iw==="done"?"on":""}" data-lt="iw" data-v="done">${L("已经拆过了","Already opened")}</button><button class="${st.iw==="later"?"on":""}" data-lt="iw" data-v="later">${L("还没到日子","Not yet")}</button>${st.iw==="later"?`<input type="date" id="limpOpen" class="lsigin" min="${addDays(t,1)}" value="${esc(st.iOpen)}">`:""}</div>`:`<span class="hint">${L("封起来之前可以随时回来改。封起来以后，到那天才能拆开。","Edit any time before sealing. Once sealed, it opens on the day.")}</span>`}
       <div class="sheet-actions">${ex?`<button class="btn danger" data-lt="del">${sure?L("再点一次删除","Tap again to delete"):L("删掉","Delete")}</button>`:"<span></span>"}<span style="display:flex;gap:8px">${importMode?`<button class="btn" data-lt="x">${L("取消","Cancel")}</button><button class="btn primary" data-lt="imp">${L("放进信箱","Add to mailbox")}</button>`:`<button class="btn" data-lt="draft">${L("先存着","Save draft")}</button><button class="btn primary" data-lt="seal">${st.kind==="send"?(st.shareId?L("保存修改","Save changes"):L("封好，生成链接 ✉","Seal & get link ✉")):L("封起来 ✉","Seal it ✉")}</button>`}</span></div></div>`;
-    const ta=bg.querySelector("#lbody");if(ta){autosz(ta);requestAnimationFrame(()=>autosz(ta))}
+    alSync();
      const _ns=bg.querySelector(".sheet");if(_ns&&_st)_ns.scrollTop=_st;if(_bst){bg.scrollTop=_bst;requestAnimationFrame(()=>{bg.scrollTop=_bst})}};
-  const body=()=>({...(st.kind==="custom"?{toText:(st.custTo||"").trim()}:{}),...(st.kind==="send"?{toText:(st.sendTo||"").trim(),fromName:(st.fromName||"").trim(),stamp:st.stamp||""}:{}),sig:(st.sig||"").trim().slice(0,40),kind:st.kind,toYear:st.toYear||null,age:st.age||null,openOn:st.openOn||null,paper:st.paper,font:st.font,sticker:st.sticker||"",align:st.align||"left",fsz:st.fsz||"m",ink:st.ink||"",head:st.head==null?null:String(st.head).slice(0,60),photos:(st.photos||[]).slice(0,3),body:(st.body||"").slice(0,20000),writtenAt:st.writtenAt||Date.now(),updatedAt:Date.now()});
+  const body=()=>({...(st.kind==="custom"?{toText:(st.custTo||"").trim()}:{}),...(st.kind==="send"?{toText:(st.sendTo||"").trim(),fromName:(st.fromName||"").trim(),stamp:st.stamp||""}:{}),sig:(st.sig||"").trim().slice(0,40),kind:st.kind,toYear:st.toYear||null,age:st.age||null,openOn:st.openOn||null,paper:st.paper,font:st.font,sticker:st.sticker||"",align:"left",la:(st.la||[]).slice(0,2000),fsz:st.fsz||"m",ink:st.ink||"",head:st.head==null?null:String(st.head).slice(0,60),photos:(st.photos||[]).slice(0,3),body:(st.body||"").slice(0,20000),writtenAt:st.writtenAt||Date.now(),updatedAt:Date.now()});
   const save=extra=>{const ref=ex?db.doc("letters/"+ex.id):db.collection("letters").doc();const full={...(ex||{}),...body(),...extra};delete full.id;const local={id:ref.id,...full};letters=[...letters.filter(x=>x.id!==ref.id),local];queued(ref.path,()=>ref.set(full));mbDot();if(mbOpen)renderMailbox();return ref.id};
   bg.addEventListener("click",async e=>{if(e.target===bg){grab();if(!ex&&!importMode&&(st.body||"").trim()){save({sealed:false});cheer(L("先帮你存成草稿了","Saved as a draft"))}bg.remove();return}
     const bt=e.target.closest("[data-lt]");if(!bt)return;const a=bt.dataset.lt;grab();if(!importMode)calc();
@@ -2236,7 +2251,9 @@ function openLetter(id,importMode,preset){
     if(a==="who"){st.who=bt.dataset.v;draw();return}
     if(a==="paper"){st.paper=bt.dataset.v;draw();return}
     if(a==="font"){st.font=bt.dataset.v;draw();return}
-    if(a==="align"){st.align=bt.dataset.v;draw();return}
+    if(a==="align"){const ed=bg.querySelector("#lbody");if(!ed)return;edNormalize(ed);const r=edSel();const v=bt.dataset.v==="center"?"c":bt.dataset.v==="right"?"r":"";
+      let ds=r?[...ed.children].filter(d=>r.intersectsNode(d)):[];if(!ds.length){cheer(L("先把光标放在要改的那一行，或者选中几行，再点这里","Put the cursor on a line, or select a few lines, then tap here"));return}
+      ds.forEach(d=>{if(v)d.dataset.a=v;else delete d.dataset.a});grab();alSync();if(lastRange){const sel=getSelection();sel.removeAllRanges();sel.addRange(lastRange)}return}
     if(a==="fsz"){st.fsz=bt.dataset.v;draw();return}
     if(a==="ink"){st.ink=bt.dataset.v;draw();return}
     if(a==="headdef"){st.head=null;st.headSet=false;draw();return}
@@ -2257,7 +2274,7 @@ function openLetter(id,importMode,preset){
         if(!sure){sure=true;bt.textContent=st.shareId?L("确定保存修改？","Save changes?"):L("确定封好寄出？","Seal and send?");return}
         bt.disabled=true;bt.textContent=L("正在寄出…","Sending…");
         const sid=st.shareId||rid();const fromName=(st.fromName||"").trim()||userName||L("你的朋友","A friend");
-        try{await shareApi.put(sid,{fromName,toName:st.sendTo.trim(),openOn:st.sendOn,stamp:st.stamp||"",paper:st.paper,font:st.font,sticker:st.sticker||"",align:st.align||"left",fsz:st.fsz||"m",ink:st.ink||"",writtenAt:st.writtenAt||Date.now()},{body:(st.body||"").slice(0,20000),sig:(st.sig||"").trim().slice(0,40),head:st.head==null?null:String(st.head).slice(0,60),photos:(st.photos||[]).slice(0,3)})}
+        try{await shareApi.put(sid,{fromName,toName:st.sendTo.trim(),openOn:st.sendOn,stamp:st.stamp||"",paper:st.paper,font:st.font,sticker:st.sticker||"",align:st.align||"left",fsz:st.fsz||"m",ink:st.ink||"",writtenAt:st.writtenAt||Date.now()},{body:(st.body||"").slice(0,20000),la:(st.la||[]).slice(0,2000),sig:(st.sig||"").trim().slice(0,40),head:st.head==null?null:String(st.head).slice(0,60),photos:(st.photos||[]).slice(0,3)})}
         catch(err){bt.disabled=false;sure=false;bt.textContent=L("没寄出去，再试一次","Didn't send. Try again");return}
         const lid=save({sealed:true,sealedAt:Date.now(),shareId:sid,fromName});bg.remove();openSent(lid);return}
       if(!sure){sure=true;bt.textContent=L("确定封起来？","Seal it for sure?");return}
@@ -2267,7 +2284,7 @@ function openLetter(id,importMode,preset){
       const w=new Date((st.wdate||t)+"T12:00:00").getTime();const later=st.iw==="later"&&st.iOpen>t;
       save({kind:"old",...(st.who==="friend"?{from:st.friend.trim(),toText:L("我","me")}:{toText:(st.toText||"").trim()||L("那时候的我","me back then")}),writtenAt:w,openOn:later?st.iOpen:st.wdate,sealed:true,opened:!later,openedAt:later?null:Date.now(),imported:true});bg.remove();
       cheer(later?L(`封好放进信箱啦，${lYmdS(st.iOpen)}见～`,`Sealed in your mailbox. See you on ${lYmdS(st.iOpen)}～`):L("放进信箱啦","Added to your mailbox"));return}});
-  bg.addEventListener("input",e=>{if(e.target.id==="lbody")autosz(e.target);if(e.target.id==="lsigIn"){const el=bg.querySelector(".lsig");if(el){el.textContent=e.target.value.trim();el.classList.toggle("empty",!e.target.value.trim())}}if(e.target.id==="lhead"){st.headSet=true;st.head=e.target.value}
+  bg.addEventListener("input",e=>{if(e.target.id==="lbody"){edNormalize(e.target);e.target.classList.toggle("isempty",!e.target.innerText.trim())}if(e.target.id==="lsigIn"){const el=bg.querySelector(".lsig");if(el){el.textContent=e.target.value.trim();el.classList.toggle("empty",!e.target.value.trim())}}if(e.target.id==="lhead"){st.headSet=true;st.head=e.target.value}
     const hd=bg.querySelector("#lhead"),setH=v=>{if(hd&&!st.headSet)hd.value=L("致 ","Dear ")+v+L("：",",")};
     if(e.target.id==="lsTo")setH(e.target.value.trim()||L("你","you"));if(e.target.id==="lcustTo")setH(e.target.value.trim()||L("未来的我","future me"));if(e.target.id==="ltoText")setH(e.target.value.trim()||L("那时候的我","me back then"));});
   bg.addEventListener("change",async e=>{if(e.target.id==="lwdate"||e.target.id==="lsOpen"){grab();if(!importMode)calc();draw();return}
@@ -2275,7 +2292,15 @@ function openLetter(id,importMode,preset){
     if(e.target.id==="lphIn"&&e.target.files&&e.target.files.length){grab();const fl=[...e.target.files].slice(0,3-(st.photos||[]).length);try{for(const f of fl){st.photos=[...(st.photos||[]),await shrinkImg(f)]}}catch(_){cheer(L("有张照片读不出来，换一张试试","Couldn't read a photo. Try another"))}draw();return}
     if(e.target.id==="lsPhoto"&&e.target.files&&e.target.files[0]){grab();try{st.stamp=await shrinkPhoto(e.target.files[0])}catch(_){cheer(L("这张照片读不出来，换一张试试","Couldn't read that photo. Try another"))}draw()}});
   draw();document.body.appendChild(bg);
-  const fit=()=>{const ta=bg.querySelector("#lbody");if(ta)autosz(ta)};requestAnimationFrame(fit);try{document.fonts.ready.then(fit)}catch(_){}
+  function edSel(){const ed=bg.querySelector("#lbody"),sel=getSelection();if(!ed)return null;let r=null;if(sel.rangeCount&&ed.contains(sel.getRangeAt(0).commonAncestorContainer))r=sel.getRangeAt(0);else if(lastRange&&ed.contains(lastRange.commonAncestorContainer))r=lastRange;return r}
+  function alSync(){const ed=bg.querySelector("#lbody");if(!ed)return;const r=edSel();let a=null;if(r){edNormalize(ed);const ds=[...ed.children].filter(d=>r.intersectsNode(d));const as=new Set(ds.map(d=>d.dataset.a||""));if(as.size===1)a=[...as][0]}
+    bg.querySelectorAll('[data-lt="align"]').forEach(b=>{const on=a!=null&&(b.dataset.v==="left"?a==="":LA[a]===b.dataset.v);b.classList.toggle("on",on);b.setAttribute("aria-pressed",String(on))})}
+  const onSel=()=>{const ed=bg.querySelector("#lbody"),sel=getSelection();if(ed&&sel.rangeCount&&ed.contains(sel.getRangeAt(0).commonAncestorContainer)){lastRange=sel.getRangeAt(0).cloneRange();alSync()}};
+  document.addEventListener("selectionchange",onSel);
+  new MutationObserver(()=>{if(!document.body.contains(bg))document.removeEventListener("selectionchange",onSel)}).observe(document.body,{childList:true});
+  bg.addEventListener("mousedown",e=>{if(e.target.closest('[data-lt="align"]'))e.preventDefault()});
+  bg.addEventListener("paste",e=>{if(e.target.closest&&e.target.closest("#lbody")){e.preventDefault();const t=(e.clipboardData||window.clipboardData).getData("text/plain");document.execCommand("insertText",false,t)}});
+  bg.addEventListener("keydown",e=>{if(e.target.id==="lbody"&&e.key==="Enter"&&!e.isComposing&&e.keyCode!==229&&!e.shiftKey){/* keep the current line's alignment on the new line (browser default copies data-a) */}});
 }
 function openRead(id){
   const x=letters.find(l=>l.id===id);if(!x)return;loadLetterFonts();
