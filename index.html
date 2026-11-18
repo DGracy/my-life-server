@@ -1542,7 +1542,7 @@ function taskRow(t){
     d?`<span class="due ${d.cls}">${d.txt}</span>`:""].filter(Boolean);
   const fm=(t.space==="study"||t.space==="work")?taskMins(t.id):0;
   if(fm>=1)tags.unshift(`<span class="fp">${TOM_ICON}${fmtMins(fm)}</span>`);
-  const canPlay=!t.done&&(t.space==="study"||t.space==="work");
+  const canPlay=!t.done&&t.horizon!=="long"&&(t.space==="study"||t.space==="work");
   const hot=P&&P.phase==="pick";
   const tt=!t.done&&t.repeat?todOf(t.repeat):[], sd=t.slotDone||{};
   if(tt.length>1)tags.splice(tags.findIndex(x=>x.includes('class="rep'))+1,0,`<span class="prog">${tt.filter(x=>sd[x[0]]).length}/${tt.length}</span>`);
@@ -2921,7 +2921,7 @@ function wakeOff(){try{wake&&wake.release()}catch(_){}wake=null}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){if(P&&P.phase==="focus"&&!P.pausedAt)wakeOn();pomoTick()}});
 /* session */
 function curTask(){return P&&P.taskId?tasks.find(t=>t.id===P.taskId):null}
-function defaultTask(space){const list=tasks.filter(t=>t.space===space&&!t.done&&!t.deleted&&!isPaused(t)).sort((a,b)=>{const hz=["week","inbox","month","long"];return hz.indexOf(a.horizon)-hz.indexOf(b.horizon)||sortTasks(a,b)});return list[0]||null}
+function defaultTask(space){const list=tasks.filter(t=>t.space===space&&!t.done&&!t.deleted&&!isPaused(t)&&t.horizon!=="long").sort((a,b)=>{const hz=["week","inbox","month","long"];return hz.indexOf(a.horizon)-hz.indexOf(b.horizon)||sortTasks(a,b)});return list[0]||null}
 function startFocus(taskId,subI){
   if(!db)return;
   const t=taskId?tasks.find(x=>x.id===taskId):null;
@@ -3418,7 +3418,7 @@ const NUDGE_KEY="lifeos-nudge-off";
 function nudgeCard(k){
   let off=[];try{off=JSON.parse(localStorage.getItem(NUDGE_KEY)||"[]")}catch(_){}
   const wk=Date.now()-7*864e5;
-  const c=tasks.filter(t=>t.space===k&&!t.done&&!t.deleted&&!t.repeat&&!(t.subs&&t.subs.length)&&(t.createdAt||0)<wk&&(t.createdAt||0)>0&&!off.includes(t.id)).sort((a,b)=>a.createdAt-b.createdAt)[0];
+  const c=tasks.filter(t=>t.space===k&&!t.done&&!t.deleted&&!t.repeat&&t.horizon!=="long"&&!(t.subs&&t.subs.length)&&(t.createdAt||0)<wk&&(t.createdAt||0)>0&&!off.includes(t.id)).sort((a,b)=>a.createdAt-b.createdAt)[0];
   if(!c)return "";
   const d=Math.floor((Date.now()-c.createdAt)/864e5);
   return `<div class="nudge">${IDEA_FACE}<span class="nt2"><b>${L(`「${esc(c.title)}」放了 ${d} 天啦，是不是有点难开始？`,`“${esc(c.title)}” has been waiting ${d} days. Hard to get started?`)}</b><em>${L("我帮你拆成几小步吧，第一步只要 2 分钟。","Let me break it into small steps. Step one takes just 2 minutes.")}</em></span><button class="split" data-act="split" data-id="${c.id}">${L("拆一下","Break it down")}</button><button class="nx-x" data-act="nudgeoff" data-id="${c.id}" aria-label="${L("关掉","Dismiss")}">×</button></div>`;
@@ -5089,8 +5089,8 @@ function buildStrings(){
   const st=L(["种子","发芽","小芽","幼苗","小树","大树","开花的树"],["Seed","Sprouting","Sprout","Seedling","Young tree","Big tree","Blooming tree"]);
   STAGES.forEach((x,i)=>x.n=st[i]);
   PRAISE.splice(0,PRAISE.length,...L(["又搞定一件！","好耶，干得漂亮～","划掉的感觉真好！","你今天很能干嘛！","一步一步来！"],["Another one done!","Yay, nicely done!","Crossing things off feels great!","You're on a roll today!","One step at a time!"]));
-  Object.assign(EMPTY,L({inbox:"",week:"这周还空着，想到要做的就丢上来～",month:"这个月的计划还没有，慢慢来。",long:"长期目标可以大胆一点，我陪你一点点拆。"},
-                        {inbox:"",week:"Nothing for this week yet. Toss things in as they come to mind.",month:"No plans for this month yet. No rush.",long:"Dream big here. We'll break it down together."}));
+  Object.assign(EMPTY,L({inbox:"",week:"这周还空着，想到要做的就丢上来～",month:"这个月的计划还没有，慢慢来。",long:"长期目标可以大胆一点，慢慢来就好。"},
+                        {inbox:"",week:"Nothing for this week yet. Toss things in as they come to mind.",month:"No plans for this month yet. No rush.",long:"Dream big here. No rush."}));
   Object.assign(LIFE_HZ,L({week:"近期目标",month:"中期目标",long:"长期目标"},{week:"Short-term goals",month:"Mid-term goals",long:"Long-term goals"}));
   const md=L(["很棒","不错","一般","有点累","低落"],["Great","Good","Okay","Tired","Down"]); MOODS.forEach((m,i)=>m[2]=md[i]);
 }
