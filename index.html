@@ -193,7 +193,7 @@ details.done-box .list{margin-top:8px}
 .card-head .sub{font-size:12.5px;color:var(--muted)}
 .card-head .right{margin-left:auto;display:flex;gap:6px}
 .link{border:none;background:none;color:var(--life-ink);font-size:13px;padding:2px 4px}
-.staples{display:flex;flex-wrap:wrap;gap:7px}
+.staples{display:flex;flex-wrap:wrap;gap:7px;align-items:flex-start}.staples .st{white-space:nowrap}
 .st{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:14px;display:inline-flex;gap:6px;align-items:center;transition:transform .12s}
 .st:hover{transform:translateY(-1px)}
 .st.pick{background:var(--life);border-color:var(--life);color:#fff}
@@ -585,9 +585,10 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .stchips.big .stc{font-size:15px;padding:7px 14px}
 .sgrp{display:flex;flex-direction:column}.sgh{display:flex;align-items:center;gap:6px;border:0;background:none;font:inherit;font-size:13.5px;font-weight:600;color:var(--muted);padding:10px 2px 4px;cursor:pointer;text-align:left}
 .sgh .ar{font-size:10px;width:10px}.sgh .c{font-family:var(--f-num);font-weight:500;font-size:12px;background:var(--surface-2);border-radius:999px;padding:0 8px}.sgh .c i{font-style:normal;color:var(--faint);margin-left:3px}
-.item:has(.mvst){grid-template-columns:auto auto 1fr auto auto auto!important}.mvst{border:0;background:none;color:var(--faint);font:inherit;font-size:12px;padding:0 4px;cursor:pointer;white-space:nowrap}.mvst:hover{color:var(--life)}
-.st .sti{font-style:normal;font-size:11.5px;color:var(--life-ink);background:var(--life-soft);border-radius:999px;padding:0 7px;margin-left:6px}.st.pick .sti{background:rgba(255,255,255,.3);color:inherit}
-.st.sted{display:inline-flex;align-items:center;gap:2px;padding-right:4px}.st.sted .stn{border:0;background:none;font:inherit;color:inherit;padding:0;cursor:pointer}.st.sted .x{border:0;background:none;font:inherit;color:var(--faint);cursor:pointer;padding:0 4px}
+.item:has(.mvst){grid-template-columns:auto auto 1fr auto auto auto!important}.item:has(.mvalso){grid-template-columns:auto auto 1fr auto auto auto auto!important}.mvst{border:0;background:none;color:var(--faint);font:inherit;font-size:12px;padding:0 4px;cursor:pointer;white-space:nowrap}.mvst:hover{color:var(--life)}
+.st .sti{border:0;font:inherit;font-style:normal;font-size:11.5px;line-height:1.6;color:var(--life-ink);background:var(--life-soft);border-radius:999px;padding:0 8px;cursor:pointer;white-space:nowrap}.st.pick .sti{background:rgba(255,255,255,.3);color:inherit}
+.st.two,.st.sted{display:inline-flex;align-items:center;gap:6px;padding-right:6px}.st.two .stn{border:0;background:none;font:inherit;color:inherit;padding:0;cursor:pointer;white-space:nowrap}.st.sted .x{border:0;background:none;font:inherit;color:var(--faint);cursor:pointer;padding:0 2px}
+.mvalso{font-size:11.5px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
 .gear.sm{width:28px;height:28px;font-size:13px;display:grid;place-items:center}
 .st-mgr .smlist{display:flex;flex-direction:column;gap:6px}.smrow{display:flex;align-items:center;gap:6px;background:var(--surface-2);border-radius:12px;padding:6px 8px 6px 12px}.smrow .nm{flex:1;min-width:0;font-size:15px}
 .mini{width:30px;height:30px;border-radius:50%;border:0;background:var(--surface);color:var(--fg);font-size:14px;cursor:pointer}.mini:disabled{opacity:.3}.mini.del{color:var(--danger)}
@@ -1479,19 +1480,21 @@ function shopBoard(){
   const sts=[...staples].sort((a,b)=>(a.order||0)-(b.order||0));
   const stapleNames=new Set(sts.map(x=>x.name.trim().toLowerCase()));
   const chips=sts.map(st=>{const has=inList.has(st.name.trim().toLowerCase());
-    if(stapleEdit)return stores.on&&stores.list.length?`<span class="st sted"><button class="stn" data-act="ststore" data-id="${st.id}" title="${L("点一下选在哪家买","Tap to pick a shop")}">${esc(st.name)}<i class="sti">${esc(storeName(storeOf(st)))} ▾</i></button><button class="x" data-act="stdel" data-id="${st.id}" aria-label="${L("删掉","Delete")}">×</button></span>`:`<button class="st" data-act="stdel" data-id="${st.id}">${esc(st.name)} <span class="x">×</span></button>`;
-    return `<button class="st${pick.has(st.id)?" pick":""}${has?" inlist":""}" data-act="stpick" data-id="${st.id}" ${has?`title="${L("已在清单里","Already on the list")}"`:""}>${pick.has(st.id)?"✓ ":""}${esc(st.name)}${stores.on&&storeOf(st)?`<i class="sti">${esc(storeName(storeOf(st)))}</i>`:""}</button>`}).join("");
+    const sOn=stores.on&&stores.list.length;
+    if(stapleEdit)return sOn?`<span class="st sted"><span class="stn">${esc(st.name)}</span><button class="sti" data-act="ststore" data-id="${st.id}" title="${L("点一下选在哪家买","Tap to pick shops")}">${esc(storeNames(st)||L("哪家都行","Any shop"))} ▾</button><button class="x" data-act="stdel" data-id="${st.id}" aria-label="${L("删掉","Delete")}">×</button></span>`:`<button class="st" data-act="stdel" data-id="${st.id}">${esc(st.name)} <span class="x">×</span></button>`;
+    if(sOn&&storesOf(st).length)return `<span class="st two${pick.has(st.id)?" pick":""}${has?" inlist":""}"><button class="stn" data-act="stpick" data-id="${st.id}" ${has?`title="${L("已在清单里","Already on the list")}"`:""}>${pick.has(st.id)?"✓ ":""}${esc(st.name)}</button><button class="sti" data-act="ststore" data-id="${st.id}" title="${L("点一下换超市","Tap to change shops")}">${esc(storeNames(st))}</button></span>`;
+    return `<button class="st${pick.has(st.id)?" pick":""}${has?" inlist":""}" data-act="stpick" data-id="${st.id}" ${has?`title="${L("已在清单里","Already on the list")}"`:""}>${pick.has(st.id)?"✓ ":""}${esc(st.name)}</button>`}).join("");
   const need=shop.filter(x=>!x.bought).sort((a,b)=>(a.order??1e6)-(b.order??1e6)||(a.createdAt||0)-(b.createdAt||0));
   const got=shop.filter(x=>x.bought).sort((a,b)=>(a.boughtAt||0)-(b.boughtAt||0));
   const row=x=>`<div class="item${x.bought?" got":""}" ${x.bought?"":`data-row data-id="${x.id}"`}>
       ${x.bought?`<span class="grip-space"></span>`:gripBtn()}
       <button class="check${x.bought?" on":""}" data-act="shopbuy" data-id="${x.id}" aria-label="${x.bought?L("标记为没买","Mark as not bought"):L("标记为已买","Mark as bought")}">${CHECK}</button>
       <button class="nm" data-act="shopedittext" data-id="${x.id}" title="${L("点一下修改","Tap to edit")}">${esc(x.name)}</button>
-      ${stores.on&&stores.list.length&&!x.bought?`<button class="mvst" data-act="shopmv" data-id="${x.id}" aria-label="${L("换一家店","Move to another shop")}" title="${L("换一家店","Move to another shop")}">${L("换店","Move")}</button>`:""}
+      ${stores.on&&storesOf(x).length>1?`<span class="mvalso">${esc(storeNames(x))}</span>`:""}${stores.on&&stores.list.length&&!x.bought?`<button class="mvst" data-act="shopmv" data-id="${x.id}" aria-label="${L("换一家店","Move to another shop")}" title="${L("换一家店","Move to another shop")}">${L("换店","Move")}</button>`:""}
       <button class="star${stapleNames.has(x.name.trim().toLowerCase())?" on":""}" data-act="shopstar" data-id="${x.id}" aria-label="${L("设为常买","Save as a staple")}">★</button>
       <button class="del" data-act="shopdel" data-id="${x.id}" aria-label="${L("从清单删除","Remove from list")}">×</button></div>`;
   return `<div class="shop-hd"><span class="fic">${FI.BASKET}</span><h3>${L("购物清单","Shopping list")}</h3></div><div class="card">
-      <div class="card-head"><h3>${L("常买","Staples")}</h3><span class="sub">${L("点选几样，一起加进清单","Pick a few and add them in one go")}</span>
+      <div class="card-head"><h3>${L("常买","Staples")}</h3><span class="sub">${stapleEdit&&stores.on&&stores.list.length?L("点绿色标签选在哪家买，可以选好几家","Tap the green tag to pick shops, several is fine"):L("点选几样，一起加进清单","Pick a few and add them in one go")}</span>
         <span class="right">${sts.length?`<button class="link" data-act="stedit">${stapleEdit?L("完成","Done"):L("管理","Edit")}</button>`:""}</span></div>
       <div class="staples">${chips||`<span class="hint">${L("还没有常买的东西。清单里点 ★ 就能把它设为常买。","No staples yet. Tap ★ next to an item on your list to save it here.")}</span>`}</div>
       ${pick.size&&!stapleEdit?`<div><button class="btn life" data-act="stadd">${L(`加入清单（${pick.size}）`,`Add to list (${pick.size})`)}</button> <button class="link" data-act="stclear">${L("取消选择","Clear")}</button></div>`:""}
@@ -1503,8 +1506,8 @@ function shopBoard(){
         <label><input type="checkbox" id="shopStaple"> ${L("设为常买","Save as staple")}</label>
         <button class="btn life" type="submit">${L("添加","Add")}</button>
       </form>
-      ${stores.on&&stores.list.length?`<div class="stchips" role="radiogroup" aria-label="${L("在哪家买","Which shop")}"><span class="hint">${L("在哪家买：","Where:")}</span>${stores.list.map(st=>`<button type="button" class="stc${shopStoreSel===st.id?" on":""}" data-act="shopsel" data-id="${st.id}" aria-pressed="${shopStoreSel===st.id}">${esc(st.name)}</button>`).join("")}<button type="button" class="stc${!shopStoreSel?" on":""}" data-act="shopsel" data-id="" aria-pressed="${!shopStoreSel}">${L("哪家都行","Any")}</button></div>`:""}
-      ${stores.on?`<div class="items">${[...stores.list.map(st=>st.id),""].map(gid=>{const n=need.filter(x=>storeOf(x)===gid),g=got.filter(x=>storeOf(x)===gid);if(!n.length&&!g.length)return "";const fold=!!stores.fold[gid||"_any"];
+      ${stores.on&&stores.list.length?`<div class="stchips" aria-label="${L("在哪家买","Which shop")}"><span class="hint">${L("在哪家买（可多选）：","Where (pick any):")}</span>${stores.list.map(st=>`<button type="button" class="stc${shopStoreSel.has(st.id)?" on":""}" data-act="shopsel" data-id="${st.id}" aria-pressed="${shopStoreSel.has(st.id)}">${esc(st.name)}</button>`).join("")}<button type="button" class="stc${!shopStoreSel.size?" on":""}" data-act="shopsel" data-id="" aria-pressed="${!shopStoreSel.size}">${L("哪家都行","Any")}</button></div>`:""}
+      ${stores.on?`<div class="items">${[...stores.list.map(st=>st.id),""].map(gid=>{const inG=x=>gid?storesOf(x).includes(gid):!storesOf(x).length,n=need.filter(inG),g=got.filter(inG);if(!n.length&&!g.length)return "";const fold=!!stores.fold[gid||"_any"];
           return `<div class="sgrp"><button class="sgh" data-act="shopfold" data-id="${gid||"_any"}" aria-expanded="${!fold}"><span class="ar">${fold?"▸":"▾"}</span>${esc(storeName(gid))}<span class="c">${n.length}${g.length?`<i>+${g.length}</i>`:""}</span></button>${fold?"":`<div class="items-need" data-sort="shop">${n.map(row).join("")}</div>${g.map(row).join("")}`}</div>`}).join("")||emptyBox(L("想到要买的就记在这里，到了超市一样样勾掉。","Note things down as you think of them, then tick them off at the shop."))}</div>`
       :`<div class="items"><div class="items-need" data-sort="shop">${need.map(row).join("")}</div>${need.length?"":(got.length?"":emptyBox(L("想到要买的就记在这里，到了超市一样样勾掉。","Note things down as you think of them, then tick them off at the shop.")))}${got.map(row).join("")}</div>`}
       ${got.length?`<div class="shop-foot"><span>${L(`已经买了 ${got.length} 样`,`${got.length} bought`)}</span><button class="btn life" data-act="tripdone">${L("这趟买完了 · 清掉已买的","Done shopping · clear bought items")}</button></div>`:""}
@@ -3984,24 +3987,29 @@ async function addInbox(){
 const norm=x=>x.trim().toLowerCase();
 const STORES_KEY="lifeos-stores";
 let stores={on:false,list:[],fold:{}}; try{const v=JSON.parse(localStorage.getItem(STORES_KEY)||"null");if(v)stores={on:!!v.on,list:Array.isArray(v.list)?v.list:[],fold:v.fold||{}}}catch(_){}
-let shopStoreSel="";
+let shopStoreSel=new Set();
 function setStores(o,sync=true){stores={on:!!o.on,list:(o.list||[]).slice(0,30),fold:o.fold||{}};try{localStorage.setItem(STORES_KEY,JSON.stringify(stores))}catch(_){};if(sync&&db&&db.meta)db.meta.set({stores},{merge:true}).catch(()=>{});render()}
-const storeOf=x=>x&&x.store&&stores.list.some(s=>s.id===x.store)?x.store:"";
+const storesOf=x=>{if(!x)return [];const a=Array.isArray(x.stores)?x.stores:(x.store?[x.store]:[]);return a.filter((id,i)=>stores.list.some(s=>s.id===id)&&a.indexOf(id)===i)};
+const storeOf=x=>storesOf(x)[0]||"";
+const storeNames=x=>storesOf(x).map(storeName).join(" · ");
 const storeName=id=>(stores.list.find(s=>s.id===id)||{}).name||L("哪家都行","Any shop");
 async function addShop(name){
   name=name.trim().slice(0,80); if(!name)return;
   if(shop.some(x=>norm(x.name)===norm(name)&&!x.bought))return;
   const ref=db.collection("shop").doc();
-  const store=arguments[1]!=null?arguments[1]:"";
-  return queued(ref.path,()=>ref.set({name,bought:false,createdAt:Date.now(),...(store?{store}:{})}));
+  const sids=Array.isArray(arguments[1])?arguments[1]:(arguments[1]?[arguments[1]]:[]);
+  return queued(ref.path,()=>ref.set({name,bought:false,createdAt:Date.now(),...(sids.length?{stores:sids}:{})}));
 }
 function pickStore(x,kind){
-  const bg=document.createElement("div");bg.className="sheet-bg";
-  bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("在哪家买","Which shop")}"><h3>${L(`「${esc(x.name)}」在哪家买？`,`Where do you buy “${esc(x.name)}”?`)}</h3><div class="stchips big">${[...stores.list,{id:"",name:L("哪家都行","Any shop")}].map(st=>`<button class="stc${storeOf(x)===st.id?" on":""}" data-sp="${st.id}">${esc(st.name)}</button>`).join("")}</div><div class="sheet-actions"><span></span><button class="btn" data-sp="x">${L("取消","Cancel")}</button></div></div>`;
-  document.body.appendChild(bg);
-  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-sp]");if(!b)return;bg.remove();if(b.dataset.sp==="x")return;const sid=b.dataset.sp;
-    x.store=sid;if(kind==="staple"){const r=db.doc("staples/"+x.id);queued(r.path,()=>r.update({store:sid}));render();return}
-    const r=db.doc("shop/"+x.id);queued(r.path,()=>r.update({store:sid}));const sp=staples.find(y=>norm(y.name)===norm(x.name));if(sp){sp.store=sid;const r2=db.doc("staples/"+sp.id);queued(r2.path,()=>r2.update({store:sid}))}render()});
+  const sel=new Set(storesOf(x));const bg=document.createElement("div");bg.className="sheet-bg";
+  const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("在哪家买","Which shop")}"><h3>${L(`「${esc(x.name)}」在哪家买？`,`Where do you buy “${esc(x.name)}”?`)}</h3><p class="hint" style="margin:0">${L("可以选好几家，清单里每一家都会出现它，买到了勾一次就行。","Pick as many as you like. It shows under each shop; tick it once when you get it.")}</p><div class="stchips big">${stores.list.map(st=>`<button class="stc${sel.has(st.id)?" on":""}" data-sp="${st.id}" aria-pressed="${sel.has(st.id)}">${esc(st.name)}</button>`).join("")}<button class="stc${sel.size?"":" on"}" data-sp="" aria-pressed="${!sel.size}">${L("哪家都行","Any shop")}</button></div><div class="sheet-actions"><button class="btn" data-sp="x">${L("取消","Cancel")}</button><button class="btn primary" data-sp="ok">${L("好了","Done")}</button></div></div>`};
+  draw();document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-sp]");if(!b)return;const v=b.dataset.sp;
+    if(v==="x"){bg.remove();return}
+    if(v!=="ok"){if(!v)sel.clear();else if(sel.has(v))sel.delete(v);else sel.add(v);draw();return}
+    bg.remove();const arr=stores.list.map(s=>s.id).filter(id=>sel.has(id));x.stores=arr;x.store="";
+    if(kind==="staple"){const r=db.doc("staples/"+x.id);queued(r.path,()=>r.update({stores:arr,store:""}));render();return}
+    const r=db.doc("shop/"+x.id);queued(r.path,()=>r.update({stores:arr,store:""}));const sp=staples.find(y=>norm(y.name)===norm(x.name));if(sp){sp.stores=arr;sp.store="";const r2=db.doc("staples/"+sp.id);queued(r2.path,()=>r2.update({stores:arr,store:""}))}render()});
 }
 function openStores(){
   let list=stores.list.map(x=>({...x}));const SUG=["Tesco","Sainsbury's","Lidl","Aldi","M&S","Waitrose","Co-op","Boots",L("亚超","Asian market")];
@@ -4020,7 +4028,7 @@ function openStores(){
     if(a==="sug"){add(b.dataset.n);return}
     if(a==="up"&&i>0){[list[i-1],list[i]]=[list[i],list[i-1]];draw();return}
     if(a==="down"&&i<list.length-1){[list[i+1],list[i]]=[list[i],list[i+1]];draw();return}
-    if(a==="del"){const gone=list[i];list.splice(i,1);if(shopStoreSel===gone.id)shopStoreSel="";shop.filter(x=>x.store===gone.id).forEach(x=>{x.store="";const r=db.doc("shop/"+x.id);queued(r.path,()=>r.update({store:""}))});draw();return}
+    if(a==="del"){const gone=list[i];list.splice(i,1);shopStoreSel.delete(gone.id);[...shop.map(x=>["shop",x]),...staples.map(x=>["staples",x])].filter(([,x])=>(x.stores||[]).includes(gone.id)||x.store===gone.id).forEach(([c,x])=>{const arr=(x.stores||(x.store?[x.store]:[])).filter(id=>id!==gone.id);x.stores=arr;x.store="";const r=db.doc(c+"/"+x.id);queued(r.path,()=>r.update({stores:arr,store:""}))});draw();return}
     if(a==="ok"){setStores({...stores,list});bg.remove();return}});
 }
 async function addStaple(name){
@@ -4482,8 +4490,8 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="stedit"){stapleEdit=!stapleEdit;pick.clear();render();return}
   if(act.dataset.act==="ststore"){const x=staples.find(y=>y.id===id);if(x)pickStore(x,"staple");return}
   if(act.dataset.act==="stdel"){const ref=db.doc("staples/"+id);queued(ref.path,()=>ref.delete());return}
-  if(act.dataset.act==="stadd"){const sel=staples.filter(x=>pick.has(x.id)),names=sel.map(x=>x.name);pick.clear();render();for(const x of sel)await addShop(x.name,stores.on?storeOf(x):"");cheer(L(`放进清单 ${names.length} 样～`,`Added ${names.length} to the list～`));return}
-  if(act.dataset.act==="shopsel"){shopStoreSel=act.dataset.id||"";render();$("#shopName")?.focus();return}
+  if(act.dataset.act==="stadd"){const sel=staples.filter(x=>pick.has(x.id)),names=sel.map(x=>x.name);pick.clear();render();for(const x of sel)await addShop(x.name,stores.on?storesOf(x):[]);cheer(L(`放进清单 ${names.length} 样～`,`Added ${names.length} to the list～`));return}
+  if(act.dataset.act==="shopsel"){const sid=act.dataset.id||"";if(!sid)shopStoreSel.clear();else if(shopStoreSel.has(sid))shopStoreSel.delete(sid);else shopStoreSel.add(sid);render();$("#shopName")?.focus();return}
   if(act.dataset.act==="shopfold"){const f={...stores.fold};const k=act.dataset.id;if(f[k])delete f[k];else f[k]=true;setStores({...stores,fold:f});return}
   if(act.dataset.act==="storemgr"){openStores();return}
   if(act.dataset.act==="shopmv"){const x=shop.find(y=>y.id===id);if(!x)return;pickStore(x);return}
@@ -4597,8 +4605,8 @@ document.addEventListener("submit",async e=>{
   if(e.target.id==="shopForm"){e.preventDefault();if(!db)return;
     const names=splitItems($("#shopName").value), st=$("#shopStaple").checked;
     $("#shopName").value="";
-    const sid=stores.on&&stores.list.some(x=>x.id===shopStoreSel)?shopStoreSel:"";
-    for(const n of names){await addShop(n,sid);if(st)await addStaple(n);if(sid){const sp=staples.find(y=>norm(y.name)===norm(n));if(sp&&sp.store!==sid){const r=db.doc("staples/"+sp.id);queued(r.path,()=>r.update({store:sid}))}}}
+    const sids=stores.on?[...shopStoreSel].filter(id=>stores.list.some(x=>x.id===id)):[];
+    for(const n of names){await addShop(n,sids);if(st)await addStaple(n);if(sids.length){const sp=staples.find(y=>norm(y.name)===norm(n));if(sp){const r=db.doc("staples/"+sp.id);queued(r.path,()=>r.update({stores:sids,store:""}))}}}
     $("#shopName").focus();return}
   if(e.target.id!=="habitForm")return; e.preventDefault();
   const name=$("#habitName").value.trim(); if(!name||!db)return; $("#habitName").value="";
