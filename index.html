@@ -2656,14 +2656,13 @@ function pomoTick(){
 /* floating mini window (Document Picture-in-Picture, desktop Chrome/Edge) */
 let pipWin=null;
 const pipOK=()=>IS_WEB&&"documentPictureInPicture" in window&&!matchMedia("(pointer:coarse)").matches;
-const PIP_CSS=`*{box-sizing:border-box}html,body{margin:0;height:100%}body{font-family:"Noto Sans SC","PingFang SC",system-ui,sans-serif;background:#f6faff;color:#1f3156;display:flex;align-items:center;justify-content:center;overflow:hidden;user-select:none}
+const PIP_CSS=`*{box-sizing:border-box}html,body{margin:0;height:100%}body{font-family:"Noto Sans SC","PingFang SC",system-ui,sans-serif;background:var(--pbg);color:var(--pfg);display:flex;align-items:center;justify-content:center;overflow:hidden;user-select:none;transition:background .3s}
 .w{display:flex;align-items:center;gap:14px;padding:12px 16px;width:100%}
 .r{position:relative;width:96px;height:96px;flex:none}.r>svg.rg{position:absolute;inset:0;width:100%;height:100%}.r .pt{position:absolute;inset:13px;display:grid;place-items:center}.r .pt svg{width:70px;height:70px}
-.i{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}.i small{font-size:12px;color:#5b7099;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.i{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}.i small{font-size:12px;color:var(--pmu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .i b{font-family:Fredoka,"Noto Sans SC",sans-serif;font-size:36px;font-weight:600;line-height:1.05;letter-spacing:.5px}
-.bs{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap}.bs button{border:0;font:inherit;font-size:12.5px;background:#fff;color:#1f3156;border-radius:999px;padding:4px 12px;box-shadow:0 2px 0 #d3e3f7;cursor:pointer}.bs button.p{background:#2fb38a;color:#fff;box-shadow:none}
-.end{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:12px;font-size:14px}
-@media (prefers-color-scheme:dark){body{background:#14223b;color:#eaf2ff}.i small{color:#a3b7d8}.bs button{background:#223558;color:#eaf2ff;box-shadow:none}}`;
+.bs{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap}.bs button{border:0;font:inherit;font-size:12.5px;background:var(--psf);color:var(--pfg);border-radius:999px;padding:4px 12px;box-shadow:0 2px 0 var(--pln);cursor:pointer}.bs button.p{background:#2fb38a;color:#fff;box-shadow:none}
+.end{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:12px;font-size:14px}`;
 async function openPip(){
   if(!pipOK()||!P)return;
   if(pipWin){pipWin.focus();return}
@@ -2680,8 +2679,11 @@ async function openPip(){
   pipWin.addEventListener("pagehide",()=>{pipWin=null;renderPomo()});
   drawPip();renderPomo();
 }
+function pipTheme(d){const cs=getComputedStyle(document.documentElement),g=k=>cs.getPropertyValue(k).trim();
+  const v={"--pbg":g("--bg-2")||g("--bg"),"--pfg":g("--fg"),"--pmu":g("--muted"),"--psf":g("--surface"),"--pln":g("--line")};
+  for(const k in v)if(v[k])d.documentElement.style.setProperty(k,v[k]);d.documentElement.style.colorScheme=/dark/.test(cs.colorScheme)?"dark":"light"}
 function drawPip(){
-  if(!pipWin)return; const d=pipWin.document;
+  if(!pipWin)return; const d=pipWin.document; pipTheme(d);
   if(!P||P.phase==="pick"){
     d.body.innerHTML=`<div class="end">${SF.happy.replace("<svg ",'<svg width="44" height="44" ')}<div>${!P?L("这次专注结束啦","This session is over"):P.ended?L("休息结束啦，回到页面挑下一件事吧","Break's over. Head back to pick what's next"):L("回到页面挑下一件要专注的事","Head back to pick what to focus on next")}</div><div class="bs"><button data-pp="close">${L("关掉小窗","Close")}</button></div></div>`;d.body.dataset.k="end";return}
   const brk=P.phase==="break", up=P.mode==="up"&&!brk, t=curTask();
