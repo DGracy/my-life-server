@@ -164,6 +164,8 @@ nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:v
 .ov-mv{border:none;background:none;color:var(--brand);font:inherit;font-size:12.5px;padding:2px 4px;cursor:pointer;white-space:nowrap}
 .ov-play{width:28px;height:28px;border-radius:50%;border:none;background:var(--surface);color:var(--brand);font-size:10px;cursor:pointer;flex:none}
 @media(max-width:460px){.ov-tag.go{display:none}.ov-it{gap:6px}}
+.ov-hab{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding-bottom:4px}.ov-hl{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;color:var(--muted);margin-right:2px}.ov-hl svg{width:16px;height:16px}
+.ov-hc{border:none;border-radius:999px;padding:5px 12px;font:inherit;font-size:13px;background:var(--surface-2);color:var(--fg);cursor:pointer;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--habit) 45%,transparent)}.ov-hc.on{background:color-mix(in srgb,var(--habit) 22%,var(--surface));color:color-mix(in srgb,var(--habit) 60%,var(--fg));box-shadow:none}
 .ov-none{margin:4px 0;font-size:13px;color:var(--muted)}
 .ov-tip{display:flex;align-items:center;gap:10px;background:color-mix(in srgb,#f0b43a 16%,var(--surface));border-radius:16px;padding:9px 12px;font-size:13.5px;line-height:1.55}.ov-tip>svg{width:32px;height:32px;flex:none}
 .ov-days{display:flex;flex-direction:column;gap:8px}
@@ -1364,7 +1366,7 @@ const taskSpaces=()=>["life","study","work"].filter(on);
 const pickSpace=()=>taskSpaces().includes(tab)?tab:taskSpaces()[0];
 function applyBoards(){
   const order=["habit","life","study","work"].filter(on);
-  const oOn=OV_SP.some(on);if(tab==="quad")tab="ov";
+  const oOn=OV_SP.some(on)||on("habit");if(tab==="quad")tab="ov";
   document.querySelectorAll(".tab").forEach(b=>b.hidden=b.dataset.k==="ov"?!oOn:!on(b.dataset.k));
   const nav=document.querySelector("nav.tabs"); if(nav)nav.style.gridTemplateColumns=`${oOn?"auto ":""}repeat(${order.length},1fr)`;
   if(tab==="ov"&&!oOn)tab=order[0];
@@ -3691,6 +3693,8 @@ function overview(){
   const dt=new Date(td+"T12:00:00"),n=over.length+today.length;
   const first=over[0]||today[0];
   const todayBox=`<section class="ov-today"><div class="ov-th"><b>${L("今天","Today")}</b><small>${L(`${dt.getMonth()+1}月${dt.getDate()}日 · 周${WD[dt.getDay()]}`,`${WDEN[dt.getDay()]}, ${dt.getDate()} ${MON[dt.getMonth()]}`)}</small><em>${n?L(`${n} 件`,`${n} to do`):""}</em></div>
+    ${(()=>{const {live,done}=habitStats();if(!live.length)return "";const ck=checkins[td]||{};const hs=[...live].sort((a,b)=>(a.order||0)-(b.order||0));
+      return `<div class="ov-hab"><span class="ov-hl">${STAR}${L(`打卡 ${done}/${live.length}`,`Habits ${done}/${live.length}`)}</span>${hs.map(h=>`<button class="ov-hc${ck[h.id]?" on":""}" data-act="hdot" data-id="${h.id}" data-v="${td}" aria-pressed="${!!ck[h.id]}">${ck[h.id]?"✓ ":""}${esc(h.name)}</button>`).join("")}</div>`})()}
     ${over.length?`<p class="ov-sub">${L("过期了","Overdue")}</p>${over.map(t=>ovRow(t,t===first)).join("")}`:""}
     ${today.length?`${over.length?`<p class="ov-sub">${L("今天","Today")}</p>`:""}${today.map(t=>ovRow(t,t===first)).join("")}`:""}
     ${n?"":`<p class="ov-none">${L("今天没有排事情～可以从下面挪一件过来，或者歇一歇。","Nothing set for today～ Pull something up from below, or take it easy.")}</p>`}</section>`;
