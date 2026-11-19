@@ -157,7 +157,7 @@ nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:v
 .qtop{display:flex;flex-direction:column;gap:6px}.qhow{margin:0;font-size:12px;color:var(--faint);line-height:1.5}
 .qchips{display:flex;gap:6px;flex-wrap:wrap}.qchip{border:none;border-radius:999px;padding:6px 13px;font:inherit;font-size:13px;background:var(--surface);color:var(--fg);box-shadow:0 0 0 1px var(--line);cursor:pointer;display:inline-flex;align-items:center;gap:6px}.qchip i{width:8px;height:8px;border-radius:50%}.qchip.on{background:var(--fg);color:var(--bg);box-shadow:none}
 .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
-@media(max-width:760px){.qgrid{grid-template-columns:1fr}.qbox.empty:not(.q1){display:none}}
+@media(max-width:760px){.qgrid{grid-template-columns:1fr}.qbox.qempty:not(.q1){display:none}}
 .qbox{border-radius:20px;padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0;--qc:var(--muted);background:color-mix(in srgb,var(--qc) 9%,var(--surface-2))}
 .qbox.q1{--qc:var(--danger)}.qbox.q2{--qc:var(--brand)}.qbox.q3{--qc:#d08a1e}.qbox.q4{--qc:#8a9bb8}
 .qbox.qu{background:none;border:1.5px dashed var(--line)}
@@ -167,7 +167,7 @@ nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:v
 .qurow{display:flex;align-items:center;gap:8px;background:var(--surface);border-radius:14px;padding:8px 8px 8px 12px}.qdot{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
 .qut{flex:1;min-width:0;text-align:left;border:none;background:none;font:inherit;font-size:14px;color:var(--fg);padding:0;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .qb{border:none;border-radius:999px;padding:5px 10px;font:inherit;font-size:12.5px;background:var(--surface-2);color:var(--fg);cursor:pointer;white-space:nowrap}
-.qrow .task{border-left-color:var(--c);row-gap:6px}.qrow .task>.tagset{grid-column:2/-1;grid-row:2;justify-self:start;justify-content:flex-start}.qrow .task>.tagset:empty{display:none}
+.qrow{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}.qrow .task.task{border-left-color:var(--c);row-gap:6px;box-shadow:none;background:none;border-radius:18px 18px 0 0}.qrow .task:last-child{border-radius:18px}.qrow .subwrap{margin:-6px 12px 10px 52px}.qrow:has(.task.p3){box-shadow:inset 3px 0 0 #ef5d6e,var(--shadow)}.qrow .task>.tagset{grid-column:2/-1;grid-row:2;justify-self:start;justify-content:flex-start}.qrow .task>.tagset:empty{display:none}
 /* boards */
 .board{display:flex;flex-direction:column;gap:20px;--c:var(--work);--soft:var(--work-soft);--ink:var(--work-ink)}
 .board[data-k=study]{--c:var(--study);--soft:var(--study-soft);--ink:var(--study-ink)}
@@ -3600,7 +3600,8 @@ function qImp(t){const p=+t.pri||0;if(p===3)return true;if(p===1)return false;
   if(p===2)return t.horizon==="week"||t.horizon==="long"||!!(t.due&&t.due<=addDays(todayStr(),7));
   return t.horizon==="long"?true:null}
 function qUrg(t){if(t.due)return t.due<=addDays(todayStr(),1);return t.horizon==="week"}
-const qPool=()=>tasks.filter(t=>QSP.includes(t.space)&&on(t.space)&&!t.done&&!t.deleted&&!t.letGo&&!isPaused(t));
+// a repeating task only shows up on the day it is due (this week's done or skipped one waits for its next turn)
+const qPool=()=>tasks.filter(t=>QSP.includes(t.space)&&on(t.space)&&!t.done&&!t.deleted&&!t.letGo&&!isPaused(t)&&(!t.repeat||(t.due&&t.due<=todayStr())));
 function qOf(t){const i=qImp(t);if(i===null)return "u";const u=qUrg(t);return i?(u?"q1":"q2"):(u?"q3":"q4")}
 const qSort=(a,b)=>(a.due||"9999")<(b.due||"9999")?-1:(a.due||"9999")>(b.due||"9999")?1:((+b.pri||0)-(+a.pri||0))||sortTasks(a,b);
 const QDEF=()=>[["q1",L("重要且紧急","Important & urgent"),L("先做这里","Do these first")],["q2",L("重要不紧急","Important, not urgent"),L("排个时间做","Give them a time")],["q3",L("紧急不重要","Urgent, not important"),L("快速搞定","Get them done quickly")],["q4",L("不重要不紧急","Neither"),L("有空再做，或者放下","Someday, or let go")]];
@@ -3614,7 +3615,7 @@ function quadView(){
   const name={work:L("工作","Work"),study:L("学习","Study"),life:L("生活","Life")};
   const chips=sp.length>1?`<div class="qchips">${[["all",L("全部","All")],...sp.map(k=>[k,name[k]])].map(([k,n])=>`<button class="qchip${qFilter===k?" on":""}" data-act="qf" data-v="${k}">${k!=="all"?`<i style="background:var(--${k})"></i>`:""}${n}</button>`).join("")}</div>`:"";
   const box=([k,n,h])=>{const l=by[k],lim=6,show=qMore[k]?l:l.slice(0,lim);
-    return `<section class="qbox ${k}${l.length?"":" empty"}"><div class="qh"><b>${n}</b><small>${h}</small><em>${l.length}</em></div>
+    return `<section class="qbox ${k}${l.length?"":" qempty"}"><div class="qh"><b>${n}</b><small>${h}</small><em>${l.length}</em></div>
       ${l.length?`<div class="list">${show.map(quadRow).join("")}</div>${l.length>show.length?`<button class="link qmore" data-act="qmore" data-v="${k}">${L(`还有 ${l.length-show.length} 件 ▾`,`${l.length-show.length} more ▾`)}</button>`:""}`:`<p class="qnone">${k==="q1"?L("没有又重要又急的事，真好～","Nothing important and urgent. Nice～"):L("空的","Empty")}</p>`}</section>`};
   const u=by.u,uShow=qMore.u?u:u.slice(0,6);
   const unsorted=u.length?`<section class="qbox qu"><div class="qh"><b>${L("还没分","Not sorted yet")}</b><small>${L("没标重要程度的，点一下就归位","No priority yet. One tap sorts it")}</small><em>${u.length}</em></div>
