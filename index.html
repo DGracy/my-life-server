@@ -749,7 +749,7 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .sgh .ar{font-size:10px;width:10px}.sgh .c{font-family:var(--f-num);font-weight:500;font-size:12px;background:var(--surface-2);border-radius:999px;padding:0 8px}.sgh .c i{font-style:normal;color:var(--faint);margin-left:3px}
 .item:has(.mvst){grid-template-columns:auto auto 1fr auto auto auto!important}.item:has(.mvalso){grid-template-columns:auto auto 1fr auto auto auto auto!important}.mvst{border:0;background:none;color:var(--faint);font:inherit;font-size:12px;padding:0 4px;cursor:pointer;white-space:nowrap}.mvst:hover{color:var(--life)}
 .st .sti{border:0;font:inherit;font-style:normal;font-size:11.5px;line-height:1.6;color:var(--life-ink);background:var(--life-soft);border-radius:999px;padding:0 8px;cursor:pointer;white-space:nowrap}.st.pick .sti{background:rgba(255,255,255,.3);color:inherit}
-.st.two,.st.sted{display:inline-flex;align-items:center;gap:6px;padding-right:6px}.st.two .stn{border:0;background:none;font:inherit;color:inherit;padding:0;cursor:pointer;white-space:nowrap}.st.sted .x{border:0;background:none;font:inherit;color:var(--faint);cursor:pointer;padding:0 2px}
+.st.two,.st.sted{display:inline-flex;align-items:center;gap:6px;padding-right:6px}.st.two .stn{border:0;background:none;font:inherit;color:inherit;padding:0;cursor:pointer;white-space:nowrap}.st.sted .stn{border:0;background:none;font:inherit;color:inherit;padding:0;cursor:pointer;white-space:nowrap}.st.sted .stpen{color:var(--faint);font-size:12px}.st .inline-edit{width:8em;font:inherit;border:0;border-bottom:1.5px solid var(--life);background:none;color:inherit;padding:0;outline:none}.st.sted .x{border:0;background:none;font:inherit;color:var(--faint);cursor:pointer;padding:0 2px}
 .mvalso{font-size:11.5px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
 .gear.sm{width:28px;height:28px;font-size:13px;display:grid;place-items:center}
 .st-mgr .smlist{display:flex;flex-direction:column;gap:6px}.smrow{display:flex;align-items:center;gap:6px;background:var(--surface-2);border-radius:12px;padding:6px 8px 6px 12px}.smrow .nm{flex:1;min-width:0;font-size:15px}
@@ -857,6 +857,20 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .steps .addsub{padding-left:4px}.subin{margin-left:30px;border:2px solid var(--line);border-radius:10px;background:var(--bg-2);padding:5px 10px;font:inherit;font-size:14px;max-width:calc(100% - 30px)}
 .split{display:inline-flex;align-items:center;gap:4px;height:30px;border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:0 12px 0 6px;font:inherit;font-size:13px;color:var(--study-ink);font-weight:600;white-space:nowrap;flex:none}.split svg{width:22px;height:22px}
 .ed-split{align-self:flex-start}
+/* overdue stack */
+.odtray{background:var(--surface);border-radius:20px;padding:14px;margin:2px 0 12px;display:flex;flex-direction:column;gap:10px;box-shadow:0 0 0 1px var(--line)}
+.od-hd{display:flex;align-items:center;gap:10px}.od-hd>svg{width:38px;height:38px;flex:none}.od-hd b{font-size:15px;display:block}.od-hd small{color:var(--muted);font-size:12.5px}
+.od-list{display:flex;flex-direction:column;gap:8px}
+.od-row{display:flex;flex-direction:column;gap:8px;padding:10px 12px;border-radius:14px;background:var(--surface-2)}
+.od-t{display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap}.od-dot{width:8px;height:8px;border-radius:50%;flex:none;display:inline-block}
+.od-n{flex:1 1 140px;min-width:0;text-align:left;border:none;background:none;color:var(--fg);font:inherit;font-size:14px;padding:0;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.od-tag{font-style:normal;font-size:11.5px;border-radius:99px;padding:2px 8px;white-space:nowrap}.od-tag.over{background:color-mix(in srgb,var(--danger) 16%,transparent);color:var(--danger)}.od-tag.mv{background:color-mix(in srgb,#f0b43a 22%,transparent);color:color-mix(in srgb,#b07a10 70%,var(--fg))}
+.od-acts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.od-acts .btn{padding:8px 4px;font-size:13px;justify-content:center;min-width:0}.od-acts .btn.soft{color:var(--muted)}
+.od-bub{background:color-mix(in srgb,#f0b43a 18%,var(--surface));border-radius:12px;padding:9px 11px;font-size:13.5px;line-height:1.6}
+.od-other{align-self:flex-start;font-size:12.5px}.od-more{align-self:center;font-size:13px}
+.od-bulk{display:flex;gap:8px}.od-bulk .btn{flex:1;justify-content:center}
+.od-sheet .chips{display:flex;flex-wrap:wrap;gap:6px}.od-sheet .chip small{opacity:.7;margin-left:4px}.od-what{margin:0;display:flex;align-items:center;gap:8px;font-size:14px}.od-sheet input[type=date]{align-self:flex-start}
+.letgo-box .hint{margin:4px 0 6px}.lg-list{display:flex;flex-direction:column}.lg-row{display:flex;align-items:center;gap:8px;padding:7px 4px;border-top:1px dashed var(--line);font-size:13.5px;color:var(--muted)}.lg-row span{flex:1;min-width:0}
 .nudge{display:flex;gap:10px;align-items:center;background:var(--surface);border:2px dashed var(--study);border-radius:16px;padding:10px 12px;margin:2px 0 10px;font-size:13.5px}.nudge>svg{width:34px;height:34px;flex:none}
 .nt2{flex:1;display:flex;flex-direction:column;gap:2px;line-height:1.45;min-width:0}.nt2 b{font-weight:600}.nt2 em{font-style:normal;color:var(--muted);font-size:13px}
 .nx-x{border:none;background:none;color:var(--faint);font-size:18px;padding:0 2px;line-height:1;align-self:flex-start}
@@ -1439,13 +1453,13 @@ function buddyState(){
   if(flash)return {...base,mood:flash.mood,say:flash.say};
   if(!loaded.t)return {...base,mood:"idle",say:L("正在把你的东西搬过来…","Bringing your things over…")};
   const h=new Date().getHours();
-  const urgent=tasks.filter(t=>!t.done&&!t.deleted&&t.due&&t.due<=todayStr()).length;
+  const urgent=tasks.filter(t=>!t.done&&!t.deleted&&!t.letGo&&t.due&&t.due<=todayStr()).length;
   if(h<5)return {...base,mood:"sleepy",say:L(`已经凌晨 ${h} 点啦，记完就去睡吧，事情明天还在～`,`It's ${h} a.m. already. Jot it down and get some sleep, it'll all still be here tomorrow.`)};
   const bdr=bdReminder(); if(bdr)return {...base,mood:"happy",say:bdr};
   const bed=bedReminder(); if(bed)return {...base,mood:"sleepy",say:bed};
   const pmr=pmReminder(); if(pmr)return {...base,mood:"idle",say:pmr};
   if(bloom)return {...base,mood:"cheer",say:L("今天的打卡全部完成！我开花啦 🌸","All check-ins done today! I'm blooming 🌸")};
-  const hot=tasks.filter(t=>!t.done&&!t.deleted&&+t.pri===3&&on(t.space)).length;
+  const hot=tasks.filter(t=>!t.done&&!t.deleted&&!t.letGo&&+t.pri===3&&on(t.space)).length;
   if(!urgent&&hot&&h>=5)return {...base,mood:"idle",say:L(`有 ${hot} 件高优先级的事，先挑最红的那个开始吧！`,`${hot} high-priority ${n_(hot,"task is","tasks are")} waiting. Start with a red one!`)};
   if(urgent)return {...base,mood:"idle",say:L(`有 ${urgent} 件今天到期或已经过期，先看看它们？`,`${urgent} ${n_(urgent,"thing is","things are")} due today or overdue. Take a look first?`)};
   if(h>=11&&typeof wishLine==="function"){const wl=wishLine();if(wl)return {...base,mood:"happy",say:wl.t,wish:wl}}
@@ -1613,7 +1627,7 @@ function render(){
   if(inlineEditing||dragLock){renderPending=true;return}
   applyBoards();
   document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.k===tab)));
-  const open=k=>tasks.filter(t=>t.space===k&&!t.done&&!t.deleted).length;
+  const open=k=>tasks.filter(t=>t.space===k&&!t.done&&!t.deleted&&!t.letGo).length;
   $("#n-work").textContent=open("work"); $("#n-life").textContent=open("life"); $("#n-study").textContent=open("study");
   const {live,done}=habitStats(); $("#n-habit").textContent=done+"/"+live.length;
   $("#jbtn").setAttribute("aria-pressed",String(tab==="journal"));
@@ -1674,7 +1688,7 @@ function sortTasks(a,b){
 const EMPTY={};
 const LIFE_HZ={};
 function lifeSeg(){
-  const subs=[["shop",sproutIcon("shop"),L("吃 & 买","Food"),shop.filter(x=>!x.bought).length],["memo",sproutIcon("memo"),L("备忘","Notes"),memos.length],["goals",sproutIcon("goals"),L("To Do","To Do"),tasks.filter(t=>t.space==="life"&&!t.done&&!t.deleted).length],["wish",sproutIcon("wish"),L("愿望","Wishes"),wishes.filter(w=>!w.done).length]].filter(x=>x[0]==="goals"||on(x[0]));
+  const subs=[["shop",sproutIcon("shop"),L("吃 & 买","Food"),shop.filter(x=>!x.bought).length],["memo",sproutIcon("memo"),L("备忘","Notes"),memos.length],["goals",sproutIcon("goals"),L("To Do","To Do"),tasks.filter(t=>t.space==="life"&&!t.done&&!t.deleted&&!t.letGo).length],["wish",sproutIcon("wish"),L("愿望","Wishes"),wishes.filter(w=>!w.done).length]].filter(x=>x[0]==="goals"||on(x[0]));
   if(subs.length<2)return "";
   return `<div class="seg" role="group" aria-label="${L("生活分区","Life sections")}" style="grid-template-columns:repeat(${subs.length},1fr)">
     ${subs.map(([k,ic,n,c])=>`<button data-act="lifesub" data-v="${k}" aria-pressed="${lifeSub===k}">${ic}<span class="sl">${n}</span> <span class="n${c?"":" z"}">${c}</span></button>`).join("")}</div>`;
@@ -1685,7 +1699,7 @@ function shopBoard(){
   const stapleNames=new Set(sts.map(x=>x.name.trim().toLowerCase()));
   const chips=sts.map(st=>{const has=inList.has(st.name.trim().toLowerCase());
     const sOn=stores.on&&stores.list.length;
-    if(stapleEdit)return sOn?`<span class="st sted"><span class="stn">${esc(st.name)}</span><button class="sti" data-act="ststore" data-id="${st.id}" title="${L("点一下选在哪家买","Tap to pick shops")}">${esc(storeNames(st)||L("哪家都行","Any shop"))} ▾</button><button class="x" data-act="stdel" data-id="${st.id}" aria-label="${L("删掉","Delete")}">×</button></span>`:`<button class="st" data-act="stdel" data-id="${st.id}">${esc(st.name)} <span class="x">×</span></button>`;
+    if(stapleEdit)return sOn?`<span class="st sted"><button class="stn" data-act="stren" data-id="${st.id}" title="${L("点一下改名字","Tap to rename")}">${esc(st.name)} <span class="stpen">✎</span></button><button class="sti" data-act="ststore" data-id="${st.id}" title="${L("点一下选在哪家买","Tap to pick shops")}">${esc(storeNames(st)||L("哪家都行","Any shop"))} ▾</button><button class="x" data-act="stdel" data-id="${st.id}" aria-label="${L("删掉","Delete")}">×</button></span>`:`<span class="st sted"><button class="stn" data-act="stren" data-id="${st.id}" title="${L("点一下改名字","Tap to rename")}">${esc(st.name)} <span class="stpen">✎</span></button><button class="x" data-act="stdel" data-id="${st.id}" aria-label="${L("删掉","Delete")}">×</button></span>`;
     if(sOn&&storesOf(st).length)return `<span class="st two${pick.has(st.id)?" pick":""}${has?" inlist":""}"><button class="stn" data-act="stpick" data-id="${st.id}" ${has?`title="${L("已在清单里","Already on the list")}"`:""}>${pick.has(st.id)?"✓ ":""}${esc(st.name)}</button><button class="sti" data-act="ststore" data-id="${st.id}" title="${L("点一下换超市","Tap to change shops")}">${esc(storeNames(st))}</button></span>`;
     return `<button class="st${pick.has(st.id)?" pick":""}${has?" inlist":""}" data-act="stpick" data-id="${st.id}" ${has?`title="${L("已在清单里","Already on the list")}"`:""}>${pick.has(st.id)?"✓ ":""}${esc(st.name)}</button>`}).join("");
   const need=shop.filter(x=>!x.bought).sort((a,b)=>(a.order??1e6)-(b.order??1e6)||(a.createdAt||0)-(b.createdAt||0));
@@ -1698,7 +1712,7 @@ function shopBoard(){
       <button class="star${stapleNames.has(x.name.trim().toLowerCase())?" on":""}" data-act="shopstar" data-id="${x.id}" aria-label="${L("设为常买","Save as a staple")}">★</button>
       <button class="del" data-act="shopdel" data-id="${x.id}" aria-label="${L("从清单删除","Remove from list")}">×</button></div>`;
   return `<div class="shop-hd"><span class="fic">${FI.BASKET}</span><h3>${L("购物清单","Shopping list")}</h3></div><div class="card">
-      <div class="card-head"><h3>${L("常买","Staples")}</h3><span class="sub">${stapleEdit&&stores.on&&stores.list.length?L("点绿色标签选在哪家买，可以选好几家","Tap the green tag to pick shops, several is fine"):L("点选几样，一起加进清单","Pick a few and add them in one go")}</span>
+      <div class="card-head"><h3>${L("常买","Staples")}</h3><span class="sub">${stapleEdit&&stores.on&&stores.list.length?L("点名字改名，点绿色标签选在哪家买","Tap a name to rename, the green tag to pick shops"):stapleEdit?L("点名字可以改，点 × 删掉","Tap a name to rename it, × to remove"):L("点选几样，一起加进清单","Pick a few and add them in one go")}</span>
         <span class="right">${sts.length?`<button class="link" data-act="stedit">${stapleEdit?L("完成","Done"):L("管理","Edit")}</button>`:""}</span></div>
       <div class="staples">${chips||`<span class="hint">${L("还没有常买的东西。清单里点 ★ 就能把它设为常买。","No staples yet. Tap ★ next to an item on your list to save it here.")}</span>`}</div>
       ${pick.size&&!stapleEdit?`<div><button class="btn life" data-act="stadd">${L(`加入清单（${pick.size}）`,`Add to list (${pick.size})`)}</button> <button class="link" data-act="stclear">${L("取消选择","Clear")}</button></div>`:""}
@@ -1725,14 +1739,14 @@ function taskBoard(k){
   if(!loaded.t)return `<div class="board" data-k="${k}">${emptyBox(L("正在读取"+SPACE[k]+"任务…","Loading "+SPACE[k].toLowerCase()+" tasks…"))}</div>`;
   const mine=tasks.filter(t=>t.space===k&&!t.deleted);
   const groups=HZ.map(h=>{
-    const items=mine.filter(t=>!t.done&&t.horizon===h.k).sort(sortTasks);
+    const items=mine.filter(t=>!t.done&&!t.letGo&&t.horizon===h.k).sort(sortTasks);
     if(h.k==="inbox"&&!items.length)return "";
     return `<section class="group"><h2><span class="badge"></span>${k==="life"&&LIFE_HZ[h.k]?LIFE_HZ[h.k]:h.name}<span class="sub">${h.sub}</span><span class="cnt">${items.length}</span><button class="add" data-act="newtask" data-space="${k}" data-hz="${h.k}" aria-label="${L("在","Add to ")}${k==="life"&&LIFE_HZ[h.k]?LIFE_HZ[h.k]:h.name}${L("里添加","")}">${PLUS}</button></h2>
       <div class="list">${items.length?items.map(taskRow).join(""):emptyBox(EMPTY[h.k])}</div></section>`;
   }).join("");
   const done=mine.filter(t=>t.done).sort((a,b)=>(b.doneAt||0)-(a.doneAt||0)).slice(0,50);
   const doneBox=done.length?`<details class="done-box" data-keep="done-${k}"><summary>${L(`已完成 ${done.length} 件`,`${done.length} done`)}</summary><div class="list">${done.map(taskRow).join("")}</div></details>`:"";
-  return `<div class="board" data-k="${k}">${k==="life"?lifeSeg():""}${k==="study"&&on("classes")?courseCard():""}${k==="study"||k==="work"?focusBar(k):""}${nudgeCard(k)}${groups}${doneBox}</div>`;
+  return `<div class="board" data-k="${k}">${k==="life"?lifeSeg():""}${odTray(k)}${k==="study"&&on("classes")?courseCard():""}${k==="study"||k==="work"?focusBar(k):""}${nudgeCard(k)}${groups}${doneBox}${letGoBox(k)}</div>`;
 }
 function streakOf(id){
   const t=todayStr(); let d=(checkins[t]||{})[id]?t:addDays(t,-1); let n=0;
@@ -1938,6 +1952,8 @@ const NEWS_BASE=()=>[
     {go:"journal",sel:".moodc",t:L("新功能 · 心情","New · Mood"),b:L("小结里可以选今天的心情，用小芽的表情来表示。","Pick today's mood in Today, with one of {pet}'s faces.")},
     {go:"journal",sel:".dtabs",t:L("新功能 · 感恩日记","New · Gratitude journal"),b:L("<em>感恩日记</em>每天写三件让你感激或开心的小事，再选一个明天想做的小行动；想自由写就切到<em>今日感想</em>。","In the <em>Gratitude</em> tab, note three small things you're grateful for, and maybe one small step for tomorrow. Switch to <em>Reflection</em> to write freely.")},
     {go:"study",sel:".board .task",t:L("新功能 · 任务","New · Tasks"),b:L("截止日期可以精确到<em>几点</em>，快到了会显示还剩几小时；每天要做两次的事（比如早晚吃药），重复里可以选<em>早 / 中 / 晚</em>。","Deadlines can have a <em>time</em>, with hours left shown as it gets close. For things you do twice a day, pick <em>morning / noon / evening</em> in Repeat.")}]}];
+NEWS_MORE.push(()=>({id:"1119",steps:[
+    {sel:"#odTray",alt:"#gear",pad:6,t:L("新功能 · 过期了的任务","New · Overdue tasks"),b:L("过期的任务会收成一小叠，放在工作、学习、生活的最上面，一件件选：<em>今天做</em>、<em>换个日子</em>，或者<em>放下</em>。放下的收在列表最下面，随时能捡回来。一件事挪了 3 次，{pet}会问问要不要拆小一点。不想每天处理的话，设置里可以打开「自动挪到今天」。","Overdue tasks gather in a small stack at the top of Work, Study and Life. Choose <em>Today</em>, <em>Another day</em> or <em>Let it go</em>. Let-go tasks wait at the bottom of the list. After 3 moves, {pet} asks if it should be smaller. Prefer not to sort daily? Turn on “Move to today automatically” in Settings.")}]}));
 NEWS_MORE.push(()=>({id:"1118j",steps:[
     {go:"lifewish",sel:"#goDeck",alt:"#wishForm",pad:6,t:L("新功能 · 去过的和还没去的","New · Been there, still to go"),b:L("去过的地方变成了一面<em>拍立得墙</em>，照片竖的就竖着挂，邮票可以选蜡笔或线稿。还没去的叠成一摞卡片，左右翻着看。先买了的东西，会在补齐那天记进值得记住的大小事。","Places you've been are now a <em>polaroid wall</em>, hung the way the photo was taken, with a crayon or line-drawing stamp. Places still to go are a stack you flip through. Things bought early become a moment on the day they're paid back.")}]}));
 NEWS_MORE.push(()=>({id:"1118i",steps:[
@@ -2784,7 +2800,7 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-sl]");if(!
 function pmLeft(){
   if(new Date().getHours()<20&&new Date().getHours()>=dayStartH)return [];
   const td=todayStr();
-  return tasks.filter(t=>!t.done&&!t.deleted&&t.repeat&&!isPaused(t)&&(t.repeat.times||[]).includes("pm")&&(!t.due||t.due<=td)&&!(t.slotDone||{}).pm);
+  return tasks.filter(t=>!t.done&&!t.deleted&&!t.letGo&&t.repeat&&!isPaused(t)&&(t.repeat.times||[]).includes("pm")&&(!t.due||t.due<=td)&&!(t.slotDone||{}).pm);
 }
 function pmReminder(){const l=pmLeft();if(!l.length)return null;
   const n=l.map(t=>`「${t.title}」`).slice(0,2).join(L("和",", "));
@@ -3034,7 +3050,7 @@ function wakeOff(){try{wake&&wake.release()}catch(_){}wake=null}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){if(P&&P.phase==="focus"&&!P.pausedAt)wakeOn();pomoTick()}});
 /* session */
 function curTask(){return P&&P.taskId?tasks.find(t=>t.id===P.taskId):null}
-function defaultTask(space){const list=tasks.filter(t=>t.space===space&&!t.done&&!t.deleted&&!isPaused(t)&&t.horizon!=="long").sort((a,b)=>{const hz=["week","inbox","month","long"];return hz.indexOf(a.horizon)-hz.indexOf(b.horizon)||sortTasks(a,b)});return list[0]||null}
+function defaultTask(space){const list=tasks.filter(t=>t.space===space&&!t.done&&!t.deleted&&!t.letGo&&!isPaused(t)&&t.horizon!=="long").sort((a,b)=>{const hz=["week","inbox","month","long"];return hz.indexOf(a.horizon)-hz.indexOf(b.horizon)||sortTasks(a,b)});return list[0]||null}
 function startFocus(taskId,subI){
   if(!db)return;
   const t=taskId?tasks.find(x=>x.id===taskId):null;
@@ -3196,7 +3212,7 @@ function openCustom(){
 }
 function setMode(m){pset.mode=m;savePset();if(P&&P.phase==="focus"){const len=pomoLen(m);P.mode=m;P.focusMin=len?len[0]:null;P.breakMin=len?len[1]:0;saveP()}pomoMenu=false;renderPomo()}
 function openTaskPicker(){
-  const list=tasks.filter(t=>(t.space==="study"||t.space==="work")&&on(t.space)&&!t.done&&!t.deleted).sort(sortTasks);
+  const list=tasks.filter(t=>(t.space==="study"||t.space==="work")&&on(t.space)&&!t.done&&!t.deleted&&!t.letGo).sort(sortTasks);
   const bg=document.createElement("div");bg.className="sheet-bg";bg.style.zIndex=80;
   bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("换一件事","Switch task")}"><h3>${L("换一件事","Switch task")}</h3><div class="plist tp">${list.map(t=>`<button data-tp="${t.id}" class="${P&&P.taskId===t.id?"on":""}"><span>${esc(t.title)}</span><small>${SPACE[t.space]}</small></button>`).join("")}<button data-tp=""><span>${L("不绑任务，单纯专注","No task, just focus")}</span></button></div></div>`;
   document.body.appendChild(bg);
@@ -3528,10 +3544,76 @@ function openSplit(id){
   });
 }
 const NUDGE_KEY="lifeos-nudge-off";
+/* ---------- overdue: a small stack at the top, decide one by one ---------- */
+const OD_AUTO="lifeos-od-auto";let odAuto=false;try{odAuto=localStorage.getItem(OD_AUTO)==="on"}catch(_){}
+let odAll=false,odRolled="";
+const odOn=t=>!t.done&&!t.deleted&&!t.letGo&&!t.repeat&&on(t.space)&&(t.space!=="life"||true);
+const isOver=t=>odOn(t)&&t.due&&t.due<todayStr();
+const isStuck=t=>odOn(t)&&(+t.moved||0)>=3&&t.due&&t.due<=todayStr();
+function odList(){const l=tasks.filter(t=>odAuto?isStuck(t):isOver(t)||isStuck(t)&&t.due<todayStr());return l.sort((a,b)=>(a.due<b.due?-1:a.due>b.due?1:0))}
+function odMove(t,due,count=true){const td=todayStr();const p={due:due||null,moved:count?(+t.moved||0)+1:(+t.moved||0)};
+  if(!due)p.dueTime=null;else if(t.dueTime&&due===td&&new Date(due+"T"+t.dueTime+":00")<=Date.now())p.dueTime=null;
+  if(!due&&t.horizon==="inbox")p.horizon="month";
+  Object.assign(t,p);const r=db.doc("tasks/"+t.id);queued(r.path,()=>r.update(p))}
+function odLetGo(t){const p={letGo:true,letGoAt:Date.now()};Object.assign(t,p);const r=db.doc("tasks/"+t.id);queued(r.path,()=>r.update(p))}
+function odPickUp(t){const p={letGo:false,letGoAt:null,due:null,dueTime:null,moved:0};Object.assign(t,p);const r=db.doc("tasks/"+t.id);queued(r.path,()=>r.update(p))}
+// auto mode: once a day, roll yesterday's leftovers onto today
+function odAutoRoll(){if(!odAuto||!loaded.t||!db)return;const td=todayStr();if(odRolled===td)return;odRolled=td;tasks.filter(isOver).forEach(t=>odMove(t,td))}
+const odDays=d=>Math.round((new Date(todayStr())-new Date(d))/864e5);
+function odTray(k){
+  if(k!=="work"&&k!=="study"&&k!=="life")return "";
+  const l=odList();if(!l.length)return "";
+  const show=odAll?l:l.slice(0,4),more=l.length-show.length;
+  const row=t=>{const mv=+t.moved||0,dot=`<i class="od-dot" style="background:var(--${t.space})"></i>`;
+    if(mv>=3)return `<div class="od-row stuck"><div class="od-bub">${L(`「${esc(t.title)}」已经挪了 ${mv} 次啦。是不是有点大？要不要换个方式？`,`“${esc(t.title)}” has moved ${mv} times. Too big, maybe? Try another way?`)}</div>
+      <div class="od-acts"><button class="btn" data-act="odsplit" data-id="${t.id}">${L("拆成小步","Break it down")}</button><button class="btn" data-act="odlong" data-id="${t.id}">${L("变成长期目标","Make it long-term")}</button><button class="btn soft" data-act="odlet" data-id="${t.id}">${L("放下","Let it go")}</button></div>
+      <button class="link od-other" data-act="odpick" data-id="${t.id}">${L("还是换个日子","Just pick another day")}</button></div>`;
+    return `<div class="od-row"><div class="od-t">${dot}<button class="od-n" data-act="edit" data-id="${t.id}">${esc(t.title)}</button><em class="od-tag over">${L(`过期 ${odDays(t.due)} 天`,`${odDays(t.due)}d overdue`)}</em>${mv?`<em class="od-tag mv">${L(`挪过 ${mv} 次`,`moved ${mv}×`)}</em>`:""}</div>
+      <div class="od-acts"><button class="btn primary" data-act="odtoday" data-id="${t.id}">${L("今天做","Today")}</button><button class="btn" data-act="odpick" data-id="${t.id}">${L("换个日子","Another day")}</button><button class="btn soft" data-act="odlet" data-id="${t.id}">${L("放下","Let it go")}</button></div></div>`};
+  const n=l.filter(isOver).length;
+  return `<div class="odtray" id="odTray"><div class="od-hd">${SF.happy||""}<div><b>${odAuto?L("有几件一直在往后挪","A few keep getting pushed back"):L(`有 ${n} 件过期了`,`${n} ${n_(n,"thing is","things are")} overdue`)}</b><small>${L("不着急，我们一件件看～","No rush, one at a time～")}</small></div></div>
+    <div class="od-list">${show.map(row).join("")}</div>
+    ${more?`<button class="link od-more" data-act="odall">${L(`还有 ${more} 件 ▾`,`${more} more ▾`)}</button>`:""}
+    ${!odAuto&&n>=2?`<div class="od-bulk"><button class="btn" data-act="odalltoday">${L("全部挪到今天","All to today")}</button><button class="btn" data-act="odalltmr">${L("全部挪到明天","All to tomorrow")}</button></div>`:""}</div>`;
+}
+function letGoBox(k){const l=tasks.filter(t=>t.space===k&&!t.done&&!t.deleted&&t.letGo).sort((a,b)=>(b.letGoAt||0)-(a.letGoAt||0));if(!l.length)return "";
+  return `<details class="done-box letgo-box" data-keep="letgo-${k}"><summary>${L(`放下的 ${l.length} 件`,`${l.length} let go`)}</summary><p class="hint">${L("放下不是失败，想做的时候随时捡回来。","Letting go isn't failing. Pick it back up whenever you like.")}</p><div class="lg-list">${l.map(t=>`<div class="lg-row"><span>${esc(t.title)}</span><button class="link" data-act="odback" data-id="${t.id}">${L("捡回来","Pick it up")}</button></div>`).join("")}</div></details>`}
+const WDN=d=>L(`周${WD[d.getDay()]}`,WDEN[d.getDay()].slice(0,3));
+function odPick(id){
+  const t=tasks.find(x=>x.id===id);if(!t)return;const td=todayStr(),dt=s=>new Date(s+"T12:00:00");
+  const dow=dt(td).getDay(),tmr=addDays(td,1),sat=dow===6?addDays(td,1):addDays(td,(6-dow+7)%7||7),mon=addDays(td,((8-dow)%7)||7);
+  const opts=[["tmr",tmr,L("明天","Tomorrow")],["wkend",sat,dow===6?L("周日","Sunday"):L("这个周末","This weekend")],["mon",mon,L("下周一","Next Monday")]];
+  let sel="tmr",custom=addDays(td,2);
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  const draw=()=>{bg.innerHTML=`<div class="sheet od-sheet" role="dialog" aria-label="${L("换个日子","Pick another day")}"><h3>${L("换个日子","Pick another day")}</h3>
+    <p class="od-what"><i class="od-dot" style="background:var(--${t.space})"></i>${esc(t.title)}</p>
+    <div class="chips">${opts.map(([k,d,n])=>`<button class="chip hz${sel===k?" on":""}" data-od="${k}">${n}<small>${k==="tmr"?WDN(dt(d)):`${+d.slice(5,7)}/${+d.slice(8)}`}</small></button>`).join("")}<button class="chip hz${sel==="pick"?" on":""}" data-od="pick">${L("选日期…","Pick a date…")}</button><button class="chip hz${sel==="none"?" on":""}" data-od="none">${L("有空再做","Someday")}</button></div>
+    ${sel==="pick"?`<input type="date" id="odDate" min="${tmr}" value="${custom}">`:""}
+    ${sel==="none"?`<p class="hint">${L("去掉日期，留在列表里，有空的时候再做。","No date. It stays on your list for when you have time.")}</p>`:""}
+    <div class="sheet-actions"><span></span><span style="display:flex;gap:8px"><button class="btn" data-od="x">${L("取消","Cancel")}</button><button class="btn primary" data-od="ok">${L("好","OK")}</button></span></div></div>`};
+  draw();document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-od]");if(!b)return;const v=b.dataset.od;
+    if(v==="x"){bg.remove();return}
+    const di=bg.querySelector("#odDate");if(di&&di.value)custom=di.value;
+    if(v==="ok"){const due=sel==="none"?null:sel==="pick"?(custom>td?custom:tmr):opts.find(o=>o[0]===sel)[1];odMove(t,due);bg.remove();
+      cheer(due?L(`好，挪到 ${+due.slice(5,7)}月${+due.slice(8)}日～`,`Moved to ${+due.slice(8)} ${MON[+due.slice(5,7)-1]}～`):L("好，有空再做～","OK, for when you have time～"),"happy");render();return}
+    sel=v;draw()});
+}
+function odAct(a,id){const t=tasks.find(x=>x.id===id);const td=todayStr();
+  if(a==="odall"){odAll=true;render();return true}
+  if(a==="odalltoday"||a==="odalltmr"){const d=a==="odalltoday"?td:addDays(td,1);tasks.filter(isOver).forEach(x=>odMove(x,d));cheer(a==="odalltoday"?L("都放到今天啦，挑最要紧的先做～","All on today. Start with what matters most～"):L("都挪到明天啦，今天轻松一点～","All moved to tomorrow. Go easy today～"),"happy");render();return true}
+  if(!t)return false;
+  if(a==="odtoday"){odMove(t,td);cheer(L(`「${t.title}」放到今天啦`,`“${t.title}” is on today`),"happy");render();return true}
+  if(a==="odpick"){odPick(id);return true}
+  if(a==="odlet"){odLetGo(t);cheer(L("放下也没关系，它收在列表最下面，随时能捡回来。","It's fine to let it go. It's at the bottom of the list if you want it back."),"happy");render();return true}
+  if(a==="odback"){odPickUp(t);cheer(L(`「${t.title}」捡回来啦，没有日期，有空再做～`,`“${t.title}” is back, no date for now～`),"happy");render();return true}
+  if(a==="odlong"){const p={horizon:"long",due:null,dueTime:null,moved:0};Object.assign(t,p);const r=db.doc("tasks/"+id);queued(r.path,()=>r.update(p));cheer(L(`「${t.title}」变成长期目标啦，慢慢来～`,`“${t.title}” is a long-term goal now. Take your time～`),"happy");render();return true}
+  if(a==="odsplit"){const p={moved:0,due:td};Object.assign(t,p);const r=db.doc("tasks/"+id);queued(r.path,()=>r.update(p));openSplit(id);return true}
+  return false}
 function nudgeCard(k){
   let off=[];try{off=JSON.parse(localStorage.getItem(NUDGE_KEY)||"[]")}catch(_){}
   const wk=Date.now()-7*864e5;
-  const c=tasks.filter(t=>t.space===k&&!t.done&&!t.deleted&&!t.repeat&&t.horizon!=="long"&&!(t.subs&&t.subs.length)&&(t.createdAt||0)<wk&&(t.createdAt||0)>0&&!off.includes(t.id)).sort((a,b)=>a.createdAt-b.createdAt)[0];
+  const c=tasks.filter(t=>t.space===k&&!t.done&&!t.deleted&&!t.letGo&&!t.repeat&&t.horizon!=="long"&&!(t.subs&&t.subs.length)&&(t.createdAt||0)<wk&&(t.createdAt||0)>0&&!off.includes(t.id)).sort((a,b)=>a.createdAt-b.createdAt)[0];
   if(!c)return "";
   const d=Math.floor((Date.now()-c.createdAt)/864e5);
   return `<div class="nudge">${IDEA_FACE}<span class="nt2"><b>${L(`「${esc(c.title)}」放了 ${d} 天啦，是不是有点难开始？`,`“${esc(c.title)}” has been waiting ${d} days. Hard to get started?`)}</b><em>${L("我帮你拆成几小步吧，第一步只要 2 分钟。","Let me break it into small steps. Step one takes just 2 minutes.")}</em></span><button class="split" data-act="split" data-id="${c.id}">${L("拆一下","Break it down")}</button><button class="nx-x" data-act="nudgeoff" data-id="${c.id}" aria-label="${L("关掉","Dismiss")}">×</button></div>`;
@@ -5243,6 +5325,7 @@ function openEditor(id,preset){
       const ref=db.doc("tasks/"+id);
       const patch={title:(draft.title.trim()||L("未命名","Untitled")).slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,dueTime:draft.due&&draft.dueTime?draft.dueTime:null,note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp};
       if(rp&&!patch.due&&!t.done)patch.due=repFirst(rp,todayStr());
+      if(!t.done&&!rp&&t.due&&t.due<todayStr()&&patch.due&&patch.due>t.due)patch.moved=(+t.moved||0)+1;
       if(t.done&&draft.doneDay&&draft.doneDay!==dayOf(t.doneAt))patch.doneAt=draft.doneDay===todayStr()?Date.now():noonOf(draft.doneDay);
       const sameRule=t.repeat&&rp&&JSON.stringify({...t.repeat,until:0,pause:0})===JSON.stringify({...rp,until:0,pause:0});
       if(!t.done&&sameRule&&t.due&&patch.due&&patch.due!==t.due){
@@ -5341,6 +5424,7 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="subedit"){subEditing={id,i:+act.dataset.i};render();setTimeout(()=>{const el=document.getElementById(`subed-${id}-${act.dataset.i}`);if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length)}},0);return}
   if(act.dataset.act==="subadd"){subAdding=id;render();setTimeout(()=>document.getElementById("subin-"+id)?.focus(),0);return}
   if(act.dataset.act==="substart"){if(typeof startFocus==="function")startFocus(id,+act.dataset.i);return}
+  if(act.dataset.act.startsWith("od")&&odAct(act.dataset.act,id))return;
   if(act.dataset.act==="split"){openSplit(id);return}
   if(act.dataset.act==="nudgeoff"){try{const off=JSON.parse(localStorage.getItem(NUDGE_KEY)||"[]");off.push(id);localStorage.setItem(NUDGE_KEY,JSON.stringify(off.slice(-200)))}catch(_){}render();return}
   if(act.dataset.act==="bdnew"){openBd();return}
@@ -5374,6 +5458,8 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="stclear"){pick.clear();render();return}
   if(act.dataset.act==="stedit"){stapleEdit=!stapleEdit;pick.clear();render();return}
   if(act.dataset.act==="ststore"){const x=staples.find(y=>y.id===id);if(x)pickStore(x,"staple");return}
+  if(act.dataset.act==="stren"){const x=staples.find(y=>y.id===id);if(!x)return;inlineEdit(act,x.name,v=>{if(staples.some(y=>y!==x&&norm(y.name)===norm(v))){cheer(L(`常买里已经有「${v}」啦`,`“${v}” is already a staple`),"meh");return}const old=x.name;x.name=v;const r=db.doc("staples/"+id);queued(r.path,()=>r.update({name:v}));
+      shop.filter(y=>!y.bought&&norm(y.name)===norm(old)).forEach(y=>{y.name=v;const r2=db.doc("shop/"+y.id);queued(r2.path,()=>r2.update({name:v}))})});return}
   if(act.dataset.act==="stdel"){const ref=db.doc("staples/"+id);queued(ref.path,()=>ref.delete());return}
   if(act.dataset.act==="stadd"){const sel=staples.filter(x=>pick.has(x.id)),names=sel.map(x=>x.name);pick.clear();render();for(const x of sel)await addShop(x.name,stores.on?storesOf(x):[]);cheer(L(`放进清单 ${names.length} 样～`,`Added ${names.length} to the list～`));return}
   if(act.dataset.act==="shopsel"){const sid=act.dataset.id||"";if(!sid)shopStoreSel.clear();else if(shopStoreSel.has(sid))shopStoreSel.delete(sid);else shopStoreSel.add(sid);render();$("#shopName")?.focus();return}
@@ -5630,6 +5716,7 @@ function openSettings(){
     <div class="field"><span>${L("我的生日（写给下一岁的信会在这天拆）","My birthday (letters to a year-older me open then)")}</span><div class="drow">${(()=>{const b=bdParts();return `<select id="set-bm"><option value="">${L("月","Month")}</option>${[...Array(12)].map((_,i)=>`<option value="${i+1}" ${b&&b.m===i+1?"selected":""}>${L(`${i+1} 月`,MON[i])}</option>`).join("")}</select><select id="set-bd"><option value="">${L("日","Day")}</option>${[...Array(31)].map((_,i)=>`<option value="${i+1}" ${b&&b.d===i+1?"selected":""}>${L(`${i+1} 日`,String(i+1))}</option>`).join("")}</select><input id="set-by" inputmode="numeric" maxlength="4" placeholder="${L("年（可不填）","Year (optional)")}" value="${b&&b.y?b.y:""}">`})()}</div></div>
     <div class="field"><span>${L("购物清单","Shopping list")}</span><div class="btnrow"><button class="chip hz${stores.on?" on":""}" data-set="stores" aria-pressed="${stores.on}">${stores.on?"✓ ":""}${L("按超市分组","Group by shop")}</button></div></div>
     <div class="field"><span>${L("冰箱：放多久提醒我","Fridge: remind me after")}</span><div class="shelfset">${SHELF.map(([k,,d,zh,en])=>`<label><span>${L(zh,en)}</span><select data-shelf="${k}">${[1,2,3,4,5,7,10,14,21,30,60,0].map(v=>`<option value="${v}" ${shelfDays(k)===v?"selected":""}>${v?L(v>=30&&v%30===0?`${v/30} 个月`:v>=7&&v%7===0?`${v/7} 周`:`${v} 天`,v>=30&&v%30===0?`${v/30} mo`:v>=7&&v%7===0?`${v/7} wk`:`${v} d`):L("不提醒","Never")}${v===d?L("（默认）"," (default)"):""}</option>`).join("")}</select></label>`).join("")}</div></div>
+    <div class="field"><span>${L("过期的任务","Overdue tasks")}</span><div class="btnrow"><button class="chip hz${odAuto?" on":""}" data-set="odauto" aria-pressed="${odAuto}">${odAuto?"✓ ":""}${L("自动挪到今天","Move to today automatically")}</button></div><span class="hint">${L("打开后不用每天处理，过期的会自己挪到今天，依然会记「挪过几次」。","No daily sorting: overdue tasks move to today on their own, and moves are still counted.")}</span></div>
     <div class="field"><span>${L("节日装扮","Festival dress-up")}</span><div class="btnrow"><button class="chip hz${festOff?"":" on"}" data-set="fest" aria-pressed="${!festOff}">${festOff?"":"✓ "}${L("过节时小芽换装","Dress up {pet} on holidays").replaceAll("{pet}",petName())}</button></div></div>
     <div class="field"><span>${L("功能介绍","Tour")}</span><div><div class="btnrow"><button class="btn" data-set="tour">${L("重新看一遍介绍","Replay the tour")}</button><button class="btn" data-set="news">${L("最近的新功能","What's new")}</button></div></div></div>
     <label class="field chk"><span>${L("番茄钟提示音","Timer sound")}</span><span class="chkrow"><input type="checkbox" id="set-sound" ${(kept.snd??pset.sound)?"checked":""}> ${L("专注、休息结束时轻轻叮一声（默认关）","A soft ding when focus or a break ends (off by default)")}</span></label>
@@ -5659,6 +5746,7 @@ function openSettings(){
     if(a==="nobed"){bg.querySelector("#set-bed").value="";return}
     if(a==="tour"){bg.remove();setTimeout(()=>startTour("full"),250);return}
     if(a==="stores"){const on=!stores.on;setStores({...stores,on});b.classList.toggle("on",on);b.setAttribute("aria-pressed",String(on));b.textContent=(on?"✓ ":"")+L("按超市分组","Group by shop");if(on&&!stores.list.length){bg.remove();tab="life";lifeSub="shop";render();setTimeout(openStores,200)}return}
+    if(a==="odauto"){odAuto=!odAuto;try{localStorage.setItem(OD_AUTO,odAuto?"on":"off")}catch(_){}b.classList.toggle("on",odAuto);b.setAttribute("aria-pressed",String(odAuto));b.textContent=(odAuto?"✓ ":"")+L("自动挪到今天","Move to today automatically");odRolled="";odAutoRoll();render();return}
     if(a==="fest"){festOff=!festOff;try{localStorage.setItem(FEST_KEY,festOff?"off":"on")}catch(_){}b.classList.toggle("on",!festOff);b.setAttribute("aria-pressed",String(!festOff));b.textContent=(festOff?"":"✓ ")+L("过节时小芽换装","Dress up {pet} on holidays").replaceAll("{pet}",petName());festApplied="x";applyFest();return}
     if(a==="festpv"){festPreview=b.dataset.v;festApplied="x";bg.remove();applyFest();snack(L("这是预览","This is a preview"),L(`${FEST()[festPreview].n}那天会是这样，刷新页面也会恢复`,`How ${FEST()[festPreview].n} will look. Refreshing ends it too`),L("关掉预览","End preview"),()=>{festPreview=null;festApplied="x";applyFest();renderBuddy()});return}
     if(a==="news"){bg.remove();try{const o=JSON.parse(localStorage.getItem(TOUR_KEY)||"{}");delete o["nf:"+NEWS().slice(-1)[0].id];localStorage.setItem(TOUR_KEY,JSON.stringify(o))}catch(_){}setTimeout(()=>startTour("news"),250);return}
@@ -5795,7 +5883,7 @@ function startData(store){
   const fail=e=>{if(e&&e.code==="permission-denied")setStatus(L("没有权限读取数据，请重新登录。","No permission to read your data. Please sign in again."))};
   const sub=(c,fn,q)=>unsubs.push((q||db.collection(c)).onSnapshot(fn,fail));
   const ok=s=>!s.metadata.fromCache||!s.empty;
-  sub("tasks",s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.t=true;render()});
+  sub("tasks",s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.t=true;render();odAutoRoll()});
   sub("habits",s=>{habits=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.h=true;render()});
   sub("shop",s=>{shop=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.s=true;render()});
   sub("staples",s=>{staples=s.docs.map(d=>({id:d.id,...d.data()}));render()});
