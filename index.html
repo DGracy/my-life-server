@@ -2886,7 +2886,7 @@ function slTypical(){const bs=[],ws=[];for(let i=1;i<=14;i++){const n=sleeps[add
 const slDur=durTxt;
 // the garden's one-tap sleep button: "going to bed" at night, "I'm up" in the morning
 function slBtnState(){if(!db||!(on("habit")||OV_SP.some(on)))return null;const t=todayStr(),y=addDays(t,-1),tn=sleeps[t]||{},ln=sleeps[y]||{},now=new Date(),hm=now.getHours()*60+now.getMinutes();
-  const bt=bedTime?tmin(bedTime):21*60,night=hm>=bt-30||hm<dayStartH*60;
+  const bt=bedTime?tmin(bedTime):23*60,from=Math.min(20*60,bt>12*60?bt-30:20*60),night=hm>=from||hm<dayStartH*60;
   if(night&&!tn.bed)return ["bed",`🌙 ${L("我去睡啦","Off to bed")}`];
   if(!night&&hm<12*60&&!ln.wake)return ["wake",`☀️ ${L("我起床啦","I'm up")}`];
   return null}
