@@ -51,7 +51,9 @@
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{margin:0}
 [hidden]{display:none!important}
-.moonb .mbdot{display:none}.moonb.on{background:color-mix(in srgb,#e8789a 18%,var(--surface))}.moonb.on .mbdot{display:block;background:#e8789a}.moon-sheet h3{display:flex;align-items:center;gap:8px}.moon-sheet .btn.primary.moon-go{background:#e8789a;border-color:#e8789a;box-shadow:0 3px 0 #c4577a}
+.moonrow{display:flex;align-items:center;gap:8px;padding:8px 10px 8px 12px;border-radius:14px;background:color-mix(in srgb,#e8789a 16%,var(--surface));color:color-mix(in srgb,#b4416a 80%,var(--fg));font-size:13.5px;margin:2px 0 10px}.moonrow>svg{flex:none}.moonrow span{flex:1;min-width:0}.moonrow.off{background:none;border:1.5px dashed var(--line);color:var(--muted)}
+.moonrow .mb{border:none;border-radius:999px;padding:5px 11px;font:inherit;font-size:12.5px;background:var(--surface);color:inherit;cursor:pointer;white-space:nowrap}.moonrow.off .mb{background:var(--surface-2);color:var(--fg)}.moonrow .mb.ghost{background:none;color:var(--muted);padding:5px 4px}
+.cal-day.moon .cal-top b{background:color-mix(in srgb,#e8789a 24%,var(--surface));color:color-mix(in srgb,#b4416a 85%,var(--fg));border-radius:999px;padding:0 5px}.cal-day.today.moon .cal-top b{background:var(--brand);color:#fff;box-shadow:0 0 0 2px color-mix(in srgb,#e8789a 35%,var(--surface))}.cal-legend .lgmoon{display:inline-block;width:16px;height:11px;border-radius:99px;background:color-mix(in srgb,#e8789a 24%,var(--surface));vertical-align:-1px;margin-right:3px}
 .gear{border:none;background:var(--surface);border-radius:50%;width:34px;height:34px;font-size:16px;box-shadow:0 3px 0 var(--line);padding:0}
 @media(max-width:600px){.title-row{align-items:center;row-gap:8px;column-gap:8px}.title-row h1{flex-basis:100%}.title-row .today,.title-row .wx{align-self:center}.hd-acts{gap:6px}.hd-acts .gear{width:32px;height:32px;font-size:15px}.title-row .jbtn{height:32px;padding:0 10px}}
 #jbtnTxt{display:none}.title-row .hd-acts .jbtn{width:34px;height:34px;padding:0;justify-content:center;border-radius:50%;font-size:16px;border:none;box-shadow:0 3px 0 var(--line)}
@@ -1240,7 +1242,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 <body>
 
 <div class="wrap">
-  <div class="title-row"><h1 id="appName">我的人生服务器</h1><span class="today" id="today"></span><span class="hd-acts"><button class="gear mbb" id="mbBtn" aria-label="信箱">📫<i class="mbdot" hidden></i></button><button class="gear mbb" id="idBtn" aria-label="想法箱" hidden>💡<i class="mbdot" hidden></i></button><button class="gear mbb moonb" id="moonBtn" aria-label="小月亮" hidden><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15.5 3.2A8.8 8.8 0 1 0 20.8 15 7 7 0 0 1 15.5 3.2z" fill="#e8789a"/></svg><i class="mbdot"></i></button><button class="jbtn" id="jbtn" aria-pressed="false">📔<span id="jbtnTxt"> 小结</span></button><button class="gear sync" id="syncBtn" hidden></button><button class="gear" id="gear" aria-label="设置">⚙️</button></span></div>
+  <div class="title-row"><h1 id="appName">我的人生服务器</h1><span class="today" id="today"></span><span class="hd-acts"><button class="gear mbb" id="mbBtn" aria-label="信箱">📫<i class="mbdot" hidden></i></button><button class="gear mbb" id="idBtn" aria-label="想法箱" hidden>💡<i class="mbdot" hidden></i></button><button class="jbtn" id="jbtn" aria-pressed="false">📔<span id="jbtnTxt"> 小结</span></button><button class="gear sync" id="syncBtn" hidden></button><button class="gear" id="gear" aria-label="设置">⚙️</button></span></div>
   <section class="garden" aria-label="小芽的成长">
     <div class="buddy" id="buddy" role="img" aria-label="小芽"><span class="btree" id="btree"></span></div>
     <div class="g-text">
@@ -1955,7 +1957,7 @@ const NEWS_BASE=()=>[
     {go:"journal",sel:".dtabs",t:L("新功能 · 感恩日记","New · Gratitude journal"),b:L("<em>感恩日记</em>每天写三件让你感激或开心的小事，再选一个明天想做的小行动；想自由写就切到<em>今日感想</em>。","In the <em>Gratitude</em> tab, note three small things you're grateful for, and maybe one small step for tomorrow. Switch to <em>Reflection</em> to write freely.")},
     {go:"study",sel:".board .task",t:L("新功能 · 任务","New · Tasks"),b:L("截止日期可以精确到<em>几点</em>，快到了会显示还剩几小时；每天要做两次的事（比如早晚吃药），重复里可以选<em>早 / 中 / 晚</em>。","Deadlines can have a <em>time</em>, with hours left shown as it gets close. For things you do twice a day, pick <em>morning / noon / evening</em> in Repeat.")}]}];
 NEWS_MORE.push(()=>({id:"1119b",steps:[
-    {sel:"#gear",pad:4,t:L("新功能 · 小月亮","New · Little moon"),b:L("设置里可以打开「小月亮」：日期旁边多一个小月亮，开始和结束时各点一下，这几天{pet}会抱着热水袋陪你，说话也轻一点。只记日期，不进总结和信。","Turn on “Little moon” in Settings: tap the moon by the date when it starts and ends, and {pet} keeps you company with a hot-water bottle. Dates only; never in recaps or letters.")}]}));
+    {sel:"#gear",pad:4,t:L("新功能 · 小月亮","New · Little moon"),b:L("设置里可以打开「小月亮」，然后在「小结」里点「这天开始的 / 结束的」。日历上那几天的日期会有淡粉底，这几天{pet}会抱着热水袋陪你，说话也轻一点。只记日期，不进总结和信。","Turn on “Little moon” in Settings, then mark the start and end in Today. Those dates get a soft pink badge on the calendar, and {pet} keeps you company with a hot-water bottle. Dates only; never in recaps or letters.")}]}));
 NEWS_MORE.push(()=>({id:"1119",steps:[
     {sel:"#odTray",alt:"#gear",pad:6,t:L("新功能 · 过期了的任务","New · Overdue tasks"),b:L("过期的任务会收成一小叠，放在工作、学习、生活的最上面，一件件选：<em>今天做</em>、<em>换个日子</em>，或者<em>放下</em>。放下的收在列表最下面，随时能捡回来。一件事挪了 3 次，{pet}会问问要不要拆小一点。不想每天处理的话，设置里可以打开「自动挪到今天」。","Overdue tasks gather in a small stack at the top of Work, Study and Life. Choose <em>Today</em>, <em>Another day</em> or <em>Let it go</em>. Let-go tasks wait at the bottom of the list. After 3 moves, {pet} asks if it should be smaller. Prefer not to sort daily? Turn on “Move to today automatically” in Settings.")}]}));
 NEWS_MORE.push(()=>({id:"1118j",steps:[
@@ -4058,7 +4060,7 @@ function calendarCard(sel){
     const pills=c?keys.filter(k=>c[k]).map(k=>`<i class="pill" style="--c:var(--${k}-ink);--s:var(--${k}-soft)" title="${name[k]} ${c[k]}">${c[k]}</i>`).join(""):"";
     const lbl=L(`${m}月${dd}日`,`${dd} ${MON[m-1]}`)+(c?" · "+keys.filter(k=>c[k]).map(k=>`${name[k]} ${c[k]}`).join(", "):"")+(hasJ(J)?" · "+L("有感想","has a reflection"):"")+(msOn(d).length?" · "+L("值得记住：","Moment: ")+msOn(d).map(x=>x.title).join(", "):"");
     const msN=msOn(d).length, bd=bdOnDay(d)[0];
-    cells+=`<button class="cal-day${d===sel?" sel":""}${d===t?" today":""}${msN?" ms":""}${bd?" bd":""}" data-act="jday" data-v="${d}" ${future?"disabled":""} aria-label="${lbl}${bd?" · "+esc(bdTitle(bd)):""}" aria-pressed="${d===sel}"${bd?` style="--bdc:${bdCol(bd)}"`:""}>
+    cells+=`<button class="cal-day${d===sel?" sel":""}${d===t?" today":""}${moonAt(d)?" moon":""}${msN?" ms":""}${bd?" bd":""}" data-act="jday" data-v="${d}" ${future?"disabled":""} aria-label="${lbl}${bd?" · "+esc(bdTitle(bd)):""}" aria-pressed="${d===sel}"${bd?` style="--bdc:${bdCol(bd)}"`:""}>
       ${msN?`<span class="cal-ms">${milestoneFace()}</span>`:""}<span class="cal-top"><b>${dd}</b>${mood?`<span class="cal-mood">${mood}</span>`:hasJ(J)?`<span class="cal-note">✎</span>`:""}</span>
       ${bd?`<span class="cal-bd">${bdIcon(bd)}</span>`:`<span class="pills">${pills}</span>`}</button>`;
   }
@@ -4067,7 +4069,7 @@ function calendarCard(sel){
     ${recapButtons()}
     <div class="cal-head"><button data-act="calprev" aria-label="${L("上个月","Previous month")}">‹</button><h3>${L(`${y}年${m}月`,`${MONFULL[m-1]} ${y}`)}</h3><button data-act="calnext" aria-label="${L("下个月","Next month")}">›</button></div>
     <div class="cal-grid">${wd.map(w=>`<span class="cal-wd">${w}</span>`).join("")}${cells}</div>
-    <div class="cal-legend">${keys.map(k=>`<span><i style="background:var(--${k})"></i>${name[k]}</span>`).join("")}<span>✎ ${L("写了感想","Reflection")}</span><span>${milestoneFace()}${L("值得记住","Moment")}</span>${["birthday","anniv"].filter(k=>yearlyDays.some(x=>x.type===k)).map(k=>`<span class="lgi">${BD_IC[k]}${k==="birthday"?L("生日","Birthday"):L("纪念日","Anniversary")}</span>`).join("")}<span>${L("点一天看详情","Tap a day for details")}</span></div>
+    <div class="cal-legend">${keys.map(k=>`<span><i style="background:var(--${k})"></i>${name[k]}</span>`).join("")}${moonList().some(r=>r.s.slice(0,7)<=cm&&moonEnd(r).slice(0,7)>=cm)?`<span><i class="lgmoon"></i>${L("小月亮","Little moon")}</span>`:""}<span>✎ ${L("写了感想","Reflection")}</span><span>${milestoneFace()}${L("值得记住","Moment")}</span>${["birthday","anniv"].filter(k=>yearlyDays.some(x=>x.type===k)).map(k=>`<span class="lgi">${BD_IC[k]}${k==="birthday"?L("生日","Birthday"):L("纪念日","Anniversary")}</span>`).join("")}<span>${L("点一天看详情","Tap a day for details")}</span></div>
     ${bdSection()}
     ${milestoneWall()}
   </div>`;
@@ -4151,27 +4153,35 @@ function dressFab(){
   const parts=kids.map((x,i)=>Ly.cover&&i<3||Ly.face&&i>3?"":x.outerHTML).join("");
   fab.innerHTML=`<svg viewBox="0 0 120 120" aria-hidden="true" style="${themeStyle(curTheme)}"><defs><clipPath id="dressclip"><circle cx="60" cy="60" r="55"/></clipPath></defs><g clip-path="url(#dressclip)"><g transform="translate(60 66) scale(.8) translate(-60 -66)">${parts}${Ly.face}${Ly.over}</g></g></svg>`;
 }
-/* ---------- 小月亮: tap when it starts and ends; the sprout goes gentle and hugs a hot-water bottle ---------- */
-let moonS={enabled:false,start:null,end:null};
-const MOON_SVG=`<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15.5 3.2A8.8 8.8 0 1 0 20.8 15 7 7 0 0 1 15.5 3.2z" fill="#e8789a"/></svg>`;
+/* ---------- 小月亮: marked in 小结 (start / end), shown on the calendar; the sprout goes gentle and hugs a hot-water bottle ---------- */
+let moonS={enabled:false,list:[]};
+const MOON_SVG=`<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M15.5 3.2A8.8 8.8 0 1 0 20.8 15 7 7 0 0 1 15.5 3.2z" fill="#e8789a"/></svg>`;
 const HOTBAG=`<g class="hotbag"><rect x="45" y="96" width="30" height="22" rx="9" fill="#f08daa"/><rect x="55.5" y="91" width="9" height="7" rx="2.5" fill="#d9668b"/><path d="M51 103h18M51 108.5h18" stroke="#fff" stroke-opacity=".55" stroke-width="2.2" stroke-linecap="round"/><path d="M57.5 112c0-1.3 2.5-1.3 2.5 0 0-1.3 2.5-1.3 2.5 0 0 1.8-2.5 2.9-2.5 2.9s-2.5-1.1-2.5-2.9z" fill="#fff" opacity=".85"/><ellipse cx="44" cy="106" rx="6.5" ry="5" fill="var(--buddy)"/><ellipse cx="76" cy="106" rx="6.5" ry="5" fill="var(--buddy)"/></g>`;
-const moonDay=()=>moonS.start?Math.round((new Date(todayStr())-new Date(moonS.start))/864e5)+1:0;
-function moonActive(){return !!(moonS.enabled&&moonS.start&&!moonS.end&&moonS.start<=todayStr()&&moonDay()<=10)}
-function moonSave(p){Object.assign(moonS,p);const r=db.collection("moon").doc("cur");const v={enabled:!!moonS.enabled,start:moonS.start||null,end:moonS.end||null};queued(r.path,()=>r.set(v));moonBtn();palKey="";lastBuddy="";renderBuddy();renderPal()}
-function moonBtn(){const b=$("#moonBtn");if(!b)return;b.hidden=!moonS.enabled;b.classList.toggle("on",moonActive());b.setAttribute("aria-label",moonActive()?L(`小月亮 · 第 ${moonDay()} 天`,`Little moon · day ${moonDay()}`):L("小月亮","Little moon"))}
+const MOON_MAX=10;
+// last day a range covers: its end, or (still open) today, but never more than 10 days
+const moonEnd=r=>{const cap=addDays(r.s,MOON_MAX-1);if(r.e)return r.e;const t=todayStr();return t<cap?t:cap};
+const moonList=()=>moonS.enabled?(moonS.list||[]).filter(r=>r&&r.s):[];
+const moonAt=d=>moonList().find(r=>d>=r.s&&d<=moonEnd(r));
+const moonOpen=()=>moonList().find(r=>!r.e&&todayStr()<=addDays(r.s,MOON_MAX-1));
+function moonActive(){const r=moonOpen();return !!(r&&r.s<=todayStr())}
+const moonDay=(d=todayStr())=>{const r=moonAt(d);return r?Math.round((new Date(d)-new Date(r.s))/864e5)+1:0};
+function moonSave(){const r=db.collection("moon").doc("cur");const v={enabled:!!moonS.enabled,list:(moonS.list||[]).filter(x=>x&&x.s).sort((a,b)=>a.s<b.s?-1:1).slice(-60)};moonS.list=v.list;queued(r.path,()=>r.set(v));moonRefresh()}
+function moonRefresh(){palKey="";lastBuddy="";renderBuddy();renderPal();if(tab==="journal")render()}
 const MOON_SAYS=()=>L(["这几天辛苦啦。今天挑一件最要紧的就够了，剩下的我帮你看着。","抱着热水袋陪你～累了就歇一会儿，事情跑不掉的。","今天对自己好一点，多喝点热的。","不舒服就早点睡，我替你守着这棵树。","慢慢来就好，做一点也算数。"],["Go easy these days. One thing that matters is plenty; I'll keep an eye on the rest.","Hugging a hot-water bottle with you～ Rest when you're tired, it'll all still be here.","Be kind to yourself today. Something warm to drink?","If you don't feel great, sleep early. I'll look after the tree.","Slowly is fine. A little still counts."]);
 function moonSay(){const s=MOON_SAYS();return s[(moonDay()-1+s.length)%s.length]}
-function openMoon(){
-  const bg=document.createElement("div");bg.className="sheet-bg";const act=moonActive();
-  bg.innerHTML=`<div class="sheet moon-sheet" role="dialog" aria-label="${L("小月亮","Little moon")}"><h3>${MOON_SVG}${act?L(`小月亮 · 第 ${moonDay()} 天`,`Little moon · day ${moonDay()}`):L("小月亮来了吗？","Has the little moon come?")}</h3>
-    <p class="hint">${act?L("结束了就点一下，{pet}就把热水袋收起来。","Tap when it's over and {pet} will put the hot-water bottle away."):L("点一下，这几天{pet}会抱着热水袋陪你，说话也轻一点。","Tap and {pet} will keep you company with a hot-water bottle these days.")}</p>
-    <div class="sheet-actions">${act?`<button class="btn" data-mo="undo">${L("点错了","Tapped by mistake")}</button>`:"<span></span>"}<span style="display:flex;gap:8px"><button class="btn" data-mo="x">${L("取消","Cancel")}</button><button class="btn primary moon-go" data-mo="${act?"end":"start"}">${act?L("结束了","It's over"):L("今天开始了","Started today")}</button></span></div></div>`;
-  document.body.appendChild(bg);
-  bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-mo]");if(!b)return;const v=b.dataset.mo;bg.remove();
-    if(v==="start"){moonSave({start:todayStr(),end:null});cheer(L("知道啦，这几天我抱着热水袋陪你 🌙","Got it. I'll be here with a hot-water bottle 🌙"),"happy")}
-    else if(v==="end"){moonSave({end:todayStr()});cheer(L("辛苦啦，热水袋我先收起来～","Well done. Putting the hot-water bottle away～"),"happy")}
-    else if(v==="undo"){moonSave({start:null,end:null})}});
+// the little row in a day's 小结
+function moonRow(d){
+  if(!moonS.enabled||d>todayStr())return "";const r=moonAt(d),t=todayStr();
+  if(r){const n=moonDay(d),open=!r.e;
+    return `<div class="moonrow">${MOON_SVG}<span>${L(`小月亮 · 第 ${n} 天`,`Little moon · day ${n}`)}</span>${open||r.e!==d?`<button class="mb" data-act="moonend" data-v="${d}">${d===t?L("今天结束了","Ended today"):L("这天结束的","Ended this day")}</button>`:""}<button class="mb ghost" data-act="moondel" data-v="${r.s}">${L("点错了","Undo")}</button></div>`}
+  return `<div class="moonrow off">${MOON_SVG}<span>${L("小月亮","Little moon")}</span><button class="mb" data-act="moonstart" data-v="${d}">${d===t?L("今天开始了","Started today"):L("这天开始的","Started this day")}</button></div>`;
 }
+function moonAct(a,d){
+  const L0=moonS.list||(moonS.list=[]);
+  if(a==="moonstart"){const op=L0.find(r=>!r.e&&r.s>d&&r.s<=addDays(d,MOON_MAX));if(op)op.s=d;else L0.push({s:d,e:null});moonSave();cheer(d===todayStr()?L("知道啦，这几天我抱着热水袋陪你 🌙","Got it. I'll be here with a hot-water bottle 🌙"):L("记下啦 🌙","Noted 🌙"),"happy");return true}
+  if(a==="moonend"){const r=moonAt(d);if(r){r.e=d;moonSave();if(d===todayStr())cheer(L("辛苦啦，热水袋我先收起来～","Well done. Putting the hot-water bottle away～"),"happy")}return true}
+  if(a==="moondel"){moonS.list=L0.filter(r=>r.s!==d);moonSave();return true}
+  return false}
 // the dressed-up sprout stands next to its tree in the garden, with the garden pieces around
 const PAL_SAYS=()=>L(["嘿嘿，好看吗？","今天也一起加油吧！","给我浇点水嘛～","抱一下！","我在帮你看着这棵树哦"],["Hehe, do I look nice?","Let's do our best today!","Water me a little～","Hug!","I'm looking after this tree for you"]);
 let palKey="";
@@ -4497,6 +4507,7 @@ function journalView(){
   return `<div class="board" data-k="journal">
     ${calendarCard(d)}
     <div class="jnav"><button data-act="jprev" aria-label="${L("前一天","Previous day")}">‹</button><h2>${L(label+"的小结",label==="Today"||label==="Yesterday"?label+"'s recap":"Recap · "+label)}<small>${L(`${m}月${dd}日 · 周${wd}`,`${WDEN[wdIdx]}, ${dd} ${MON[m-1]}`)}</small></h2><button data-act="jnext" aria-label="${L("后一天","Next day")}" ${d>=t?"disabled":""}>›</button></div>
+    ${moonRow(d)}
     <div class="jstats" style="grid-template-columns:repeat(${Math.min(["habit","life","study","work"].filter(on).length,4)},1fr)">
       ${on("habit")?`<div class="jstat"><b style="color:var(--habit-ink)">${D.hNames.length}<span style="font-size:13px"> / ${D.hTotal}</span></b><span>${L("打卡","Check-in")}</span></div>`:""}
       ${on("life")?`<div class="jstat"><b style="color:var(--life-ink)">${D.life.length}</b><span>${L("生活","Life")}</span></div>`:""}
@@ -5450,6 +5461,7 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="subadd"){subAdding=id;render();setTimeout(()=>document.getElementById("subin-"+id)?.focus(),0);return}
   if(act.dataset.act==="substart"){if(typeof startFocus==="function")startFocus(id,+act.dataset.i);return}
   if(act.dataset.act.startsWith("od")&&odAct(act.dataset.act,id))return;
+  if(act.dataset.act.startsWith("moon")&&moonAct(act.dataset.act,act.dataset.v))return;
   if(act.dataset.act==="split"){openSplit(id);return}
   if(act.dataset.act==="nudgeoff"){try{const off=JSON.parse(localStorage.getItem(NUDGE_KEY)||"[]");off.push(id);localStorage.setItem(NUDGE_KEY,JSON.stringify(off.slice(-200)))}catch(_){}render();return}
   if(act.dataset.act==="bdnew"){openBd();return}
@@ -5741,7 +5753,7 @@ function openSettings(){
     <div class="field"><span>${L("我的生日（写给下一岁的信会在这天拆）","My birthday (letters to a year-older me open then)")}</span><div class="drow">${(()=>{const b=bdParts();return `<select id="set-bm"><option value="">${L("月","Month")}</option>${[...Array(12)].map((_,i)=>`<option value="${i+1}" ${b&&b.m===i+1?"selected":""}>${L(`${i+1} 月`,MON[i])}</option>`).join("")}</select><select id="set-bd"><option value="">${L("日","Day")}</option>${[...Array(31)].map((_,i)=>`<option value="${i+1}" ${b&&b.d===i+1?"selected":""}>${L(`${i+1} 日`,String(i+1))}</option>`).join("")}</select><input id="set-by" inputmode="numeric" maxlength="4" placeholder="${L("年（可不填）","Year (optional)")}" value="${b&&b.y?b.y:""}">`})()}</div></div>
     <div class="field"><span>${L("购物清单","Shopping list")}</span><div class="btnrow"><button class="chip hz${stores.on?" on":""}" data-set="stores" aria-pressed="${stores.on}">${stores.on?"✓ ":""}${L("按超市分组","Group by shop")}</button></div></div>
     <div class="field"><span>${L("冰箱：放多久提醒我","Fridge: remind me after")}</span><div class="shelfset">${SHELF.map(([k,,d,zh,en])=>`<label><span>${L(zh,en)}</span><select data-shelf="${k}">${[1,2,3,4,5,7,10,14,21,30,60,0].map(v=>`<option value="${v}" ${shelfDays(k)===v?"selected":""}>${v?L(v>=30&&v%30===0?`${v/30} 个月`:v>=7&&v%7===0?`${v/7} 周`:`${v} 天`,v>=30&&v%30===0?`${v/30} mo`:v>=7&&v%7===0?`${v/7} wk`:`${v} d`):L("不提醒","Never")}${v===d?L("（默认）"," (default)"):""}</option>`).join("")}</select></label>`).join("")}</div></div>
-    <div class="field"><span>${L("小月亮","Little moon")}</span><div class="btnrow"><button class="chip hz${moonS.enabled?" on":""}" data-set="moon" aria-pressed="${!!moonS.enabled}">${moonS.enabled?"✓ ":""}${L("经期小记","Period note")}</button></div><span class="hint">${L("打开后日期旁边多一个小月亮，开始和结束时各点一下，这几天{pet}会温柔一点。只记日期，不会出现在总结和信里。","Adds a little moon by the date. Tap when it starts and ends, and {pet} goes gentle. Dates only; never in recaps or letters.")}</span></div>
+    <div class="field"><span>${L("小月亮","Little moon")}</span><div class="btnrow"><button class="chip hz${moonS.enabled?" on":""}" data-set="moon" aria-pressed="${!!moonS.enabled}">${moonS.enabled?"✓ ":""}${L("经期小记","Period note")}</button></div><span class="hint">${L("打开后在「小结」里记开始和结束，日历上那几天的日期会有淡粉底，{pet}这几天会温柔一点。只记日期，不会出现在总结和信里；关掉时记录会一起删掉。","Mark the start and end in Today; those dates get a soft pink badge on the calendar and {pet} goes gentle. Dates only; never in recaps or letters. Turning it off deletes the dates.")}</span></div>
     <div class="field"><span>${L("过期的任务","Overdue tasks")}</span><div class="btnrow"><button class="chip hz${odAuto?" on":""}" data-set="odauto" aria-pressed="${odAuto}">${odAuto?"✓ ":""}${L("自动挪到今天","Move to today automatically")}</button></div><span class="hint">${L("打开后不用每天处理，过期的会自己挪到今天，依然会记「挪过几次」。","No daily sorting: overdue tasks move to today on their own, and moves are still counted.")}</span></div>
     <div class="field"><span>${L("节日装扮","Festival dress-up")}</span><div class="btnrow"><button class="chip hz${festOff?"":" on"}" data-set="fest" aria-pressed="${!festOff}">${festOff?"":"✓ "}${L("过节时小芽换装","Dress up {pet} on holidays").replaceAll("{pet}",petName())}</button></div></div>
     <div class="field"><span>${L("功能介绍","Tour")}</span><div><div class="btnrow"><button class="btn" data-set="tour">${L("重新看一遍介绍","Replay the tour")}</button><button class="btn" data-set="news">${L("最近的新功能","What's new")}</button></div></div></div>
@@ -5772,7 +5784,7 @@ function openSettings(){
     if(a==="nobed"){bg.querySelector("#set-bed").value="";return}
     if(a==="tour"){bg.remove();setTimeout(()=>startTour("full"),250);return}
     if(a==="stores"){const on=!stores.on;setStores({...stores,on});b.classList.toggle("on",on);b.setAttribute("aria-pressed",String(on));b.textContent=(on?"✓ ":"")+L("按超市分组","Group by shop");if(on&&!stores.list.length){bg.remove();tab="life";lifeSub="shop";render();setTimeout(openStores,200)}return}
-    if(a==="moon"){const en=!moonS.enabled;moonSave(en?{enabled:true}:{enabled:false,start:null,end:null});b.classList.toggle("on",en);b.setAttribute("aria-pressed",String(en));b.textContent=(en?"✓ ":"")+L("经期小记","Period note");return}
+    if(a==="moon"){const en=!moonS.enabled;moonS.enabled=en;if(!en)moonS.list=[];moonSave();b.classList.toggle("on",en);b.setAttribute("aria-pressed",String(en));b.textContent=(en?"✓ ":"")+L("经期小记","Period note");return}
     if(a==="odauto"){odAuto=!odAuto;try{localStorage.setItem(OD_AUTO,odAuto?"on":"off")}catch(_){}b.classList.toggle("on",odAuto);b.setAttribute("aria-pressed",String(odAuto));b.textContent=(odAuto?"✓ ":"")+L("自动挪到今天","Move to today automatically");odRolled="";odAutoRoll();render();return}
     if(a==="fest"){festOff=!festOff;try{localStorage.setItem(FEST_KEY,festOff?"off":"on")}catch(_){}b.classList.toggle("on",!festOff);b.setAttribute("aria-pressed",String(!festOff));b.textContent=(festOff?"":"✓ ")+L("过节时小芽换装","Dress up {pet} on holidays").replaceAll("{pet}",petName());festApplied="x";applyFest();return}
     if(a==="festpv"){festPreview=b.dataset.v;festApplied="x";bg.remove();applyFest();snack(L("这是预览","This is a preview"),L(`${FEST()[festPreview].n}那天会是这样，刷新页面也会恢复`,`How ${FEST()[festPreview].n} will look. Refreshing ends it too`),L("关掉预览","End preview"),()=>{festPreview=null;festApplied="x";applyFest();renderBuddy()});return}
@@ -5812,7 +5824,6 @@ function openSettings(){
 $("#gear").addEventListener("click",openSettings);
 $("#mbBtn").addEventListener("click",()=>openMailbox());
 $("#idBtn").addEventListener("click",()=>{if(!tourOn)openIdeas()});
-$("#moonBtn").addEventListener("click",()=>{if(!tourOn)openMoon()});
 setTimeout(()=>{if(IS_WEB&&FIREBASE_CONFIG)$("#idBtn").hidden=false},0);
 
 /* ---------- the sprout's own name ---------- */
@@ -5925,7 +5936,7 @@ function startData(store){
   sub("weekly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());weekly=m;if(ok(s))loaded.w=true;render()});
   sub("yearly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());yearly=m;if(ok(s))loaded.y=true;render()});
   sub("memos",s=>{memos=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.me=true;render()});
-  sub("moon",s=>{const d=s.docs.find(x=>x.id==="cur");moonS=d?{enabled:false,start:null,end:null,...d.data()}:{enabled:false,start:null,end:null};moonBtn();palKey="";lastBuddy="";renderBuddy();renderPal()});
+  sub("moon",s=>{const d=s.docs.find(x=>x.id==="cur");const v=d?d.data():{};const list=Array.isArray(v.list)?v.list:v.start?[{s:v.start,e:v.end||null}]:[];moonS={enabled:!!v.enabled,list};moonRefresh()});
   sub("wishfund",s=>{const d=s.docs.find(x=>x.id==="main");wfund=d?{pool:0,cur:"£",log:[],...d.data()}:{pool:0,cur:"£",log:[]};if(lifeSub==="wish")render()});
   sub("wishes",s=>{wishes=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.wi=true;render();wishMsMigrate();wishMsSync()});
   sub("closet",s=>{const c={};let w=null;s.docs.forEach(d=>{if(d.id==="_wear"&&(+d.data().at||0)>=wearAt)w=d.data().wear;else c[d.id]=d.data()});closet=c;if(w&&typeof w==="object")setWear(w,false);else{dressFab();renderGardenProps()}updateCoinBtn();if(shOpen)renderShop()});
