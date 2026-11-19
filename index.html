@@ -176,6 +176,11 @@ nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:v
 .ov-ask{display:flex;align-items:center;gap:10px;border:1.5px dashed color-mix(in srgb,var(--brand) 45%,var(--line));background:none;border-radius:14px;padding:8px 12px;font:inherit;font-size:13.5px;color:var(--brand);cursor:pointer;text-align:left}.ov-ask>svg{width:30px;height:30px;flex:none}
 .ov-tag.carry{color:#c98320;background:color-mix(in srgb,#f0b43a 16%,var(--surface))}.due.plan{background:color-mix(in srgb,var(--brand) 14%,var(--surface));color:var(--brand)}
 .pv-today{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.slbtn{display:inline-flex;margin-left:8px;border:none;border-radius:999px;padding:3px 11px;font:inherit;font-size:12.5px;font-weight:600;background:#5b5fc7;color:#fff;cursor:pointer;vertical-align:middle;white-space:nowrap}.slbtn[data-sl=wake]{background:#f0a63a}.slbtn[hidden]{display:none}
+.slr{display:flex;align-items:center;gap:8px;width:100%;border:none;border-radius:12px;padding:7px 10px 7px 8px;background:color-mix(in srgb,#8f88ff 16%,var(--surface));color:color-mix(in srgb,#7a73e8 75%,var(--fg));font:inherit;font-size:13.5px;cursor:pointer;text-align:left;white-space:nowrap}
+.slr>svg{width:22px;height:22px;flex:none}.slr span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}.slr b{font-weight:600}.slr span small{margin-left:8px;color:var(--muted);font-size:12px}.slr .dur{flex:none;font-size:12.5px;opacity:.8}.slr .ch{font-style:normal;font-size:17px;opacity:.6}
+.slr.pre b{opacity:.65}.slr.ask{background:#5b5fc7;color:#fff}.slr.ask span small{color:#ffffffb8}
+.slq3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.slq3 button{border:none;border-radius:16px;padding:8px 4px 6px;font:inherit;font-size:12.5px;background:var(--surface-2);color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}.slq3 button svg{width:40px;height:40px}.slq3 button.on{color:var(--fg);box-shadow:inset 0 0 0 2px #8f88ff;background:color-mix(in srgb,#8f88ff 14%,var(--surface))}
 .ov-none{margin:4px 0;font-size:13px;color:var(--muted)}
 .ov-tip{display:flex;align-items:center;gap:10px;background:color-mix(in srgb,#f0b43a 16%,var(--surface));border-radius:16px;padding:9px 12px;font-size:13.5px;line-height:1.55}.ov-tip>svg{width:32px;height:32px;flex:none}
 .ov-days{display:flex;flex-direction:column;gap:8px}
@@ -1308,7 +1313,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
     <div class="buddy" id="buddy" role="img" aria-label="小芽"><span class="btree" id="btree"></span></div>
     <div class="g-text">
       <div class="stage"><b id="stageName">小芽</b><span class="lv" id="stageLv">Lv.1</span><button class="forest-btn" id="forestBtn" aria-pressed="false">🌳 <span class="fn" id="forestN">0</span></button><button class="forest-btn coin-btn" id="coinBtn" aria-label="芽币和小商店" title="芽币和小商店"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" class="coin"><circle cx="12" cy="12" r="10" fill="#f6c94a"/><circle cx="12" cy="12" r="7.5" fill="none" stroke="#e0a92c" stroke-width="1.4"/><path d="M12 16v-5" stroke="#3faa74" stroke-width="1.8" stroke-linecap="round"/><path d="M12 12c-3 0-4.5-1.8-4.5-4 3 0 4.5 1.6 4.5 4zM12 12c3 0 4.5-1.8 4.5-4-3 0-4.5 1.6-4.5 4z" fill="#3faa74"/></svg><span class="fn" id="coinN">0</span></button></div>
-      <div class="bubble"><span id="say">正在把你的东西搬过来…</span></div>
+      <div class="bubble"><span id="say">正在把你的东西搬过来…</span><button class="slbtn" id="slBtn" hidden></button></div>
       <div class="meter">
         <div class="meter-top"><span>💧 <span class="w" id="water">0</span> <span id="dropsLbl">滴水</span></span><span id="nextTxt"></span></div>
         <div class="wbar"><i id="wbar" style="width:0%"></i></div>
@@ -1627,6 +1632,7 @@ function renderBuddy(){
   const s=buddyState(); const key=s.mood+s.stage+s.bloom+curTheme;
   if(key!==lastBuddy){$("#btree").innerHTML=treeSVG(s.mood,s.stage,s.bloom);lastBuddy=key}
   $("#say").textContent=s.say;
+  {const b=$("#slBtn");if(b){const st=slBtnState();b.hidden=!st;if(st){b.dataset.sl=st[0];b.innerHTML=st[1]}}}
   wishBubble(festNow()?null:s);
   $("#stageName").textContent=petName();
   $("#stageLv").textContent="Lv."+(s.stage+1);
@@ -1847,7 +1853,7 @@ function habitBoard(){
       </div>
       <div class="streak">${s?FLAME:""}<b>${s}</b><small>${L("连续天","day streak")}</small></div>
     </div>`}).join("");
-  return `<div class="board" data-k="habit">${sleepCard()}
+  return `<div class="board" data-k="habit">
     <div class="hday" role="group" aria-label="${L("选择打卡日期","Pick a day to check in")}">
       <button data-act="hday" data-v="-1" ${day<=addDays(t,-BACKFILL_DAYS)?"disabled":""} aria-label="${L("前一天","Previous day")}">‹</button>
       <span class="hd-name"><b>${dayName}</b> ${L(`${dm}月${dd}日`,`${dd} ${MON[dm-1]}`)}</span>
@@ -2024,6 +2030,8 @@ const NEWS_BASE=()=>[
     {go:"journal",sel:".moodc",t:L("新功能 · 心情","New · Mood"),b:L("小结里可以选今天的心情，用小芽的表情来表示。","Pick today's mood in Today, with one of {pet}'s faces.")},
     {go:"journal",sel:".dtabs",t:L("新功能 · 感恩日记","New · Gratitude journal"),b:L("<em>感恩日记</em>每天写三件让你感激或开心的小事，再选一个明天想做的小行动；想自由写就切到<em>今日感想</em>。","In the <em>Gratitude</em> tab, note three small things you're grateful for, and maybe one small step for tomorrow. Switch to <em>Reflection</em> to write freely.")},
     {go:"study",sel:".board .task",t:L("新功能 · 任务","New · Tasks"),b:L("截止日期可以精确到<em>几点</em>，快到了会显示还剩几小时；每天要做两次的事（比如早晚吃药），重复里可以选<em>早 / 中 / 晚</em>。","Deadlines can have a <em>time</em>, with hours left shown as it gets close. For things you do twice a day, pick <em>morning / noon / evening</em> in Repeat.")}]}];
+NEWS_MORE.push(()=>({id:"1119f",steps:[
+    {sel:".garden",pad:6,t:L("新功能 · 睡眠挪了地方","New · Sleep moved"),b:L("睡觉前和起床后，{pet}说话的地方会出现「我去睡啦」「我起床啦」，点一下就记下，会同步到每天的小结里。昨晚睡了多久显示在 Overview 的今天最上面，点 › 可以改时间、选睡得怎么样。","Before bed and after waking, “Off to bed” / “I'm up” appears by {pet}'s words. One tap logs it into your daily notes. Last night's sleep sits at the top of Overview's Today; tap › to edit.")}]}));
 NEWS_MORE.push(()=>({id:"1119e",steps:[
     {sel:"#fab",pad:6,t:L("新功能 · 今天想做什么","New · What's on today"),b:L("早上点右下角的{pet}，把今天想做的事一口气写进去，它会分好板块；打开「没写日期的都是今天要做的」，保存后就出现在 Overview 的今天里。这里用的是「想哪天做」，只是计划，不是截止日期，没做完会留到第二天。","Tap {pet} at the bottom right, write today's things, and it sorts them into boards. Turn on “Undated ones are for today” and they land in Overview's Today. It's a plan, not a deadline, and carries over if unfinished.")}]}));
 NEWS_MORE.push(()=>({id:"1119d",steps:[
@@ -2422,7 +2430,7 @@ let bedTime="23:30"; try{const v=localStorage.getItem(BED_KEY);if(v!==null)bedTi
 function setBedTime(v,sync=true){bedTime=v||"";try{localStorage.setItem(BED_KEY,bedTime)}catch(_){};if(sync&&db&&db.meta)db.meta.set({bedTime},{merge:true}).catch(()=>{})}
 const SL_MOON=`<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M28 6a14 14 0 1 0 6 20A11 11 0 0 1 28 6z" fill="#b9a4ff"/><circle cx="16" cy="22" r="1.6" fill="#3a3350"/><circle cx="23" cy="22" r="1.6" fill="#3a3350"/><path d="M17 27q2.5 1.8 5 0" stroke="#3a3350" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M33 8l.8 1.8 1.8.8-1.8.8-.8 1.8-.8-1.8-1.8-.8 1.8-.8z" fill="#ffd34d"/></svg>`;
 const SL_SUN=`<svg viewBox="0 0 40 40" aria-hidden="true"><g stroke="#ffb84d" stroke-width="2.4" stroke-linecap="round"><path d="M20 3v4M20 33v4M3 20h4M33 20h4M8 8l3 3M29 29l3 3M32 8l-3 3M11 29l-3 3"/></g><circle cx="20" cy="20" r="10" fill="#ffe08a"/><circle cx="17" cy="19" r="1.5" fill="#3a3350"/><circle cx="23" cy="19" r="1.5" fill="#3a3350"/><path d="M17.5 23q2.5 2 5 0" stroke="#3a3350" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>`;
-const durTxt=ms=>{const m=Math.round(ms/6e4);return `${Math.floor(m/60)}h${String(m%60).padStart(2,"0")}m`};
+const durTxt=ms=>{const m=Math.max(0,Math.round(ms/6e4)),h=Math.floor(m/60),r=m%60;return h?`${h}h${r?` ${r}min`:""}`:`${r} min`};
 const nowHM=()=>hhmm(Date.now());
 function sleepPhase(){const n=new Date(),h=n.getHours()+n.getMinutes()/60;
   if(h<dayStartH||h>=14)return "eve";
@@ -2856,25 +2864,48 @@ function sleepCard(){
 function saveSleep(k,patch){sleeps[k]={...(sleeps[k]||{}),...patch};render();const r=db.doc("sleep/"+k);const full={night:k,...sleeps[k]};queued(r.path,()=>r.set(full))}
 function slTs(k,hm,isWake){const [h,m]=hm.split(":").map(Number);const base=new Date(k+"T00:00:00");let d=new Date(base.getFullYear(),base.getMonth(),base.getDate(),h,m);
   if(isWake||h<12)d=new Date(d.getTime()+864e5);if(isWake&&h>=18)d=new Date(d.getTime()-864e5);return d.getTime()}
-function openSleep(k){
-  const n=sleeps[k]||{};
+const SLQ3=()=>[["bad","tired",L("没睡好","Poorly")],["ok","good",L("还行","OK")],["good","great",L("很好","Great")]];
+function openSleep(k,pre){
+  const n=sleeps[k]||{};let q=slQ(k);const pb=n.bed?hhmm(n.bed):(pre&&pre.bed||""),pw=n.wake?hhmm(n.wake):(pre&&pre.wake||"");
   const bg=document.createElement("div");bg.className="sheet-bg";
-  bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("睡眠","Sleep")}"><h3>${L(`${md2(k)} 晚上的睡眠`,`Night of ${md2(k)}`)}</h3>
-    <div class="drow"><label class="field"><span>${L("几点睡的","Bedtime")}</span><input type="time" id="sb" value="${n.bed?hhmm(n.bed):""}"></label><label class="field"><span>${L("几点醒的","Woke up")}</span><input type="time" id="sw" value="${n.wake?hhmm(n.wake):""}"></label></div>
-    <span class="hint">${L("不记得的可以空着。","Leave blank what you don't remember.")}</span>
-    <div class="sheet-actions"><button class="btn" data-s="x">${L("取消","Cancel")}</button><button class="btn primary" data-s="ok">${L("保存","Save")}</button></div></div>`;
-  document.body.appendChild(bg);
-  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-s]");if(!b)return;if(b.dataset.s==="x"){bg.remove();return}
+  const draw=()=>{bg.innerHTML=`<div class="sheet sl-sheet" role="dialog" aria-label="${L("睡眠","Sleep")}"><h3>${k===addDays(todayStr(),-1)?L("昨晚睡得怎么样？","How did you sleep last night?"):L(`${md2(k)} 晚上`,`Night of ${md2(k)}`)}</h3>
+    <div class="drow"><label class="field"><span>${L("睡下","Bed")}</span><input type="time" id="sb" value="${bg._b??pb}"></label><label class="field"><span>${L("起床","Up")}</span><input type="time" id="sw" value="${bg._w??pw}"></label></div>
+    <div class="slq3">${SLQ3().map(([v,f,nm])=>`<button class="${q===v?"on":""}" data-s="q" data-v="${v}" aria-pressed="${q===v}">${moodFace(f)}<span>${nm}</span></button>`).join("")}</div>
+    <div class="sheet-actions"><button class="btn" data-s="x">${L("取消","Cancel")}</button><button class="btn primary" data-s="ok">${L("记下","Save")}</button></div></div>`};
+  draw();document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-s]");if(!b)return;
+    if(b.dataset.s==="q"){bg._b=bg.querySelector("#sb").value;bg._w=bg.querySelector("#sw").value;q=q===b.dataset.v?null:b.dataset.v;draw();return}
+    if(b.dataset.s==="x"){bg.remove();return}
     const bv=bg.querySelector("#sb").value, wv=bg.querySelector("#sw").value;bg.remove();
     let bed=bv?slTs(k,bv,false):null, wake=wv?slTs(k,wv,true):null; if(bed&&wake&&wake<=bed)wake+=864e5;
-    saveSleep(k,{bed,wake})});
+    saveSleep(k,{bed,wake,q:q||null})});
+}
+// usual bed / wake time from the last two weeks (for prefilling)
+function slTypical(){const bs=[],ws=[];for(let i=1;i<=14;i++){const n=sleeps[addDays(todayStr(),-i)]||{};if(n.bed){const d=new Date(n.bed);let m=d.getHours()*60+d.getMinutes();if(m<12*60)m+=1440;bs.push(m)}if(n.wake){const d=new Date(n.wake);ws.push(d.getHours()*60+d.getMinutes())}}
+  const med=a=>{if(!a.length)return null;a.sort((x,y)=>x-y);const m=a[a.length>>1]%1440;return `${pad(Math.floor(m/60))}:${pad(m%60)}`};return {bed:med(bs),wake:med(ws)}}
+const slDur=durTxt;
+// the garden's one-tap sleep button: "going to bed" at night, "I'm up" in the morning
+function slBtnState(){if(!db||!(on("habit")||OV_SP.some(on)))return null;const t=todayStr(),y=addDays(t,-1),tn=sleeps[t]||{},ln=sleeps[y]||{},now=new Date(),hm=now.getHours()*60+now.getMinutes();
+  const bt=bedTime?tmin(bedTime):21*60,night=hm>=bt-30||hm<dayStartH*60;
+  if(night&&!tn.bed)return ["bed",`🌙 ${L("我去睡啦","Off to bed")}`];
+  if(!night&&hm<12*60&&!ln.wake)return ["wake",`☀️ ${L("我起床啦","I'm up")}`];
+  return null}
+function sleepRow(){
+  const t=todayStr(),y=addDays(t,-1),tn=sleeps[t]||{},ln=sleeps[y]||{},now=new Date(),hm=now.getHours()*60+now.getMinutes();
+  const bt=bedTime?tmin(bedTime):null,late=bt!=null&&(hm>=bt||(hm<dayStartH*60&&bt>12*60));
+  if(tn.bed)return `<button class="slr" data-sl="edit" data-v="${t}">${SL_MOON}<span><b>${L(`${hhmm(tn.bed)} 睡下`,`In bed ${hhmm(tn.bed)}`)}</b> · ${L("晚安～","good night～")}</span><i class="ch">›</i></button>`;
+  if(ln.bed&&ln.wake)return `<button class="slr" data-sl="edit" data-v="${y}">${SL_MOON}<span><b>${hhmm(ln.bed)} – ${hhmm(ln.wake)}</b></span><small class="dur">${slDur(ln.wake-ln.bed)}</small><i class="ch">›</i></button>`;
+  if(hm>=14*60)return "";
+  const ty=slTypical();
+  return `<button class="slr pre" data-sl="pre" data-v="${y}">${SL_MOON}<span><b>${ln.bed?hhmm(ln.bed):ty.bed||"--:--"} – ${ln.wake?hhmm(ln.wake):ty.wake||"--:--"}</b><small>${L("昨晚 · 点一下确认","last night · tap to confirm")}</small></span><i class="ch">›</i></button>`;
 }
 document.addEventListener("click",e=>{const b=e.target.closest("[data-sl]");if(!b||!db)return;const a=b.dataset.sl,t=todayStr();
   if(a==="q"){const k=b.dataset.v,q=b.dataset.q;saveSleep(k,{q:slQ(k)===q?null:q});return}
   if(a==="bed"){saveSleep(t,{bed:Date.now()});cheer(L("晚安～明天见！","Good night～ See you tomorrow!"));return}
   if(a==="wake"){const y=addDays(t,-1);saveSleep(y,{wake:Date.now()});const n=sleeps[y];cheer(n.bed?L(`早上好！昨晚睡了 ${durTxt(n.wake-n.bed)}`,`Morning! You slept ${durTxt(n.wake-n.bed)}`):L("早上好！","Good morning!"));return}
   if(a==="skip"){slSkipSet(b.dataset.v,b.dataset.k);render();return}
-  if(a==="edit"){openSleep(b.dataset.v);return}});
+  if(a==="edit"){openSleep(b.dataset.v);return}
+  if(a==="pre"){openSleep(b.dataset.v,slTypical());return}});
 function pmLeft(){
   if(new Date().getHours()<20&&new Date().getHours()>=dayStartH)return [];
   const td=todayStr();
@@ -3093,7 +3124,7 @@ try{P=JSON.parse(localStorage.getItem(POMO_KEY)||"null")}catch(_){P=null}
 const saveP=()=>{try{P?localStorage.setItem(POMO_KEY,JSON.stringify(P)):localStorage.removeItem(POMO_KEY)}catch(_){}};
 const pomoLen=m=>m==="up"?null:m==="custom"?[pset.custom.f,pset.custom.b]:PMODES[m]||PMODES["25"];
 const TOM_ICON=`<svg class="mt" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="11.5" r="6.5" fill="#ef5d6e"/><path d="M10 5c-2 0-3-1-3-2.4 2 0 2.8 1 3 2.4zM10 5c2 0 3-1 3-2.4-2 0-2.8 1-3 2.4z" fill="#5cc98f"/></svg>`;
-const fmtMins=m=>{m=Math.round(m);if(m<60)return `${m}mins`;const h=Math.floor(m/60),r=m%60;return r?`${h}h${r}mins`:`${h}h`};
+const fmtMins=m=>{m=Math.round(m);if(m<60)return `${m} min`;const h=Math.floor(m/60),r=m%60;return r?`${h}h ${r}min`:`${h}h`};
 const fmtHM=m=>{m=Math.round(m);const h=Math.floor(m/60),r=m%60;return h?L(`${h} 小时${r?` ${r} 分`:""}`,`${h}h${r?` ${r}m`:""}`):L(`${r} 分钟`,`${r} min`)};
 const mmss=ms=>{ms=Math.max(0,ms);const s=Math.floor(ms/1000);const m=Math.floor(s/60);return `${m<10?"0":""}${m}:${String(s%60).padStart(2,"0")}`};
 const taskMins=id=>pomos.filter(p=>p.taskId===id).reduce((a,p)=>a+(+p.mins||0),0);
@@ -3714,6 +3745,7 @@ function overview(){
   const dt=new Date(td+"T12:00:00"),n=over.length+today.length;
   const first=over[0]||today[0];
   const todayBox=`<section class="ov-today"><div class="ov-th"><b>${L("今天","Today")}</b><small>${L(`${dt.getMonth()+1}月${dt.getDate()}日 · 周${WD[dt.getDay()]}`,`${WDEN[dt.getDay()]}, ${dt.getDate()} ${MON[dt.getMonth()]}`)}</small><em>${n?L(`${n} 件`,`${n} to do`):""}</em></div>
+    ${on("habit")||OV_SP.some(on)?sleepRow():""}
     ${(()=>{const {live,done}=habitStats();if(!live.length)return "";const ck=checkins[td]||{};const hs=[...live].sort((a,b)=>(a.order||0)-(b.order||0));
       return `<div class="ov-hab"><span class="ov-hl">${STAR}${L(`打卡 ${done}/${live.length}`,`Habits ${done}/${live.length}`)}</span>${hs.map(h=>`<button class="ov-hc${ck[h.id]?" on":""}" data-act="hdot" data-id="${h.id}" data-v="${td}" aria-pressed="${!!ck[h.id]}">${ck[h.id]?"✓ ":""}${esc(h.name)}</button>`).join("")}</div>`})()}
     ${over.length?`<p class="ov-sub">${L("过期了","Overdue")}</p>${over.map(t=>ovRow(t,t===first)).join("")}`:""}
