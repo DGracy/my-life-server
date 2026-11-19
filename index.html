@@ -176,7 +176,11 @@ nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:v
 .ov-ask{display:flex;align-items:center;gap:10px;border:1.5px dashed color-mix(in srgb,var(--brand) 45%,var(--line));background:none;border-radius:14px;padding:8px 12px;font:inherit;font-size:13.5px;color:var(--brand);cursor:pointer;text-align:left}.ov-ask>svg{width:30px;height:30px;flex:none}
 .ov-tag.carry{color:#c98320;background:color-mix(in srgb,#f0b43a 16%,var(--surface))}.due.plan{background:color-mix(in srgb,var(--brand) 14%,var(--surface));color:var(--brand)}
 .pv-today{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
-.slbtn{display:inline-flex;margin-left:8px;border:none;border-radius:999px;padding:3px 11px;font:inherit;font-size:12.5px;font-weight:600;background:#5b5fc7;color:#fff;cursor:pointer;vertical-align:middle;white-space:nowrap}.slbtn[data-sl=wake]{background:#f0a63a}.slbtn[hidden]{display:none}
+.slbtn{display:flex;width:fit-content;margin:7px 0 0;border:none;border-radius:999px;padding:3px 11px;font:inherit;font-size:12.5px;font-weight:600;background:#5b5fc7;color:#fff;cursor:pointer;vertical-align:middle;white-space:nowrap}.slbtn[data-sl=wake]{background:#f0a63a}.slbtn[hidden]{display:none}
+#stageName{white-space:nowrap}
+@media(max-width:380px){.garden .stage{flex-wrap:wrap;row-gap:4px}.stage b{font-size:16px}.stage .forest-btn,.stage .coin-btn{font-size:12.5px}.g-text{min-width:0}}
+@media(max-width:380px){nav.tabs{gap:4px}.tab{font-size:12.5px;padding:8px 1px;gap:3px}.tab .n{padding:0 5px;font-size:11.5px}.tab[data-k=ov]{padding-inline:6px}}
+@media(max-width:340px){.tab .n{display:none}}
 .slr{display:flex;align-items:center;gap:8px;width:100%;border:none;border-radius:12px;padding:7px 10px 7px 8px;background:color-mix(in srgb,#8f88ff 16%,var(--surface));color:color-mix(in srgb,#7a73e8 75%,var(--fg));font:inherit;font-size:13.5px;cursor:pointer;text-align:left;white-space:nowrap}
 .slr>svg{width:22px;height:22px;flex:none}.slr span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}.slr b{font-weight:600}.slr span small{margin-left:8px;color:var(--muted);font-size:12px}.slr .dur{flex:none;font-size:12.5px;opacity:.8}.slr .ch{font-style:normal;font-size:17px;opacity:.6}
 .slr.pre b{opacity:.65}.slr.ask{background:#5b5fc7;color:#fff}.slr.ask span small{color:#ffffffb8}
