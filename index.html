@@ -1350,7 +1350,7 @@ const n_=(n,one,many)=>n===1?one:many;
 const HZ=[
   {k:"inbox",name:"收件箱",sub:"刚记下，还没安排"},
   {k:"week",name:"近期",sub:"这周内"},
-  {k:"month",name:"中期",sub:"这个月内"},
+  {k:"month",name:"中期",sub:"这几周到几个月，先不急"},
   {k:"long",name:"长期",sub:"慢慢长大的目标"}
 ];
 const HZNAME=Object.fromEntries(HZ.map(h=>[h.k,h.name]));
@@ -2930,6 +2930,7 @@ function timelineItems(d){
   for(const hid in ck){const v=ck[hid];if(typeof v!=="number")continue;const h=habits.find(x=>x.id===hid);if(!h)continue;it.push({t:v,k:"habit",txt:L(`打卡 · ${esc(h.name)}`,`Check-in · ${esc(h.name)}`),ed:`habit|${d}|${hid}`})}
   tasks.filter(t=>!t.deleted&&t.slotDone&&t.repeat&&todOf(t.repeat).length).forEach(t=>todOf(t.repeat).forEach(([k,n])=>{const v=t.slotDone[k];if(v&&dayOf(v)===d)it.push({t:v,k:t.space,txt:L(`完成「${esc(t.title)}」（${n}）`,`Done: “${esc(t.title)}” (${n.toLowerCase()})`),ed:`slot|${t.id}|${k}`})}));
   tasks.filter(t=>t.done&&!t.deleted&&t.doneAt&&dayOf(t.doneAt)===d&&!(t.slotDone&&t.repeat&&todOf(t.repeat).length)).forEach(t=>it.push({t:t.doneAt,k:t.space,txt:L(`完成「${esc(t.title)}」`,`Done: “${esc(t.title)}”`),ed:`task|${t.id}`}));
+  tasks.filter(t=>!t.deleted&&t.subs&&t.subs.length).forEach(t=>t.subs.forEach(x=>{if(x.done&&x.at&&dayOf(x.at)===d)it.push({t:x.at,k:t.space,txt:L(`做完一步「${esc(x.t)}」`,`Step done: “${esc(x.t)}”`),sub:esc(t.title)})}));
   pomos.filter(p=>p.day===d&&(+p.mins||0)>=1).forEach(p=>{const t=p.taskId&&tasks.find(x=>x.id===p.taskId);const st=p.end?p.end-(+p.mins)*6e4:p.start;
     it.push({t:st,mins:+p.mins,k:"pomo",txt:`${TOM_ICON}${L(`专注 ${Math.round(p.mins)} 分钟`,`Focused ${Math.round(p.mins)} min`)}${p.space?` <span class="tag ${p.space}">${BOARD_NAME(p.space)}</span>`:""}`,sub:t?esc(t.title):""})});
   eats.filter(x=>x.day===d).forEach(x=>{const s=SLOTS().find(y=>y[0]===x.slot);it.push({t:x.at,k:"life",txt:`${s?s[2]:L("吃饭","Meal")} · ${esc(x.name)}`,eat:x.id,ed:`eat|${x.id}`})});
@@ -3484,7 +3485,7 @@ function subsBlock(t){
 function setSubs(t,subs){t.subs=subs;render();const ref=db.doc("tasks/"+t.id);queued(ref.path,()=>ref.update({subs}))}
 function toggleSub(t,i,el){
   const subs=(t.subs||[]).map(x=>({...x})); if(!subs[i])return;
-  subs[i].done=!subs[i].done;
+  subs[i].done=!subs[i].done;if(subs[i].done)subs[i].at=Date.now();else delete subs[i].at;
   if(subs[i].done&&subs.every(x=>x.done)){t.subs=subs;completeTask(t,el);return}
   setSubs(t,subs);
   if(subs[i].done){const nx=subs.find(x=>!x.done);cheer(nx?L(`这一步做完啦！下一步：${nx.t}`,`Step done! Next: ${nx.t}`):L("做完一步啦！","Step done!"))}
@@ -3591,6 +3592,10 @@ function odMove(t,due,count=true){const td=todayStr();const p={due:due||null,mov
 function odLetGo(t){const p={letGo:true,letGoAt:Date.now()};Object.assign(t,p);const r=db.doc("tasks/"+t.id);queued(r.path,()=>r.update(p))}
 function odPickUp(t){const p={letGo:false,letGoAt:null,due:null,dueTime:null,moved:0};Object.assign(t,p);const r=db.doc("tasks/"+t.id);queued(r.path,()=>r.update(p))}
 // auto mode: once a day, roll yesterday's leftovers onto today
+let midMoved="";
+function midPromote(){if(!loaded.t||!db)return;const td=todayStr();if(midMoved===td)return;midMoved=td;const lim=addDays(td,7),moved=[];
+  tasks.filter(t=>!t.done&&!t.deleted&&!t.letGo&&!t.repeat&&(t.horizon==="month"||t.horizon==="inbox")&&t.due&&t.due<=lim).forEach(t=>{t.horizon="week";moved.push(t.title);const r=db.doc("tasks/"+t.id);queued(r.path,()=>r.update({horizon:"week"}))});
+  if(moved.length){render();setTimeout(()=>cheer(L(`「${moved[0]}」${moved.length>1?` 等 ${moved.length} 件`:""}一周内就到期啦，我帮你挪到近期了～`,`“${moved[0]}”${moved.length>1?` and ${moved.length-1} more`:""} ${moved.length>1?"are":"is"} due within a week, so I moved ${moved.length>1?"them":"it"} to This week～`),"think"),600)}}
 function odAutoRoll(){if(!odAuto||!loaded.t||!db)return;const td=todayStr();if(odRolled===td)return;odRolled=td;tasks.filter(isOver).forEach(t=>odMove(t,td))}
 const odDays=d=>Math.round((new Date(todayStr())-new Date(d))/864e5);
 /* ---------- 四象限: one table for work, study and life — 重要 from the priority, 紧急 from the date or list ---------- */
@@ -5700,8 +5705,8 @@ $("#cap").addEventListener("keydown",e=>{if(e.key==="Enter"&&(e.metaKey||e.ctrlK
 
 /* ---------- apply language ---------- */
 function buildStrings(){
-  const hz=L([["收件箱","刚记下，还没安排"],["近期","这周内"],["中期","这个月内"],["长期","慢慢长大的目标"]],
-             [["Inbox","Just captured, not planned yet"],["This week","Within 7 days"],["This month","Within the month"],["Long term","Goals that grow slowly"]]);
+  const hz=L([["收件箱","刚记下，还没安排"],["近期","这周内"],["中期","这几周到几个月，先不急"],["长期","慢慢长大的目标"]],
+             [["Inbox","Just captured, not planned yet"],["This week","Within 7 days"],["Later","Next few weeks to months"],["Long term","Goals that grow slowly"]]);
   HZ.forEach((h,i)=>{h.name=hz[i][0];h.sub=hz[i][1];HZNAME[h.k]=h.name});
   Object.assign(SPACE,L({work:"工作",life:"生活",study:"学习",shop:"购物"},{work:"Work",life:"Life",study:"Study",shop:"Shopping"}));
   const st=L(["种子","发芽","小芽","幼苗","小树","大树","开花的树"],["Seed","Sprouting","Sprout","Seedling","Young tree","Big tree","Blooming tree"]);
@@ -5995,7 +6000,7 @@ function startData(store){
   const fail=e=>{if(e&&e.code==="permission-denied")setStatus(L("没有权限读取数据，请重新登录。","No permission to read your data. Please sign in again."))};
   const sub=(c,fn,q)=>unsubs.push((q||db.collection(c)).onSnapshot(fn,fail));
   const ok=s=>!s.metadata.fromCache||!s.empty;
-  sub("tasks",s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.t=true;render();odAutoRoll()});
+  sub("tasks",s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.t=true;render();odAutoRoll();midPromote()});
   sub("habits",s=>{habits=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.h=true;render()});
   sub("shop",s=>{shop=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.s=true;render()});
   sub("staples",s=>{staples=s.docs.map(d=>({id:d.id,...d.data()}));render()});
