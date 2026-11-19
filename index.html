@@ -166,6 +166,9 @@ nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:v
 @media(max-width:460px){.ov-tag.go{display:none}.ov-it{gap:6px}}
 .ov-hab{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding-bottom:4px}.ov-hl{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;color:var(--muted);margin-right:2px}.ov-hl svg{width:16px;height:16px}
 .ov-hc{border:none;border-radius:999px;padding:5px 12px;font:inherit;font-size:13px;background:var(--surface-2);color:var(--fg);cursor:pointer;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--habit) 45%,transparent)}.ov-hc.on{background:color-mix(in srgb,var(--habit) 22%,var(--surface));color:color-mix(in srgb,var(--habit) 60%,var(--fg));box-shadow:none}
+.ov-it.ovstep .ov-ck{border-style:dashed}.ov-t small{display:block;font-size:11.5px;font-weight:400;color:var(--muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ov-tag.late{color:var(--danger)}
+.ov-chip.ovstep{background:none;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 55%,transparent)}.ov-chip em{font-style:normal;font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;max-width:9em}
+.sday{border:none;border-radius:999px;padding:2px 9px;font:inherit;font-size:11.5px;background:var(--surface-2);color:var(--muted);cursor:pointer;white-space:nowrap;flex:none}.sday.set{background:color-mix(in srgb,var(--brand) 15%,var(--surface));color:var(--brand)}
 .ov-none{margin:4px 0;font-size:13px;color:var(--muted)}
 .ov-tip{display:flex;align-items:center;gap:10px;background:color-mix(in srgb,#f0b43a 16%,var(--surface));border-radius:16px;padding:9px 12px;font-size:13.5px;line-height:1.55}.ov-tip>svg{width:32px;height:32px;flex:none}
 .ov-days{display:flex;flex-direction:column;gap:8px}
@@ -3508,7 +3511,7 @@ function subsBlock(t){
   const rows=[]; let hidden=0;
   s.forEach((x,i)=>{
     if(!x.done&&i!==next&&!open){hidden++;return}
-    rows.push(`<div class="sub${x.done?" d":""}${i===next?" nx":""}"><button class="c" data-act="subtoggle" data-id="${t.id}" data-i="${i}" aria-label="${x.done?L("标记为没做完","Mark as not done"):L("这一步做完了","Mark step done")}">${x.done?"✓":""}</button><span class="tx">${subEditing&&subEditing.id===t.id&&subEditing.i===i?`<input class="subin subed" id="subed-${t.id}-${i}" data-subedit="${t.id}" data-i="${i}" maxlength="120" value="${esc(x.t)}">`:`<span class="subt" data-act="subedit" data-id="${t.id}" data-i="${i}" title="${L("点一下改这一步","Tap to edit")}">${esc(x.t)}</span>`}${i===next?`<em>${L("下一步","Next")}</em>`:""}</span>${i===next&&typeof startFocus==="function"?`<button class="go" data-act="substart" data-id="${t.id}" data-i="${i}">▶ ${L("开始","Start")}</button>`:""}</div>`)});
+    rows.push(`<div class="sub${x.done?" d":""}${i===next?" nx":""}"><button class="c" data-act="subtoggle" data-id="${t.id}" data-i="${i}" aria-label="${x.done?L("标记为没做完","Mark as not done"):L("这一步做完了","Mark step done")}">${x.done?"✓":""}</button><span class="tx">${subEditing&&subEditing.id===t.id&&subEditing.i===i?`<input class="subin subed" id="subed-${t.id}-${i}" data-subedit="${t.id}" data-i="${i}" maxlength="120" value="${esc(x.t)}">`:`<span class="subt" data-act="subedit" data-id="${t.id}" data-i="${i}" title="${L("点一下改这一步","Tap to edit")}">${esc(x.t)}</span>`}${i===next?`<em>${L("下一步","Next")}</em>`:""}</span>${x.done?"":`<button class="sday${x.day?" set":""}" data-act="ovsubday" data-id="${t.id}" data-i="${i}" title="${L("这一步哪天做","Which day for this step")}">${x.day?ovShort(x.day):L("哪天做","Which day")}</button>`}${i===next&&typeof startFocus==="function"?`<button class="go" data-act="substart" data-id="${t.id}" data-i="${i}">▶ ${L("开始","Start")}</button>`:""}</div>`)});
   return `<div class="subwrap">${rows.join("")}
     ${hidden?`<button class="more" data-act="subopen" data-id="${t.id}">${L(`还有 ${hidden} 步 · 展开`,`${hidden} more ${n_(hidden,"step","steps")} · show`)}</button>`:open&&s.filter(x=>!x.done).length>1?`<button class="more" data-act="subopen" data-id="${t.id}">${L("收起","Show less")}</button>`:""}
     ${subAdding===t.id?`<input class="subin" id="subin-${t.id}" data-subadd="${t.id}" maxlength="120" placeholder="${L("加一步，回车保存","Add a step, press Enter")}">`:`<button class="addsub" data-act="subadd" data-id="${t.id}">＋ ${L("自己加一步","Add a step")}</button>`}</div>`;
@@ -3678,11 +3681,16 @@ function ovBuckets(){const td=todayStr(),pool=ovPool(),days=[...Array(7)].map((_
     if(t.due<td){if(!t.repeat)over.push(t);return}
     if(t.due===td||t.start&&t.start<=td){today.push(t);return}
     if(t.due<=end)by[t.due].push(t);else later.push(t)});
-  over.sort((a,b)=>a.due<b.due?-1:1);today.sort(ovSort);for(const d in by)by[d].sort(ovSort);
+  over.sort((a,b)=>(a.due||"")<(b.due||"")?-1:1);today.sort(ovSort);for(const d in by)by[d].sort(ovSort);
+  // steps given a day of their own
+  pool.forEach(t=>(t.subs||[]).forEach((x,i)=>{if(x.done||!x.day)return;const st={step:true,t,i,x,space:t.space,id:t.id};
+    if(x.day<td)over.push(st);else if(x.day===td)today.push(st);else if(by[x.day])by[x.day].push(st)}));
   return {td,days,over,today,by,later}}
 const ovTodayCount=()=>{if(!loaded.t)return 0;const b=ovBuckets();return b.over.length+b.today.length};
 function ovDayName(d,td){const dt=new Date(d+"T12:00:00");if(d===addDays(td,1))return L("明天","Tomorrow");return L(`周${WD[dt.getDay()]}`,WDEN[dt.getDay()].slice(0,3))}
-function ovRow(t,first){const s=t.space,over=isOver(t),canPlay=(s==="study"||s==="work")&&t.horizon!=="long";
+function ovStepRow(st,first){const {t,i,x}=st,late=x.day<todayStr();
+  return `<div class="ov-it ovstep${first?" first":""}" style="--c:var(--${t.space})"><button class="ov-ck" data-act="subtoggle" data-id="${t.id}" data-i="${i}" aria-label="${L("这一步做完了","Step done")}"></button><button class="ov-t" data-act="edit" data-id="${t.id}">${esc(x.t)}<small>${esc(t.title)} · ${L(`第 ${i+1} 步`,`step ${i+1}`)}</small></button>${late?`<span class="ov-tag late">${L(`原定 ${md2(x.day)}`,`was ${md2(x.day)}`)}</span>`:""}${first?`<span class="ov-tag go">${L("先做这个","Start here")}</span>`:""}<button class="ov-mv" data-act="ovsubday" data-id="${t.id}" data-i="${i}">${L("改期","Move")}</button></div>`}
+function ovRow(t,first){if(t.step)return ovStepRow(t,first);const s=t.space,over=isOver(t),canPlay=(s==="study"||s==="work")&&t.horizon!=="long";
   const tags=[over?`<button class="due over odbtn" data-act="odmenu" data-id="${t.id}">${L(`过期 ${odDays(t.due)} 天`,`${odDays(t.due)}d overdue`)}</button>`:"",t.dueTime?`<span class="ov-tag">${t.dueTime}</span>`:"",t.start&&t.due&&t.due>todayStr()?`<span class="ov-tag">${L(`${md2(t.due)} 截止`,`due ${md2(t.due)}`)}</span>`:"",first?`<span class="ov-tag go">${L("先做这个","Start here")}</span>`:""].filter(Boolean).join("");
   return `<div class="ov-it${first?" first":""}" style="--c:var(--${s})"><button class="ov-ck" data-act="toggle" data-id="${t.id}" aria-label="${L("完成","Done")}"></button><button class="ov-t" data-act="edit" data-id="${t.id}">${esc(t.title)}</button>${(+t.pri||0)>=2?`<b class="ov-pri" title="${L("重要","Important")}">!</b>`:""}${tags}${over?"":`<button class="ov-mv" data-act="ovmove" data-id="${t.id}">${L("改期","Move")}</button>`}${canPlay?`<button class="ov-play" data-act="focus" data-id="${t.id}" aria-label="${L("开始专注","Focus")}">▶</button>`:""}</div>`}
 function overview(){
@@ -3702,7 +3710,7 @@ function overview(){
   const tip=busy.length&&free.length?`<div class="ov-tip">${SF.happy||""}<span>${L(`${ovDayName(busy[0],td)}排了 ${by[busy[0]].length} 件，${free.slice(0,2).map(d=>ovDayName(d,td)).join("和")}还空着～要不要挪一两件过去？`,`${ovDayName(busy[0],td)} has ${by[busy[0]].length} things while ${free.slice(0,2).map(d=>ovDayName(d,td)).join(" and ")} ${free.length>1?"are":"is"} free～ Move one or two?`)}</span></div>`:"";
   const dots=k=>`<span class="ov-load${k>OV_FULL?" hi":""}">${[0,1,2,3,4].map(i=>`<i class="${i<k?"f":""}"></i>`).join("")}</span>`;
   const dayRows=days.slice(1).map(d=>{const l=by[d],x=new Date(d+"T12:00:00");return `<div class="ov-day"><div class="ov-dh"><b>${ovDayName(d,td)}</b><small>${md2(d)}</small>${dots(l.length)}</div>
-    ${l.length?`<div class="ov-dl">${l.map(t=>`<button class="ov-chip" style="--c:var(--${t.space})" data-act="edit" data-id="${t.id}"><i></i><span>${esc(t.title)}</span>${(+t.pri||0)>=2?"<b>!</b>":""}</button>`).join("")}</div>`:`<p class="ov-empty">${L("空着","Free")}</p>`}</div>`}).join("");
+    ${l.length?`<div class="ov-dl">${l.map(t=>t.step?`<button class="ov-chip ovstep" style="--c:var(--${t.space})" data-act="edit" data-id="${t.id}"><i></i><span>${esc(t.x.t)}</span><em>· ${esc(t.t.title)}</em></button>`:`<button class="ov-chip" style="--c:var(--${t.space})" data-act="edit" data-id="${t.id}"><i></i><span>${esc(t.title)}</span>${(+t.pri||0)>=2?"<b>!</b>":""}</button>`).join("")}</div>`:`<p class="ov-empty">${L("空着","Free")}</p>`}</div>`}).join("");
   const lt=later.length?`<p class="ov-later">${L(`更远的还有 ${later.length} 件${later.some(ovNotYet)?"（有的还没到能开始的时候）":""}`,`${later.length} more further out`)}</p>`:"";
   return `<div class="board ov" data-k="ov">${todayBox}${tip}<div class="ov-days">${dayRows}</div>${lt}</div>`;
 }
@@ -3719,7 +3727,21 @@ function ovMove(id){const t=tasks.find(x=>x.id===id);if(!t)return;const td=today
     const due=v==="none"?null:v;odMove(t,due,!!(t.due&&due&&due>t.due));if(t.start&&due&&t.start>due){t.start=null;const r=db.doc("tasks/"+id);queued(r.path,()=>r.update({start:null}))}
     bg.remove();render()});
 }
-function ovAct(a,v,id){
+const ovShort=d=>{const td=todayStr();return d===td?L("今天","Today"):d<td?L(`${md2(d)} 没做`,`missed ${md2(d)}`):d<=addDays(td,6)?ovDayName(d,td):md2(d)};
+function ovSubDay(id,i){const t=tasks.find(x=>x.id===id);if(!t||!t.subs||!t.subs[i])return;const x=t.subs[i],td=todayStr(),{by,today,over}=ovBuckets();const days=[...Array(6)].map((_,k)=>addDays(td,k+1));
+  const bg=document.createElement("div");bg.className="sheet-bg";let pick=false;
+  const draw=()=>{bg.innerHTML=`<div class="sheet od-sheet" role="dialog" aria-label="${L("哪天做","Which day")}"><h3>${L(`「${esc(x.t)}」哪天做？`,`When will you do “${esc(x.t)}”?`)}</h3><p class="od-what"><i class="od-dot" style="background:var(--${t.space})"></i>${esc(t.title)}</p>
+    <div class="chips"><button class="chip hz${x.day===td?" on":""}" data-sd="${td}">${L("今天","Today")}<small>${today.length+over.length}</small></button>${days.map(d=>`<button class="chip hz${x.day===d?" on":""}" data-sd="${d}">${ovDayName(d,td)}<small>${(by[d]||[]).length}</small></button>`).join("")}<button class="chip hz${pick?" on":""}" data-sd="pick">${L("选日期…","Pick a date…")}</button>${x.day?`<button class="chip hz" data-sd="none">${L("不排日子","No day")}</button>`:""}</div>
+    ${pick?`<div class="cap-row"><input type="date" id="sdDate" min="${td}"><button class="btn primary" data-sd="ok">${L("好","OK")}</button></div>`:""}
+    <p class="hint">${L("排了日子的这一步会出现在 Overview 的那一天。小数字是那天已经有几件。","A step with a day shows up on that day in Overview. The small number is how many that day has.")}</p></div>`};
+  draw();document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-sd]");if(!b)return;let v=b.dataset.sd;
+    if(v==="pick"){pick=true;draw();return}if(v==="ok"){v=bg.querySelector("#sdDate").value;if(!v)return}
+    const subs=t.subs.map(y=>({...y}));if(v==="none")delete subs[i].day;else subs[i].day=v;bg.remove();setSubs(t,subs);
+    if(v!=="none")cheer(L(`「${x.t}」排到${ovShort(v)}啦`,`“${x.t}” is set for ${ovShort(v)}`),"happy")});
+}
+function ovAct(a,v,id,el){
+  if(a==="ovsubday"){ovSubDay(id,+(el&&el.dataset.i||0));return true}
   if(a==="ovf"){ovFilter=v;try{localStorage.setItem("lifeos-ovf",v)}catch(_){}render();return true}
   if(a==="ovmove"){ovMove(id);return true}
   return false}
@@ -5627,7 +5649,7 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="subadd"){subAdding=id;render();setTimeout(()=>document.getElementById("subin-"+id)?.focus(),0);return}
   if(act.dataset.act==="substart"){if(typeof startFocus==="function")startFocus(id,+act.dataset.i);return}
   if(act.dataset.act.startsWith("od")&&odAct(act.dataset.act,id))return;
-  if(act.dataset.act.startsWith("ov")&&ovAct(act.dataset.act,act.dataset.v,id))return;
+  if(act.dataset.act.startsWith("ov")&&ovAct(act.dataset.act,act.dataset.v,id,act))return;
   if(act.dataset.act[0]==="q"&&qAct(act.dataset.act,act.dataset.v,id))return;
   if(act.dataset.act.startsWith("moon")&&moonAct(act.dataset.act,act.dataset.v))return;
   if(act.dataset.act==="split"){openSplit(id);return}
