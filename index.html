@@ -149,8 +149,34 @@ nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:v
 .tab[data-k=habit][aria-selected=true]{border-color:var(--habit);background:var(--habit-soft);box-shadow:0 4px 0 var(--habit)}
 .tab[aria-selected=true] .n{background:var(--surface)}
 
+/* Overview */
+.board.ov{gap:12px}
+.ov-today{background:var(--surface);border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+.ov-th{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.ov-th b{font-size:18px}.ov-th small{color:var(--muted);font-size:13px}.ov-th em{margin-left:auto;font-style:normal;font-size:12.5px;color:var(--muted)}
+.ov-sub{margin:4px 2px 0;font-size:12px;color:var(--faint);letter-spacing:.04em}
+.ov-it{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:14px;background:var(--surface-2);min-width:0}.ov-it>*:not(.ov-t){flex:none}
+.ov-it.first{box-shadow:0 0 0 2px var(--brand);background:var(--surface)}
+.ov-ck{width:22px;height:22px;border-radius:50%;border:2.4px solid var(--c);background:none;flex:none;cursor:pointer;padding:0}.ov-ck:hover{background:color-mix(in srgb,var(--c) 20%,transparent)}
+.ov-t{flex:1 1 auto;min-width:0;text-align:left;border:none;background:none;color:var(--fg);font:inherit;font-size:14.5px;font-weight:500;padding:0;cursor:pointer;overflow-wrap:anywhere}
+.ov-pri{color:var(--danger);font-weight:800;font-size:14px}
+.ov-tag{font-size:11.5px;border-radius:999px;padding:2px 8px;background:var(--surface);color:var(--muted);white-space:nowrap}.ov-tag.go{background:var(--brand);color:#fff}
+.ov-it .due.odbtn{font-size:11.5px;padding:2px 8px}
+.ov-mv{border:none;background:none;color:var(--brand);font:inherit;font-size:12.5px;padding:2px 4px;cursor:pointer;white-space:nowrap}
+.ov-play{width:28px;height:28px;border-radius:50%;border:none;background:var(--surface);color:var(--brand);font-size:10px;cursor:pointer;flex:none}
+@media(max-width:460px){.ov-tag.go{display:none}.ov-it{gap:6px}}
+.ov-none{margin:4px 0;font-size:13px;color:var(--muted)}
+.ov-tip{display:flex;align-items:center;gap:10px;background:color-mix(in srgb,#f0b43a 16%,var(--surface));border-radius:16px;padding:9px 12px;font-size:13.5px;line-height:1.55}.ov-tip>svg{width:32px;height:32px;flex:none}
+.ov-days{display:flex;flex-direction:column;gap:8px}
+.ov-day{background:var(--surface);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:7px}
+.ov-dh{display:flex;align-items:center;gap:8px}.ov-dh b{font-size:14px}.ov-dh small{color:var(--muted);font-size:12.5px}
+.ov-load{margin-left:auto;display:flex;gap:3px}.ov-load i{width:7px;height:7px;border-radius:50%;background:var(--line)}.ov-load i.f{background:var(--brand)}.ov-load.hi i.f{background:#e0962a}
+.ov-dl{display:flex;flex-wrap:wrap;gap:6px}
+.ov-chip{display:inline-flex;align-items:center;gap:6px;border:none;background:var(--surface-2);border-radius:999px;padding:5px 11px;font:inherit;font-size:13px;color:var(--fg);max-width:100%;cursor:pointer}.ov-chip i{width:7px;height:7px;border-radius:50%;background:var(--c);flex:none}.ov-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}.ov-chip b{color:var(--danger)}
+.ov-empty{margin:0;font-size:12.5px;color:var(--faint)}
+.ov-later{margin:0;text-align:center;font-size:12.5px;color:var(--muted)}
+.tab[data-k=ov]{padding-inline:12px}.tab[data-k=ov] .tl{display:none}.tab[data-k=ov][aria-selected=true]{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 10%,var(--surface));box-shadow:0 4px 0 var(--brand)}
 /* 四象限 */
-.tab[data-k=quad]{padding-inline:12px}.tab[data-k=quad] .n{background:color-mix(in srgb,var(--danger) 18%,var(--surface-2));color:var(--danger)}.tab[data-k=quad] .n:empty,.tab[data-k=quad] .n.zero{display:none}
+.tab[data-k=ov] .n{background:color-mix(in srgb,var(--danger) 18%,var(--surface-2));color:var(--danger)}.tab[data-k=ov] .n:empty,.tab[data-k=ov] .n.zero{display:none}
 .tab[data-k=quad][aria-selected=true]{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 10%,var(--surface));box-shadow:0 4px 0 var(--brand)}
 .qicon{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:18px;height:18px;flex:none}.qicon i{border-radius:2.5px;background:var(--faint)}.qicon i:first-child{background:var(--danger)}.qicon i:nth-child(2){background:var(--brand)}
 .board.quad{gap:12px}
@@ -1259,7 +1285,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 @keyframes hop{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-16px) scale(1.05,.95)}60%{transform:translateY(0) scale(1.06,.92)}100%{transform:translateY(0) scale(1)}}
 @keyframes blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
 @keyframes zz{0%,100%{opacity:.2;transform:translate(0,0)}50%{opacity:1;transform:translate(3px,-5px)}}
-@media(max-width:460px){.garden{grid-template-columns:84px 1fr;gap:8px;padding:8px 12px 8px 4px}.buddy{width:84px;height:84px}.meter-top{font-size:12px}h1{font-size:22px}.title-row .jbtn{font-size:15px}.tab{font-size:13.5px;padding:8px 2px;gap:4px}.tab .n{padding:0 6px}nav.tabs{gap:5px}.tab svg{display:none}.tab[data-k=quad] .tl{display:none}.tab[data-k=quad]{padding-inline:8px}}
+@media(max-width:460px){.garden{grid-template-columns:84px 1fr;gap:8px;padding:8px 12px 8px 4px}.buddy{width:84px;height:84px}.meter-top{font-size:12px}h1{font-size:22px}.title-row .jbtn{font-size:15px}.tab{font-size:13.5px;padding:8px 2px;gap:4px}.tab .n{padding:0 6px}nav.tabs{gap:5px}.tab svg{display:none}.tab[data-k=ov]{padding-inline:8px}.tab[data-k=ov] svg{display:none}}
 </style>
 </head>
 <body>
@@ -1282,11 +1308,11 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 
 
   <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" data-k="ov" aria-label="Overview" title="Overview"><span class="qicon" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="tl" id="tl-ov">Overview</span> <span class="n" id="n-ov"></span></button>
     <button class="tab" role="tab" data-k="habit"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z" fill="var(--habit)"/></svg><span class="tl" id="tl-habit">打卡</span> <span class="n" id="n-habit">0/0</span></button>
     <button class="tab" role="tab" data-k="life"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-9.5A4 4 0 0 1 12 8a4 4 0 0 1 7 2.5C19 15.6 12 20 12 20z" fill="var(--life)"/></svg><span class="tl" id="tl-life">生活</span> <span class="n" id="n-life">0</span></button>
     <button class="tab" role="tab" data-k="study"><svg viewBox="0 0 24 24"><path d="M4 5.5C6.5 4.5 9.5 4.6 12 6.3c2.5-1.7 5.5-1.8 8-.8V19c-2.5-1-5.5-.9-8 .8-2.5-1.7-5.5-1.8-8-.8z" fill="var(--study)"/><path d="M12 6.3v13.5" stroke="#fff" stroke-width="1.6"/></svg><span class="tl" id="tl-study">学习</span> <span class="n" id="n-study">0</span></button>
     <button class="tab" role="tab" data-k="work"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="4" fill="var(--work)"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7" stroke="var(--work)" stroke-width="2" fill="none"/><circle cx="12" cy="13" r="1.8" fill="#fff"/></svg><span class="tl" id="tl-work">工作</span> <span class="n" id="n-work">0</span></button>
-    <button class="tab" role="tab" data-k="quad" aria-label="四象限"><span class="qicon" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="tl" id="tl-quad">四象限</span> <span class="n" id="n-quad"></span></button>
   </nav>
 
   <main id="main"></main>
@@ -1338,11 +1364,11 @@ const taskSpaces=()=>["life","study","work"].filter(on);
 const pickSpace=()=>taskSpaces().includes(tab)?tab:taskSpaces()[0];
 function applyBoards(){
   const order=["habit","life","study","work"].filter(on);
-  const qOn=QSP.some(on);
-  document.querySelectorAll(".tab").forEach(b=>b.hidden=b.dataset.k==="quad"?!qOn:!on(b.dataset.k));
-  const nav=document.querySelector("nav.tabs"); if(nav)nav.style.gridTemplateColumns=`repeat(${order.length},1fr)${qOn?" auto":""}`;
-  if(tab==="quad"&&!qOn)tab=order[0];
-  if(tab!=="journal"&&tab!=="forest"&&tab!=="quad"&&!on(tab))tab=order[0];
+  const oOn=OV_SP.some(on);if(tab==="quad")tab="ov";
+  document.querySelectorAll(".tab").forEach(b=>b.hidden=b.dataset.k==="ov"?!oOn:!on(b.dataset.k));
+  const nav=document.querySelector("nav.tabs"); if(nav)nav.style.gridTemplateColumns=`${oOn?"auto ":""}repeat(${order.length},1fr)`;
+  if(tab==="ov"&&!oOn)tab=order[0];
+  if(tab!=="journal"&&tab!=="forest"&&tab!=="ov"&&!on(tab))tab=order[0];
   if(lifeSub!=="goals"&&!on(lifeSub))lifeSub="goals";
   const fab=document.getElementById("fab"); if(fab)fab.hidden=!taskSpaces().length;
 }
@@ -1441,7 +1467,7 @@ let tasks=[], habits=[], checkins={}, shop=[], staples=[], trips=[], journal={};
 let jDate=null, jBusy=false, jSaved="", noteTimer=null;
 let tab="habit", loaded={t:false,h:false,c:false,s:false,f:false,w:false,y:false,m:false,wi:false,me:false};
 let pending=[], flash=null, flashTimer=null, thinking=false, lifeSub="shop", pick=new Set(), stapleEdit=false;
-try{const s=localStorage.getItem("los-tab");if(s&&["work","life","study","habit","journal","forest","quad"].includes(s))tab=s;const l=localStorage.getItem("los-life");if(l==="goals"||l==="shop"||l==="wish"||l==="memo")lifeSub=l}catch(e){}
+try{const s=localStorage.getItem("los-tab");if(s&&["work","life","study","habit","journal","forest","quad","ov"].includes(s))tab=s;const l=localStorage.getItem("los-life");if(l==="goals"||l==="shop"||l==="wish"||l==="memo")lifeSub=l}catch(e){}
 
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -1660,14 +1686,14 @@ function render(){
   const open=k=>tasks.filter(t=>t.space===k&&!t.done&&!t.deleted&&!t.letGo).length;
   $("#n-work").textContent=open("work"); $("#n-life").textContent=open("life"); $("#n-study").textContent=open("study");
   const {live,done}=habitStats(); $("#n-habit").textContent=done+"/"+live.length;
-  {const q=loaded.t?qQ1Count():0,el=$("#n-quad");el.textContent=q||"";el.classList.toggle("zero",!q);const qb=document.querySelector('.tab[data-k=quad]');if(qb)qb.setAttribute("aria-label",L(`四象限，重要且紧急 ${q} 件`,`Priorities, ${q} important & urgent`))}
+  {const q=ovTodayCount(),el=$("#n-ov");el.textContent=q||"";el.classList.toggle("zero",!q);const qb=document.querySelector('.tab[data-k=ov]');if(qb)qb.setAttribute("aria-label",L(`Overview，今天 ${q} 件`,`Overview, ${q} today`))}
   $("#jbtn").setAttribute("aria-pressed",String(tab==="journal"));
   // keep whatever is being typed when live data re-renders the board
   const ae=document.activeElement, keep={};
   document.querySelectorAll("#main input[id], #main textarea[id]").forEach(el=>{if(el.type==="checkbox"||el.type==="file")return;if((el.classList.contains("gta")||el.dataset.jnote)&&el!==ae)return;keep[el.id]=el.value});
   const openD=new Set([...document.querySelectorAll("#main details[data-keep][open]")].map(d=>d.dataset.keep)), sy=window.scrollY;
   const fid=ae&&ae.id&&ae.closest("#main")?ae.id:null; let ss=null,se=null; try{ss=ae.selectionStart;se=ae.selectionEnd}catch(_){}
-  $("#main").innerHTML= tab==="habit"?habitBoard(): tab==="journal"?journalView(): tab==="forest"?forestView(): tab==="quad"?quadView(): taskBoard(tab);
+  $("#main").innerHTML= tab==="habit"?habitBoard(): tab==="journal"?journalView(): tab==="forest"?forestView(): tab==="ov"?overview(): taskBoard(tab);
   $("#forestBtn").setAttribute("aria-pressed",String(tab==="forest"));
   for(const k in keep){const el=document.getElementById(k);if(el)el.value=keep[k]}
   if(openD.size){document.querySelectorAll("#main details[data-keep]").forEach(d=>{if(openD.has(d.dataset.keep))d.open=true});if(Math.abs(window.scrollY-sy)>2)window.scrollTo(0,sy)}
@@ -1689,6 +1715,7 @@ function taskRow(t){
   const d=dueLabel(t.due,t.done?null:t.dueTime), pr=+t.pri||0, pz=!t.done&&isPaused(t), sb=t.subs||[];
   const tags=[
     t.repeat&&!t.done?(pz?`<span class="rep pz">${PAUSE_SVG}${L(`暂停到 ${md2(t.repeat.pause)}`,`Paused to ${md2(t.repeat.pause)}`)}</span>`:`<span class="rep">${REP_SVG}${repLabel(t.repeat)}</span>`):"",
+    !t.done&&t.start&&t.start>todayStr()?`<span class="due">${L(`${md2(t.start)} 开始`,`Starts ${md2(t.start)}`)}</span>`:"",
     sb.length&&!t.done?`<span class="prog">${sb.filter(x=>x.done).length}/${sb.length}</span>`:"",
     d?(isOver(t)?`<button class="due ${d.cls} odbtn" data-act="odmenu" data-id="${t.id}" title="${L("点一下：今天做 / 换个日子 / 放下","Tap: today / another day / let it go")}">${d.txt}</button>`:`<span class="due ${d.cls}">${d.txt}</span>`):""].filter(Boolean);
   const fm=(t.space==="study"||t.space==="work")?taskMins(t.id):0;
@@ -1983,8 +2010,8 @@ const NEWS_BASE=()=>[
     {go:"journal",sel:".moodc",t:L("新功能 · 心情","New · Mood"),b:L("小结里可以选今天的心情，用小芽的表情来表示。","Pick today's mood in Today, with one of {pet}'s faces.")},
     {go:"journal",sel:".dtabs",t:L("新功能 · 感恩日记","New · Gratitude journal"),b:L("<em>感恩日记</em>每天写三件让你感激或开心的小事，再选一个明天想做的小行动；想自由写就切到<em>今日感想</em>。","In the <em>Gratitude</em> tab, note three small things you're grateful for, and maybe one small step for tomorrow. Switch to <em>Reflection</em> to write freely.")},
     {go:"study",sel:".board .task",t:L("新功能 · 任务","New · Tasks"),b:L("截止日期可以精确到<em>几点</em>，快到了会显示还剩几小时；每天要做两次的事（比如早晚吃药），重复里可以选<em>早 / 中 / 晚</em>。","Deadlines can have a <em>time</em>, with hours left shown as it gets close. For things you do twice a day, pick <em>morning / noon / evening</em> in Repeat.")}]}];
-NEWS_MORE.push(()=>({id:"1119c",steps:[
-    {sel:".tab[data-k=quad]",pad:4,t:L("新功能 · 四象限","New · Priorities"),b:L("顶上多了「四象限」：工作、学习、生活的事合在一张表里，自动分好。标了「中」或「高」就算重要；过期、今天或明天到期就算紧急。不用多选任何东西。","New “Priorities” tab: work, study and life in one table, sorted into important/urgent quadrants. Importance comes from your priority, urgency from the date and list. Unsorted ones wait at the bottom.")}]}));
+NEWS_MORE.push(()=>({id:"1119d",steps:[
+    {sel:".tab[data-k=ov]",pad:4,t:L("新功能 · Overview","New · Overview"),b:L("最左边的小四格是 Overview：上面是今天要做的事（过期的排最前），下面是接下来 6 天每天排了什么。某天太满{pet}会提醒你，点「改期」就能挪到空的那天。编辑任务时还可以填「什么时候能开始」，在那之前它不会出现。","The little grid on the far left is Overview: today on top (overdue first), then what's on each of the next 6 days. {pet} flags a crowded day, and “Move” shifts a task to a free one. Tasks can also have a start date and stay hidden until then.")}]}));
 NEWS_MORE.push(()=>({id:"1119b",steps:[
     {sel:"#gear",pad:4,t:L("新功能 · 小月亮","New · Little moon"),b:L("设置里可以打开「小月亮」，然后在「小结」里点「这天开始的 / 结束的」。日历上那几天的日期会有淡粉底，这几天{pet}会抱着热水袋陪你，说话也轻一点。只记日期，不进总结和信。","Turn on “Little moon” in Settings, then mark the start and end in Today. Those dates get a soft pink badge on the calendar, and {pet} keeps you company with a hot-water bottle. Dates only; never in recaps or letters.")}]}));
 NEWS_MORE.push(()=>({id:"1119",steps:[
@@ -3583,7 +3610,7 @@ const NUDGE_KEY="lifeos-nudge-off";
 /* ---------- overdue: a small stack at the top, decide one by one ---------- */
 const OD_AUTO="lifeos-od-auto";let odAuto=false;try{odAuto=localStorage.getItem(OD_AUTO)==="on"}catch(_){}
 let odAll=false,odRolled="";
-const odOn=t=>!t.done&&!t.deleted&&!t.letGo&&!t.repeat&&on(t.space)&&(t.space!=="life"||true);
+const odOn=t=>!t.done&&!t.deleted&&!t.letGo&&!t.repeat&&!(t.start&&t.start>todayStr())&&on(t.space)&&(t.space!=="life"||true);
 const isOver=t=>odOn(t)&&t.due&&t.due<todayStr();
 const isStuck=t=>odOn(t)&&(+t.moved||0)>=3&&t.due&&t.due<=todayStr();
 function odList(){const l=tasks.filter(t=>odAuto?isStuck(t):isOver(t)||isStuck(t)&&t.due<todayStr());return l.sort((a,b)=>(a.due<b.due?-1:a.due>b.due?1:0))}
@@ -3635,6 +3662,62 @@ function qAct(a,v,id){
   if(a==="qf"){qFilter=v;try{localStorage.setItem("lifeos-qf",v)}catch(_){}render();return true}
   if(a==="qmore"){qMore[v]=true;render();return true}
   if(a==="qimp"){const t=tasks.find(x=>x.id===id);if(!t)return true;const p=+v;t.pri=p;const r=db.doc("tasks/"+id);queued(r.path,()=>r.update({pri:p}));render();return true}
+  return false}
+/* ---------- Overview: today on top, then the next 6 days — what to do on which day ---------- */
+let ovFilter="all";try{const v=localStorage.getItem("lifeos-ovf");if(v)ovFilter=v}catch(_){}
+const OV_SP=["work","study","life"],OV_FULL=4;
+const ovNotYet=t=>!!(t.start&&t.start>todayStr());
+const ovPool=()=>tasks.filter(t=>OV_SP.includes(t.space)&&on(t.space)&&!t.done&&!t.deleted&&!t.letGo&&!isPaused(t));
+const ovSort=(a,b)=>((+b.pri||0)>=2)-((+a.pri||0)>=2)||((a.dueTime||"99")<(b.dueTime||"99")?-1:(a.dueTime||"99")>(b.dueTime||"99")?1:0)||sortTasks(a,b);
+function ovBuckets(){const td=todayStr(),pool=ovPool(),days=[...Array(7)].map((_,i)=>addDays(td,i)),end=days[6];
+  const over=[],today=[],by={},later=[];days.slice(1).forEach(d=>by[d]=[]);
+  pool.forEach(t=>{if(ovNotYet(t)){if(t.due||t.start)later.push(t);return}
+    if(!t.due){if(t.start)today.push(t);return}
+    if(t.due<td){if(!t.repeat)over.push(t);return}
+    if(t.due===td||t.start&&t.start<=td){today.push(t);return}
+    if(t.due<=end)by[t.due].push(t);else later.push(t)});
+  over.sort((a,b)=>a.due<b.due?-1:1);today.sort(ovSort);for(const d in by)by[d].sort(ovSort);
+  return {td,days,over,today,by,later}}
+const ovTodayCount=()=>{if(!loaded.t)return 0;const b=ovBuckets();return b.over.length+b.today.length};
+function ovDayName(d,td){const dt=new Date(d+"T12:00:00");if(d===addDays(td,1))return L("明天","Tomorrow");return L(`周${WD[dt.getDay()]}`,WDEN[dt.getDay()].slice(0,3))}
+function ovRow(t,first){const s=t.space,over=isOver(t),canPlay=(s==="study"||s==="work")&&t.horizon!=="long";
+  const tags=[over?`<button class="due over odbtn" data-act="odmenu" data-id="${t.id}">${L(`过期 ${odDays(t.due)} 天`,`${odDays(t.due)}d overdue`)}</button>`:"",t.dueTime?`<span class="ov-tag">${t.dueTime}</span>`:"",t.start&&t.due&&t.due>todayStr()?`<span class="ov-tag">${L(`${md2(t.due)} 截止`,`due ${md2(t.due)}`)}</span>`:"",first?`<span class="ov-tag go">${L("先做这个","Start here")}</span>`:""].filter(Boolean).join("");
+  return `<div class="ov-it${first?" first":""}" style="--c:var(--${s})"><button class="ov-ck" data-act="toggle" data-id="${t.id}" aria-label="${L("完成","Done")}"></button><button class="ov-t" data-act="edit" data-id="${t.id}">${esc(t.title)}</button>${(+t.pri||0)>=2?`<b class="ov-pri" title="${L("重要","Important")}">!</b>`:""}${tags}${over?"":`<button class="ov-mv" data-act="ovmove" data-id="${t.id}">${L("改期","Move")}</button>`}${canPlay?`<button class="ov-play" data-act="focus" data-id="${t.id}" aria-label="${L("开始专注","Focus")}">▶</button>`:""}</div>`}
+function overview(){
+  if(!loaded.t)return `<div class="board" data-k="ov">${emptyBox(L("正在读取任务…","Loading tasks…"))}</div>`;
+  const sp=OV_SP.filter(on);if(ovFilter!=="all"&&!sp.includes(ovFilter))ovFilter="all";
+  const {td,days,over,today,by,later}=ovBuckets(),name={work:L("工作","Work"),study:L("学习","Study"),life:L("生活","Life")};
+  const chips=sp.length>1?`<div class="qchips">${[["all",L("全部","All")],...sp.map(k=>[k,name[k]])].map(([k,n])=>`<button class="qchip${ovFilter===k?" on":""}" data-act="ovf" data-v="${k}">${k!=="all"?`<i style="background:var(--${k})"></i>`:""}${n}</button>`).join("")}</div>`:"";
+  const dt=new Date(td+"T12:00:00"),n=over.length+today.length;
+  const first=over[0]||today[0];
+  const todayBox=`<section class="ov-today"><div class="ov-th"><b>${L("今天","Today")}</b><small>${L(`${dt.getMonth()+1}月${dt.getDate()}日 · 周${WD[dt.getDay()]}`,`${WDEN[dt.getDay()]}, ${dt.getDate()} ${MON[dt.getMonth()]}`)}</small><em>${n?L(`${n} 件`,`${n} to do`):""}</em></div>
+    ${over.length?`<p class="ov-sub">${L("过期了","Overdue")}</p>${over.map(t=>ovRow(t,t===first)).join("")}`:""}
+    ${today.length?`${over.length?`<p class="ov-sub">${L("今天","Today")}</p>`:""}${today.map(t=>ovRow(t,t===first)).join("")}`:""}
+    ${n?"":`<p class="ov-none">${L("今天没有排事情～可以从下面挪一件过来，或者歇一歇。","Nothing set for today～ Pull something up from below, or take it easy.")}</p>`}</section>`;
+  const busy=days.slice(1).filter(d=>by[d].length>OV_FULL),free=days.slice(1).filter(d=>by[d].length===0);
+  const tip=busy.length&&free.length?`<div class="ov-tip">${SF.happy||""}<span>${L(`${ovDayName(busy[0],td)}排了 ${by[busy[0]].length} 件，${free.slice(0,2).map(d=>ovDayName(d,td)).join("和")}还空着～要不要挪一两件过去？`,`${ovDayName(busy[0],td)} has ${by[busy[0]].length} things while ${free.slice(0,2).map(d=>ovDayName(d,td)).join(" and ")} ${free.length>1?"are":"is"} free～ Move one or two?`)}</span></div>`:"";
+  const dots=k=>`<span class="ov-load${k>OV_FULL?" hi":""}">${[0,1,2,3,4].map(i=>`<i class="${i<k?"f":""}"></i>`).join("")}</span>`;
+  const dayRows=days.slice(1).map(d=>{const l=by[d],x=new Date(d+"T12:00:00");return `<div class="ov-day"><div class="ov-dh"><b>${ovDayName(d,td)}</b><small>${md2(d)}</small>${dots(l.length)}</div>
+    ${l.length?`<div class="ov-dl">${l.map(t=>`<button class="ov-chip" style="--c:var(--${t.space})" data-act="edit" data-id="${t.id}"><i></i><span>${esc(t.title)}</span>${(+t.pri||0)>=2?"<b>!</b>":""}</button>`).join("")}</div>`:`<p class="ov-empty">${L("空着","Free")}</p>`}</div>`}).join("");
+  const lt=later.length?`<p class="ov-later">${L(`更远的还有 ${later.length} 件${later.some(ovNotYet)?"（有的还没到能开始的时候）":""}`,`${later.length} more further out`)}</p>`:"";
+  return `<div class="board ov" data-k="ov">${todayBox}${tip}<div class="ov-days">${dayRows}</div>${lt}</div>`;
+}
+function ovMove(id){const t=tasks.find(x=>x.id===id);if(!t)return;const td=todayStr(),{by}=ovBuckets();const days=[...Array(6)].map((_,i)=>addDays(td,i+1));
+  const bg=document.createElement("div");bg.className="sheet-bg";let pick=false;
+  const draw=()=>{bg.innerHTML=`<div class="sheet od-sheet" role="dialog" aria-label="${L("改期","Move")}"><h3>${L(`「${esc(t.title)}」挪到哪天？`,`Move “${esc(t.title)}” to…`)}</h3>
+    <div class="chips">${t.due!==td?`<button class="chip hz" data-ov="${td}">${L("今天","Today")}</button>`:""}${days.filter(d=>d!==t.due).map(d=>`<button class="chip hz" data-ov="${d}">${ovDayName(d,td)}<small>${(by[d]||[]).length}</small></button>`).join("")}<button class="chip hz${pick?" on":""}" data-ov="pick">${L("选日期…","Pick a date…")}</button>${t.due?`<button class="chip hz" data-ov="none">${L("不定日子","No date")}</button>`:""}</div>
+    ${pick?`<div class="cap-row"><input type="date" id="ovDate" min="${td}"><button class="btn primary" data-ov="ok">${L("好","OK")}</button></div>`:""}
+    <p class="hint">${L("小数字是那天已经排了几件。","The small number is how many that day already has.")}</p></div>`};
+  draw();document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-ov]");if(!b)return;let v=b.dataset.ov;
+    if(v==="pick"){pick=true;draw();return}
+    if(v==="ok"){v=bg.querySelector("#ovDate").value;if(!v)return}
+    const due=v==="none"?null:v;odMove(t,due,!!(t.due&&due&&due>t.due));if(t.start&&due&&t.start>due){t.start=null;const r=db.doc("tasks/"+id);queued(r.path,()=>r.update({start:null}))}
+    bg.remove();render()});
+}
+function ovAct(a,v,id){
+  if(a==="ovf"){ovFilter=v;try{localStorage.setItem("lifeos-ovf",v)}catch(_){}render();return true}
+  if(a==="ovmove"){ovMove(id);return true}
   return false}
 function odTray(k){
   if(k!=="work"&&k!=="study"&&k!=="life")return "";
@@ -5368,7 +5451,7 @@ function openMemo(id){
 /* ---------- editor sheet ---------- */
 function openEditor(id,preset){
   const isNew=!id; const t=isNew?null:tasks.find(x=>x.id===id); if(!isNew&&!t)return;
-  const draft=isNew?{dueTime:"",title:"",due:"",note:"",space:preset.space,horizon:preset.horizon,pri:0,repeat:null}:{dueTime:t.dueTime||"",title:t.title,due:t.due||"",note:t.note||"",space:t.space,horizon:t.horizon,pri:+t.pri||0,repeat:t.repeat?JSON.parse(JSON.stringify(t.repeat)):null,doneDay:t.done&&t.doneAt?dayOf(t.doneAt):null};
+  const draft=isNew?{start:"",dueTime:"",title:"",due:"",note:"",space:preset.space,horizon:preset.horizon,pri:0,repeat:null}:{start:t.start||"",dueTime:t.dueTime||"",title:t.title,due:t.due||"",note:t.note||"",space:t.space,horizon:t.horizon,pri:+t.pri||0,repeat:t.repeat?JSON.parse(JSON.stringify(t.repeat)):null,doneDay:t.done&&t.doneAt?dayOf(t.doneAt):null};
   let confirmDel=false, pickDone=false;
   const FREQ=[["",L("不重复","Never")],["day",L("每天","Daily")],["week",L("每周","Weekly")],["2week",L("每两周","Every 2 weeks")],["month",L("每月","Monthly")]];
   const repBlock=()=>{const r=draft.repeat;const base=draft.due||todayStr();
@@ -5393,6 +5476,7 @@ function openEditor(id,preset){
     <div class="field"><span>${L("优先级","Priority")}</span><div class="chips">${[0,3,2,1].map(v=>`<button class="chip hz${draft.pri===v?" on":""}" data-ed="pri" data-v="${v}">${v?`<span class="psvg">${priIcon(v)}</span>`:""}${PRI_NAMES()[v]}</button>`).join("")}</div></div>
     <label class="field"><span>${draft.repeat?(isNew?L("第一次是哪天","First date"):L("这一次是哪天","This one's date")):L("截止日期","Due date")}</span><span class="dtrow"><input type="date" id="ed-due" value="${esc(draft.due)}">${(()=>{const [hh,mm]=(draft.dueTime||"").split(":"),dis=draft.due?"":"disabled";const hl=h=>L(`${h<5?"凌晨":h<12?"上午":h<13?"中午":h<18?"下午":"晚上"} ${h<=12?h:h-12} 点`,`${h%12||12} ${h<12?"AM":"PM"}`);
       return `<select id="ed-dh" aria-label="${L("几点","Hour")}" ${dis}><option value="">${L("几点","Hour")}</option>${[...Array(24)].map((_,h)=>`<option value="${pad(h)}" ${hh===pad(h)?"selected":""}>${hl(h)}</option>`).join("")}</select><select id="ed-dm" aria-label="${L("几分","Minute")}" ${dis}>${[...Array(12)].map((_,i)=>`<option value="${pad(i*5)}" ${(mm||"00")===pad(i*5)?"selected":""}>${pad(i*5)} ${L("分","min")}</option>`).join("")}</select>`})()}${draft.dueTime?`<button class="link" data-ed="notime">${L("不要时间","No time")}</button>`:""}</span><span class="hint dthint">${draft.due?L("面试、测评这种可以填上几点，不填就是当天任何时候","Add a time for interviews or tests, or leave it blank"):""}</span></label>
+    ${draft.repeat?"":`<label class="field"><span>${L("什么时候能开始（可不填）","Can start on (optional)")}</span><input type="date" id="ed-start" value="${esc(draft.start)}"><span class="hint">${L("在这天之前，它不会出现在 Overview，也不会算过期。比如老师还没放题的作业。","Until then it stays out of Overview and never counts as overdue, e.g. an assignment that isn't released yet.")}</span></label>`}
     ${repBlock()}
     ${doneBlock()}
     <label class="field"><span>${L("备注 / 计划细节","Notes / plan details")}</span><textarea id="ed-note">${esc(draft.note)}</textarea></label>
@@ -5401,7 +5485,7 @@ function openEditor(id,preset){
       ${isNew?"<span></span>":`<span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn danger" data-ed="del">${confirmDel?L("再点一次确认删除","Tap again to delete"):L("删除","Delete")}</button>${!t.done&&!t.repeat&&!t.letGo?`<button class="btn" data-ed="letgo" title="${L("先收起来，随时能捡回来","Put it away; pick it up anytime")}">${L("放下","Let it go")}</button>`:""}</span>`}
       <span style="display:flex;gap:8px"><button class="btn" data-ed="close">${L("取消","Cancel")}</button><button class="btn primary" data-ed="save">${isNew?L("添加","Add"):L("保存","Save")}</button></span>
     </div></div>`};
-  const grab=()=>{draft.title=bg.querySelector("#ed-title").value;draft.due=bg.querySelector("#ed-due").value;{const h=bg.querySelector("#ed-dh"),m=bg.querySelector("#ed-dm");draft.dueTime=h&&h.value&&draft.due?`${h.value}:${m?m.value:"00"}`:""}draft.note=bg.querySelector("#ed-note").value;
+  const grab=()=>{draft.title=bg.querySelector("#ed-title").value;{const st=bg.querySelector("#ed-start");if(st)draft.start=st.value}draft.due=bg.querySelector("#ed-due").value;{const h=bg.querySelector("#ed-dh"),m=bg.querySelector("#ed-dm");draft.dueTime=h&&h.value&&draft.due?`${h.value}:${m?m.value:"00"}`:""}draft.note=bg.querySelector("#ed-note").value;
     const u=bg.querySelector("#ed-until");if(u&&draft.repeat){if(u.value)draft.repeat.until=u.value;else delete draft.repeat.until}
     const dd=bg.querySelector("#ed-doneday");if(dd&&dd.value&&dd.value<=todayStr())draft.doneDay=dd.value};
   draw(); document.body.appendChild(bg);
@@ -5437,7 +5521,7 @@ function openEditor(id,preset){
         bg.remove();addTask({title:title.slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,dueTime:draft.due&&draft.dueTime?draft.dueTime:null,note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp});cheer(rp?L(`记好啦，${repLabel(rp)}都会出现～`,`Saved. It'll show up ${repLabel(rp).toLowerCase()}～`):L(`加进${SPACE[draft.space]}的「${HZNAME[draft.horizon]}」了～`,`Added to ${SPACE[draft.space]} · ${HZNAME[draft.horizon]}～`));return}
       bg.remove();
       const ref=db.doc("tasks/"+id);
-      const patch={title:(draft.title.trim()||L("未命名","Untitled")).slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,dueTime:draft.due&&draft.dueTime?draft.dueTime:null,note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp};
+      const patch={title:(draft.title.trim()||L("未命名","Untitled")).slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,start:rp?null:(draft.start||null),dueTime:draft.due&&draft.dueTime?draft.dueTime:null,note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp};
       if(rp&&!patch.due&&!t.done)patch.due=repFirst(rp,todayStr());
       if(!t.done&&!rp&&t.due&&t.due<todayStr()&&patch.due&&patch.due>t.due)patch.moved=(+t.moved||0)+1;
       if(t.done&&draft.doneDay&&draft.doneDay!==dayOf(t.doneAt))patch.doneAt=draft.doneDay===todayStr()?Date.now():noonOf(draft.doneDay);
@@ -5539,6 +5623,7 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="subadd"){subAdding=id;render();setTimeout(()=>document.getElementById("subin-"+id)?.focus(),0);return}
   if(act.dataset.act==="substart"){if(typeof startFocus==="function")startFocus(id,+act.dataset.i);return}
   if(act.dataset.act.startsWith("od")&&odAct(act.dataset.act,id))return;
+  if(act.dataset.act.startsWith("ov")&&ovAct(act.dataset.act,act.dataset.v,id))return;
   if(act.dataset.act[0]==="q"&&qAct(act.dataset.act,act.dataset.v,id))return;
   if(act.dataset.act.startsWith("moon")&&moonAct(act.dataset.act,act.dataset.v))return;
   if(act.dataset.act==="split"){openSplit(id);return}
@@ -5723,7 +5808,7 @@ function applyStatic(){
   $("#jbtnTxt").textContent=" "+L("小结","Today");$("#jbtn").setAttribute("aria-label",L("小结","Today"));
   $("#gear").setAttribute("aria-label",L("设置","Settings"));$("#mbBtn").setAttribute("aria-label",L("信箱","Mailbox"));
   $("#dropsLbl").textContent=L("滴水","drops");
-  [["habit","打卡","Habits"],["life","生活","Life"],["study","学习","Study"],["work","工作","Work"],["quad","四象限","Priorities"]].forEach(([k,zh,en])=>$("#tl-"+k).textContent=L(zh,en));
+  [["habit","打卡","Habits"],["life","生活","Life"],["study","学习","Study"],["work","工作","Work"],["ov","Overview","Overview"]].forEach(([k,zh,en])=>$("#tl-"+k).textContent=L(zh,en));
   $("#capLbl").textContent=L("想到什么就丢给我","Toss me anything on your mind");
   $("#cap").placeholder=L("例如：周五前改完简历投三家伦敦的公司；周末买洗衣液和鸡蛋；今年想把雅思口语练到 8",
                           "e.g. Finish my CV by Friday; buy eggs and milk this weekend; learn to swim this year");
