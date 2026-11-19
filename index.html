@@ -1982,7 +1982,7 @@ const NEWS_BASE=()=>[
     {go:"journal",sel:".dtabs",t:L("新功能 · 感恩日记","New · Gratitude journal"),b:L("<em>感恩日记</em>每天写三件让你感激或开心的小事，再选一个明天想做的小行动；想自由写就切到<em>今日感想</em>。","In the <em>Gratitude</em> tab, note three small things you're grateful for, and maybe one small step for tomorrow. Switch to <em>Reflection</em> to write freely.")},
     {go:"study",sel:".board .task",t:L("新功能 · 任务","New · Tasks"),b:L("截止日期可以精确到<em>几点</em>，快到了会显示还剩几小时；每天要做两次的事（比如早晚吃药），重复里可以选<em>早 / 中 / 晚</em>。","Deadlines can have a <em>time</em>, with hours left shown as it gets close. For things you do twice a day, pick <em>morning / noon / evening</em> in Repeat.")}]}];
 NEWS_MORE.push(()=>({id:"1119c",steps:[
-    {sel:".tab[data-k=quad]",pad:4,t:L("新功能 · 四象限","New · Priorities"),b:L("顶上多了「四象限」：工作、学习、生活的事合在一张表里，自动分成重要且紧急、重要不紧急、紧急不重要、不重要不紧急。「重要」看你标的重要程度，「紧急」看截止日期和放在哪个列表。没标的在最下面，点一下就归位。","New “Priorities” tab: work, study and life in one table, sorted into important/urgent quadrants. Importance comes from your priority, urgency from the date and list. Unsorted ones wait at the bottom.")}]}));
+    {sel:".tab[data-k=quad]",pad:4,t:L("新功能 · 四象限","New · Priorities"),b:L("顶上多了「四象限」：工作、学习、生活的事合在一张表里，自动分好。标了「中」或「高」就算重要；过期、今天或明天到期就算紧急。不用多选任何东西。","New “Priorities” tab: work, study and life in one table, sorted into important/urgent quadrants. Importance comes from your priority, urgency from the date and list. Unsorted ones wait at the bottom.")}]}));
 NEWS_MORE.push(()=>({id:"1119b",steps:[
     {sel:"#gear",pad:4,t:L("新功能 · 小月亮","New · Little moon"),b:L("设置里可以打开「小月亮」，然后在「小结」里点「这天开始的 / 结束的」。日历上那几天的日期会有淡粉底，这几天{pet}会抱着热水袋陪你，说话也轻一点。只记日期，不进总结和信。","Turn on “Little moon” in Settings, then mark the start and end in Today. Those dates get a soft pink badge on the calendar, and {pet} keeps you company with a hot-water bottle. Dates only; never in recaps or letters.")}]}));
 NEWS_MORE.push(()=>({id:"1119",steps:[
@@ -3602,13 +3602,12 @@ const odDays=d=>Math.round((new Date(todayStr())-new Date(d))/864e5);
 let qFilter="all",qMore={};try{const v=localStorage.getItem("lifeos-qf");if(v)qFilter=v}catch(_){}
 const QSP=["work","study","life"];
 // true / false, or null = not sorted yet (no priority)
-function qImp(t){const p=+t.pri||0;if(p===3)return true;if(p===1)return false;
-  if(p===2)return t.horizon==="week"||!!(t.due&&t.due<=addDays(todayStr(),7));
-  return null}
-function qUrg(t){if(t.due)return t.due<=addDays(todayStr(),1);return t.horizon==="week"}
+// 重要 = 标了「中」或「高」；紧急 = 有截止日期并且过期、今天或明天到期。别的都不用想。
+function qImp(t){return (+t.pri||0)>=2}
+function qUrg(t){return !!(t.due&&t.due<=addDays(todayStr(),1))}
 // a repeating task only shows up on the day it is due (this week's done or skipped one waits for its next turn)
 const qPool=()=>tasks.filter(t=>QSP.includes(t.space)&&on(t.space)&&!t.done&&!t.deleted&&!t.letGo&&!isPaused(t)&&t.horizon!=="long"&&(!t.repeat||(t.due&&t.due<=todayStr())));
-function qOf(t){const i=qImp(t);if(i===null)return "u";const u=qUrg(t);return i?(u?"q1":"q2"):(u?"q3":"q4")}
+function qOf(t){const i=qImp(t),u=qUrg(t);return i?(u?"q1":"q2"):(u?"q3":"q4")}
 const qSort=(a,b)=>(a.due||"9999")<(b.due||"9999")?-1:(a.due||"9999")>(b.due||"9999")?1:((+b.pri||0)-(+a.pri||0))||sortTasks(a,b);
 const QDEF=()=>[["q1",L("重要且紧急","Important & urgent"),L("先做这里","Do these first")],["q2",L("重要不紧急","Important, not urgent"),L("排个时间做","Give them a time")],["q3",L("紧急不重要","Urgent, not important"),L("快速搞定","Get them done quickly")],["q4",L("不重要不紧急","Neither"),L("有空再做，或者放下","Someday, or let go")]];
 const qQ1Count=()=>qPool().filter(t=>qOf(t)==="q1").length;
@@ -3628,7 +3627,7 @@ function quadView(){
     <div class="list">${uShow.map(t=>`<div class="qurow" style="--c:var(--${t.space})"><i class="qdot"></i><button class="qut" data-act="edit" data-id="${t.id}">${esc(t.title)}</button><button class="qb" data-act="qimp" data-id="${t.id}" data-v="3">${L("重要","Important")}</button><button class="qb" data-act="qimp" data-id="${t.id}" data-v="1">${L("不重要","Not")}</button></div>`).join("")}</div>
     ${u.length>uShow.length?`<button class="link qmore" data-act="qmore" data-v="u">${L(`还有 ${u.length-uShow.length} 件 ▾`,`${u.length-uShow.length} more ▾`)}</button>`:""}</section>`:"";
   const none=!pool.length?emptyBox(L("这里还没有要做的事～","Nothing to do here yet～")):"";
-  return `<div class="board quad" data-k="quad"><div class="qtop">${chips}<p class="qhow">${L("只看近期和中期 · 重要：标了「高」，或「中」且在近期 · 紧急：过期、今明两天到期，或没日期但在近期","Soon and this month only · Important: High, or Medium in Soon · Urgent: overdue, due today/tomorrow, or undated in Soon")}</p></div>${none}<div class="qgrid">${QDEF().map(box).join("")}</div>${unsorted}</div>`;
+  return `<div class="board quad" data-k="quad"><div class="qtop">${chips}<p class="qhow">${L("重要：标了「中」或「高」 · 紧急：过期、今天或明天到期 · 长期目标不在这里","Important: Medium or High · Urgent: overdue, due today or tomorrow · Long-term goals stay out")}</p></div>${none}<div class="qgrid">${QDEF().map(box).join("")}</div>${unsorted}</div>`;
 }
 function qAct(a,v,id){
   if(a==="qf"){qFilter=v;try{localStorage.setItem("lifeos-qf",v)}catch(_){}render();return true}
