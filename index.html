@@ -156,8 +156,9 @@ nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:v
 .board.quad{gap:12px}
 .qtop{display:flex;flex-direction:column;gap:6px}.qhow{margin:0;font-size:12px;color:var(--faint);line-height:1.5}
 .qchips{display:flex;gap:6px;flex-wrap:wrap}.qchip{border:none;border-radius:999px;padding:6px 13px;font:inherit;font-size:13px;background:var(--surface);color:var(--fg);box-shadow:0 0 0 1px var(--line);cursor:pointer;display:inline-flex;align-items:center;gap:6px}.qchip i{width:8px;height:8px;border-radius:50%}.qchip.on{background:var(--fg);color:var(--bg);box-shadow:none}
-.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}.qcol{display:flex;flex-direction:column;gap:12px;min-width:0}.qbox.qempty{padding-block:10px}.qbox.qempty .qh em{opacity:.6}
-@media(max-width:760px){.qgrid{grid-template-columns:1fr}.qbox.qempty:not(.q1){display:none}}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:clamp(300px,44vh,500px);gap:12px}
+.qgrid .qbox{overflow:hidden}.qgrid .qbox .list{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:2px 2px 8px;margin:-2px -2px 0;scrollbar-width:thin}.qgrid .qnone{flex:1;display:grid;place-items:center}.qgrid .qbox .list>*{flex-shrink:0}
+@media(max-width:760px){.qgrid{grid-template-columns:1fr;grid-auto-rows:auto}.qgrid .qbox .list{overflow:visible}.qbox.qempty:not(.q1){display:none}}
 .qbox{border-radius:20px;padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0;--qc:var(--muted);background:color-mix(in srgb,var(--qc) 9%,var(--surface-2))}
 .qbox.q1{--qc:var(--danger)}.qbox.q2{--qc:var(--brand)}.qbox.q3{--qc:#d08a1e}.qbox.q4{--qc:#8a9bb8}
 .qbox.qu{background:none;border:1.5px dashed var(--line)}
@@ -3616,13 +3617,13 @@ function quadView(){
   const chips=sp.length>1?`<div class="qchips">${[["all",L("全部","All")],...sp.map(k=>[k,name[k]])].map(([k,n])=>`<button class="qchip${qFilter===k?" on":""}" data-act="qf" data-v="${k}">${k!=="all"?`<i style="background:var(--${k})"></i>`:""}${n}</button>`).join("")}</div>`:"";
   const box=([k,n,h])=>{const l=by[k],lim=k==="q1"?8:5,show=qMore[k]?l:l.slice(0,lim);
     return `<section class="qbox ${k}${l.length?"":" qempty"}"><div class="qh"><b>${n}</b><small>${h}</small><em>${l.length}</em></div>
-      ${l.length?`<div class="list">${show.map(quadRow).join("")}</div>${l.length>show.length?`<button class="link qmore" data-act="qmore" data-v="${k}">${L(`还有 ${l.length-show.length} 件 ▾`,`${l.length-show.length} more ▾`)}</button>`:""}`:(k==="q1"?`<p class="qnone">${L("没有又重要又急的事，真好～","Nothing important and urgent. Nice～")}</p>`:"")}</section>`};
+      ${l.length?`<div class="list">${show.map(quadRow).join("")}</div>${l.length>show.length?`<button class="link qmore" data-act="qmore" data-v="${k}">${L(`还有 ${l.length-show.length} 件 ▾`,`${l.length-show.length} more ▾`)}</button>`:""}`:`<p class="qnone">${k==="q1"?L("没有又重要又急的事，真好～","Nothing important and urgent. Nice～"):L("空的","Empty")}</p>`}</section>`};
   const u=by.u,uShow=qMore.u?u:u.slice(0,6);
   const unsorted=u.length?`<section class="qbox qu"><div class="qh"><b>${L("还没分","Not sorted yet")}</b><small>${L("没标重要程度的，点一下就归位","No priority yet. One tap sorts it")}</small><em>${u.length}</em></div>
     <div class="list">${uShow.map(t=>`<div class="qurow" style="--c:var(--${t.space})"><i class="qdot"></i><button class="qut" data-act="edit" data-id="${t.id}">${esc(t.title)}</button><button class="qb" data-act="qimp" data-id="${t.id}" data-v="3">${L("重要","Important")}</button><button class="qb" data-act="qimp" data-id="${t.id}" data-v="1">${L("不重要","Not")}</button></div>`).join("")}</div>
     ${u.length>uShow.length?`<button class="link qmore" data-act="qmore" data-v="u">${L(`还有 ${u.length-uShow.length} 件 ▾`,`${u.length-uShow.length} more ▾`)}</button>`:""}</section>`:"";
   const none=!pool.length?emptyBox(L("这里还没有要做的事～","Nothing to do here yet～")):"";
-  return `<div class="board quad" data-k="quad"><div class="qtop">${chips}<p class="qhow">${L("只看近期和中期 · 重要：标了「高」，或「中」且在近期 · 紧急：过期、今明两天到期，或没日期但在近期","Soon and this month only · Important: High, or Medium in Soon · Urgent: overdue, due today/tomorrow, or undated in Soon")}</p></div>${none}<div class="qgrid"><div class="qcol">${box(QDEF()[0])}${box(QDEF()[2])}</div><div class="qcol">${box(QDEF()[1])}${box(QDEF()[3])}</div></div>${unsorted}</div>`;
+  return `<div class="board quad" data-k="quad"><div class="qtop">${chips}<p class="qhow">${L("只看近期和中期 · 重要：标了「高」，或「中」且在近期 · 紧急：过期、今明两天到期，或没日期但在近期","Soon and this month only · Important: High, or Medium in Soon · Urgent: overdue, due today/tomorrow, or undated in Soon")}</p></div>${none}<div class="qgrid">${QDEF().map(box).join("")}</div>${unsorted}</div>`;
 }
 function qAct(a,v,id){
   if(a==="qf"){qFilter=v;try{localStorage.setItem("lifeos-qf",v)}catch(_){}render();return true}
