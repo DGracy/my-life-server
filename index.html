@@ -870,6 +870,7 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .od-tag{font-style:normal;font-size:11.5px;border-radius:99px;padding:2px 8px;white-space:nowrap}.od-tag.over{background:color-mix(in srgb,var(--danger) 16%,transparent);color:var(--danger)}.od-tag.mv{background:color-mix(in srgb,#f0b43a 22%,transparent);color:color-mix(in srgb,#b07a10 70%,var(--fg))}
 .od-acts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.od-acts .btn{padding:8px 4px;font-size:13px;justify-content:center;min-width:0}.od-acts .btn.soft{color:var(--muted)}
 .od-bub{background:color-mix(in srgb,#f0b43a 18%,var(--surface));border-radius:12px;padding:9px 11px;font-size:13.5px;line-height:1.6}
+button.due.odbtn{border:none;font:inherit;cursor:pointer}
 .od-other{align-self:flex-start;font-size:12.5px}.od-more{align-self:center;font-size:13px}
 .od-bulk{display:flex;gap:8px}.od-bulk .btn{flex:1;justify-content:center}
 .od-sheet .chips{display:flex;flex-wrap:wrap;gap:6px}.od-sheet .chip small{opacity:.7;margin-left:4px}.od-what{margin:0;display:flex;align-items:center;gap:8px;font-size:14px}.od-sheet input[type=date]{align-self:flex-start}
@@ -1663,7 +1664,7 @@ function taskRow(t){
   const tags=[
     t.repeat&&!t.done?(pz?`<span class="rep pz">${PAUSE_SVG}${L(`暂停到 ${md2(t.repeat.pause)}`,`Paused to ${md2(t.repeat.pause)}`)}</span>`:`<span class="rep">${REP_SVG}${repLabel(t.repeat)}</span>`):"",
     sb.length&&!t.done?`<span class="prog">${sb.filter(x=>x.done).length}/${sb.length}</span>`:"",
-    d?`<span class="due ${d.cls}">${d.txt}</span>`:""].filter(Boolean);
+    d?(isOver(t)?`<button class="due ${d.cls} odbtn" data-act="odmenu" data-id="${t.id}" title="${L("点一下：今天做 / 换个日子 / 放下","Tap: today / another day / let it go")}">${d.txt}</button>`:`<span class="due ${d.cls}">${d.txt}</span>`):""].filter(Boolean);
   const fm=(t.space==="study"||t.space==="work")?taskMins(t.id):0;
   if(fm>=1)tags.unshift(`<span class="fp">${TOM_ICON}${fmtMins(fm)}</span>`);
   const canPlay=!t.done&&t.horizon!=="long"&&(t.space==="study"||t.space==="work");
@@ -3605,13 +3606,20 @@ function odPick(id){
       cheer(due?L(`好，挪到 ${+due.slice(5,7)}月${+due.slice(8)}日～`,`Moved to ${+due.slice(8)} ${MON[+due.slice(5,7)-1]}～`):L("好，有空再做～","OK, for when you have time～"),"happy");render();return}
     sel=v;draw()});
 }
+const odBoard=k=>({work:L("工作","Work"),study:L("学习","Study"),life:L("生活","Life")})[k]||"";
+const odLetMsg=t=>L(`放下也没关系～它收在「${odBoard(t.space)}」最下面的「放下的」里，随时能捡回来。`,`That's fine～ It's in “Let go” at the bottom of ${odBoard(t.space)}, ready whenever you want it back.`);
+function odMenu(id){const t=tasks.find(x=>x.id===id);if(!t)return;const bg=document.createElement("div");bg.className="sheet-bg";
+  bg.innerHTML=`<div class="sheet od-sheet" role="dialog" aria-label="${L("过期了","Overdue")}"><h3>${L(`过期 ${odDays(t.due)} 天了，怎么办？`,`${odDays(t.due)}d overdue. What now?`)}</h3><p class="od-what"><i class="od-dot" style="background:var(--${t.space})"></i>${esc(t.title)}</p>
+    <div class="od-acts"><button class="btn primary" data-om="odtoday">${L("今天做","Today")}</button><button class="btn" data-om="odpick">${L("换个日子","Another day")}</button><button class="btn soft" data-om="odlet">${L("放下","Let it go")}</button></div></div>`;
+  document.body.appendChild(bg);bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-om]");if(!b)return;bg.remove();odAct(b.dataset.om,id)})}
 function odAct(a,id){const t=tasks.find(x=>x.id===id);const td=todayStr();
   if(a==="odall"){odAll=true;render();return true}
   if(a==="odalltoday"||a==="odalltmr"){const d=a==="odalltoday"?td:addDays(td,1);tasks.filter(isOver).forEach(x=>odMove(x,d));cheer(a==="odalltoday"?L("都放到今天啦，挑最要紧的先做～","All on today. Start with what matters most～"):L("都挪到明天啦，今天轻松一点～","All moved to tomorrow. Go easy today～"),"happy");render();return true}
   if(!t)return false;
   if(a==="odtoday"){odMove(t,td);cheer(L(`「${t.title}」放到今天啦`,`“${t.title}” is on today`),"happy");render();return true}
   if(a==="odpick"){odPick(id);return true}
-  if(a==="odlet"){odLetGo(t);cheer(L("放下也没关系，它收在列表最下面，随时能捡回来。","It's fine to let it go. It's at the bottom of the list if you want it back."),"happy");render();return true}
+  if(a==="odlet"){odLetGo(t);cheer(odLetMsg(t),"happy");render();return true}
+  if(a==="odmenu"){odMenu(id);return true}
   if(a==="odback"){odPickUp(t);cheer(L(`「${t.title}」捡回来啦，没有日期，有空再做～`,`“${t.title}” is back, no date for now～`),"happy");render();return true}
   if(a==="odlong"){const p={horizon:"long",due:null,dueTime:null,moved:0};Object.assign(t,p);const r=db.doc("tasks/"+id);queued(r.path,()=>r.update(p));cheer(L(`「${t.title}」变成长期目标啦，慢慢来～`,`“${t.title}” is a long-term goal now. Take your time～`),"happy");render();return true}
   if(a==="odsplit"){const p={moved:0,due:td};Object.assign(t,p);const r=db.doc("tasks/"+id);queued(r.path,()=>r.update(p));openSplit(id);return true}
@@ -5321,7 +5329,7 @@ function openEditor(id,preset){
     <label class="field"><span>${L("备注 / 计划细节","Notes / plan details")}</span><textarea id="ed-note">${esc(draft.note)}</textarea></label>
     ${isNew||!t.done?`<button class="split ed-split" data-ed="split">${IDEA_FACE}${!isNew&&t.subs&&t.subs.length?L(`已拆成 ${t.subs.length} 步 · 重新拆`,`${t.subs.length} steps · redo`):L("拆小一点","Break it down")}</button>`:""}
     <div class="sheet-actions">
-      ${isNew?"<span></span>":`<button class="btn danger" data-ed="del">${confirmDel?L("再点一次确认删除","Tap again to delete"):L("删除","Delete")}</button>`}
+      ${isNew?"<span></span>":`<span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn danger" data-ed="del">${confirmDel?L("再点一次确认删除","Tap again to delete"):L("删除","Delete")}</button>${!t.done&&!t.repeat&&!t.letGo?`<button class="btn" data-ed="letgo" title="${L("先收起来，随时能捡回来","Put it away; pick it up anytime")}">${L("放下","Let it go")}</button>`:""}</span>`}
       <span style="display:flex;gap:8px"><button class="btn" data-ed="close">${L("取消","Cancel")}</button><button class="btn primary" data-ed="save">${isNew?L("添加","Add"):L("保存","Save")}</button></span>
     </div></div>`};
   const grab=()=>{draft.title=bg.querySelector("#ed-title").value;draft.due=bg.querySelector("#ed-due").value;{const h=bg.querySelector("#ed-dh"),m=bg.querySelector("#ed-dm");draft.dueTime=h&&h.value&&draft.due?`${h.value}:${m?m.value:"00"}`:""}draft.note=bg.querySelector("#ed-note").value;
@@ -5349,6 +5357,7 @@ function openEditor(id,preset){
     if(a==="split"){const title=draft.title.trim();if(!title){bg.querySelector("#ed-title").focus();return}
       if(isNew){bg.remove();const rp=draft.repeat?normRepeat(draft.repeat,draft.due||null):null;addTask({title:title.slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,dueTime:draft.due&&draft.dueTime?draft.dueTime:null,note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp}).then(nid=>setTimeout(()=>openSplit(nid),250));return}
       bg.remove();openSplit(id);return}
+    if(a==="letgo"){bg.remove();odLetGo(t);cheer(odLetMsg(t),"happy");render();return}
     if(a==="del"){
       if(t.repeat&&!t.done){bg.remove();askChoice(L("删掉这个重复任务？","Delete this repeating task?"),"",[[L("只删这一次（跳过）","Just this one (skip)"),L("下一次照常出现","The next one still shows up")],[L("以后都不要了","All future ones"),L("整个重复都删掉","Stops the whole series")]]).then(c=>{if(c===0)skipTask(t);else if(c===1){const ref=db.doc("tasks/"+id);queued(ref.path,()=>ref.delete())}});return}
       if(!confirmDel){confirmDel=true;draw();return}
