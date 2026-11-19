@@ -475,6 +475,8 @@ body.pomo-open{overflow:hidden}
 .trdate{border:2px solid var(--line);border-radius:12px;background:var(--surface);padding:6px 10px;font:inherit;color:var(--fg)}
 .tdel{align-self:flex-start;border:none;background:none;color:#e0465a;font:inherit;font-size:14px;padding:2px 0;cursor:pointer}
 .snack .snbtns{display:flex;gap:6px;flex:none}
+.set-h{margin:14px 0 2px;font-size:12.5px;letter-spacing:.06em;color:var(--muted);font-weight:600}.set-h:first-of-type{margin-top:4px}
+.set-sec{display:flex;flex-direction:column;gap:14px;background:var(--surface-2);border-radius:18px;padding:14px}.set-sec>.field{margin:0}.set-fold>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}.set-fold>summary::-webkit-details-marker{display:none}.set-fold>summary small{margin-left:auto;color:var(--brand)}.set-fold>summary::after{content:"▾";color:var(--brand)}.set-fold[open]>summary::after{content:"▴"}.set-fold[open]>summary small{display:none}.set-fold .shelfset{margin-top:8px}
 .mbb{position:relative}.mbb .mbdot{position:absolute;top:0;right:0;width:9px;height:9px;border-radius:50%;background:#ff5c7a;box-shadow:0 0 0 2px var(--surface)}
 /* wishlist v2 */
 .wish.wish{display:flex;align-items:center;gap:10px}.wish.wish .w-main{flex:1}
@@ -1263,7 +1265,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 <body>
 
 <div class="wrap">
-  <div class="title-row"><h1 id="appName">我的人生服务器</h1><span class="today" id="today"></span><span class="hd-acts"><button class="gear mbb" id="mbBtn" aria-label="信箱">📫<i class="mbdot" hidden></i></button><button class="gear mbb" id="idBtn" aria-label="想法箱" hidden>💡<i class="mbdot" hidden></i></button><button class="jbtn" id="jbtn" aria-pressed="false">📔<span id="jbtnTxt"> 小结</span></button><button class="gear sync" id="syncBtn" hidden></button><button class="gear" id="gear" aria-label="设置">⚙️</button></span></div>
+  <div class="title-row"><h1 id="appName">我的人生服务器</h1><span class="today" id="today"></span><span class="hd-acts"><button class="gear mbb" id="mbBtn" aria-label="信箱">📫<i class="mbdot" hidden></i></button><button class="jbtn" id="jbtn" aria-pressed="false">📔<span id="jbtnTxt"> 小结</span></button><button class="gear sync" id="syncBtn" hidden></button><button class="gear mbb" id="gear" aria-label="设置">⚙️<i class="mbdot" id="gearDot" hidden></i></button></span></div>
   <section class="garden" aria-label="小芽的成长">
     <div class="buddy" id="buddy" role="img" aria-label="小芽"><span class="btree" id="btree"></span></div>
     <div class="g-text">
@@ -2005,7 +2007,7 @@ NEWS_MORE.push(()=>({id:"1118b",steps:[
 NEWS_MORE.push(()=>({id:"1118c",steps:[
     {sel:"#gear",pad:4,t:L("新功能 · 按超市分组","New · Group by shop"),b:L("在设置里打开「按超市分组」，购物清单就会按 Tesco、亚超这样分开。加东西时选一下在哪家买，常买的东西会记住上次的店。","Turn on “Group by shop” in Settings and your shopping list splits by shop. Pick a shop when adding things; staples remember where you last bought them.")}]}));
 NEWS_MORE.push(()=>({id:"1118d",steps:[
-    {sel:"#idBtn",pad:4,t:L("新功能 · 想法箱","New · Idea box"),b:L("想要什么功能、有什么吐槽，都可以放进 💡 想法箱。公开的想法大家都能看到、点赞和评论；有人评论你的想法时，💡 上会出现小红点。","Put feature wishes and gripes in the 💡 idea box. Public ideas can be liked and commented on, and a red dot appears when someone replies to yours."),web:1}]}));
+    {sel:"#idBtn",alt:"#gear",pad:4,t:L("新功能 · 想法箱","New · Idea box"),b:L("想要什么功能、有什么吐槽，都可以放进 💡 想法箱。公开的想法大家都能看到、点赞和评论；有人评论你的想法时，💡 上会出现小红点。","Put feature wishes and gripes in the 💡 idea box. Public ideas can be liked and commented on, and a red dot appears when someone replies to yours."),web:1}]}));
 NEWS_MORE.push(()=>({id:"1118e",steps:[
     {sel:"#mbBtn",pad:4,t:L("新功能 · 火漆印","New · Wax seals"),b:L("封信的时候可以选火漆的颜色和图案，也能刻上名字，盖章封好；到了日子拆信时，要先把火漆揭开。","When you seal a letter, pick a wax colour and design, or engrave your name. On the day it opens, you peel the seal off first.")}]}));
 const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
@@ -5813,33 +5815,42 @@ function openSettings(){
   const draw=()=>{keep();bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("设置","Settings")}">
     <h3>${L("设置","Settings")}</h3>
     ${syncSection()}
-    <div class="field"><span>${L("语言","Language")}</span><div class="chips">${langChips()}</div></div>
-    <div class="field"><span>${L("板块","Boards")}</span><div class="chips">${boardChips()}</div>
-      <p class="hint" style="margin:0">${L("关掉用不到的板块，里面的数据不会删除，随时可以再打开。","Turn off what you don't need. Nothing inside is deleted, and you can turn it back on anytime.")}</p>
-      <span class="saved" id="board-msg"></span></div>
+    <h4 class="set-h">${L("关于你","About you")}</h4><div class="set-sec">
     <label class="field"><span>${L("你的名字","Your name")}</span><input id="set-name" value="${esc(kept.name??userName)}" maxlength="20" placeholder="${L("比如：Gracy","e.g. Gracy")}"></label>
     ${petField("set-pet",kept.pet??petNameV).replace(L("给我取个名字吧","Give me a name"),L("{pet}的名字","{pet}'s name"))}
+    <div class="field"><span>${L("我的生日（写给下一岁的信会在这天拆）","My birthday (letters to a year-older me open then)")}</span><div class="drow">${(()=>{const b=bdParts();return `<select id="set-bm"><option value="">${L("月","Month")}</option>${[...Array(12)].map((_,i)=>`<option value="${i+1}" ${b&&b.m===i+1?"selected":""}>${L(`${i+1} 月`,MON[i])}</option>`).join("")}</select><select id="set-bd"><option value="">${L("日","Day")}</option>${[...Array(31)].map((_,i)=>`<option value="${i+1}" ${b&&b.d===i+1?"selected":""}>${L(`${i+1} 日`,String(i+1))}</option>`).join("")}</select><input id="set-by" inputmode="numeric" maxlength="4" placeholder="${L("年（可不填）","Year (optional)")}" value="${b&&b.y?b.y:""}">`})()}</div></div>
+    <div class="field"><span>${L("语言","Language")}</span><div class="chips">${langChips()}</div></div>
+    </div>
+    <h4 class="set-h">${L("每一天","Your day")}</h4><div class="set-sec">
     <label class="field"><span>${L("新的一天从几点开始","A new day starts at")}</span><select id="set-daystart">${[0,1,2,3,4,5,6].map(h=>`<option value="${h}"${(kept.ds??dayStartH)==h?" selected":""}>${L(h?`凌晨 ${h} 点`:"午夜 0 点",h?`${h} a.m.`:"Midnight")}</option>`).join("")}</select>
       <span class="hint">${L("熬夜到这个时间之前做的事，都算前一天。","Anything you do before this time still counts as the day before.")}</span></label>
+    <div class="field"><span>${L("几点该睡觉","Bedtime")}</span><div class="until-row"><input type="time" id="set-bed" value="${esc(kept.bed??bedTime)}"><button class="chip hz${(kept.bed??bedTime)?"":" on"}" data-set="nobed">${L("不提醒","Off")}</button></div><span class="hint">${L("过了这个时间，{pet}会提醒你该睡啦。","After this time {pet} will remind you to go to bed.")}</span></div>
     ${IS_WEB?`<div class="field"><span>${L("天气","Weather")}</span>
       <span class="chkrow"><input type="checkbox" id="set-wx" ${(kept.wxOn??wx.on)?"checked":""}> ${L("在日期旁边显示今天的天气","Show today's weather next to the date")}</span>
       <div class="cap-row wx-city"><input id="set-city" placeholder="${L("城市，比如 London","City, e.g. London")}" value="${esc(kept.city??(wx.city||""))}"><button class="btn" data-set="citysearch">${L("搜索","Search")}</button><button class="btn" data-set="cityhere">${L("用当前位置","Use my location")}</button></div>
       <div class="plist tp" id="set-cityres"></div>
       <span class="hint">${wx.lat!=null?L(`现在用的是：${esc(wx.city||"当前位置")}。`,`Using: ${esc(wx.city||"your location")}.`):L("还没有位置。识别得不对的话，在这里搜城市改一下。","No location yet. If it's wrong, search for your city here.")} ${L("位置只存在这台设备上。","Your location stays on this device.")}</span></div>`:""}
-    <div class="field"><span>${L("几点该睡觉","Bedtime")}</span><div class="until-row"><input type="time" id="set-bed" value="${esc(kept.bed??bedTime)}"><button class="chip hz${(kept.bed??bedTime)?"":" on"}" data-set="nobed">${L("不提醒","Off")}</button></div><span class="hint">${L("过了这个时间，{pet}会提醒你该睡啦。","After this time {pet} will remind you to go to bed.")}</span></div>
-    <div class="field"><span>${L("我的生日（写给下一岁的信会在这天拆）","My birthday (letters to a year-older me open then)")}</span><div class="drow">${(()=>{const b=bdParts();return `<select id="set-bm"><option value="">${L("月","Month")}</option>${[...Array(12)].map((_,i)=>`<option value="${i+1}" ${b&&b.m===i+1?"selected":""}>${L(`${i+1} 月`,MON[i])}</option>`).join("")}</select><select id="set-bd"><option value="">${L("日","Day")}</option>${[...Array(31)].map((_,i)=>`<option value="${i+1}" ${b&&b.d===i+1?"selected":""}>${L(`${i+1} 日`,String(i+1))}</option>`).join("")}</select><input id="set-by" inputmode="numeric" maxlength="4" placeholder="${L("年（可不填）","Year (optional)")}" value="${b&&b.y?b.y:""}">`})()}</div></div>
-    <div class="field"><span>${L("购物清单","Shopping list")}</span><div class="btnrow"><button class="chip hz${stores.on?" on":""}" data-set="stores" aria-pressed="${stores.on}">${stores.on?"✓ ":""}${L("按超市分组","Group by shop")}</button></div></div>
-    <div class="field"><span>${L("冰箱：放多久提醒我","Fridge: remind me after")}</span><div class="shelfset">${SHELF.map(([k,,d,zh,en])=>`<label><span>${L(zh,en)}</span><select data-shelf="${k}">${[1,2,3,4,5,7,10,14,21,30,60,0].map(v=>`<option value="${v}" ${shelfDays(k)===v?"selected":""}>${v?L(v>=30&&v%30===0?`${v/30} 个月`:v>=7&&v%7===0?`${v/7} 周`:`${v} 天`,v>=30&&v%30===0?`${v/30} mo`:v>=7&&v%7===0?`${v/7} wk`:`${v} d`):L("不提醒","Never")}${v===d?L("（默认）"," (default)"):""}</option>`).join("")}</select></label>`).join("")}</div></div>
-    <div class="field"><span>${L("小月亮","Little moon")}</span><div class="btnrow"><button class="chip hz${moonS.enabled?" on":""}" data-set="moon" aria-pressed="${!!moonS.enabled}">${moonS.enabled?"✓ ":""}${L("经期小记","Period note")}</button></div><span class="hint">${L("打开后在「小结」里记开始和结束，日历上那几天的日期会有淡粉底，{pet}这几天会温柔一点。只记日期，不会出现在总结和信里；关掉时记录会一起删掉。","Mark the start and end in Today; those dates get a soft pink badge on the calendar and {pet} goes gentle. Dates only; never in recaps or letters. Turning it off deletes the dates.")}</span></div>
-    <div class="field"><span>${L("过期的任务","Overdue tasks")}</span><div class="btnrow"><button class="chip hz${odAuto?" on":""}" data-set="odauto" aria-pressed="${odAuto}">${odAuto?"✓ ":""}${L("自动挪到今天","Move to today automatically")}</button></div><span class="hint">${L("打开后不用每天处理，过期的会自己挪到今天，依然会记「挪过几次」。","No daily sorting: overdue tasks move to today on their own, and moves are still counted.")}</span></div>
-    <div class="field"><span>${L("节日装扮","Festival dress-up")}</span><div class="btnrow"><button class="chip hz${festOff?"":" on"}" data-set="fest" aria-pressed="${!festOff}">${festOff?"":"✓ "}${L("过节时小芽换装","Dress up {pet} on holidays").replaceAll("{pet}",petName())}</button></div></div>
-    <div class="field"><span>${L("功能介绍","Tour")}</span><div><div class="btnrow"><button class="btn" data-set="tour">${L("重新看一遍介绍","Replay the tour")}</button><button class="btn" data-set="news">${L("最近的新功能","What's new")}</button></div></div></div>
     <label class="field chk"><span>${L("番茄钟提示音","Timer sound")}</span><span class="chkrow"><input type="checkbox" id="set-sound" ${(kept.snd??pset.sound)?"checked":""}> ${L("专注、休息结束时轻轻叮一声（默认关）","A soft ding when focus or a break ends (off by default)")}</span></label>
+    </div>
+    <h4 class="set-h">${L("板块和功能","Boards & features")}</h4><div class="set-sec">
+    <div class="field"><span>${L("板块","Boards")}</span><div class="chips">${boardChips()}</div>
+      <p class="hint" style="margin:0">${L("关掉用不到的板块，里面的数据不会删除，随时可以再打开。","Turn off what you don't need. Nothing inside is deleted, and you can turn it back on anytime.")}</p>
+      <span class="saved" id="board-msg"></span></div>
+    <div class="field"><span>${L("过期的任务","Overdue tasks")}</span><div class="btnrow"><button class="chip hz${odAuto?" on":""}" data-set="odauto" aria-pressed="${odAuto}">${odAuto?"✓ ":""}${L("自动挪到今天","Move to today automatically")}</button></div><span class="hint">${L("打开后不用每天处理，过期的会自己挪到今天，依然会记「挪过几次」。","No daily sorting: overdue tasks move to today on their own, and moves are still counted.")}</span></div>
+    <div class="field"><span>${L("购物清单","Shopping list")}</span><div class="btnrow"><button class="chip hz${stores.on?" on":""}" data-set="stores" aria-pressed="${stores.on}">${stores.on?"✓ ":""}${L("按超市分组","Group by shop")}</button></div></div>
+    <details class="field set-fold"><summary>${L("冰箱：放多久提醒我","Fridge: remind me after")}<small>${L("点开调整","Tap to adjust")}</small></summary><div class="shelfset">${SHELF.map(([k,,d,zh,en])=>`<label><span>${L(zh,en)}</span><select data-shelf="${k}">${[1,2,3,4,5,7,10,14,21,30,60,0].map(v=>`<option value="${v}" ${shelfDays(k)===v?"selected":""}>${v?L(v>=30&&v%30===0?`${v/30} 个月`:v>=7&&v%7===0?`${v/7} 周`:`${v} 天`,v>=30&&v%30===0?`${v/30} mo`:v>=7&&v%7===0?`${v/7} wk`:`${v} d`):L("不提醒","Never")}${v===d?L("（默认）"," (default)"):""}</option>`).join("")}</select></label>`).join("")}</div></details>
+    <div class="field"><span>${L("小月亮","Little moon")}</span><div class="btnrow"><button class="chip hz${moonS.enabled?" on":""}" data-set="moon" aria-pressed="${!!moonS.enabled}">${moonS.enabled?"✓ ":""}${L("经期小记","Period note")}</button></div><span class="hint">${L("打开后在「小结」里记开始和结束，日历上那几天的日期会有淡粉底，{pet}这几天会温柔一点。只记日期，不会出现在总结和信里；关掉时记录会一起删掉。","Mark the start and end in Today; those dates get a soft pink badge on the calendar and {pet} goes gentle. Dates only; never in recaps or letters. Turning it off deletes the dates.")}</span></div>
+    <div class="field"><span>${L("节日装扮","Festival dress-up")}</span><div class="btnrow"><button class="chip hz${festOff?"":" on"}" data-set="fest" aria-pressed="${!festOff}">${festOff?"":"✓ "}${L("过节时小芽换装","Dress up {pet} on holidays").replaceAll("{pet}",petName())}</button></div></div>
+    </div>
+    <h4 class="set-h">${L("更多","More")}</h4><div class="set-sec">
+    ${idOK()?`<div class="field"><span>${L("想法箱","Idea box")}</span><div class="btnrow"><button class="btn mbb" data-set="ideas">💡 ${L("打开想法箱","Open the idea box")}<i class="mbdot" id="setIdDot"${idUnread?"":" hidden"}></i></button></div><span class="hint">${L("想要什么功能、有什么吐槽，都可以放进来。","Feature wishes and gripes go here.")}</span></div>`:""}
+    <div class="field"><span>${L("功能介绍","Tour")}</span><div><div class="btnrow"><button class="btn" data-set="tour">${L("重新看一遍介绍","Replay the tour")}</button><button class="btn" data-set="news">${L("最近的新功能","What's new")}</button></div></div></div>
     ${IS_WEB?`    <div class="field"><span>${L("备份","Backup")}</span>
       <p class="hint" style="margin:0">${L("数据只存在这个浏览器里。换手机、换浏览器或清理浏览器数据之前，先导出一份备份。","Your data lives only in this browser. Export a backup before switching phones or browsers, or clearing browser data.")}</p>
       <div class="cap-row"><button class="btn" data-set="export">${L("导出备份","Export backup")}</button><label class="btn" style="cursor:pointer">${L("导入备份","Import backup")}<input type="file" id="set-import" accept="application/json,.json" hidden></label></div>
       <span class="saved" id="set-msg"></span>
     </div>`:""}
+    </div>
     <div class="sheet-actions">
       <button class="btn danger" data-set="wipe">${confirmWipe?L("再点一次，清空全部数据","Tap again to erase everything"):L("清空全部数据","Erase all data")}</button>
       <span style="display:flex;gap:8px"><button class="btn" data-set="close">${L("取消","Cancel")}</button><button class="btn primary" data-set="save">${L("保存","Save")}</button></span>
@@ -5860,6 +5871,7 @@ function openSettings(){
     if(a==="lang"){keep();setLang(b.dataset.v);draw();return}
     if(a==="nobed"){bg.querySelector("#set-bed").value="";return}
     if(a==="tour"){bg.remove();setTimeout(()=>startTour("full"),250);return}
+    if(a==="ideas"){bg.remove();openIdeas();return}
     if(a==="stores"){const on=!stores.on;setStores({...stores,on});b.classList.toggle("on",on);b.setAttribute("aria-pressed",String(on));b.textContent=(on?"✓ ":"")+L("按超市分组","Group by shop");if(on&&!stores.list.length){bg.remove();tab="life";lifeSub="shop";render();setTimeout(openStores,200)}return}
     if(a==="moon"){const en=!moonS.enabled;moonS.enabled=en;if(!en)moonS.list=[];moonSave();b.classList.toggle("on",en);b.setAttribute("aria-pressed",String(en));b.textContent=(en?"✓ ":"")+L("经期小记","Period note");return}
     if(a==="odauto"){odAuto=!odAuto;try{localStorage.setItem(OD_AUTO,odAuto?"on":"off")}catch(_){}b.classList.toggle("on",odAuto);b.setAttribute("aria-pressed",String(odAuto));b.textContent=(odAuto?"✓ ":"")+L("自动挪到今天","Move to today automatically");odRolled="";odAutoRoll();render();return}
@@ -5900,8 +5912,6 @@ function openSettings(){
 }
 $("#gear").addEventListener("click",openSettings);
 $("#mbBtn").addEventListener("click",()=>openMailbox());
-$("#idBtn").addEventListener("click",()=>{if(!tourOn)openIdeas()});
-setTimeout(()=>{if(IS_WEB&&FIREBASE_CONFIG)$("#idBtn").hidden=false},0);
 
 /* ---------- the sprout's own name ---------- */
 const PET_POOL=()=>L(["团子","豆豆","糯米","青团","芽芽","小绿","嘟嘟","波波","汤圆","毛豆","布丁","阿嫩","饭团","麻薯","小葱"],["Bean","Mochi","Pip","Pea","Clover","Basil","Bud","Sprig","Maple","Olive","Peanut","Kiwi","Tofu","Pebble","Fern"]);
@@ -6099,7 +6109,8 @@ async function openIdeas(){if(!idOK())return;if(!tourOn)document.querySelectorAl
   }catch(e){}}
 function closeIdeas(){idOpen=false;idUnsub.forEach(f=>f());idUnsub=[];document.getElementById("idPage")?.remove();if(!mbOpen)document.body.classList.remove("mb-on");try{localStorage.setItem(IDEA_SEEN,String(Date.now()))}catch(_){}}
 async function idLoadC(id){try{const fs=await idFs();if(idCm[id]&&idCm[id].unsub)return;const unsub=fs.collection("ideas").doc(id).collection("comments").orderBy("createdAt").limit(200).onSnapshot(s=>{idCm[id]={unsub,list:s.docs.map(d=>({id:d.id,...d.data()}))};renderIdeas()},()=>{});idCm[id]={unsub,list:(idCm[id]||{}).list||[]}}catch(_){}}
-function idDot(on){const el=document.querySelector("#idBtn .mbdot");if(el)el.hidden=!on}
+let idUnread=false;
+function idDot(on){idUnread=!!on;const el=document.getElementById("gearDot");if(el)el.hidden=!on;const r=document.getElementById("setIdDot");if(r)r.hidden=!on}
 async function idCheckDot(){if(!idOK()||!idMe())return;try{const fs=await idFs();const s=await fs.collection("ideas").where("uid","==",idMe()).get();let seen=0;try{seen=+localStorage.getItem(IDEA_SEEN)||0}catch(_){}idDot(s.docs.some(d=>(d.data().lastCommentAt||0)>seen))}catch(_){}}
 function ideaCard(x){
   const me=idMe(), mine=x.uid===me, admin=idAdmin(), likes=Object.keys(x.likes||{}).length, liked=!!(me&&(x.likes||{})[me]);
