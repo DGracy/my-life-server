@@ -3242,7 +3242,14 @@ const PIP_CSS=`*{box-sizing:border-box}html,body{margin:0;height:100%}body{font-
 .i{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}.i small{font-size:12px;color:var(--pmu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .i b{font-family:Fredoka,"Noto Sans SC",sans-serif;font-size:36px;font-weight:600;line-height:1.05;letter-spacing:.5px}
 .bs{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap}.bs button{border:0;font:inherit;font-size:12.5px;background:var(--psf);color:var(--pfg);border-radius:999px;padding:4px 12px;box-shadow:0 2px 0 var(--pln);cursor:pointer}.bs button.p{background:#2fb38a;color:#fff;box-shadow:none}
-.end{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:12px;font-size:14px}`;
+.end{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:12px;font-size:14px}
+.bs{flex-wrap:nowrap}.bs button{white-space:nowrap;display:inline-flex;align-items:center;gap:4px;flex:none}
+@media (max-width:300px){.w{gap:10px;padding:10px 12px}.r{width:74px;height:74px}.r .pt{inset:10px}.r .pt svg{width:54px;height:54px}.i b{font-size:28px}}
+@media (max-width:240px){.bs .tx{display:none}.bs button{padding:5px 10px}}
+@media (max-width:190px){.w{flex-direction:column;gap:4px;padding:6px;text-align:center}.i{align-items:center}.i small{display:none}}
+@media (max-height:125px) and (min-width:191px){.bs{display:none}.r{width:68px;height:68px}.r .pt svg{width:48px;height:48px}}
+@media (max-height:170px) and (max-width:190px){.bs{display:none}.i b{font-size:24px}}
+@media (min-width:420px) and (min-height:200px){.r{width:130px;height:130px}.r .pt{inset:16px}.r .pt svg{width:96px;height:96px}.i b{font-size:48px}.bs button{font-size:14px;padding:6px 14px}}`;
 async function openPip(){
   if(!pipOK()||!P)return;
   if(pipWin){pipWin.focus();return}
@@ -3269,7 +3276,7 @@ function drawPip(){
   const brk=P.phase==="break", up=P.mode==="up"&&!brk, t=curTask();
   const col=brk?"#2fb38a":up?"#6c8ef5":"#ef5d6e", bgc=brk?"#d6f1e6":up?"#e2e9ff":"#f3dfe3";
   const lab=brk?L("休息中","Break"):P.pausedAt?L("暂停中","Paused"):(up?L("不计时","No timer"):L("专注中","Focusing"))+(t?` · ${esc(t.title)}`:"");
-  const btns=brk?`<button data-pp="next">${L("跳过休息","Skip break")}</button><button data-pp="stop">${L("结束","Stop")}</button>`:`<button data-pp="pause">${P.pausedAt?"▶ "+L("继续","Resume"):"❚❚ "+L("暂停","Pause")}</button><button data-pp="stop">■ ${L("结束","Stop")}</button>`;
+  const btns=brk?`<button data-pp="next">⏭<span class="tx">${L("跳过休息","Skip break")}</span></button><button data-pp="stop">■<span class="tx">${L("结束","Stop")}</span></button>`:`<button data-pp="pause" title="${P.pausedAt?L("继续","Resume"):L("暂停","Pause")}">${P.pausedAt?"▶":"❚❚"}<span class="tx">${P.pausedAt?L("继续","Resume"):L("暂停","Pause")}</span></button><button data-pp="stop" title="${L("结束","Stop")}">■<span class="tx">${L("结束","Stop")}</span></button>`;
   const key=[P.phase,P.mode,!!P.pausedAt,t&&t.id,lang].join("|");
   if(d.body.dataset.k!==key){d.body.dataset.k=key;
     d.body.innerHTML=`<div class="w"><div class="r"><svg class="rg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#fff" opacity=".8"/><circle cx="50" cy="50" r="44" fill="none" stroke="${bgc}" stroke-width="6"/><circle class="arc" cx="50" cy="50" r="44" fill="none" stroke="${col}" stroke-width="6" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="0" transform="rotate(-90 50 50)"/></svg><div class="pt">${brk?PET_YOGA:petFocus()}</div></div><div class="i"><small>${lab}</small><b class="tm"></b><div class="bs">${btns}</div></div></div>`}
