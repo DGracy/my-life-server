@@ -3244,11 +3244,11 @@ button{font:inherit;cursor:pointer}
 .ring{position:relative;flex:none}.ring>svg.rg{position:absolute;inset:0;width:100%;height:100%}.ring .pt{position:absolute;inset:12%;display:grid;place-items:center}.ring .pt svg{width:100%;height:100%}
 .tm{font-family:Fredoka,"Noto Sans SC",sans-serif;font-weight:600;letter-spacing:.5px;line-height:1.05}
 .mini{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;padding:3px}
-.mini{position:relative}.mini svg.bud{width:min(150px,92vw,86vh);height:auto}.row{height:100%;display:flex;align-items:center;gap:12px;padding:8px 10px 8px 12px;cursor:pointer}.row .ring{width:min(84px,26vw,80vh);height:min(84px,26vw,80vh)}
-.row .i{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}.row small{font-size:12px;color:var(--pmu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.row .tm{font-size:30px}
-.bs2{display:flex;gap:6px;margin-top:3px}.bs2 button{border:0;font-size:12px;background:var(--psf);color:var(--pfg);border-radius:999px;padding:4px 10px;white-space:nowrap}
-.more{font-size:20px;color:var(--pmu);flex:none}
-@media (max-width:230px){.bs2 button{padding:4px 8px;font-size:0}.bs2 button::first-letter{font-size:12px}.row .tm{font-size:24px}.more{display:none}}
+.mini{position:relative}.mini svg.bud{width:min(150px,92vw,86vh);height:auto}.row{height:100%;display:flex;align-items:center;gap:8px;padding:8px 6px 8px 10px;cursor:pointer}.row .ring{width:min(78px,30vw,76vh);height:min(78px,30vw,76vh)}
+.row .i{display:flex;flex-direction:column;align-items:center;text-align:center;gap:1px;min-width:0;flex:1}.row small{font-size:12px;color:var(--pmu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}.row .tm{font-size:38px}
+.bs2{display:flex;gap:6px;margin-top:3px;justify-content:center}.bs2 button{border:0;font-size:12px;background:var(--psf);color:var(--pfg);border-radius:999px;padding:4px 10px;white-space:nowrap}
+.more{font-size:18px;color:var(--pmu);flex:none;opacity:.7}
+@media (max-width:236px){.bs2 button{padding:4px 8px}.row .tm{font-size:30px}.more{display:none}}
 @media (max-height:96px){.bs2{display:none}}
 .mctl{position:absolute;top:58%;left:0;right:0;transform:translateY(-50%);display:flex;justify-content:center;gap:5px;opacity:0;transition:opacity .2s}.mini:hover .mctl,.mctl:focus-within{opacity:1}.mini .tm,.mini svg rect,.mini svg rect+text{transition:opacity .2s}.mini:hover .tm,.mini:hover svg rect,.mini:hover svg rect+text{opacity:0}.mctl button{border:0;width:min(30px,24vw);height:min(30px,24vw);border-radius:50%;background:#eef1f7;color:#2a3550;font-size:min(12px,9vw);padding:0}.mctl button:hover{background:#2fb38a;color:#fff}
 .bbud{width:64px;flex:none}.bbud svg{width:64px;height:auto;display:block}.bbud .tm,.bbud rect,.bbud rect+text{display:none}
@@ -3264,7 +3264,7 @@ button{font:inherit;cursor:pointer}
 .dn{display:flex;align-items:center;gap:12px;padding:14px}.dn .ring{width:54px;height:54px}.dn div{font-size:13.5px;line-height:1.55}.dn small{color:var(--pmu);font-size:12.5px}
 .pk{display:flex;align-items:center;gap:8px;font-size:13px;padding:7px 10px;border-radius:10px;background:var(--psf);border:0;color:var(--pfg);text-align:left;width:100%}.pk i{width:8px;height:8px;border-radius:50%;flex:none}.pk span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pk b{color:#3a8bff;font-size:12px}`;
 let pipBig=false,pipT=null;
-const PIP_MINI=[290,116],PIP_W=330;
+const PIP_MINI=[250,124],PIP_W=330;
 function pipFit(){if(!pipWin)return;try{const d=pipWin.document,dw=pipWin.outerWidth-pipWin.innerWidth,dh=pipWin.outerHeight-pipWin.innerHeight;
   if(pipBig){const bg=d.querySelector(".big");let h=300;if(bg){bg.style.height="auto";h=bg.scrollHeight;bg.style.height=""}h=Math.min(520,Math.max(190,h));pipWin.resizeTo(PIP_W+dw,h+dh)}else pipWin.resizeTo(PIP_MINI[0]+dw,PIP_MINI[1]+dh)}catch(_){}}
 function pipSet(big){pipBig=big;clearTimeout(pipT);drawPip(true);setTimeout(pipFit,30);if(big)pipArm(10000)}
