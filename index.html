@@ -953,7 +953,8 @@ button.due.odbtn{border:none;font:inherit;cursor:pointer}
 .step input{border:none;background:transparent;font:inherit;color:var(--fg);padding:4px 0;min-width:0;width:100%}.step .x{border:none;background:none;color:var(--faint);font-size:18px;padding:0 4px}
 .step .n{width:22px;height:22px;border-radius:50%;background:var(--study-soft);color:var(--study-ink);font-family:var(--f-num);font-weight:700;font-size:12px;display:grid;place-items:center}
 .step.first{background:color-mix(in srgb,var(--study) 12%,var(--surface));outline:2px solid var(--study)}.step.first .n{background:var(--study);color:#fff}
-.gran{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);flex-wrap:wrap}.say2{display:flex;gap:8px;align-items:center;background:var(--bg-2);border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.5}.say2>svg{width:34px;height:34px;flex:none}
+.gran{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);flex-wrap:wrap}.sub-of{display:block;font-size:12.5px;font-weight:500;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.say2{display:flex;gap:8px;align-items:center;background:var(--bg-2);border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.5}.say2>svg{width:34px;height:34px;flex:none}
 .wdots{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}.wdot{width:36px;height:36px;border-radius:50%;border:2px solid var(--line);background:var(--surface);font:inherit;font-size:13px;color:var(--muted);padding:0}.wdot.on{background:var(--study);border-color:var(--study);color:#fff;font-weight:600}
 .until-row{display:flex;gap:8px;align-items:center}.until-row input{flex:1;min-width:0}
 .rep-acts{display:flex;gap:8px;flex-wrap:wrap}.rep-acts .btn{display:inline-flex;align-items:center;gap:4px}
@@ -2010,7 +2011,7 @@ const TOUR_FULL=()=>[
   {sel:"#wx",pad:4,t:L("今天的天气","Today's weather"),b:L("日期旁边是今天的天气，点一下看最高、最低温度。城市不对的话，去设置里改。","Today's weather sits next to the date. Tap it for the high and low. Wrong city? Change it in Settings.")},
   {sel:".tabs",t:L("四个板块","Four boards"),b:L("<em>打卡</em>放每天的小习惯，<em>生活 / 学习 / 工作</em>放各自的任务。不用的板块可以在设置里关掉。","<em>Habits</em> holds your daily habits; <em>Life / Study / Work</em> hold their own tasks. Turn off boards you don't need in Settings.")},
   {sel:"#fab",pad:4,t:L("想到什么就丢给{pet}","Toss anything to {pet}"),b:L("点右下角，随手写一段话，比如「周五交 essay，明天买牛奶」，{pet}会自动分到对应的板块。","Tap the bottom-right button and jot down anything, like “essay due Friday, buy milk tomorrow”. {pet} sorts it into the right boards.")},
-  {go:"study",sel:".board .task",t:L("任务","Tasks"),b:L("点任务可以改日期、设成<em>每周重复</em>，觉得难开始就点「<em>拆小一点</em>」。完成了点左边的圆圈。","Tap a task to change its date, make it <em>repeat</em>, or <em>break it down</em> when it's hard to start. Tick the circle when it's done.")},
+  {go:"study",sel:".board .task",t:L("任务","Tasks"),b:L("点任务可以改日期、设成<em>每周重复</em>，想分几步做就点「<em>加子任务</em>」。完成了点左边的圆圈。","Tap a task to change its date, make it <em>repeat</em>, or <em>break it down</em> when it's hard to start. Tick the circle when it's done.")},
   {go:"study",sel:".focusbar",t:L("番茄专注","Focus timer"),b:L("点「▶ 开始」或任务右边的 ▶，{pet}陪你专注 25 分钟，结束后提醒你休息。专注的时间会记在任务上。","Tap ▶ Start or the ▶ on a task and {pet} focuses with you for 25 minutes, then reminds you to rest. Focus time is saved on the task.")},
   {go:"study",sel:".cls,.cls-empty",t:L("今天的课","Today's classes"),b:L("把课程表加进来，每天在这里看今天有什么课。可以手动加，也能导入学校课表的 .ics 文件。","Add your timetable to see today's classes here. Add them by hand or import your school's .ics file.")},
   {go:"lifeshop",sel:".food",t:L("吃 & 买","Food"),b:L("不知道吃什么就转一下转盘。下面还有<em>冰箱</em>，记着食材放了几天；<em>购物清单</em>买到了能直接放进冰箱。","Can't decide what to eat? Spin the wheel. Below are your <em>fridge</em>, which tracks how long things have been in, and your <em>shopping list</em>.")},
@@ -2020,7 +2021,7 @@ const TOUR_FULL=()=>[
 const TOUR_NEW=()=>{const f=TOUR_FULL();return [
   {sel:"#wx",pad:4,t:L("新功能 · 天气","New · Weather"),b:f[1].b},
   {go:"study",sel:".focusbar",t:L("新功能 · 番茄专注","New · Focus timer"),b:f[5].b},
-  {go:"study",sel:".board .task",t:L("新功能 · 重复和拆小一点","New · Repeat & break it down"),b:L("点开任务可以设成<em>每周重复</em>、加小步骤；觉得难开始就点「<em>拆小一点</em>」。勾完之后还能改成「是昨天做的」。","Open a task to make it <em>repeat</em> or add steps, or <em>break it down</em> when it's hard to start. After ticking, you can say you did it yesterday.")},
+  {go:"study",sel:".board .task",t:L("新功能 · 重复和子任务","New · Repeat & subtasks"),b:L("点开任务可以设成<em>每周重复</em>、加小步骤；想分几步做就点「<em>加子任务</em>」。勾完之后还能改成「是昨天做的」。","Open a task to make it <em>repeat</em> or add steps, or <em>break it down</em> when it's hard to start. After ticking, you can say you did it yesterday.")},
   {go:"study",sel:".cls,.cls-empty",t:L("新功能 · 课程表","New · Timetable"),b:f[6].b},
   {go:"lifeshop",sel:".food",t:L("新功能 · 吃 & 买","New · Food"),b:f[7].b},
   {sel:"#jbtn",pad:4,t:L("新功能 · 小结","New · Today"),b:L("小结里多了<em>时间轴</em>和「{pet}记着呢」（生日、纪念日）；里程碑可以打星星了。","Today now has a <em>timeline</em> and “{pet} remembers” for birthdays; moments can get stars.")},
@@ -2046,7 +2047,7 @@ NEWS_MORE.push(()=>({id:"1119d",steps:[
 NEWS_MORE.push(()=>({id:"1119b",steps:[
     {sel:"#gear",pad:4,t:L("新功能 · 小月亮","New · Little moon"),b:L("设置里可以打开「小月亮」，然后在「小结」里点「这天开始的 / 结束的」。日历上那几天的日期会有淡粉底，这几天{pet}会抱着热水袋陪你，说话也轻一点。只记日期，不进总结和信。","Turn on “Little moon” in Settings, then mark the start and end in Today. Those dates get a soft pink badge on the calendar, and {pet} keeps you company with a hot-water bottle. Dates only; never in recaps or letters.")}]}));
 NEWS_MORE.push(()=>({id:"1119",steps:[
-    {sel:"#odTray",alt:"#gear",pad:6,t:L("新功能 · 过期了的任务","New · Overdue tasks"),b:L("过期的任务会收成一小叠，放在工作、学习、生活的最上面，一件件选：<em>今天做</em>、<em>换个日子</em>，或者<em>放下</em>。放下的收在列表最下面，随时能捡回来。一件事挪了 3 次，{pet}会问问要不要拆小一点。不想每天处理的话，设置里可以打开「自动挪到今天」。","Overdue tasks gather in a small stack at the top of Work, Study and Life. Choose <em>Today</em>, <em>Another day</em> or <em>Let it go</em>. Let-go tasks wait at the bottom of the list. After 3 moves, {pet} asks if it should be smaller. Prefer not to sort daily? Turn on “Move to today automatically” in Settings.")}]}));
+    {sel:"#odTray",alt:"#gear",pad:6,t:L("新功能 · 过期了的任务","New · Overdue tasks"),b:L("过期的任务会收成一小叠，放在工作、学习、生活的最上面，一件件选：<em>今天做</em>、<em>换个日子</em>，或者<em>放下</em>。放下的收在列表最下面，随时能捡回来。一件事挪了 3 次，{pet}会问问要不要拆成子任务。不想每天处理的话，设置里可以打开「自动挪到今天」。","Overdue tasks gather in a small stack at the top of Work, Study and Life. Choose <em>Today</em>, <em>Another day</em> or <em>Let it go</em>. Let-go tasks wait at the bottom of the list. After 3 moves, {pet} asks if it should be smaller. Prefer not to sort daily? Turn on “Move to today automatically” in Settings.")}]}));
 NEWS_MORE.push(()=>({id:"1118j",steps:[
     {go:"lifewish",sel:"#goDeck",alt:"#wishForm",pad:6,t:L("新功能 · 去过的和还没去的","New · Been there, still to go"),b:L("去过的地方变成了一面<em>拍立得墙</em>，照片竖的就竖着挂，邮票可以选蜡笔或线稿。还没去的叠成一摞卡片，左右翻着看。先买了的东西，会在补齐那天记进值得记住的大小事。","Places you've been are now a <em>polaroid wall</em>, hung the way the photo was taken, with a crayon or line-drawing stamp. Places still to go are a stack you flip through. Things bought early become a moment on the day they're paid back.")}]}));
 NEWS_MORE.push(()=>({id:"1118i",steps:[
@@ -3609,7 +3610,7 @@ function subsBlock(t){
     rows.push(`<div class="sub${x.done?" d":""}${i===next?" nx":""}"><button class="c" data-act="subtoggle" data-id="${t.id}" data-i="${i}" aria-label="${x.done?L("标记为没做完","Mark as not done"):L("这一步做完了","Mark step done")}">${x.done?"✓":""}</button><span class="tx">${subEditing&&subEditing.id===t.id&&subEditing.i===i?`<input class="subin subed" id="subed-${t.id}-${i}" data-subedit="${t.id}" data-i="${i}" maxlength="120" value="${esc(x.t)}">`:`<span class="subt" data-act="subedit" data-id="${t.id}" data-i="${i}" title="${L("点一下改这一步","Tap to edit")}">${esc(x.t)}</span>`}${i===next?`<em>${L("下一步","Next")}</em>`:""}</span>${x.done?"":`<button class="sday${x.day?" set":""}" data-act="ovsubday" data-id="${t.id}" data-i="${i}" title="${L("这一步哪天做","Which day for this step")}">${x.day?ovShort(x.day):L("哪天做","Which day")}</button>`}${i===next&&typeof startFocus==="function"?`<button class="go" data-act="substart" data-id="${t.id}" data-i="${i}">▶ ${L("开始","Start")}</button>`:""}</div>`)});
   return `<div class="subwrap">${rows.join("")}
     ${hidden?`<button class="more" data-act="subopen" data-id="${t.id}">${L(`还有 ${hidden} 步 · 展开`,`${hidden} more ${n_(hidden,"step","steps")} · show`)}</button>`:open&&s.filter(x=>!x.done).length>1?`<button class="more" data-act="subopen" data-id="${t.id}">${L("收起","Show less")}</button>`:""}
-    ${subAdding===t.id?`<input class="subin" id="subin-${t.id}" data-subadd="${t.id}" maxlength="120" placeholder="${L("加一步，回车保存","Add a step, press Enter")}">`:`<button class="addsub" data-act="subadd" data-id="${t.id}">＋ ${L("自己加一步","Add a step")}</button>`}</div>`;
+    ${subAdding===t.id?`<input class="subin" id="subin-${t.id}" data-subadd="${t.id}" maxlength="120" placeholder="${L("加一步，回车保存","Add a step, press Enter")}">`:`<button class="addsub" data-act="subadd" data-id="${t.id}">＋ ${L("加子任务","Add subtask")}</button>`}</div>`;
 }
 function setSubs(t,subs){t.subs=subs;render();const ref=db.doc("tasks/"+t.id);queued(ref.path,()=>ref.update({subs}))}
 function toggleSub(t,i,el){
@@ -3675,35 +3676,35 @@ ${L("只返回 JSON 字符串数组。","Return only a JSON array of strings.")}
   if(!arr.length)throw new Error("empty");
   return arr;
 }
-function openSplit(id){
+function openSplit(id,auto){
   const t=tasks.find(x=>x.id===id); if(!t)return;
   const keepDone=(t.subs||[]).filter(x=>x.done);
-  let gran="just", variant=0, steps=(t.subs||[]).filter(x=>!x.done).map(x=>x.t), busy=false;
-  if(!steps.length)steps=splitSteps(t.title,gran,0);
+  let gran="just", variant=0, steps=(t.subs||[]).filter(x=>!x.done).map(x=>x.t), busy=false, ai=!!auto&&!steps.length;
+  if(!steps.length)steps=ai?splitSteps(t.title,gran,0):[""];
   const bg=document.createElement("div"); bg.className="sheet-bg";
   const grab=()=>{const ins=[...bg.querySelectorAll(".step input")];if(ins.length)steps=ins.map(i=>i.value)};
-  const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("拆小一点","Break it down")}"><h3>${L(`把「${esc(t.title)}」拆小一点`,`Break “${esc(t.title)}” down`)}</h3>
-    <div class="say2">${IDEA_FACE}<span>${busy?L("{pet}在想怎么拆…","{pet} is thinking…"):L("不用一口气做完～先做第一步就好，做完再看下一步。","No need to do it all at once～ Just start with step one.")}</span></div>
-    <div class="gran"><span>${L("拆得","Size")}</span>${[["coarse",L("粗一点","Bigger")],["just",L("刚刚好","Just right")],["fine",L("细一点","Smaller")]].map(([k,n])=>`<button class="chip hz${gran===k?" on":""}" data-s="gran" data-v="${k}">${n}</button>`).join("")}</div>
-    <div class="steps">${steps.map((x,i)=>`<div class="step${i===0?" first":""}"><span class="n">${i+1}</span><input value="${esc(x)}" maxlength="120" aria-label="${L(`第 ${i+1} 步`,`Step ${i+1}`)}"><button class="x" data-s="del" data-i="${i}" aria-label="${L("删掉这一步","Remove step")}">×</button></div>`).join("")}
-      ${steps.length<50?`<button class="addsub" data-s="add">＋ ${L("加一步","Add a step")}</button>`:""}</div>
-    <p class="hint" style="margin:0">${L("第一步很小，马上就能开始。","Step one is tiny, so you can start right away.")}</p>
-    <div class="sheet-actions"><button class="btn" data-s="again" ${busy?"disabled":""}>${L("换一种拆法","Try another way")}</button><button class="btn primary" data-s="ok" ${busy?"disabled":""}>${L("就这样拆","Use these")}</button></div></div>`};
+  const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("子任务","Subtasks")}"><h3>${L("子任务","Subtasks")}<small class="sub-of">${esc(t.title)}</small></h3>
+    ${busy?`<div class="say2">${IDEA_FACE}<span>${L("{pet}在想怎么拆…","{pet} is thinking…")}</span></div>`:""}
+    ${ai?`<div class="gran"><span>${L("拆得","Size")}</span>${[["coarse",L("粗一点","Bigger")],["just",L("刚刚好","Just right")],["fine",L("细一点","Smaller")]].map(([k,n])=>`<button class="chip hz${gran===k?" on":""}" data-s="gran" data-v="${k}">${n}</button>`).join("")}</div>`:""}
+    <div class="steps">${steps.map((x,i)=>`<div class="step${i===0?" first":""}"><span class="n">${i+1}</span><input value="${esc(x)}" maxlength="120" placeholder="${L("子任务","Subtask")}" aria-label="${L(`第 ${i+1} 个子任务`,`Subtask ${i+1}`)}"><button class="x" data-s="del" data-i="${i}" aria-label="${L("删掉","Remove")}">×</button></div>`).join("")}
+      ${steps.length<50?`<button class="addsub" data-s="add">＋ ${L("加子任务","Add subtask")}</button>`:""}</div>
+    <div class="sheet-actions"><button class="btn" data-s="again" ${busy?"disabled":""}>✨ ${ai?L("换一种拆法","Try another way"):L("帮我拆","Suggest")}</button><button class="btn primary" data-s="ok" ${busy?"disabled":""}>${L("保存","Save")}</button></div></div>`};
   const regen=async()=>{
     if(sample){busy=true;draw();try{steps=await aiSteps(t.title,t.note,gran,steps)}catch(e){steps=splitSteps(t.title,gran,++variant)}busy=false;draw()}
     else{steps=splitSteps(t.title,gran,variant);draw()}};
   draw(); document.body.appendChild(bg);
-  if(sample&&!(t.subs||[]).some(x=>!x.done))regen();
+  if(ai&&sample)regen();
+  if(!ai)setTimeout(()=>{const ins=bg.querySelectorAll(".step input");const e=[...ins].find(x=>!x.value)||ins[ins.length-1];e&&e.focus()},60);
   bg.addEventListener("keydown",e=>{if(e.key!=="Enter"||e.isComposing||e.keyCode===229||!e.target.closest(".step"))return;e.preventDefault();grab();const ins=[...bg.querySelectorAll(".step input")],i=ins.indexOf(e.target);steps.splice(i+1,0,"");draw();bg.querySelectorAll(".step input")[i+1]?.focus()});
   bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("button[data-s]");if(!b||busy)return;grab();const a=b.dataset.s;
     if(a==="gran"){gran=b.dataset.v;regen();return}
-    if(a==="again"){variant++;regen();return}
+    if(a==="again"){if(!ai){ai=true;if(steps.every(x=>!x.trim()))steps=[]}else variant++;regen();return}
     if(a==="del"){steps.splice(+b.dataset.i,1);draw();return}
     if(a==="add"){steps.push("");draw();const ins=bg.querySelectorAll(".step input");ins[ins.length-1]?.focus();return}
     if(a==="ok"){const clean=steps.map(x=>x.trim()).filter(Boolean).slice(0,50);bg.remove();
       const subs=[...keepDone,...clean.map(x=>({t:x.slice(0,120),done:false}))];
       subOpen.delete(t.id);setSubs(t,subs);try{const off=JSON.parse(localStorage.getItem(NUDGE_KEY)||"[]");off.push(t.id);localStorage.setItem(NUDGE_KEY,JSON.stringify(off.slice(-200)))}catch(_){}
-      cheer(clean.length?L(`拆好啦！先做第一步：${clean[0]}`,`All set! Start with: ${clean[0]}`):L("好的","OK"))}
+      if(clean.length)cheer(L(`存好啦，${clean.length} 个子任务`,`Saved ${clean.length} subtask${clean.length>1?"s":""}`),"happy")}
   });
 }
 const NUDGE_KEY="lifeos-nudge-off";
@@ -3855,7 +3856,7 @@ function odTray(k){
   const show=odAll?l:l.slice(0,4),more=l.length-show.length;
   const row=t=>{const mv=+t.moved||0,dot=`<i class="od-dot" style="background:var(--${t.space})"></i>`;
     if(mv>=3)return `<div class="od-row stuck"><div class="od-bub">${L(`「${esc(t.title)}」已经挪了 ${mv} 次啦。是不是有点大？要不要换个方式？`,`“${esc(t.title)}” has moved ${mv} times. Too big, maybe? Try another way?`)}</div>
-      <div class="od-acts"><button class="btn" data-act="odsplit" data-id="${t.id}">${L("拆成小步","Break it down")}</button><button class="btn" data-act="odlong" data-id="${t.id}">${L("变成长期目标","Make it long-term")}</button><button class="btn soft" data-act="odlet" data-id="${t.id}">${L("放下","Let it go")}</button></div>
+      <div class="od-acts"><button class="btn" data-act="odsplit" data-id="${t.id}">${L("拆成子任务","Split into subtasks")}</button><button class="btn" data-act="odlong" data-id="${t.id}">${L("变成长期目标","Make it long-term")}</button><button class="btn soft" data-act="odlet" data-id="${t.id}">${L("放下","Let it go")}</button></div>
       <button class="link od-other" data-act="odpick" data-id="${t.id}">${L("还是换个日子","Just pick another day")}</button></div>`;
     return `<div class="od-row"><div class="od-t">${dot}<button class="od-n" data-act="edit" data-id="${t.id}">${esc(t.title)}</button><em class="od-tag over">${L(`过期 ${odDays(t.due)} 天`,`${odDays(t.due)}d overdue`)}</em>${mv?`<em class="od-tag mv">${L(`挪过 ${mv} 次`,`moved ${mv}×`)}</em>`:""}</div>
       <div class="od-acts"><button class="btn primary" data-act="odtoday" data-id="${t.id}">${L("今天做","Today")}</button><button class="btn" data-act="odpick" data-id="${t.id}">${L("换个日子","Another day")}</button><button class="btn soft" data-act="odlet" data-id="${t.id}">${L("放下","Let it go")}</button></div></div>`};
@@ -3904,7 +3905,7 @@ function odAct(a,id){const t=tasks.find(x=>x.id===id);const td=todayStr();
   if(a==="odmenu"){odMenu(id);return true}
   if(a==="odback"){odPickUp(t);cheer(L(`「${t.title}」捡回来啦，没有日期，有空再做～`,`“${t.title}” is back, no date for now～`),"happy");render();return true}
   if(a==="odlong"){const p={horizon:"long",due:null,dueTime:null,moved:0};Object.assign(t,p);const r=db.doc("tasks/"+id);queued(r.path,()=>r.update(p));cheer(L(`「${t.title}」变成长期目标啦，慢慢来～`,`“${t.title}” is a long-term goal now. Take your time～`),"happy");render();return true}
-  if(a==="odsplit"){const p={moved:0,due:td};Object.assign(t,p);const r=db.doc("tasks/"+id);queued(r.path,()=>r.update(p));openSplit(id);return true}
+  if(a==="odsplit"){const p={moved:0,due:td};Object.assign(t,p);const r=db.doc("tasks/"+id);queued(r.path,()=>r.update(p));openSplit(id,true);return true}
   return false}
 function nudgeCard(k){
   let off=[];try{off=JSON.parse(localStorage.getItem(NUDGE_KEY)||"[]")}catch(_){}
@@ -4914,7 +4915,7 @@ function renderPreview(){
         ${p.space==="shop"?"":`<span class="gap"></span>`+HZ.map(h=>`<button class="chip hz${p.horizon===h.k?" on":""}" data-pv="hz" data-v="${h.k}" data-i="${i}">${h.name}</button>`).join("")}
         ${p.repeat&&p.space!=="shop"?`<span class="chip rep-chip">${REP_SVG}${repLabel(p.repeat)}${p.repeat.until?L(` · 到 ${md2(p.repeat.until)}`,` · until ${md2(p.repeat.until)}`):""}</span>`:""}
         ${p.due?`<span class="chip">${p.repeat?L("第一次 ","First ") :L("截止 ","Due ")}${esc(p.due)}</span>`:""}
-        ${p.space!=="shop"&&!p.repeat?`<button class="chip hz${p.today?" on":""}" data-pv="today" data-i="${i}" aria-pressed="${!!p.today}">${p.today?"✓ ":""}${L("今天做","Do today")}</button>`:""}${p.space!=="shop"?`<button class="chip split-chip${p.split?" on":""}" data-pv="split" data-i="${i}" aria-pressed="${!!p.split}">${p.split?"✓ ":""}${L("拆小一点","Break it down")}</button>`:""}${p.pri&&p.space!=="shop"?`<button class="chip" data-pv="pri" data-i="${i}" title="${priLabel(p.pri)}"><span class="psvg">${priIcon(p.pri)}</span>${PRI_NAMES()[p.pri]}</button>`:""}
+        ${p.space!=="shop"&&!p.repeat?`<button class="chip hz${p.today?" on":""}" data-pv="today" data-i="${i}" aria-pressed="${!!p.today}">${p.today?"✓ ":""}${L("今天做","Do today")}</button>`:""}${p.space!=="shop"?`<button class="chip split-chip${p.split?" on":""}" data-pv="split" data-i="${i}" aria-pressed="${!!p.split}">${p.split?"✓ ":""}${L("✨ 拆子任务","✨ Split into subtasks")}</button>`:""}${p.pri&&p.space!=="shop"?`<button class="chip" data-pv="pri" data-i="${i}" title="${priLabel(p.pri)}"><span class="psvg">${priIcon(p.pri)}</span>${PRI_NAMES()[p.pri]}</button>`:""}
       </div>
     </div></div>`).join("")+
   `<div class="cap-row"><button class="btn primary" id="saveParsed">${L(`保存选中的 ${pending.filter(p=>p.keep).length} 条`,`Save ${pending.filter(p=>p.keep).length} selected`)}</button><button class="btn" id="cancelParsed">${L("取消","Cancel")}</button></div>`;
@@ -5617,7 +5618,7 @@ function openEditor(id,preset){
     ${repBlock()}
     ${doneBlock()}
     <label class="field"><span>${L("备注 / 计划细节","Notes / plan details")}</span><textarea id="ed-note">${esc(draft.note)}</textarea></label>
-    ${isNew||!t.done?`<button class="split ed-split" data-ed="split">${IDEA_FACE}${!isNew&&t.subs&&t.subs.length?L(`已拆成 ${t.subs.length} 步 · 重新拆`,`${t.subs.length} steps · redo`):L("拆小一点","Break it down")}</button>`:""}
+    ${isNew||!t.done?`<button class="split ed-split" data-ed="split">${IDEA_FACE}${!isNew&&t.subs&&t.subs.length?L(`${t.subs.length} 个子任务 · 编辑`,`${t.subs.length} subtasks · edit`):L("加子任务","Add subtasks")}</button>`:""}
     <div class="sheet-actions">
       ${isNew?"<span></span>":`<span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn danger" data-ed="del">${confirmDel?L("再点一次确认删除","Tap again to delete"):L("删除","Delete")}</button>${!t.done&&!t.repeat&&!t.letGo?`<button class="btn" data-ed="letgo" title="${L("先收起来，随时能捡回来","Put it away; pick it up anytime")}">${L("放下","Let it go")}</button>`:""}</span>`}
       <span style="display:flex;gap:8px"><button class="btn" data-ed="close">${L("取消","Cancel")}</button><button class="btn primary" data-ed="save">${isNew?L("添加","Add"):L("保存","Save")}</button></span>
@@ -5697,7 +5698,7 @@ document.addEventListener("click",async e=>{
     keep.forEach(p=>{if(p.today&&!p.repeat&&p.space!=="shop")p.plan=todayStr()});const toToday=keep.some(p=>p.plan);
     let splitId=null;
     for(const p of keep){if(p.space==="shop")await addShop(p.title);else{const nid=await addTask(p);if(p.split&&!splitId)splitId=nid}}
-    if(splitId)setTimeout(()=>openSplit(splitId),400);
+    if(splitId)setTimeout(()=>openSplit(splitId,true),400);
     $("#cap").value="";
     if(keep.length){closeCap();cheer(L(`存好 ${keep.length} 条啦！`,`Saved ${keep.length} ${n_(keep.length,"item","items")}!`));
       const first=keep[0].space;
