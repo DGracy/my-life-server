@@ -1071,6 +1071,51 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .forest-btn .fn{font-family:var(--f-num);font-variant-numeric:tabular-nums}
 .forest-btn[aria-pressed=true]{border-color:var(--leaf-2);background:color-mix(in srgb,var(--leaf) 18%,transparent)}
 #plantBtn{width:fit-content;padding:5px 14px}
+.fl-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.fl-top b{font-size:15px}
+.fl-yb,.fl-mnav button{border:none;background:var(--surface-2);border-radius:50%;width:28px;height:28px;color:var(--fg);font-size:15px;flex:none}.fl-yb:disabled{opacity:.35}
+.fl-sum{margin-left:auto;font-size:12.5px;color:var(--muted)}
+.fl-mapw{border-radius:18px;overflow:hidden;width:100%;max-width:560px;align-self:center}
+.fl-map{display:block;width:100%;height:auto}
+.fl-ghost{fill:color-mix(in srgb,var(--water) 40%,var(--surface));opacity:.55}
+.fl-gline{fill:none;stroke:var(--faint);stroke-width:1.5;stroke-dasharray:4 3}
+.fl-edge{fill:color-mix(in srgb,var(--leaf) 70%,#1d3b2a)}
+.fl-l1,.fl-l2{stroke:var(--surface);stroke-opacity:.85;stroke-width:1.6;stroke-dasharray:2 4;stroke-linecap:round}
+.fl-l1{fill:color-mix(in srgb,var(--leaf) 52%,var(--surface))}.fl-l2{fill:color-mix(in srgb,var(--leaf) 38%,var(--surface))}
+.fl-pill rect{fill:var(--surface);opacity:.9}.fl-pill text{font-size:8.5px;fill:var(--muted);text-anchor:middle;font-family:var(--f-body)}
+.fl-pill.now rect{fill:var(--brand);opacity:1}.fl-pill.now text{fill:#fff}
+.fl-more{font-size:8px;fill:var(--muted)}
+.fl-t,.fl-pill{pointer-events:none}
+.fl-hit{fill:transparent;cursor:pointer;outline:none}.fl-hit.on{stroke:var(--brand);stroke-width:3.5;fill:color-mix(in srgb,var(--brand) 7%,transparent)}
+.fl-mnav{display:flex;align-items:center;justify-content:space-between;font-size:14px}
+.fl-car{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:2px;margin:0 -2px}
+.fl-car::-webkit-scrollbar{display:none}
+.fl-card{flex:0 0 min(86%,330px);scroll-snap-align:center;background:color-mix(in srgb,var(--water) 16%,var(--surface));border-radius:18px;padding:10px;display:flex;flex-direction:column;gap:6px;min-height:230px;justify-content:center}
+.fl-card.fut{align-items:center;text-align:center;color:var(--muted);font-size:13px;gap:6px;padding:16px}.fl-card.fut b{color:var(--fg);font-size:15px}
+.fl-piece{display:block;width:100%;height:auto;max-height:240px;flex:none}.fl-card.empty .fl-piece{max-height:150px;opacity:.75}
+.fl-cf{align-self:stretch;display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted)}.fl-cf b{color:var(--fg)}
+.fl-tt{cursor:pointer;outline:none}.fl-tt:hover,.fl-tt:focus-visible{filter:drop-shadow(0 0 4px #fff)}
+.fl-tt.flash{animation:flFlash 1.2s ease-in-out 2}@keyframes flFlash{50%{filter:drop-shadow(0 0 8px var(--brand))}}
+.dx-prog{display:flex;gap:8px;flex-wrap:wrap}.dx-pg{flex:1;min-width:90px;background:var(--surface-2);border-radius:14px;padding:7px 10px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px}.dx-pg b{font-size:15px;color:var(--fg)}
+.dx-bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;display:block}.dx-bar i{display:block;height:100%;border-radius:3px}
+.dx-h{font-size:13.5px;font-weight:700}.dx-h small{font-weight:400;color:var(--muted);font-size:12px;margin-left:4px}
+.dx-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}
+.dx-c{border:none;background:var(--surface-2);border-radius:16px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:1px;position:relative;color:var(--fg);font:inherit;cursor:pointer}
+.dx-c svg{width:56px;height:56px}.dx-c b{font-size:12.5px}.dx-c small{font-size:11px;color:var(--muted)}
+.dx-c.no svg,.ft-hero.no svg{filter:brightness(0) opacity(.13)}.dx-c.no b{color:var(--muted)}
+.dx-q{fill:#000}.dood-bg{fill:#fffaf0;opacity:.9}
+.dx-rb{position:absolute;top:5px;right:5px;font-style:normal;font-size:10px;border-radius:99px;padding:1px 6px;color:#fff}.dx-rb.r1,.ft-sp.r1{background:#b07be8;color:#fff}.dx-rb.r2,.ft-sp.r2{background:#e8a13a;color:#fff}
+.dx-lands{display:flex;gap:8px;flex-wrap:wrap}.dx-ld{background:var(--surface-2);border-radius:14px;padding:6px 8px;display:flex;flex-direction:column;align-items:center;width:118px;font-size:12px}.dx-ld svg{width:100px;height:75px}.dx-ld small{color:var(--muted);font-size:11px}
+.dx-lf{fill:color-mix(in srgb,var(--leaf) 55%,var(--surface))}.dx-lg{fill:color-mix(in srgb,var(--water) 35%,var(--surface))}
+.ft-hero{background:color-mix(in srgb,var(--water) 16%,var(--surface));border-radius:18px;display:grid;place-items:center;padding:8px}.ft-hero svg{width:140px;height:140px}
+.ft-name{display:flex;align-items:center;gap:6px;border-bottom:2px solid var(--line);padding:2px 4px;align-self:center}.ft-name:focus-within{border-color:var(--brand)}
+.ft-name input{border:none;background:none;font:inherit;font-size:20px;font-weight:700;color:var(--fg);text-align:center;width:9em;max-width:60vw;outline:none}.ft-name span{color:var(--muted)}
+.ft-meta{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);text-align:center}
+.ft-sp{display:inline-block;background:var(--surface-2);border-radius:99px;padding:2px 9px;font-size:12px;color:var(--muted);font-weight:500}
+.ft-h{margin:0;display:flex;align-items:center;gap:8px}
+.ft-kv{display:flex;gap:8px}.ft-kv div{flex:1;background:var(--surface-2);border-radius:12px;padding:7px 10px;font-size:11.5px;color:var(--muted)}.ft-kv b{display:block;font-size:15px;color:var(--fg)}
+.ft-list{display:flex;flex-direction:column;gap:6px}.ft-row{display:flex;align-items:center;gap:8px;background:var(--surface-2);border-radius:12px;padding:5px 8px}.ft-ic svg{width:30px;height:30px;display:block}.ft-tx{flex:1;min-width:0;font-size:13.5px}.ft-tx small{display:block;color:var(--muted);font-size:11.5px}
+.bags{display:flex;gap:8px}.bag{flex:1;min-width:0;border:none;background:var(--surface-2);border-radius:14px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;font:inherit;font-size:12px;color:var(--fg);position:relative;cursor:pointer}.bag svg{width:54px;height:54px}.bag[aria-pressed=true]{box-shadow:inset 0 0 0 2px var(--brand)}
+.pl-name{width:100%;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font:inherit;font-size:15px;background:var(--surface);color:var(--fg)}
 .forest-card{background:var(--surface);border-radius:22px;padding:14px 14px 12px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
 .fmode{display:flex;gap:2px;background:var(--surface-2);border-radius:999px;padding:3px}
 .fmode button{border:none;background:transparent;border-radius:999px;padding:3px 10px;font-size:12.5px;color:var(--muted);white-space:nowrap}
@@ -2070,6 +2115,10 @@ NEWS_MORE.push(()=>({id:"1118d",steps:[
     {sel:"#idBtn",alt:"#gear",pad:4,t:L("新功能 · 想法箱","New · Idea box"),b:L("想要什么功能、有什么吐槽，都可以放进 💡 想法箱。公开的想法大家都能看到、点赞和评论；有人评论你的想法时，💡 上会出现小红点。","Put feature wishes and gripes in the 💡 idea box. Public ideas can be liked and commented on, and a red dot appears when someone replies to yours."),web:1}]}));
 NEWS_MORE.push(()=>({id:"1118e",steps:[
     {sel:"#mbBtn",pad:4,t:L("新功能 · 火漆印","New · Wax seals"),b:L("封信的时候可以选火漆的颜色和图案，也能刻上名字，盖章封好；到了日子拆信时，要先把火漆揭开。","When you seal a letter, pick a wax colour and design, or engrave your name. On the day it opens, you peel the seal off first.")}]}));
+NEWS_MORE.push(()=>({id:"1122",steps:[
+    {go:"forest",sel:".fl-mapw",t:L("新功能 · 生肖大陆","New · Zodiac continent"),b:L("森林变成了一块大陆，每个月是一块形状不一样的拼图，到了那个月就拼上。今年是马年：1 月是马尾巴，12 月拼上马头，一年下来就是一整匹小马。","Your forest is now a continent. Each month is a differently shaped puzzle piece that joins when the month comes. This year is the Horse: January is the tail and December adds the head.")},
+    {go:"forest",sel:".fl-car",t:L("每个月左右滑","Swipe through months"),b:L("下面是每个月放大的样子，左右滑着看；树一排一排种着，不会互相挡住。点一棵树可以给它起名字。","Below, each month is shown up close. Swipe to browse. Tap a tree to give it a name.")},
+    {go:"forest",sel:".fmode",t:L("种子袋和图鉴","Seed bags and collection"),b:L("{pet}开花时可以挑一个种子袋，长成不同的树，还有稀有款和偶尔会「变身」的隐藏款。收集到的都在<em>图鉴</em>里。","When {pet} blooms, pick a seed bag to grow different trees, including rare ones and hidden ones that sometimes appear. Find them all in the <em>Collection</em>.")}]}));
 const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
 let tourOn=null;
 function tourGo(go){
@@ -2077,6 +2126,7 @@ function tourGo(go){
   if(idOpen)closeIdeas();
   if(go==="habit"){if(tab!=="habit"){tab="habit";render()}return}
   if(go==="journal"){if(tab!=="journal"){tab="journal";render()}return}
+  if(go==="forest"){if(tab!=="forest"){tab="forest";forestMode="land";render()}return}
   if(go==="study"&&on("study")){if(tab!=="study"){tab="study";render()}}
   else if(go==="lifewish"&&on("life")&&on("wish")){if(tab!=="life"||lifeSub!=="wish"){tab="life";lifeSub="wish";render()}}
   else if(go==="lifeshop"&&on("life")&&on("shop")){if(tab!=="life"||lifeSub!=="shop"){tab="life";lifeSub="shop";render()}}
@@ -4704,26 +4754,209 @@ function forestMap(trees,st){
     <g class="fm-compass" transform="translate(334 28)"><circle r="12"/><path d="M0 -8l3 8h-6z" class="n"/><path d="M0 8l3 -8h-6z"/><text y="-13" font-size="7">N</text></g>
   </svg>`;
 }
+/* ---------- tree species, zodiac continent, collection ---------- */
+const TR=(()=>{
+  const ink="#3a2a10",bark="#a9744f";
+  const face=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"><circle cx="-7" cy="0" r="2.6" fill="${ink}"/><circle cx="7" cy="0" r="2.6" fill="${ink}"/><path d="M-4 5q4 4 8 0" stroke="${ink}" stroke-width="2.2" fill="none" stroke-linecap="round"/><circle cx="-12" cy="5" r="3" fill="#f4a3a3" opacity=".6"/><circle cx="12" cy="5" r="3" fill="#f4a3a3" opacity=".6"/></g>`;
+  const trunk=(w=26,h=46,y=104)=>`<path d="M${80-w/2} ${y+h}q2-${h*.6} 4-${h}h${w-8}q2 ${h*.4} 4 ${h}z" fill="${bark}"/>`;
+  const shadow=`<ellipse cx="80" cy="152" rx="52" ry="6" fill="#000" opacity=".12"/>`;
+  const T={
+   pine:{zh:"小松树",en:"Little pine",d:["冬天会戴雪帽","Wears a snow cap in winter"],g:()=>shadow+trunk(20,30,120)+`<path d="M80 18 L120 70 H40Z" fill="#3faa74"/><path d="M80 40 L128 98 H32Z" fill="#4db37e"/><path d="M80 66 L134 124 H26Z" fill="#5cc98f"/><path d="M68 22q12-10 24 0l-12 8z" fill="#fff"/>`+face(80,106,.9)},
+   palm:{zh:"椰子树",en:"Palm",d:["一摇一摇","Sways about"],g:()=>shadow+`<path d="M74 150q-6-50 10-96l10 2q-12 44-6 94z" fill="${bark}"/><path d="M90 52q-30-22-60-6 26-4 58 10z" fill="#4db37e"/><path d="M90 52q20-30 52-22-30 2-50 26z" fill="#5cc98f"/><path d="M90 52q-6-34 14-46-8 22-10 46z" fill="#3faa74"/><path d="M90 54q36-6 52 18-26-16-52-14z" fill="#6fd39c"/><circle cx="86" cy="60" r="6" fill="#8a5a3a"/><circle cx="96" cy="62" r="6" fill="#a9744f"/>`+face(82,118,.85)},
+   willow:{zh:"垂柳",en:"Willow",d:["风一吹头发就乱","Messy hair in the wind"],g:()=>shadow+trunk()+`<ellipse cx="80" cy="64" rx="50" ry="36" fill="#6fd39c"/>`+[34,46,58,70,90,102,114,126].map((x,i)=>`<path d="M${x} ${66+i%2*6}q${i%2?4:-4} 30 ${i%2?-2:2} ${50+i%3*8}" stroke="${i%2?"#4db37e":"#5cc98f"}" stroke-width="6" fill="none" stroke-linecap="round"/>`).join("")+face(80,124)},
+   cactus:{zh:"仙人掌",en:"Cactus",d:["不怕忘了浇水","Fine if you forget to water it"],g:()=>shadow+`<rect x="62" y="40" width="36" height="112" rx="18" fill="#5cc98f"/><path d="M62 100h-14q-10 0-10-10V72a8 8 0 0116 0v14h8z" fill="#4db37e"/><path d="M98 86h14q10 0 10-10V58a8 8 0 00-16 0v14h-8z" fill="#4db37e"/><circle cx="80" cy="38" r="8" fill="#ff7fa8"/><circle cx="80" cy="38" r="3" fill="#ffd36b"/>`+face(80,80,.95)},
+   mushroom:{zh:"蘑菇树",en:"Mushroom tree",d:["下雨天会变大","Grows bigger when it rains"],g:()=>shadow+`<path d="M62 152q4-40 6-58h24q2 18 6 58z" fill="#f6ead7"/><path d="M20 96q4-64 60-66 56 2 60 66z" fill="#ef5d6e"/><circle cx="54" cy="62" r="9" fill="#fff"/><circle cx="96" cy="52" r="7" fill="#fff"/><circle cx="118" cy="80" r="6" fill="#fff"/><circle cx="76" cy="84" r="5" fill="#fff"/>`+face(80,124,.95)},
+   apple:{zh:"苹果树",en:"Apple tree",d:["秋天结果子","Fruits in autumn"],g:()=>shadow+trunk()+`<circle cx="52" cy="78" r="30" fill="#4db37e"/><circle cx="108" cy="78" r="30" fill="#5cc98f"/><circle cx="80" cy="58" r="34" fill="#6fd39c"/>`+[[58,64],[100,58],[82,86],[114,90],[44,92]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="7" fill="#ef4f5f"/><path d="M${x} ${y-7}v-4" stroke="#3faa74" stroke-width="2"/>`).join("")+face(80,124)},
+   ginkgo:{zh:"银杏",en:"Ginkgo",d:["金黄色的扇子叶","Golden fan-shaped leaves"],g:()=>shadow+trunk(22)+[[80,40,1],[52,66,.9],[108,66,.9],[66,92,.8],[96,92,.8]].map(([x,y,s])=>`<path transform="translate(${x} ${y}) scale(${s})" d="M0 22 L-30 -10 Q0 -30 30 -10Z" fill="${s>.85?"#ffcf4a":"#f5b82e"}"/>`).join("")+face(80,124)},
+   elm:{zh:"榆树",en:"Elm",d:["枝干像花瓶一样散开","Branches open like a vase"],g:()=>shadow+`<path d="M74 152q2-30 6-46-16-18-30-40l6-3q14 20 26 34 12-14 26-34l6 3q-14 22-30 40 4 16 6 46z" fill="${bark}"/><ellipse cx="80" cy="44" rx="58" ry="28" fill="#5cc98f"/><ellipse cx="50" cy="56" rx="26" ry="16" fill="#4db37e"/><ellipse cx="112" cy="56" rx="26" ry="16" fill="#4db37e"/><ellipse cx="80" cy="34" rx="34" ry="16" fill="#6fd39c"/>`+face(80,126,.85)},
+   plane:{zh:"梧桐树",en:"Plane tree",d:["花斑树皮，大大的掌形叶","Patchy bark, big hand-shaped leaves"],g:()=>shadow+`<path d="M66 152q3-36 4-58h20q1 22 4 58z" fill="#c9b79a"/><ellipse cx="74" cy="112" rx="5" ry="7" fill="#8f7f66"/><ellipse cx="86" cy="132" rx="6" ry="5" fill="#e8dcc6"/><ellipse cx="72" cy="140" rx="4" ry="5" fill="#a89577"/>`+[[46,70],[80,50],[114,70],[62,86],[100,86],[80,74]].map(([x,y],i)=>`<path transform="translate(${x} ${y}) scale(1.25)" d="M0 14 L-14 4 L-10 -2 L-16 -8 L-6 -8 L-6 -16 L0 -10 L6 -16 L6 -8 L16 -8 L10 -2 L14 4Z" fill="${["#4db37e","#5cc98f","#6fd39c"][i%3]}"/>`).join("")+face(80,118,.85)},
+   cloud:{zh:"云朵树",en:"Cloud tree",d:["轻飘飘的，会下小雨","Light and fluffy, rains a little"],g:()=>shadow+trunk()+`<g fill="#ffffff" stroke="#d8e6f7" stroke-width="2"><circle cx="50" cy="74" r="24"/><circle cx="110" cy="74" r="24"/><circle cx="72" cy="54" r="28"/><circle cx="98" cy="58" r="24"/><rect x="40" y="66" width="80" height="30" rx="15"/></g>`+[56,80,104].map(x=>`<path d="M${x} 104v8" stroke="#7ab6ff" stroke-width="3" stroke-linecap="round"/>`).join("")+face(80,128,.95)},
+   candy:{zh:"棉花糖树",en:"Candyfloss tree",d:["粉粉的，闻起来甜甜的","Pink and smells sweet"],g:()=>shadow+`<rect x="76" y="90" width="8" height="62" rx="4" fill="#f2d7a3"/><circle cx="58" cy="66" r="28" fill="#ffc6d8"/><circle cx="102" cy="66" r="28" fill="#ffb3cb"/><circle cx="80" cy="46" r="30" fill="#ffd6e4"/><circle cx="80" cy="74" r="26" fill="#ffc6d8"/>`+face(80,70,1)},
+   crystal:{zh:"水晶树",en:"Crystal tree",d:["会反光，一闪一闪","Catches the light and sparkles"],g:()=>shadow+trunk(20)+`<path d="M80 14 L112 60 L96 104 H64 L48 60Z" fill="#b8e4ff"/><path d="M80 14 L96 104 H80Z" fill="#8fd0ff"/><path d="M48 60 L80 14 L64 104Z" fill="#d6f1ff"/><path d="M70 40l6-8" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`+face(80,124)},
+  };
+  const dface=(x,y)=>`<g transform="translate(${x} ${y})"><path d="M-9 -2l4 0M6 -3l4 2" stroke="#222" stroke-width="3" stroke-linecap="round"/><path d="M-6 6q8 6 14 -2" stroke="#222" stroke-width="2.6" fill="none" stroke-linecap="round"/></g>`;
+  const D=[
+   {zh:"灵魂圆圆树",en:"Doodle round tree",d:["三个圈圈就是树","Three circles make a tree"],g:`<g filter="url(#trc)"><circle cx="54" cy="76" r="28" fill="#4fc26a"/><circle cx="106" cy="70" r="26" fill="#62d17a"/><circle cx="82" cy="50" r="30" fill="#79dc8c"/><rect x="70" y="96" width="22" height="54" fill="#b06a3b"/></g><g filter="url(#trw)" fill="none" stroke="#222" stroke-width="3" stroke-linecap="round"><circle cx="54" cy="76" r="28"/><circle cx="106" cy="70" r="26"/><circle cx="82" cy="50" r="30"/><path d="M70 98v52M92 96v54M60 150h44"/></g>`+dface(81,118)},
+   {zh:"灵魂小松树",en:"Doodle pine",d:["三角形叠叠乐（歪了）","Stacked triangles (a bit wonky)"],g:`<g filter="url(#trc)"><path d="M78 16 L118 66 H36Z" fill="#2fa45a"/><path d="M84 46 L130 104 H34Z" fill="#3cb767"/><rect x="72" y="104" width="18" height="46" fill="#9b5b30"/></g><g filter="url(#trw)" fill="none" stroke="#222" stroke-width="3" stroke-linejoin="round"><path d="M78 16 L118 66 H36Z"/><path d="M84 46 L130 104 H34Z"/><path d="M72 104v46h18v-46"/></g>`+dface(82,82)},
+   {zh:"灵魂西兰花",en:"Doodle broccoli",d:["它说它是树","It says it's a tree"],g:`<g filter="url(#trc)"><path d="M70 150q2-34 6-60h12q4 26 6 60z" fill="#8ecf6a"/><circle cx="52" cy="74" r="20" fill="#3f9f4c"/><circle cx="80" cy="58" r="24" fill="#4bb057"/><circle cx="108" cy="74" r="20" fill="#3f9f4c"/><circle cx="80" cy="84" r="20" fill="#56bb61"/></g><g filter="url(#trw)" fill="none" stroke="#222" stroke-width="3"><circle cx="52" cy="74" r="20"/><circle cx="80" cy="58" r="24"/><circle cx="108" cy="74" r="20"/><path d="M70 150q2-34 6-60M94 150q-2-34-6-60M66 150h32"/></g>`+dface(82,118)},
+   {zh:"灵魂棒棒糖树",en:"Doodle lollipop",d:["一根棍子一个圈","A stick and a circle"],g:`<g filter="url(#trc)"><circle cx="80" cy="60" r="40" fill="#ff8fb0"/><path d="M80 60m-24 0a24 24 0 1 0 48 0a16 16 0 1 0 -32 0a8 8 0 1 0 16 0" fill="none" stroke="#fff" stroke-width="6"/><rect x="76" y="98" width="8" height="54" fill="#c78a52"/></g><g filter="url(#trw)" fill="none" stroke="#222" stroke-width="3"><circle cx="80" cy="60" r="40"/><path d="M76 100v52M84 100v52"/></g>`+dface(80,46)},
+   {zh:"灵魂仙人掌",en:"Doodle cactus",d:["手画歪了也很坚强","Wobbly but tough"],g:`<g filter="url(#trc)"><path d="M62 150V50q0-16 18-16t18 16v100z" fill="#5ccf7d"/><path d="M62 104H46V74" stroke="#4fbf6f" stroke-width="14" fill="none" stroke-linecap="round"/><path d="M98 88h18V60" stroke="#4fbf6f" stroke-width="14" fill="none" stroke-linecap="round"/></g><g filter="url(#trw)" fill="none" stroke="#222" stroke-width="3" stroke-linecap="round"><path d="M62 150V50q0-16 18-16t18 16v100"/><path d="M64 98h-26V72M98 82h26V56"/><path d="M70 60l-4-3M90 66l4-3M74 120l-4 2M88 130l4 2"/></g>`+dface(80,88)},
+   {zh:"一笔画",en:"One-line tree",d:["笔不离纸，一口气画完","Drawn without lifting the pen"],g:`<g filter="url(#trw)" fill="none" stroke="#2a3a2a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M64 152 C70 120 74 108 76 96 C60 98 34 92 36 70 C38 50 58 52 60 60 C54 36 76 22 92 34 C106 22 132 40 120 62 C138 68 130 98 104 92 C98 94 88 96 86 96 C88 112 92 128 98 152"/><path d="M82 70c4 4 8 4 12 0"/></g><circle cx="78" cy="60" r="2.5" fill="#2a3a2a"/><circle cx="96" cy="58" r="2.5" fill="#2a3a2a"/>`},
+   {zh:"线团树",en:"Scribble tree",d:["树冠是一团乱线","A canopy of tangled lines"],g:`<g filter="url(#trw)" fill="none" stroke-linecap="round"><path d="M80 152V96M80 120l-14-12M80 112l16-14" stroke="#7a4d2c" stroke-width="5"/><path d="M80 70c30-30 40 10 10 14s-44-2-34-26 46-20 44 6-34 30-46 8 6-34 28-26 26 22 4 28-34-6-28-22" stroke="#3fae6a" stroke-width="3"/><path d="M60 60c10 30 50 30 46-6" stroke="#8ad67a" stroke-width="2.5"/></g>`},
+   {zh:"几何树",en:"Shapes tree",d:["一个三角一个圆一根线","A triangle, a circle and a line"],g:`<g filter="url(#trw)" stroke="#222" stroke-width="3" stroke-linejoin="round"><circle cx="64" cy="60" r="28" fill="#ffcf4a"/><path d="M84 30 L124 104 H52Z" fill="#4db37e" fill-opacity=".85"/><path d="M80 104V152" fill="none"/><path d="M80 130H98" fill="none"/></g><circle cx="104" cy="44" r="6" fill="#ef5d6e"/>`},
+   {zh:"螺旋树",en:"Spiral tree",d:["转着转着就长大了","Grew up going round and round"],g:`<g filter="url(#trw)" fill="none" stroke-linecap="round"><path d="M80 152V92" stroke="#7a4d2c" stroke-width="5"/><path d="M80 62m0 0a4 4 0 1 1 6 4a10 10 0 1 1-16-10a18 18 0 1 1 28 18a26 26 0 1 1-40-26a34 34 0 1 1 52 34" stroke="#4db37e" stroke-width="3.5"/></g>`},
+  ];
+  return {T,D};
+})();
+const SP_COMMON=["round","pine","apple","ginkgo","cactus","mushroom","willow","elm","palm","plane"], SP_RARE=["cloud","candy","crystal"], SP_HID=TR.D.map((_,i)=>"d"+i);
+const spKind=k=>k&&k[0]==="d"&&/^d\d+$/.test(k)?2:SP_RARE.includes(k)?1:0;
+const spOf=t=>t&&t.kind&&(t.kind==="round"||TR.T[t.kind]||TR.D[+String(t.kind).slice(1)])?t.kind:"round";
+function spName(k){if(k==="round")return L("圆圆树","Round tree");if(TR.T[k])return L(TR.T[k].zh,TR.T[k].en);const d=TR.D[+String(k).slice(1)];return d?L(d.zh,d.en):L("圆圆树","Round tree")}
+function spDesc(k){if(k==="round")return L("小芽开花后的样子，颜色跟着那一颗种子","How {pet} looks in full bloom, in that seed's colour");const x=TR.T[k]||TR.D[+String(k).slice(1)];return x?L(x.d[0],x.d[1]):""}
+function spSVG(k,theme,mood,card){
+  if(k==="round"||!(TR.T[k]||TR.D[+String(k).slice(1)]))return treeSVG(mood||"happy",STAGES.length-1,false,theme);
+  return `<svg viewBox="0 0 160 160">${TR.T[k]?TR.T[k].g():(card?`<circle cx="80" cy="86" r="70" class="dood-bg"/>`:"")+TR.D[+k.slice(1)].g}</svg>`;
+}
+const treeName=t=>(t&&t.name)||spName(spOf(t));
+(function(){if(document.getElementById("trDefs"))return;const d=document.createElement("div");d.id="trDefs";d.innerHTML=`<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<filter id="trw" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+<filter id="trc" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="7" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.4 1.15" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in" result="c"/><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="5" result="w"/><feDisplacementMap in="c" in2="w" scale="6"/></filter>
+<filter id="flRim" x="-10%" y="-10%" width="120%" height="120%"><feMorphology operator="dilate" radius="5"/></filter>
+<filter id="flRim2" x="-10%" y="-10%" width="120%" height="125%"><feMorphology operator="dilate" radius="5"/><feOffset dy="6"/></filter>
+</defs></svg>`;(document.body||document.documentElement).appendChild(d)})();
+
+/* zodiac shapes: e=ellipse(cx,cy,rx,ry,rot) r=rect(x,y,w,h,rx) c=circle p=polygon */
+const ZOD_ORDER=["monkey","rooster","dog","pig","rat","ox","tiger","rabbit","dragon","snake","horse","goat"];
+const ZOD_NAME={monkey:["猴","Monkey"],rooster:["鸡","Rooster"],dog:["狗","Dog"],pig:["猪","Pig"],rat:["鼠","Rat"],ox:["牛","Ox"],tiger:["虎","Tiger"],rabbit:["兔","Rabbit"],dragon:["龙","Dragon"],snake:["蛇","Snake"],horse:["马","Horse"],goat:["羊","Goat"]};
+const ZOD_SHAPE={
+  horse:{sh:[["e",215,190,135,72,0],["p",[[300,175],[330,92],[372,68],[402,110],[352,215]]],["e",398,100,56,32,32],["p",[[356,72],[362,34],[382,66]]],["p",[[376,66],[390,36],[398,74]]],["e",64,200,32,66,22],["r",108,225,34,100,14],["r",152,230,32,95,14],["r",262,228,32,97,14],["r",304,222,34,103,14]],
+    seeds:[[62,205],[125,205],[120,150],[175,138],[180,210],[235,215],[230,140],[285,150],[290,210],[340,180],[350,115],[410,108]]},
+  goat:{sh:[["e",225,185,145,85,0],["c",120,150,52],["c",185,115,52],["c",260,112,52],["c",320,150,48],["e",392,138,42,52,0],["p",[[360,100],[352,62],[384,88]]],["p",[[404,92],[430,62],[418,104]]],["r",135,240,30,85,12],["r",185,245,28,80,12],["r",265,245,28,80,12],["r",305,238,30,87,12],["e",82,168,20,26,-20]],
+    seeds:[[90,170],[130,205],[135,140],[185,120],[190,190],[240,215],[240,140],[290,120],[290,190],[340,195],[345,145],[395,135]]},
+  blob:{sh:[["e",240,185,200,135,0],["c",120,120,80],["c",350,110,78],["c",380,250,70],["c",110,255,72],["c",250,70,55],["c",240,300,50]],
+    seeds:[[95,100],[195,90],[290,92],[385,110],[390,195],[290,190],[190,185],[90,190],[100,275],[195,280],[290,275],[385,270]]}
+};
+const zodOf=y=>ZOD_ORDER[((y%12)+12)%12];
+const zodShape=y=>ZOD_SHAPE[zodOf(y)]||ZOD_SHAPE.blob;
+const FLW=480,FLH=360;
+function shSVG(sh){return sh.map(s=>s[0]==="e"?`<ellipse cx="${s[1]}" cy="${s[2]}" rx="${s[3]}" ry="${s[4]}"${s[5]?` transform="rotate(${s[5]} ${s[1]} ${s[2]})"`:""}/>`:s[0]==="r"?`<rect x="${s[1]}" y="${s[2]}" width="${s[3]}" height="${s[4]}" rx="${s[5]||0}"/>`:s[0]==="c"?`<circle cx="${s[1]}" cy="${s[2]}" r="${s[3]}"/>`:`<polygon points="${s[1].map(p=>p.join(",")).join(" ")}"/>`).join("")}
+function inPoly(x,y,poly){let c=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const[xi,yi]=poly[i],[xj,yj]=poly[j];if((yi>y)!=(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c}return c}
+function inShape(x,y,sh){for(const s of sh){
+  if(s[0]==="e"){const a=-(s[5]||0)*Math.PI/180,dx=x-s[1],dy=y-s[2],u=dx*Math.cos(a)-dy*Math.sin(a),v=dx*Math.sin(a)+dy*Math.cos(a);if((u*u)/(s[3]*s[3])+(v*v)/(s[4]*s[4])<=1)return true}
+  else if(s[0]==="r"){if(x>=s[1]&&x<=s[1]+s[3]&&y>=s[2]&&y<=s[2]+s[4])return true}
+  else if(s[0]==="c"){if((x-s[1])**2+(y-s[2])**2<=s[3]*s[3])return true}
+  else if(inPoly(x,y,s[1]))return true}return false}
+function vorCells(seeds){return seeds.map((a,i)=>{let poly=[[0,0],[FLW,0],[FLW,FLH],[0,FLH]];seeds.forEach((b,j)=>{if(i===j)return;const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,nx=b[0]-a[0],ny=b[1]-a[1],f=p=>(p[0]-mx)*nx+(p[1]-my)*ny,out=[];
+  for(let k=0;k<poly.length;k++){const p=poly[k],q=poly[(k+1)%poly.length],fp=f(p),fq=f(q);if(fp<=0)out.push(p);if((fp<0)!==(fq<0)){const t=fp/(fp-fq);out.push([p[0]+(q[0]-p[0])*t,p[1]+(q[1]-p[1])*t])}}poly=out});return poly})}
+const flCache={};
+function flGeo(y){const z=zodShape(y),key=ZOD_SHAPE[zodOf(y)]?zodOf(y):"blob";if(flCache[key])return flCache[key];
+  const cells=vorCells(z.seeds);
+  const lands=cells.map(poly=>{const xs=poly.map(p=>p[0]),ys=poly.map(p=>p[1]),M=new Set(),L_=[];
+    for(let x=Math.floor(Math.min(...xs)/3)*3;x<=Math.max(...xs);x+=3)for(let yy=Math.floor(Math.min(...ys)/3)*3;yy<=Math.max(...ys);yy+=3)if(inPoly(x,yy,poly)&&inShape(x,yy,z.sh)){M.add(x/3+","+yy/3);L_.push([x,yy])}
+    if(!L_.length)L_.push([0,0]);
+    const cx=L_.reduce((a,p)=>a+p[0],0)/L_.length,cy=L_.reduce((a,p)=>a+p[1],0)/L_.length;
+    return{L:L_,has:(x,yy)=>M.has(Math.round(x/3)+","+Math.round(yy/3)),cx,cy,x0:Math.min(...L_.map(p=>p[0])),x1:Math.max(...L_.map(p=>p[0])),y0:Math.min(...L_.map(p=>p[1])),y1:Math.max(...L_.map(p=>p[1])),poly}});
+  lands.forEach(ld=>{let best=null;for(const[x,yy]of ld.L){if(Math.abs(x-ld.cx)>18)continue;if(!ld.has(x-16,yy)||!ld.has(x+16,yy)||!ld.has(x,yy+8))continue;if(!best||yy>best[1])best=[x,yy]}ld.lab=best||[ld.cx,ld.cy]});
+  return flCache[key]={sh:z.sh,cells,lands,key}}
+const fitCache={};
+function flFit(geo,ci,n,Smax,Smin,avoid){const key=[geo.key,ci,n,Smax,Smin,avoid?1:0].join("|");if(fitCache[key])return fitCache[key];const land=geo.lands[ci];
+  const ok=(x,y,S)=>{const m=3.5;for(const dx of[-.4,0,.4])for(const dy of[0,-.45,-.88]){if(!land.has(x+dx*S+(dx<0?-m:dx>0?m:0),y+dy*S+(dy===0?m:0)))return false}
+    if(avoid){const[ax,ay]=land.lab;if(x+S*.45>ax-16&&x-S*.45<ax+16&&y>ay-9&&y-S*.9<ay+8)return false}return true};
+  let best={S:Smin,P:[]};for(let S=Smax;S>=Smin;S*=.93){const P=[];let k=0;for(let y=land.y0+S*.9;y<=land.y1+1;y+=S*.88,k++)for(let x=land.x0+(k%2?S*.5:0);x<=land.x1;x+=S*1.02)if(ok(x,y,S))P.push([x,y]);best={S,P};if(P.length>=n)break}
+  const{S,P}=best;const pos=P.map(p=>[p,Math.hypot(p[0]-land.cx,(p[1]-S*.45-land.cy)*1.2)]).sort((a,b)=>a[1]-b[1]).slice(0,n).map(a=>a[0]).sort((a,b)=>a[1]-b[1]||a[0]-b[0]);
+  return fitCache[key]={S,pos,hidden:Math.max(0,n-pos.length)}}
+const placeAt=(svg,x,y,s,attrs)=>`<g ${attrs}>${svg.replace("<svg ",`<svg x="${(x-s/2).toFixed(1)}" y="${(y-s*.95).toFixed(1)}" width="${s.toFixed(1)}" height="${s.toFixed(1)}" `)}</g>`;
+
+let forestYear=null, forestMon=null, forestFlash=null;
+function forestGroups(){const by={};forest.forEach(t=>{const d=new Date(t.grownAt||Date.now()),y=d.getFullYear(),m=d.getMonth();((by[y]=by[y]||[])[m]=by[y][m]||[]).push(t)});
+  Object.values(by).forEach(a=>{for(let m=0;m<12;m++)a[m]=(a[m]||[]).sort((p,q)=>(p.grownAt||0)-(q.grownAt||0))});return by}
+const MONTH=m=>L(`${m+1}月`,MON[m]);
+function flMap(y,months,nowY,nowM){
+  const geo=flGeo(y),id="fl"+y;const past=m=>y<nowY||(y===nowY&&m<=nowM);
+  const poly=c=>c.map(p=>p.map(v=>v.toFixed(1)).join(",")).join(" ");
+  let h=`<svg class="fl-map" viewBox="0 0 ${FLW} ${FLH}" role="img" aria-label="${L(`${y} 年的大陆`,`The ${y} continent`)}"><defs><clipPath id="${id}s">${shSVG(geo.sh)}</clipPath>
+    <clipPath id="${id}p">${geo.cells.map((c,m)=>past(m)?`<polygon points="${poly(c)}"/>`:"").join("")}</clipPath><clipPath id="${id}f">${geo.cells.map((c,m)=>!past(m)?`<polygon points="${poly(c)}"/>`:"").join("")}</clipPath></defs>
+    <rect width="${FLW}" height="${FLH}" class="fm-sea"/>${[[40,30],[420,26],[24,330],[440,330],[230,340]].map(([x,yy])=>`<path d="M${x} ${yy}q5 -4 10 0t10 0" class="fm-wave"/>`).join("")}
+    <g clip-path="url(#${id}f)"><g clip-path="url(#${id}s)"><rect width="${FLW}" height="${FLH}" class="fl-ghost"/>${geo.cells.map((c,m)=>!past(m)?`<polygon points="${poly(c)}" class="fl-gline"/>`:"").join("")}</g></g>`;
+  const land=cls=>`<g clip-path="url(#${id}p)"><g clip-path="url(#${id}s)"><rect width="${FLW}" height="${FLH}" class="${cls}"/></g></g>`;
+  h+=`<g filter="url(#flRim2)">${land("fl-edge")}</g><g filter="url(#flRim)">${land("fm-sand")}</g>`;
+  h+=`<g clip-path="url(#${id}s)">${geo.cells.map((c,m)=>past(m)?`<polygon points="${poly(c)}" class="${m%2?"fl-l2":"fl-l1"}"/>`:"").join("")}</g>`;
+  for(let m=0;m<12;m++){const ld=geo.lands[m],[lx,ly]=ld.lab,ts=months[m]||[],on=y===forestYear&&m===forestMon;
+    if(past(m)&&ts.length){const f=flFit(geo,m,ts.length,15,8,true);f.pos.forEach((p,j)=>h+=placeAt(spSVG(spOf(ts[j]),ts[j].theme),p[0],p[1],f.S,`class="fl-t"`));if(f.hidden)h+=`<text x="${lx+17}" y="${ly+3}" class="fl-more">+${f.hidden}</text>`}
+    h+=`<g class="fl-pill${y===nowY&&m===nowM?" now":""}"><rect x="${lx-14}" y="${ly-7}" width="28" height="14" rx="7"/><text x="${lx}" y="${ly+3.2}">${lang==="en"?MON[m].slice(0,3):m+1+"月"}</text></g>`}
+  h+=`<g clip-path="url(#${id}s)">${geo.cells.map((c,m)=>`<polygon points="${poly(c)}" class="fl-hit${y===forestYear&&m===forestMon?" on":""}" data-act="fmon" data-v="${m}" role="button" aria-label="${MONTH(m)}"/>`).join("")}</g>`;
+  return h+"</svg>"}
+function flPiece(y,m,ts,withCur){
+  const geo=flGeo(y),ld=geo.lands[m],id=`fp${y}_${m}`,pad=12;const{x0,x1,y0,y1}=ld;
+  const items=ts.map(t=>({t}));if(withCur)items.push({cur:true});
+  const f=flFit(geo,m,items.length,Math.min(x1-x0,y1-y0)*.8,6,false);
+  const land=cls=>`<g clip-path="url(#${id}c)"><g clip-path="url(#${id}s)"><rect width="${FLW}" height="${FLH}" class="${cls}"/></g></g>`;
+  let h=`<svg class="fl-piece" viewBox="${(x0-pad).toFixed(1)} ${(y0-pad).toFixed(1)} ${(x1-x0+pad*2).toFixed(1)} ${(y1-y0+pad*2+6).toFixed(1)}"><defs><clipPath id="${id}s">${shSVG(geo.sh)}</clipPath><clipPath id="${id}c"><polygon points="${ld.poly.map(p=>p.join(",")).join(" ")}"/></clipPath></defs>`;
+  h+=`<g filter="url(#flRim2)">${land("fl-edge")}</g><g filter="url(#flRim)">${land("fm-sand")}</g>${land(m%2?"fl-l2":"fl-l1")}`;
+  f.pos.forEach((p,j)=>{const it=items[j];if(it.cur)h+=placeAt(treeSVG("happy",stageOf(curWater()),false,curTheme),p[0],p[1],f.S,`class="fl-tt cur" data-act="fcur" role="button" tabindex="0" aria-label="${L("正在长的{pet}","The sprout growing now")}"`);
+    else h+=placeAt(spSVG(spOf(it.t),it.t.theme,forestFlash===it.t.id?"cheer":"happy"),p[0],p[1],f.S,`class="fl-tt${forestFlash===it.t.id?" flash":""}" data-act="fopen" data-id="${it.t.id}" role="button" tabindex="0" aria-label="${esc(treeName(it.t))}"`)});
+  if(f.hidden)h+=`<text x="${ld.cx}" y="${y1+4}" class="fl-more" text-anchor="middle">+${f.hidden}</text>`;
+  return h+"</svg>"}
+function forestLand(){
+  const by=forestGroups(),now=new Date(),nowY=now.getFullYear(),nowM=now.getMonth();
+  const years=[...new Set([...Object.keys(by).map(Number),nowY])].sort((a,b)=>a-b);
+  if(forestYear===null||!years.includes(forestYear))forestYear=nowY;
+  if(forestMon===null)forestMon=forestYear===nowY?nowM:11;
+  const y=forestYear,months=by[y]||Array.from({length:12},()=>[]);const past=m=>y<nowY||(y===nowY&&m<=nowM);
+  const total=months.reduce((a,b)=>a+b.length,0),done=Array.from({length:12},(_,m)=>m).filter(past).length;
+  const zn=ZOD_NAME[zodOf(y)];const yi=years.indexOf(y);
+  const cards=Array.from({length:12},(_,m)=>{const ts=months[m]||[],cur=y===nowY&&m===nowM;
+    if(!past(m))return `<div class="fl-card fut" data-m="${m}"><b>${MONTH(m)}</b><span>${L("还没到。到了这个月，这一块就会拼上来。","Not yet. This piece joins the map when the month comes.")}</span></div>`;
+    if(!ts.length&&!cur)return `<div class="fl-card empty" data-m="${m}">${flPiece(y,m,[],false)}<div class="fl-cf"><b>${MONTH(m)}</b><span>${L("这个月没有种树","No trees this month")}</span></div></div>`;
+    return `<div class="fl-card" data-m="${m}">${flPiece(y,m,ts,cur)}<div class="fl-cf"><b>${MONTH(m)}</b><span>${L(`${ts.length} 棵`,`${ts.length} ${n_(ts.length,"tree","trees")}`)}</span></div></div>`}).join("");
+  return `<div class="fl-top"><button class="fl-yb" data-act="fyear" data-v="-1" ${yi>0?"":"disabled"} aria-label="${L("上一年","Previous year")}">‹</button><b>${y} · ${L(zn[0]+"年",`Year of the ${zn[1]}`)}</b><button class="fl-yb" data-act="fyear" data-v="1" ${yi<years.length-1?"":"disabled"} aria-label="${L("下一年","Next year")}">›</button>
+      <span class="fl-sum">${L(`${done} / 12 块 · ${total} 棵`,`${done} / 12 pieces · ${total} ${n_(total,"tree","trees")}`)}</span></div>
+    <div class="fl-mapw">${flMap(y,months,nowY,nowM)}</div>
+    <div class="fl-mnav"><button data-act="fmstep" data-v="-1" aria-label="${L("上个月","Previous month")}">‹</button><b id="flLab">${MONTH(forestMon)} · ${L(`${(months[forestMon]||[]).length} 棵`,`${(months[forestMon]||[]).length} ${n_((months[forestMon]||[]).length,"tree","trees")}`)}</b><button data-act="fmstep" data-v="1" aria-label="${L("下个月","Next month")}">›</button></div>
+    <div class="fl-car" id="flCar">${cards}</div>`}
+function forestDex(){
+  const cnt={},first={};forest.forEach(t=>{const k=spOf(t);cnt[k]=(cnt[k]||0)+1;if(!first[k]||(t.grownAt||0)<first[k])first[k]=t.grownAt||0});
+  const card=k=>{const n=cnt[k]||0,kd=spKind(k);return `<button class="dx-c${n?"":" no"}" data-act="fdex" data-v="${k}">${n&&kd?`<i class="dx-rb r${kd}">${kd===1?L("稀有","Rare"):L("隐藏","Hidden")}</i>`:""}${n||kd<2?spSVG(k,k==="round"?(forest.find(t=>spOf(t)==="round")||{}).theme:null,null,n>0):`<svg viewBox="0 0 160 160"><circle cx="80" cy="84" r="36" class="dx-q"/></svg>`}<b>${n?spName(k):"???"}</b><small>${n?L(`种了 ${n} 棵`,`${n} planted`):kd===2?L("还没遇到","Not met yet"):L("还没种过","Not planted yet")}</small></button>`};
+  const got=l=>l.filter(k=>cnt[k]).length;
+  const bar=(lab,l,c)=>`<div class="dx-pg">${lab}<b>${got(l)} / ${l.length}</b><span class="dx-bar"><i style="width:${Math.round(got(l)/l.length*100)}%;background:${c}"></i></span></div>`;
+  const by=forestGroups(),nowY=new Date().getFullYear();const ys=[...new Set([...Object.keys(by).map(Number),nowY])].sort((a,b)=>a-b);
+  const lands=[...ys,ys[ys.length-1]+1].map((y,i,a)=>{const z=zodShape(y),zn=ZOD_NAME[zodOf(y)],fut=i===a.length-1,done=y<nowY?12:y===nowY?new Date().getMonth()+1:0;
+    return `<div class="dx-ld${fut?" fut":""}"><svg viewBox="0 0 480 360"><g class="${fut?"dx-lg":"dx-lf"}">${shSVG(z.sh)}</g></svg><b>${y} · ${L(zn[0]+"年",zn[1])}</b><small>${fut?L("还没开始","Not started"):done>=12?L("拼完啦","Complete"):L(`拼到 ${done} / 12`,`${done} / 12 pieces`)}</small></div>`}).join("");
+  return `<div class="dx-prog">${bar(L("普通","Common"),SP_COMMON,"var(--leaf)")}${bar(L("稀有","Rare"),SP_RARE,"#b07be8")}${bar(L("隐藏款","Hidden"),SP_HID,"#e8a13a")}</div>
+    <div class="dx-h">${L("普通","Common")}</div><div class="dx-g">${SP_COMMON.map(card).join("")}</div>
+    <div class="dx-h">${L("稀有","Rare")} <small>${L("大约 10 次出现一次","About 1 in 10 seed bags")}</small></div><div class="dx-g">${SP_RARE.map(card).join("")}</div>
+    <div class="dx-h">${L("隐藏款","Hidden")} <small>${L("种下的时候偶尔会「变身」","Sometimes a tree transforms as you plant it")}</small></div><div class="dx-g">${SP_HID.map(card).join("")}</div>
+    <div class="dx-h">${L("生肖大陆","Zodiac continents")} <small>${L("每年拼完一只","One animal each year")}</small></div><div class="dx-lands">${lands}</div>`}
+function flAfter(){const car=document.getElementById("flCar");if(!car)return;
+  const go=(m,smooth)=>{const c=car.children[m];if(c)car.scrollTo({left:c.offsetLeft-car.offsetLeft-(car.clientWidth-c.clientWidth)/2,behavior:smooth?"smooth":"auto"})};
+  go(forestMon,false);
+  if(car._fl)return;car._fl=1;let tm;
+  car.addEventListener("scroll",()=>{clearTimeout(tm);tm=setTimeout(()=>{const mid=car.scrollLeft+car.clientWidth/2;let b=0,bd=1e9;[...car.children].forEach((c,j)=>{const d=Math.abs(c.offsetLeft-car.offsetLeft+c.clientWidth/2-mid);if(d<bd){bd=d;b=j}});
+    if(b!==forestMon){forestMon=b;flMark()}},60)},{passive:true});
+  car._go=go}
+function flMark(){document.querySelectorAll(".fl-hit").forEach(e=>e.classList.toggle("on",+e.dataset.v===forestMon));
+  const lab=document.getElementById("flLab");if(lab){const n=((forestGroups()[forestYear]||[])[forestMon]||[]).length;lab.textContent=`${MONTH(forestMon)} · ${L(`${n} 棵`,`${n} ${n_(n,"tree","trees")}`)}`}}
+function flGo(m){forestMon=Math.max(0,Math.min(11,m));flMark();const car=document.getElementById("flCar");if(car&&car._go)car._go(forestMon,!matchMedia("(prefers-reduced-motion: reduce)").matches)}
+function openTree(id){
+  const t=forest.find(x=>x.id===id);if(!t)return;const k=spOf(t),kd=spKind(k);
+  const d=new Date(t.grownAt||Date.now());
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  bg.innerHTML=`<div class="sheet ft-sheet" role="dialog" aria-label="${esc(treeName(t))}"><div class="ft-hero">${spSVG(k,t.theme,"cheer",1)}</div>
+    <label class="ft-name"><input id="ftName" maxlength="20" value="${esc(treeName(t))}" aria-label="${L("树的名字","Tree name")}"><span aria-hidden="true">✎</span></label>
+    <div class="ft-meta"><span class="ft-sp${kd?" r"+kd:""}">${spName(k)}${kd===1?" · "+L("稀有","Rare"):kd===2?" · "+L("隐藏款","Hidden"):""}</span><span>${L(`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日种下`,`Planted ${d.getDate()} ${MON[d.getMonth()]} ${d.getFullYear()}`)} · ${L(`喝了 ${t.drops||MAXW} 滴水`,`${t.drops||MAXW} drops`)}</span></div>
+    <div class="sheet-actions"><button class="btn primary" data-p="close">${L("好","Done")}</button></div></div>`;
+  document.body.appendChild(bg);
+  const save=()=>{const v=bg.querySelector("#ftName").value.trim()||spName(k);if(v===treeName(t))return;t.name=v;if(db){const r=db.collection("forest").doc(id);queued(r.path,()=>r.set({name:v},{merge:true}))}render()};
+  bg.querySelector("#ftName").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();save();bg.remove()}});
+  bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg||e.target.closest('[data-p="close"]')){save();bg.remove()}});
+}
+function openDex(k){
+  const mine=forest.filter(t=>spOf(t)===k).sort((a,b)=>(a.grownAt||0)-(b.grownAt||0)),n=mine.length,kd=spKind(k);
+  const lab=[L("普通","Common"),L("稀有","Rare"),L("隐藏款","Hidden")][kd];
+  const fd=ts=>{const d=new Date(ts||Date.now());return L(`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`,`${d.getDate()} ${MON[d.getMonth()]} ${d.getFullYear()}`)};
+  const bg=document.createElement("div");bg.className="sheet-bg";let all=false;
+  const draw=()=>{bg.innerHTML=`<div class="sheet ft-sheet" role="dialog" aria-label="${n?spName(k):"???"}">
+    <div class="ft-hero${n?"":" no"}">${n||kd<2?spSVG(k,mine[0]&&mine[0].theme,null,n>0):`<svg viewBox="0 0 160 160"><circle cx="80" cy="84" r="36" class="dx-q"/></svg>`}</div>
+    <h3 class="ft-h">${n?spName(k):"???"} <span class="ft-sp${kd?" r"+kd:""}">${lab}</span></h3>
+    <p class="hint" style="margin:0">${n?spDesc(k):kd===2?L("隐藏款没有提示。种下的时候，偶尔会有一棵忽然「变身」成这样。","No clues for hidden ones. Every so often a tree transforms as you plant it."):L("还没种过。下次小芽开花，挑种子袋的时候也许会遇到它。","Not planted yet. You might find it in a seed bag next time {pet} blooms.")}</p>
+    ${n?`<div class="ft-kv"><div>${L("一共种了","Planted")}<b>${L(`${n} 棵`,String(n))}</b></div><div>${L("第一次","First")}<b>${fd(mine[0].grownAt)}</b></div></div>
+    <div class="ft-list">${(all?mine:mine.slice(0,5)).map(t=>`<div class="ft-row"><span class="ft-ic">${spSVG(k,t.theme,null,1)}</span><span class="ft-tx">${esc(treeName(t))}<small>${fd(t.grownAt)}</small></span><button class="btn" data-find="${t.id}">${L("找到","Find")} ›</button></div>`).join("")}
+      ${n>5&&!all?`<button class="btn" data-p="all">${L(`还有 ${n-5} 棵 · 展开`,`${n-5} more`)}</button>`:""}</div>`:""}
+    <div class="sheet-actions"><button class="btn primary" data-p="close">${L("好","Done")}</button></div></div>`};
+  draw();document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg||e.target.closest('[data-p="close"]')){bg.remove();return}
+    if(e.target.closest('[data-p="all"]')){all=true;draw();return}
+    const f=e.target.closest("[data-find]");if(f){const t=forest.find(x=>x.id===f.dataset.find);bg.remove();if(!t)return;const d=new Date(t.grownAt||Date.now());
+      forestMode="land";forestYear=d.getFullYear();forestMon=d.getMonth();forestFlash=t.id;try{localStorage.setItem("los-fmode",forestMode)}catch(_){};render();setTimeout(()=>{forestFlash=null;if(tab==="forest")render()},2600)}});
+}
 function forestView(){
-  const trees=[...forest].sort((a,b)=>(a.grownAt||0)-(b.grownAt||0));
-  const st=stageOf(curWater());
-  const mode=forestMode||(trees.length>12?"map":"scene");
-  const fmtD=ts=>{const d=new Date(ts||Date.now());return L(`${d.getMonth()+1}月${d.getDate()}日`,`${d.getDate()} ${MON[d.getMonth()]}`)};
-  const hidden=mode==="scene"?Math.max(0,trees.length-SCENE_MAX):0;
-  let cap;
-  if(forestSel==="cur")cap=`<b>${L("正在长的{pet}","Growing now")}</b> · ${tName(curTheme)} · ${STAGES[st].n} · ${L(`已经喝了 ${curWater()} 滴水`,`${curWater()} drops so far`)}`;
-  else if(forestSel!==null&&trees[forestSel]){const t=trees[forestSel];cap=`<b>${L(`第 ${forestSel+1} 棵`,`Tree ${forestSel+1}`)}</b> · ${tName(t.theme)} · ${L(`${fmtD(t.grownAt)}开花，喝了 ${t.drops||MAXW} 滴水`,`bloomed on ${fmtD(t.grownAt)} after ${t.drops||MAXW} drops`)}`
-    +(mode==="scene"&&forestSel<trees.length-SCENE_MAX?L("。它在地图里，草地上只画最近的树。"," It's on the map; the meadow only shows the latest trees."):"")}
-  else if(!trees.length)cap=L("草地还空着，最前面那颗就是正在长的{pet}。它开花后可以种进这片草地，再从一颗新种子开始。","The meadow is still empty. The little one at the front is your sprout. Once it blooms, plant it here and start again from a new seed.");
-  else if(mode==="map")cap=L(`地图上一共 ${trees.length} 棵树，最早种的在小岛中间。点一个圆点看看它。`,`${trees.length} ${n_(trees.length,"tree","trees")} on the map, oldest in the middle of the island. Tap a dot to see it.`);
-  else cap=L(`草地上已经有 ${trees.length} 棵开花的树了。点一棵树，看看它是哪天长成的。`,`${trees.length} blooming ${n_(trees.length,"tree is","trees are")} on your meadow. Tap one to see when it bloomed.`)
-    +(hidden?L(` 草地上画了最近的 ${SCENE_MAX} 棵，全部的树在地图里。`,` The meadow shows the latest ${SCENE_MAX}; see them all on the map.`):"");
+  const mode=forestMode==="dex"?"dex":"land", n=forest.length;
+  if(mode==="land")setTimeout(flAfter,0);
   return `<div class="board" data-k="forest">
     <div class="forest-card">
-      <div class="card-head"><h3>${L("我的森林","My forest")}</h3><span class="sub">${trees.length?L(`${trees.length} 棵开花的树`,`${trees.length} blooming ${n_(trees.length,"tree","trees")}`):L("还没有种出来的树","No trees planted yet")}</span>
-        <span class="right fmode" role="group" aria-label="${L("森林视图","Forest view")}"><button data-act="fmode" data-v="scene" aria-pressed="${mode==="scene"}">${ICON_MEADOW}${L("草地","Meadow")}</button><button data-act="fmode" data-v="map" aria-pressed="${mode==="map"}">${ICON_MAP}${L("地图","Map")}</button></span></div>
-      <div class="meadow-wrap">${mode==="map"?forestMap(trees,st):meadowScene(trees,st)}</div>
-      <p class="forest-cap">${cap}</p>
+      <div class="card-head"><h3>${L("我的森林","My forest")}</h3><span class="sub">${n?L(`${n} 棵树`,`${n} ${n_(n,"tree","trees")}`):L("还没有种出来的树","No trees planted yet")}</span>
+        <span class="right fmode" role="group" aria-label="${L("森林视图","Forest view")}"><button data-act="fmode" data-v="land" aria-pressed="${mode==="land"}">${L("大陆","Map")}</button><button data-act="fmode" data-v="dex" aria-pressed="${mode==="dex"}">${L("图鉴","Collection")}</button></span></div>
+      ${mode==="dex"?forestDex():forestLand()}
     </div>
     <div class="card">
       <div class="card-head"><h3>${L("现在这颗的颜色","This sprout's colour")}</h3><span class="sub">${L("随时可以换","Change it anytime")}</span></div>
@@ -4739,25 +4972,35 @@ function setTheme(k){
 function openPlant(){
   if(!db)return;
   let pick=Object.keys(THEMES).find(k=>k!==curTheme&&!forest.some(f=>f.theme===k))||Object.keys(THEMES).find(k=>k!==curTheme);
+  const bags=[];let guard=0;while(bags.length<3&&guard++<50){const l=Math.random()<.12?SP_RARE:SP_COMMON,k=l[Math.floor(Math.random()*l.length)];if(!bags.includes(k))bags.push(k)}
+  let sel=0,nm=null;
   const bg=document.createElement("div"); bg.className="sheet-bg";
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("种进森林","Plant in forest")}">
     <div style="display:flex;gap:12px;align-items:center"><div style="width:88px;height:88px;flex:none">${treeSVG("cheer",STAGES.length-1,false,curTheme)}</div>
-      <div><h3>${L("{pet}开花啦 🌸","{pet} is in full bloom 🌸")}</h3><p class="hint" style="margin:4px 0 0">${L("把它种进森林，它会一直住在那里。然后我们从一颗新种子重新开始。","Plant it in your forest, where it will stay. Then we start again from a new seed.")}</p></div></div>
+      <div><h3>${L("{pet}开花啦 🌸","{pet} is in full bloom 🌸")}</h3><p class="hint" style="margin:4px 0 0">${L("挑一个种子袋，它会长成那种树，一直住在森林里。","Pick a seed bag. It grows into that tree and stays in your forest.")}</p></div></div>
+    <div class="field"><span>${L("种子袋","Seed bags")}</span><div class="bags">${bags.map((k,i)=>`<button class="bag" data-bag="${i}" aria-pressed="${sel===i}">${spKind(k)===1?`<i class="dx-rb r1">${L("稀有","Rare")}</i>`:""}${spSVG(k,curTheme)}${spName(k)}</button>`).join("")}</div></div>
+    <div class="field"><span>${L("名字","Name")}</span><input class="pl-name" id="plName" maxlength="20" value="${esc(nm??spName(bags[sel]))}"></div>
     <div class="field"><span>${L("下一颗种子想要什么颜色？","Pick a colour for the next seed")}</span><div class="swatches">${swatches(pick,"pick")}</div></div>
-    <div class="sheet-actions"><button class="btn" data-p="close">${L("再等等","Not yet")}</button><button class="btn primary" data-p="ok">${L("种进森林","Plant it")}</button></div></div>`};
+    <div class="sheet-actions"><button class="btn" data-p="close">${L("再等等","Not yet")}</button><button class="btn primary" data-p="ok">${L("种进森林","Plant it")}</button></div></div>`;
+    bg.querySelector("#plName").addEventListener("input",e=>{nm=e.target.value})};
   draw(); document.body.appendChild(bg);
   bg.addEventListener("click",async e=>{
     e.stopPropagation();
     if(e.target===bg){bg.remove();return}
+    const bb=e.target.closest("[data-bag]"); if(bb){sel=+bb.dataset.bag;if(nm!==null&&bags.some(k=>spName(k)===nm.trim()))nm=null;draw();return}
     const sw=e.target.closest('[data-act="pick"]'); if(sw){pick=sw.dataset.v;draw();return}
     const b=e.target.closest("[data-p]"); if(!b)return;
     if(b.dataset.p==="close"){bg.remove();return}
     bg.remove();
+    let kind=bags[sel]; const typed=nm!==null&&nm.trim()&&nm.trim()!==spName(kind)?nm.trim():null;
+    const hid=Math.random()<.1; if(hid)kind=SP_HID[Math.floor(Math.random()*SP_HID.length)];
+    const name=typed||spName(kind);
     const ref=db.collection("forest").doc();
-    await queued(ref.path,()=>ref.set({theme:curTheme,drops:MAXW,grownAt:Date.now()}));
+    await queued(ref.path,()=>ref.set({theme:curTheme,drops:MAXW,grownAt:Date.now(),kind,name}));
     lastStage=null; setTheme(pick);
     const r=$("#buddy").getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/3,[css("--leaf"),css("--pink"),css("--buddy")]);
-    cheer(L(`种好啦！森林里多了一棵树，新的种子也埋下了 🌱 芽币 +${COIN_TREE}`,`Planted! Your forest has a new tree, and a new seed is in the ground 🌱 +${COIN_TREE} coins`),"cheer");
+    if(hid)cheer(L(`变身啦！种下的是隐藏款「${spName(kind)}」，快去图鉴看看 芽币 +${COIN_TREE}`,`It transformed! You planted a hidden ${spName(kind)}. Check your collection. +${COIN_TREE} coins`),"cheer");
+    else cheer(L(`「${name}」种好啦！新的种子也埋下了 🌱 芽币 +${COIN_TREE}`,`${name} is planted! A new seed is in the ground 🌱 +${COIN_TREE} coins`),"cheer");
   });
 }
 
@@ -5710,6 +5953,12 @@ document.addEventListener("click",async e=>{
   }
   const act=e.target.closest("[data-act]"); if(!act)return;
   if(act.dataset.act==="jday"){jDate=act.dataset.v;jSaved="";render();const j=document.querySelector(".jnav");if(j)j.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});return}
+  if(act.dataset.act==="fyear"){const by=forestGroups(),nowY=new Date().getFullYear(),ys=[...new Set([...Object.keys(by).map(Number),nowY])].sort((a,b)=>a-b),i=ys.indexOf(forestYear)+(+act.dataset.v);if(ys[i]!==undefined){forestYear=ys[i];forestMon=forestYear===nowY?new Date().getMonth():11;render()}return}
+  if(act.dataset.act==="fmon"){flGo(+act.dataset.v);return}
+  if(act.dataset.act==="fmstep"){flGo(forestMon+(+act.dataset.v));return}
+  if(act.dataset.act==="fopen"){openTree(act.dataset.id);return}
+  if(act.dataset.act==="fcur"){cheer(L(`我还在长，已经喝了 ${curWater()} / ${MAXW} 滴水`,`Still growing: ${curWater()} / ${MAXW} drops so far`),"happy");return}
+  if(act.dataset.act==="fdex"){openDex(act.dataset.v);return}
   if(act.dataset.act==="fmode"){forestMode=act.dataset.v;try{localStorage.setItem("los-fmode",forestMode)}catch(_){};render();return}
   if(act.dataset.act==="ftree"){const v=act.dataset.v==="cur"?"cur":+act.dataset.v;forestSel=forestSel===v?null:v;render();return}
   if(act.dataset.act==="recap"){openRecap(act.dataset.kind,act.dataset.kind==="year"?+act.dataset.v:act.dataset.v);return}
