@@ -190,6 +190,10 @@ nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:v
 .ov-tip{display:flex;align-items:center;gap:10px;background:color-mix(in srgb,#f0b43a 16%,var(--surface));border-radius:16px;padding:9px 12px;font-size:13.5px;line-height:1.55}.ov-tip>svg{width:32px;height:32px;flex:none}
 .ov-days{display:flex;flex-direction:column;gap:8px}
 .ov-day{background:var(--surface);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:7px}
+.ov-dhb{border:none;background:none;padding:0;font:inherit;color:inherit;text-align:left;width:100%;cursor:pointer}.ov-ar{color:var(--faint);font-size:18px;line-height:1;transition:transform .2s}.ov-day.open .ov-ar{transform:rotate(90deg)}
+.ov-db{display:flex;flex-direction:column;gap:6px}
+.ov-add{border:1.5px dashed var(--line);border-radius:12px;padding:8px 10px;font:inherit;font-size:13px;color:var(--brand);background:none;text-align:left;cursor:pointer}
+.ov-pk{display:flex;flex-direction:column;gap:6px}.ov-pki{display:flex;align-items:center;gap:8px;border:none;background:var(--surface-2);border-radius:12px;padding:9px 10px;font:inherit;font-size:14px;color:var(--fg);text-align:left;cursor:pointer}.ov-pki i{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}.ov-pki span{flex:1;min-width:0}.ov-pki small{color:var(--muted);font-size:11.5px}.ov-pki em{font-style:normal;font-size:12.5px;color:var(--brand);white-space:nowrap}
 .ov-dh{display:flex;align-items:center;gap:8px}.ov-dh b{font-size:14px}.ov-dh small{color:var(--muted);font-size:12.5px}
 .ov-load{margin-left:auto;display:flex;gap:3px}.ov-load i{width:7px;height:7px;border-radius:50%;background:var(--line)}.ov-load i.f{background:var(--brand)}.ov-load.hi i.f{background:#e0962a}
 .ov-dl{display:flex;flex-wrap:wrap;gap:6px}
@@ -2127,6 +2131,8 @@ NEWS_MORE.push(()=>({id:"1122",steps:[
 NEWS_MORE.push(()=>({id:"1122b",steps:[
     {sel:"#coinBtn",pad:4,t:L("新功能 · 灵魂画手","New · Doodle outfits"),b:L("小商店里多了「灵魂画手」一栏：歪歪皇冠、会飘的小雨云、会发光的蜡笔光环、小翅膀，还有眯眯眼、嘟嘴、星星眼这些手画的表情。","The shop has a new Doodles tab: a wonky crown, a drifting rain cloud, a glowing crayon halo, little wings, and hand-drawn faces like smiley eyes, a pout and star eyes.")},
     {sel:"#forestBtn",pad:4,t:L("树长得更快了","Trees grow faster"),b:L(`现在 ${MAXW} 滴水就能开花，大约一周种一棵树。每种一棵的芽币也相应调低了一点，以前种的树不受影响。`,`A tree now blooms after ${MAXW} drops, about one a week. Coins per tree are a little lower to match. Trees you already planted keep theirs.`)}]}));
+NEWS_MORE.push(()=>({id:"1122c",steps:[
+    {go:"ov",sel:".ov-days .ov-day",alt:".ov-today",t:L("新功能 · 点开某一天","New · Open a day"),b:L("Overview 里明天以后的每一天都可以点开：任务变成完整的一行，可以打勾、改期，也能把「这周还没排日子」的事排进这一天。","Tap any day after today in Overview to open it. You can tick things off, move them, or add something from this week's unplanned list.")}]}));
 const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
 let tourOn=null;
 function tourGo(go){
@@ -2134,6 +2140,7 @@ function tourGo(go){
   if(idOpen)closeIdeas();
   if(go==="habit"){if(tab!=="habit"){tab="habit";render()}return}
   if(go==="journal"){if(tab!=="journal"){tab="journal";render()}return}
+  if(go==="ov"){if(tab!=="ov"){tab="ov";render()}return}
   if(go==="forest"){if(tab!=="forest"){tab="forest";forestMode="land";render()}return}
   if(go==="study"&&on("study")){if(tab!=="study"){tab="study";render()}}
   else if(go==="lifewish"&&on("life")&&on("wish")){if(tab!=="life"||lifeSub!=="wish"){tab="life";lifeSub="wish";render()}}
@@ -3824,7 +3831,7 @@ function qAct(a,v,id){
   if(a==="qimp"){const t=tasks.find(x=>x.id===id);if(!t)return true;const p=+v;t.pri=p;const r=db.doc("tasks/"+id);queued(r.path,()=>r.update({pri:p}));render();return true}
   return false}
 /* ---------- Overview: today on top, then the next 6 days — what to do on which day ---------- */
-let ovFilter="all",askOn=true;try{askOn=localStorage.getItem("lifeos-ask")!=="off"}catch(_){}try{const v=localStorage.getItem("lifeos-ovf");if(v)ovFilter=v}catch(_){}
+let ovFilter="all",askOn=true,ovOpen=null;try{askOn=localStorage.getItem("lifeos-ask")!=="off"}catch(_){}try{const v=localStorage.getItem("lifeos-ovf");if(v)ovFilter=v}catch(_){}
 const OV_SP=["work","study","life"],OV_FULL=4;
 const ovNotYet=t=>!!(t.start&&t.start>todayStr());
 const ovPool=()=>tasks.filter(t=>OV_SP.includes(t.space)&&on(t.space)&&!t.done&&!t.deleted&&!t.letGo&&!isPaused(t));
@@ -3869,7 +3876,11 @@ function overview(){
   const busy=days.slice(1).filter(d=>by[d].length>OV_FULL),free=days.slice(1).filter(d=>by[d].length===0);
   const tip=busy.length&&free.length?`<div class="ov-tip">${SF.happy||""}<span>${L(`${ovDayName(busy[0],td)}排了 ${by[busy[0]].length} 件，${free.slice(0,2).map(d=>ovDayName(d,td)).join("和")}还空着～要不要挪一两件过去？`,`${ovDayName(busy[0],td)} has ${by[busy[0]].length} things while ${free.slice(0,2).map(d=>ovDayName(d,td)).join(" and ")} ${free.length>1?"are":"is"} free～ Move one or two?`)}</span></div>`:"";
   const dots=k=>`<span class="ov-load${k>OV_FULL?" hi":""}">${[0,1,2,3,4].map(i=>`<i class="${i<k?"f":""}"></i>`).join("")}</span>`;
-  const dayRows=days.slice(1).map(d=>{const l=by[d],x=new Date(d+"T12:00:00");return `<div class="ov-day"><div class="ov-dh"><b>${ovDayName(d,td)}</b><small>${md2(d)}</small>${dots(l.length)}</div>
+  if(ovOpen&&!days.slice(1).includes(ovOpen))ovOpen=null;
+  const dayRows=days.slice(1).map(d=>{const l=by[d],op=ovOpen===d;
+    if(op)return `<div class="ov-day open"><button class="ov-dh ov-dhb" data-act="ovday" data-v="${d}" aria-expanded="true"><b>${ovDayName(d,td)}</b><small>${md2(d)}</small>${dots(l.length)}<span class="ov-ar">›</span></button>
+      <div class="ov-db">${l.length?l.map(t=>ovRow(t,false)).join(""):`<p class="ov-empty">${L("空着","Free")}</p>`}${loose.length?`<button class="ov-add" data-act="ovadd" data-v="${d}">＋ ${L("从「这周还没排日子」里排一件进来","Add one from this week's unplanned")}</button>`:""}</div></div>`;
+    return `<div class="ov-day"><button class="ov-dh ov-dhb" data-act="ovday" data-v="${d}" aria-expanded="false"><b>${ovDayName(d,td)}</b><small>${md2(d)}</small>${dots(l.length)}<span class="ov-ar">›</span></button>
     ${l.length?`<div class="ov-dl">${l.map(t=>t.step?`<button class="ov-chip ovstep" style="--c:var(--${t.space})" data-act="edit" data-id="${t.id}"><i></i><span>${esc(t.x.t)}</span><em>· ${esc(t.t.title)}</em></button>`:`<button class="ov-chip" style="--c:var(--${t.space})" data-act="edit" data-id="${t.id}"><i></i><span>${esc(t.title)}</span>${(+t.pri||0)>=2?"<b>!</b>":""}</button>`).join("")}</div>`:`<p class="ov-empty">${L("空着","Free")}</p>`}</div>`}).join("");
   const lt=later.length?`<p class="ov-later">${L(`更远的还有 ${later.length} 件${later.some(ovNotYet)?"（有的还没到能开始的时候）":""}`,`${later.length} more further out`)}</p>`:"";
   const ls=loose.length?`<section class="ov-loose"><div class="ov-dh"><b>${L("这周内 · 还没排日子","This week · no day yet")}</b><small>${L("挑一天放进去","Give each one a day")}</small><em class="ov-lc">${loose.length}</em></div>${loose.map(t=>`<div class="ov-lr" style="--c:var(--${t.space})"><button class="ov-ck" data-act="toggle" data-id="${t.id}" aria-label="${L("完成","Done")}"></button><button class="ov-t" data-act="edit" data-id="${t.id}">${esc(t.title)}</button>${(+t.pri||0)>=2?`<b class="ov-pri">!</b>`:""}<button class="ov-put" data-act="ovmove" data-id="${t.id}">${L("排到哪天","Pick a day")}</button></div>`).join("")}</section>`:"";
@@ -3908,7 +3919,19 @@ function ovAct(a,v,id,el){
   if(a==="ovsubday"){ovSubDay(id,+(el&&el.dataset.i||0));return true}
   if(a==="ovf"){ovFilter=v;try{localStorage.setItem("lifeos-ovf",v)}catch(_){}render();return true}
   if(a==="ovmove"){ovMove(id);return true}
+  if(a==="ovday"){ovOpen=ovOpen===v?null:v;render();return true}
+  if(a==="ovadd"){ovAdd(v);return true}
   return false}
+function ovAdd(d){const {loose,by}=ovBuckets(),td=todayStr();if(!loose.length)return;
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  bg.innerHTML=`<div class="sheet od-sheet" role="dialog" aria-label="${L("排一件进来","Add one")}"><h3>${L(`排到${ovDayName(d,td)}`,`Plan for ${ovDayName(d,td)}`)} <small style="color:var(--muted);font-weight:400">${md2(d)} · ${L(`已有 ${(by[d]||[]).length} 件`,`${(by[d]||[]).length} already`)}</small></h3>
+    <div class="ov-pk">${loose.map(t=>`<button class="ov-pki" style="--c:var(--${t.space})" data-pk="${t.id}"><i></i><span>${esc(t.title)}</span>${t.due?`<small>${L(`${md2(t.due)} 截止`,`due ${md2(t.due)}`)}</small>`:""}<em>${L("排进来","Add")}</em></button>`).join("")}</div></div>`;
+  document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-pk]");if(!b||!db)return;const t=tasks.find(x=>x.id===b.dataset.pk);if(!t)return;
+    const p={plan:d};if(t.start&&t.start>d)p.start=null;Object.assign(t,p);const r=db.doc("tasks/"+t.id);queued(r.path,()=>r.update(p));
+    if(t.due&&d>t.due)cheer(L(`排在 ${md2(d)}，比截止日期 ${md2(t.due)} 晚哦`,`Planned for ${md2(d)}, after its deadline ${md2(t.due)}`),"meh");
+    b.remove();if(!bg.querySelector("[data-pk]"))bg.remove();render()});
+}
 function odTray(k){
   if(k!=="work"&&k!=="study"&&k!=="life")return "";
   const l=odList();if(!l.length)return "";
