@@ -1080,6 +1080,13 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .dz-drift{animation:dzDrift 4s ease-in-out infinite}@keyframes dzDrift{50%{transform:translateX(4px)}}
 .dz-rain{animation:dzRain 1.1s linear infinite}@keyframes dzRain{0%{transform:translateY(-3px);opacity:0}30%{opacity:1}100%{transform:translateY(8px);opacity:0}}
 @media (prefers-reduced-motion:reduce){.dz-bob,.dz-tw,.dz-drift,.dz-rain{animation:none}}
+.fl-night .fl-l1{fill:#3d5a7a}.fl-night .fl-l2{fill:#476787}.fl-night .fl-edge{fill:#24364f}.fl-night .fm-sand{fill:#8a9cc0}.fl-mapw.fl-night .fm-sea{fill:#16203d}.fl-mapw.fl-night .fm-wave{stroke:#3a4a78}
+.fl-card.fl-night{background:#16203d}.fl-card.fl-night .fl-cf b{color:#eaf2ff}.fl-card.fl-night .fl-cf,.fl-card.fl-night.fut{color:#c9d6f5}
+.fl-sl{stroke:#8a9cc0;stroke-width:1.4;stroke-dasharray:3 4;opacity:.6}.fl-sl.on{stroke:#ffe58a;stroke-width:2.2;stroke-dasharray:none;opacity:1}
+.fl-sg{fill:#ffe58a;opacity:.45;filter:blur(3px)}.fl-sd{fill:#fff6c8}.fl-so{fill:none;stroke:#8a9cc0;stroke-width:1.5}
+.fl-sl,.fl-sg,.fl-sd,.fl-so{pointer-events:none}
+.fl-pick{background:var(--surface-2);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px}.fl-pick b{font-size:14.5px}.fl-pick small{color:var(--muted);font-size:12px}
+.fl-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}.fl-op{border:none;background:var(--surface);border-radius:14px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:2px;font:inherit;font-size:12px;color:var(--fg);cursor:pointer}.fl-op svg{width:100%;height:auto}.fl-op.night{background:#16203d;color:#c9d6f5}.fl-opn{fill:#3d5a7a}
 .fl-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.fl-top b{font-size:15px}
 .fl-yb,.fl-mnav button{border:none;background:var(--surface-2);border-radius:50%;width:28px;height:28px;color:var(--fg);font-size:15px;flex:none}.fl-yb:disabled{opacity:.35}
 .fl-sum{margin-left:auto;font-size:12.5px;color:var(--muted)}
@@ -2134,6 +2141,8 @@ NEWS_MORE.push(()=>({id:"1122b",steps:[
     {sel:"#forestBtn",pad:4,t:L("树长得更快了","Trees grow faster"),b:L(`现在 ${MAXW} 滴水就能开花，大约一周种一棵树。每种一棵的芽币也相应调低了一点，以前种的树不受影响。`,`A tree now blooms after ${MAXW} drops, about one a week. Coins per tree are a little lower to match. Trees you already planted keep theirs.`)}]}));
 NEWS_MORE.push(()=>({id:"1122c",steps:[
     {go:"ov",sel:".ov-days .ov-day",alt:".ov-today",t:L("新功能 · 点开某一天","New · Open a day"),b:L("Overview 里明天以后的每一天都可以点开：任务变成完整的一行，可以打勾、改期，也能把「这周还没排日子」的事排进这一天。","Tap any day after today in Overview to open it. You can tick things off, move them, or add something from this week's unplanned list.")}]}));
+NEWS_MORE.push(()=>({id:"1122d",steps:[
+    {go:"forest",sel:".fl-top",alt:".fl-mapw",t:L("新功能 · 大陆形状系列","New · Continent series"),b:L("除了生肖，大陆还可以是星座、伦敦地标或者海洋动物。每年 12 月和 1 月初，森林最上面会问你明年想拼什么形状；不挑就用生肖。","Besides the zodiac, your continent can be a constellation, a London landmark or a sea creature. Each December and early January, the forest asks which shape you want for the year. If you don't pick, it uses the zodiac.")}]}));
 const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
 let tourOn=null;
 function tourGo(go){
@@ -4854,6 +4863,50 @@ const ZOD_SHAPE={
 };
 const zodOf=y=>ZOD_ORDER[((y%12)+12)%12];
 const zodShape=y=>ZOD_SHAPE[zodOf(y)]||ZOD_SHAPE.blob;
+/* other continent series: constellations, London, ocean; one shape per year, picked in December or early January */
+const BLOB_SH=ZOD_SHAPE.blob.sh;
+const SERIES={
+  star:{zh:"星座",en:"Stars",night:1,list:[
+    {zh:"白羊座",en:"Aries",st:[[110,190],[170,150],[240,135],[300,150],[350,200]],ln:[[0,1],[1,2],[2,3],[3,4]]},
+    {zh:"金牛座",en:"Taurus",st:[[240,230],[205,195],[175,160],[120,110],[275,195],[305,160],[360,110],[240,270]],ln:[[0,1],[1,2],[2,3],[0,4],[4,5],[5,6],[0,7]]},
+    {zh:"双子座",en:"Gemini",st:[[160,90],[170,150],[180,210],[160,280],[300,85],[310,150],[320,210],[340,280]],ln:[[0,1],[1,2],[2,3],[4,5],[5,6],[6,7],[1,5]]},
+    {zh:"巨蟹座",en:"Cancer",st:[[240,110],[240,170],[170,260],[310,260],[240,215]],ln:[[0,1],[1,4],[4,2],[4,3]]},
+    {zh:"狮子座",en:"Leo",st:[[120,120],[150,92],[195,98],[212,135],[188,166],[165,190],[255,192],[335,176],[368,220],[300,236],[230,230]],ln:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10],[10,6]]},
+    {zh:"处女座",en:"Virgo",st:[[100,150],[160,170],[220,160],[270,190],[330,170],[380,205],[250,250],[200,110]],ln:[[0,1],[1,2],[2,3],[3,4],[4,5],[3,6],[2,7]]},
+    {zh:"天秤座",en:"Libra",st:[[240,80],[160,165],[320,165],[120,260],[360,260],[240,165]],ln:[[0,1],[0,2],[1,5],[2,5],[1,3],[2,4]]},
+    {zh:"天蝎座",en:"Scorpio",st:[[90,120],[140,110],[190,140],[230,170],[280,190],[330,200],[370,230],[390,280],[360,310],[320,300]],ln:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9]]},
+    {zh:"射手座",en:"Sagittarius",st:[[160,210],[230,210],[230,150],[160,150],[195,105],[290,175],[320,230],[120,245]],ln:[[0,1],[1,2],[2,3],[3,0],[3,4],[4,2],[1,5],[5,6],[0,7]]},
+    {zh:"摩羯座",en:"Capricorn",st:[[110,130],[200,175],[300,245],[370,165],[330,120],[230,140]],ln:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,0]]},
+    {zh:"水瓶座",en:"Aquarius",st:[[100,120],[150,150],[200,130],[250,170],[300,150],[350,200],[310,255]],ln:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6]]},
+    {zh:"双鱼座",en:"Pisces",st:[[100,110],[160,170],[230,245],[300,200],[360,170],[400,130],[140,90]],ln:[[6,0],[0,1],[1,2],[2,3],[3,4],[4,5]]}]},
+  ldn:{zh:"伦敦",en:"London",list:[
+    {zh:"伦敦眼",en:"London Eye",sh:[["c",240,165,135],["p",[[240,165],[140,345],[175,345],[240,215],[305,345],[340,345]]],["r",120,325,240,25,10]]},
+    {zh:"大本钟",en:"Big Ben",sh:[["r",195,110,90,225,0],["r",182,80,116,70,8],["p",[[182,82],[240,8],[298,82]]],["r",232,0,16,16,0],["r",140,325,200,28,8]]},
+    {zh:"红色电话亭",en:"Red phone box",sh:[["r",150,62,180,262,12],["e",240,66,90,28,0],["r",138,318,204,30,8]]},
+    {zh:"双层巴士",en:"Double-decker",sh:[["r",40,70,400,215,34],["c",125,292,34],["c",355,292,34]]}]},
+  sea:{zh:"海洋",en:"Ocean",list:[
+    {zh:"鲸鱼",en:"Whale",sh:[["e",220,200,170,95,0],["p",[[370,190],[450,120],[440,190],[455,260]]],["e",180,92,30,12,-20],["e",235,92,30,12,20],["r",203,96,12,40,4]]},
+    {zh:"章鱼",en:"Octopus",sh:[["c",240,140,112],["r",120,200,36,135,18],["r",168,205,34,140,17],["r",214,208,34,142,17],["r",260,205,34,140,17],["r",306,200,36,135,18]]},
+    {zh:"海龟",en:"Turtle",sh:[["e",240,190,150,105,0],["c",410,180,42],["e",120,110,55,25,-35],["e",120,280,55,25,35],["e",350,100,55,25,35],["e",350,285,55,25,-35]]},
+    {zh:"水母",en:"Jellyfish",sh:[["e",240,150,155,105,0],["r",85,150,310,40,0],["r",115,180,32,150,16],["r",172,180,32,160,16],["r",229,180,32,165,16],["r",286,180,32,160,16],["r",343,180,32,150,16]]}]}
+};
+let landPick={};
+function landKey(y){const p=landPick[y];if(!p||!SERIES[p.split(":")[0]])return null;return p}
+function landNext(ser,y){let n=0;for(const k in landPick){if(+k<y&&String(landPick[k]).split(":")[0]===ser)n++}const L_=SERIES[ser].list;return n%L_.length}
+function landShape(y){const p=landKey(y);
+  if(!p){const z=ZOD_SHAPE[zodOf(y)];const zn=ZOD_NAME[zodOf(y)];return {key:z?zodOf(y):"blob",sh:(z||ZOD_SHAPE.blob).sh,seeds:(z||ZOD_SHAPE.blob).seeds,label:L(`${zn[0]}年`,`Year of the ${zn[1]}`),short:L(zn[0]+"年",zn[1])}}
+  const [ser,i]=p.split(":"),S=SERIES[ser],it=S.list[(+i||0)%S.list.length];
+  return {key:ser+(+i||0),sh:it.sh||BLOB_SH,seeds:it.sh?null:ZOD_SHAPE.blob.seeds,night:!!S.night,st:it.st,ln:it.ln,label:L(`${S.zh} · ${it.zh}`,`${S.en} · ${it.en}`),short:L(it.zh,it.en)}}
+function autoSeeds(sh){const P=[];for(let x=0;x<FLW;x+=6)for(let y=0;y<FLH;y+=6)if(inShape(x,y,sh))P.push([x,y]);let C=[];for(let i=0;i<12;i++)C.push(P[Math.floor((i+.5)/12*P.length)]);
+  for(let it=0;it<25;it++){const S=C.map(()=>[0,0,0]);P.forEach(p=>{let b=0,bd=1e9;C.forEach((c,j)=>{const d=(p[0]-c[0])**2+(p[1]-c[1])**2;if(d<bd){bd=d;b=j}});S[b][0]+=p[0];S[b][1]+=p[1];S[b][2]++});C=S.map((s,j)=>s[2]?[s[0]/s[2],s[1]/s[2]]:C[j])}
+  const xs=P.map(p=>p[0]),ys=P.map(p=>p[1]),tall=(Math.max(...ys)-Math.min(...ys))>(Math.max(...xs)-Math.min(...xs))*1.2;
+  return C.sort((a,b)=>tall?b[1]-a[1]:a[0]-b[0]||a[1]-b[1])}
+function landPicker(y){const zn=ZOD_NAME[zodOf(y)],z=ZOD_SHAPE[zodOf(y)]||ZOD_SHAPE.blob;
+  const opts=[["",L(`生肖 · ${zn[0]}年`,`Zodiac · ${zn[1]}`),z.sh,0],...Object.keys(SERIES).map(k=>{const i=landNext(k,y),it=SERIES[k].list[i];return [k+":"+i,L(`${SERIES[k].zh} · ${it.zh}`,`${SERIES[k].en} · ${it.en}`),it.sh||BLOB_SH,SERIES[k].night,it]})];
+  const starOv=it=>it&&it.st?it.ln.map(([a,b])=>`<line x1="${it.st[a][0]}" y1="${it.st[a][1]}" x2="${it.st[b][0]}" y2="${it.st[b][1]}" stroke="#ffe58a" stroke-width="5"/>`).join("")+it.st.map(([x,yy])=>`<circle cx="${x}" cy="${yy}" r="9" fill="#fff6c8"/>`).join(""):"";
+  return `<div class="fl-pick"><b>${L(`${y} 年想拼什么形状？`,`Which shape for ${y}?`)}</b><div class="fl-opts">${opts.map(([v,n,sh,nt,it])=>`<button class="fl-op${nt?" night":""}" data-act="fland" data-y="${y}" data-v="${v}"><svg viewBox="0 0 480 360"><g class="${nt?"fl-opn":"dx-lf"}">${shSVG(sh)}</g>${starOv(it)}</svg><span>${n}</span></button>`).join("")}</div><small>${L(`不挑的话就用生肖。`,`If you don't pick, it uses the zodiac.`)}</small></div>`}
+function setLand(y,v){landPick={...landPick,[y]:v||"zod"};if(db){const r=db.doc("garden/land");queued(r.path,()=>r.set({years:{[y]:v||"zod"}},{merge:true}))}render()}
+
 const FLW=480,FLH=360;
 function shSVG(sh){return sh.map(s=>s[0]==="e"?`<ellipse cx="${s[1]}" cy="${s[2]}" rx="${s[3]}" ry="${s[4]}"${s[5]?` transform="rotate(${s[5]} ${s[1]} ${s[2]})"`:""}/>`:s[0]==="r"?`<rect x="${s[1]}" y="${s[2]}" width="${s[3]}" height="${s[4]}" rx="${s[5]||0}"/>`:s[0]==="c"?`<circle cx="${s[1]}" cy="${s[2]}" r="${s[3]}"/>`:`<polygon points="${s[1].map(p=>p.join(",")).join(" ")}"/>`).join("")}
 function inPoly(x,y,poly){let c=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const[xi,yi]=poly[i],[xj,yj]=poly[j];if((yi>y)!=(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c}return c}
@@ -4864,8 +4917,8 @@ function inShape(x,y,sh){for(const s of sh){
   else if(inPoly(x,y,s[1]))return true}return false}
 function vorCells(seeds){return seeds.map((a,i)=>{let poly=[[0,0],[FLW,0],[FLW,FLH],[0,FLH]];seeds.forEach((b,j)=>{if(i===j)return;const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,nx=b[0]-a[0],ny=b[1]-a[1],f=p=>(p[0]-mx)*nx+(p[1]-my)*ny,out=[];
   for(let k=0;k<poly.length;k++){const p=poly[k],q=poly[(k+1)%poly.length],fp=f(p),fq=f(q);if(fp<=0)out.push(p);if((fp<0)!==(fq<0)){const t=fp/(fp-fq);out.push([p[0]+(q[0]-p[0])*t,p[1]+(q[1]-p[1])*t])}}poly=out});return poly})}
-const flCache={};
-function flGeo(y){const z=zodShape(y),key=ZOD_SHAPE[zodOf(y)]?zodOf(y):"blob";if(flCache[key])return flCache[key];
+const flCache={};const flCacheClear=()=>{};
+function flGeo(y){const z=landShape(y),key=z.key;if(flCache[key])return flCache[key];if(!z.seeds)z.seeds=autoSeeds(z.sh);
   const cells=vorCells(z.seeds);
   const lands=cells.map(poly=>{const xs=poly.map(p=>p[0]),ys=poly.map(p=>p[1]),M=new Set(),L_=[];
     for(let x=Math.floor(Math.min(...xs)/3)*3;x<=Math.max(...xs);x+=3)for(let yy=Math.floor(Math.min(...ys)/3)*3;yy<=Math.max(...ys);yy+=3)if(inPoly(x,yy,poly)&&inShape(x,yy,z.sh)){M.add(x/3+","+yy/3);L_.push([x,yy])}
@@ -4873,7 +4926,7 @@ function flGeo(y){const z=zodShape(y),key=ZOD_SHAPE[zodOf(y)]?zodOf(y):"blob";if
     const cx=L_.reduce((a,p)=>a+p[0],0)/L_.length,cy=L_.reduce((a,p)=>a+p[1],0)/L_.length;
     return{L:L_,has:(x,yy)=>M.has(Math.round(x/3)+","+Math.round(yy/3)),cx,cy,x0:Math.min(...L_.map(p=>p[0])),x1:Math.max(...L_.map(p=>p[0])),y0:Math.min(...L_.map(p=>p[1])),y1:Math.max(...L_.map(p=>p[1])),poly}});
   lands.forEach(ld=>{let best=null;for(const[x,yy]of ld.L){if(Math.abs(x-ld.cx)>18)continue;if(!ld.has(x-16,yy)||!ld.has(x+16,yy)||!ld.has(x,yy+8))continue;if(!best||yy>best[1])best=[x,yy]}ld.lab=best||[ld.cx,ld.cy]});
-  return flCache[key]={sh:z.sh,cells,lands,key}}
+  return flCache[key]={sh:z.sh,cells,lands,key,night:z.night,st:z.st,ln:z.ln}}
 const fitCache={};
 function flFit(geo,ci,n,Smax,Smin,avoid){const key=[geo.key,ci,n,Smax,Smin,avoid?1:0].join("|");if(fitCache[key])return fitCache[key];const land=geo.lands[ci];
   const ok=(x,y,S)=>{const m=3.5;for(const dx of[-.4,0,.4])for(const dy of[0,-.45,-.88]){if(!land.has(x+dx*S+(dx<0?-m:dx>0?m:0),y+dy*S+(dy===0?m:0)))return false}
@@ -4900,6 +4953,8 @@ function flMap(y,months,nowY,nowM){
   for(let m=0;m<12;m++){const ld=geo.lands[m],[lx,ly]=ld.lab,ts=months[m]||[],on=y===forestYear&&m===forestMon;
     if(past(m)&&ts.length){const f=flFit(geo,m,ts.length,15,8,true);f.pos.forEach((p,j)=>h+=placeAt(spSVG(spOf(ts[j]),ts[j].theme),p[0],p[1],f.S,`class="fl-t"`));if(f.hidden)h+=`<text x="${lx+17}" y="${ly+3}" class="fl-more">+${f.hidden}</text>`}
     h+=`<g class="fl-pill${y===nowY&&m===nowM?" now":""}"><rect x="${lx-14}" y="${ly-7}" width="28" height="14" rx="7"/><text x="${lx}" y="${ly+3.2}">${lang==="en"?MON[m].slice(0,3):m+1+"月"}</text></g>`}
+  if(geo.st){const n=geo.st.length,lit=i=>{const m=Math.min(11,Math.floor(i*12/n));return past(m)&&(months[m]||[]).length>0||past(m)&&(y<nowY||m<nowM)};
+    h+=geo.ln.map(([a,b])=>{const on=lit(a)&&lit(b);return `<line x1="${geo.st[a][0]}" y1="${geo.st[a][1]}" x2="${geo.st[b][0]}" y2="${geo.st[b][1]}" class="fl-sl${on?" on":""}"/>`}).join("")+geo.st.map(([x,yy],i)=>lit(i)?`<circle cx="${x}" cy="${yy}" r="9" class="fl-sg"/><path transform="translate(${x} ${yy})" d="M0-7 2-2 7 0 2 2 0 7-2 2-7 0-2-2z" class="fl-sd"/>`:`<circle cx="${x}" cy="${yy}" r="3" class="fl-so"/>`).join("")}
   h+=`<g clip-path="url(#${id}s)">${geo.cells.map((c,m)=>`<polygon points="${poly(c)}" class="fl-hit${y===forestYear&&m===forestMon?" on":""}" data-act="fmon" data-v="${m}" role="button" aria-label="${MONTH(m)}"/>`).join("")}</g>`;
   return h+"</svg>"}
 function flPiece(y,m,ts,withCur){
@@ -4920,14 +4975,15 @@ function forestLand(){
   if(forestMon===null)forestMon=forestYear===nowY?nowM:11;
   const y=forestYear,months=by[y]||Array.from({length:12},()=>[]);const past=m=>y<nowY||(y===nowY&&m<=nowM);
   const total=months.reduce((a,b)=>a+b.length,0),done=Array.from({length:12},(_,m)=>m).filter(past).length;
-  const zn=ZOD_NAME[zodOf(y)];const yi=years.indexOf(y);
+  const shp=landShape(y);const yi=years.indexOf(y);const nt=shp.night?" fl-night":"";
+  const pickY=nowM===11?nowY+1:nowM===0&&now.getDate()<=7?nowY:null,showPick=pickY&&!landPick[pickY]&&(pickY===y||pickY===y+1);
   const cards=Array.from({length:12},(_,m)=>{const ts=months[m]||[],cur=y===nowY&&m===nowM;
-    if(!past(m))return `<div class="fl-card fut" data-m="${m}"><b>${MONTH(m)}</b><span>${L("还没到。到了这个月，这一块就会拼上来。","Not yet. This piece joins the map when the month comes.")}</span></div>`;
-    if(!ts.length&&!cur)return `<div class="fl-card empty" data-m="${m}">${flPiece(y,m,[],false)}<div class="fl-cf"><b>${MONTH(m)}</b><span>${L("这个月没有种树","No trees this month")}</span></div></div>`;
-    return `<div class="fl-card" data-m="${m}">${flPiece(y,m,ts,cur)}<div class="fl-cf"><b>${MONTH(m)}</b><span>${L(`${ts.length} 棵`,`${ts.length} ${n_(ts.length,"tree","trees")}`)}</span></div></div>`}).join("");
-  return `<div class="fl-top"><button class="fl-yb" data-act="fyear" data-v="-1" ${yi>0?"":"disabled"} aria-label="${L("上一年","Previous year")}">‹</button><b>${y} · ${L(zn[0]+"年",`Year of the ${zn[1]}`)}</b><button class="fl-yb" data-act="fyear" data-v="1" ${yi<years.length-1?"":"disabled"} aria-label="${L("下一年","Next year")}">›</button>
+    if(!past(m))return `<div class="fl-card fut${nt}" data-m="${m}"><b>${MONTH(m)}</b><span>${L("还没到。到了这个月，这一块就会拼上来。","Not yet. This piece joins the map when the month comes.")}</span></div>`;
+    if(!ts.length&&!cur)return `<div class="fl-card empty${nt}" data-m="${m}">${flPiece(y,m,[],false)}<div class="fl-cf"><b>${MONTH(m)}</b><span>${L("这个月没有种树","No trees this month")}</span></div></div>`;
+    return `<div class="fl-card${nt}" data-m="${m}">${flPiece(y,m,ts,cur)}<div class="fl-cf"><b>${MONTH(m)}</b><span>${L(`${ts.length} 棵`,`${ts.length} ${n_(ts.length,"tree","trees")}`)}</span></div></div>`}).join("");
+  return `<div class="fl-top"><button class="fl-yb" data-act="fyear" data-v="-1" ${yi>0?"":"disabled"} aria-label="${L("上一年","Previous year")}">‹</button><b>${y} · ${shp.label}</b><button class="fl-yb" data-act="fyear" data-v="1" ${yi<years.length-1?"":"disabled"} aria-label="${L("下一年","Next year")}">›</button>
       <span class="fl-sum">${L(`${done} / 12 块 · ${total} 棵`,`${done} / 12 pieces · ${total} ${n_(total,"tree","trees")}`)}</span></div>
-    <div class="fl-mapw">${flMap(y,months,nowY,nowM)}</div>
+    ${showPick?landPicker(pickY):""}<div class="fl-mapw${nt}">${flMap(y,months,nowY,nowM)}</div>
     <div class="fl-mnav"><button data-act="fmstep" data-v="-1" aria-label="${L("上个月","Previous month")}">‹</button><b id="flLab">${MONTH(forestMon)} · ${L(`${(months[forestMon]||[]).length} 棵`,`${(months[forestMon]||[]).length} ${n_((months[forestMon]||[]).length,"tree","trees")}`)}</b><button data-act="fmstep" data-v="1" aria-label="${L("下个月","Next month")}">›</button></div>
     <div class="fl-car" id="flCar">${cards}</div>`}
 function forestDex(){
@@ -4936,8 +4992,8 @@ function forestDex(){
   const got=l=>l.filter(k=>cnt[k]).length;
   const bar=(lab,l,c)=>`<div class="dx-pg">${lab}<b>${got(l)} / ${l.length}</b><span class="dx-bar"><i style="width:${Math.round(got(l)/l.length*100)}%;background:${c}"></i></span></div>`;
   const by=forestGroups(),nowY=new Date().getFullYear();const ys=[...new Set([...Object.keys(by).map(Number),nowY])].sort((a,b)=>a-b);
-  const lands=[...ys,ys[ys.length-1]+1].map((y,i,a)=>{const z=zodShape(y),zn=ZOD_NAME[zodOf(y)],fut=i===a.length-1,done=y<nowY?12:y===nowY?new Date().getMonth()+1:0;
-    return `<div class="dx-ld${fut?" fut":""}"><svg viewBox="0 0 480 360"><g class="${fut?"dx-lg":"dx-lf"}">${shSVG(z.sh)}</g></svg><b>${y} · ${L(zn[0]+"年",zn[1])}</b><small>${fut?L("还没开始","Not started"):done>=12?L("拼完啦","Complete"):L(`拼到 ${done} / 12`,`${done} / 12 pieces`)}</small></div>`}).join("");
+  const lands=[...ys,ys[ys.length-1]+1].map((y,i,a)=>{const z=landShape(y),fut=i===a.length-1,done=y<nowY?12:y===nowY?new Date().getMonth()+1:0;
+    return `<div class="dx-ld${fut?" fut":""}"><svg viewBox="0 0 480 360"><g class="${fut?"dx-lg":z.night?"fl-opn":"dx-lf"}">${shSVG(z.sh)}</g></svg><b>${y} · ${z.short}</b><small>${fut?L("还没开始","Not started"):done>=12?L("拼完啦","Complete"):L(`拼到 ${done} / 12`,`${done} / 12 pieces`)}</small></div>`}).join("");
   return `<div class="dx-prog">${bar(L("普通","Common"),SP_COMMON,"var(--leaf)")}${bar(L("稀有","Rare"),SP_RARE,"#b07be8")}${bar(L("隐藏款","Hidden"),SP_HID,"#e8a13a")}</div>
     <div class="dx-h">${L("普通","Common")}</div><div class="dx-g">${SP_COMMON.map(card).join("")}</div>
     <div class="dx-h">${L("稀有","Rare")} <small>${L("大约 10 次出现一次","About 1 in 10 seed bags")}</small></div><div class="dx-g">${SP_RARE.map(card).join("")}</div>
@@ -5990,6 +6046,7 @@ document.addEventListener("click",async e=>{
   const act=e.target.closest("[data-act]"); if(!act)return;
   if(act.dataset.act==="jday"){jDate=act.dataset.v;jSaved="";render();const j=document.querySelector(".jnav");if(j)j.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});return}
   if(act.dataset.act==="fyear"){const by=forestGroups(),nowY=new Date().getFullYear(),ys=[...new Set([...Object.keys(by).map(Number),nowY])].sort((a,b)=>a-b),i=ys.indexOf(forestYear)+(+act.dataset.v);if(ys[i]!==undefined){forestYear=ys[i];forestMon=forestYear===nowY?new Date().getMonth():11;render()}return}
+  if(act.dataset.act==="fland"){setLand(+act.dataset.y,act.dataset.v);return}
   if(act.dataset.act==="fmon"){flGo(+act.dataset.v);return}
   if(act.dataset.act==="fmstep"){flGo(forestMon+(+act.dataset.v));return}
   if(act.dataset.act==="fopen"){openTree(act.dataset.id);return}
@@ -6543,7 +6600,7 @@ function startData(store){
   sub("wishes",s=>{wishes=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.wi=true;render();wishMsMigrate();wishMsSync()});
   sub("closet",s=>{const c={};let w=null;s.docs.forEach(d=>{if(d.id==="_wear"&&(+d.data().at||0)>=wearAt)w=d.data().wear;else c[d.id]=d.data()});closet=c;if(w&&typeof w==="object")setWear(w,false);else{dressFab();renderGardenProps()}updateCoinBtn();if(shOpen)renderShop()});
   sub("forest",s=>{forest=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.f=true;render()});
-  sub("garden",s=>{const g=s.docs.find(d=>d.id==="current");if(g&&THEMES[g.data().theme])curTheme=g.data().theme;render()});
+  sub("garden",s=>{const ld=s.docs.find(d=>d.id==="land");if(ld)landPick={...(ld.data().years||{})};flCacheClear();const g=s.docs.find(d=>d.id==="current");if(g&&THEMES[g.data().theme])curTheme=g.data().theme;render()});
   sub("journal",s=>{const m={};s.docs.forEach(d=>{const x=d.data();m[x.date||d.id]=x});
     const el=document.activeElement; if(el&&el.dataset&&el.dataset.jnote&&m[el.dataset.jnote])m[el.dataset.jnote]={...m[el.dataset.jnote],note:el.value};
     if(el&&el.dataset&&el.dataset.jstep&&m[el.dataset.jstep])m[el.dataset.jstep]={...m[el.dataset.jstep],step:el.value};
