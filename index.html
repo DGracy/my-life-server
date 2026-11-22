@@ -953,7 +953,8 @@ button.due.odbtn{border:none;font:inherit;cursor:pointer}
 .step input{border:none;background:transparent;font:inherit;color:var(--fg);padding:4px 0;min-width:0;width:100%}.step .x{border:none;background:none;color:var(--faint);font-size:18px;padding:0 4px}
 .step .n{width:22px;height:22px;border-radius:50%;background:var(--study-soft);color:var(--study-ink);font-family:var(--f-num);font-weight:700;font-size:12px;display:grid;place-items:center}
 .step.first{background:color-mix(in srgb,var(--study) 12%,var(--surface));outline:2px solid var(--study)}.step.first .n{background:var(--study);color:#fff}
-.gran{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);flex-wrap:wrap}.sub-of{display:block;font-size:12.5px;font-weight:500;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gran{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);flex-wrap:wrap}.sp-btn{display:inline-flex;align-items:center;gap:6px}.sp-btn svg,.split-chip svg{width:20px;height:20px;flex:none;vertical-align:-5px;margin-right:2px}
+.sub-of{display:block;font-size:12.5px;font-weight:500;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .say2{display:flex;gap:8px;align-items:center;background:var(--bg-2);border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.5}.say2>svg{width:34px;height:34px;flex:none}
 .wdots{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}.wdot{width:36px;height:36px;border-radius:50%;border:2px solid var(--line);background:var(--surface);font:inherit;font-size:13px;color:var(--muted);padding:0}.wdot.on{background:var(--study);border-color:var(--study);color:#fff;font-weight:600}
 .until-row{display:flex;gap:8px;align-items:center}.until-row input{flex:1;min-width:0}
@@ -3688,7 +3689,7 @@ function openSplit(id,auto){
     ${ai?`<div class="gran"><span>${L("拆得","Size")}</span>${[["coarse",L("粗一点","Bigger")],["just",L("刚刚好","Just right")],["fine",L("细一点","Smaller")]].map(([k,n])=>`<button class="chip hz${gran===k?" on":""}" data-s="gran" data-v="${k}">${n}</button>`).join("")}</div>`:""}
     <div class="steps">${steps.map((x,i)=>`<div class="step${i===0?" first":""}"><span class="n">${i+1}</span><input value="${esc(x)}" maxlength="120" placeholder="${L("子任务","Subtask")}" aria-label="${L(`第 ${i+1} 个子任务`,`Subtask ${i+1}`)}"><button class="x" data-s="del" data-i="${i}" aria-label="${L("删掉","Remove")}">×</button></div>`).join("")}
       ${steps.length<50?`<button class="addsub" data-s="add">＋ ${L("加子任务","Add subtask")}</button>`:""}</div>
-    <div class="sheet-actions"><button class="btn" data-s="again" ${busy?"disabled":""}>✨ ${ai?L("换一种拆法","Try another way"):L("帮我拆","Suggest")}</button><button class="btn primary" data-s="ok" ${busy?"disabled":""}>${L("保存","Save")}</button></div></div>`};
+    <div class="sheet-actions"><button class="btn sp-btn" data-s="again" ${busy?"disabled":""}>${IDEA_FACE}${ai?L("换一种拆法","Try another way"):L("帮我拆","Suggest")}</button><button class="btn primary" data-s="ok" ${busy?"disabled":""}>${L("保存","Save")}</button></div></div>`};
   const regen=async()=>{
     if(sample){busy=true;draw();try{steps=await aiSteps(t.title,t.note,gran,steps)}catch(e){steps=splitSteps(t.title,gran,++variant)}busy=false;draw()}
     else{steps=splitSteps(t.title,gran,variant);draw()}};
@@ -4906,7 +4907,7 @@ function renderPreview(){
   if(!pending.length){box.hidden=true;box.innerHTML="";return}
   box.hidden=false;
   const tdAll=pending.filter(p=>p.space!=="shop"&&!p.repeat&&!p.due),allOn=tdAll.length&&tdAll.every(p=>p.today);
-  box.innerHTML=(tdAll.length?`<div class="pv-today"><button class="chip hz${allOn?" on":""}" data-pv="todayall" aria-pressed="${!!allOn}">${allOn?"✓ ":""}${L("没写日期的都是今天要做的","Undated ones are for today")}</button><span class="hint">${L("只是计划，不会设成截止日期","A plan, not a deadline")}</span></div>`:"")+pending.map((p,i)=>`<div class="pv">
+  box.innerHTML=(tdAll.length?`<div class="pv-today"><button class="chip hz${allOn?" on":""}" data-pv="todayall" aria-pressed="${!!allOn}">${allOn?"✓ ":""}${L("没写日期的都是今天要做的","Undated ones are for today")}</button></div>`:"")+pending.map((p,i)=>`<div class="pv">
     <input type="checkbox" id="pv-c-${i}" data-pv="keep" data-i="${i}" ${p.keep?"checked":""} aria-label="${L("保留这条","Keep this")}">
     <div class="pv-body">
       <input class="pv-title" id="pv-t-${i}" data-pv="title" data-i="${i}" value="${esc(p.title)}" aria-label="${L("任务标题","Task title")}">
@@ -4915,7 +4916,7 @@ function renderPreview(){
         ${p.space==="shop"?"":`<span class="gap"></span>`+HZ.map(h=>`<button class="chip hz${p.horizon===h.k?" on":""}" data-pv="hz" data-v="${h.k}" data-i="${i}">${h.name}</button>`).join("")}
         ${p.repeat&&p.space!=="shop"?`<span class="chip rep-chip">${REP_SVG}${repLabel(p.repeat)}${p.repeat.until?L(` · 到 ${md2(p.repeat.until)}`,` · until ${md2(p.repeat.until)}`):""}</span>`:""}
         ${p.due?`<span class="chip">${p.repeat?L("第一次 ","First ") :L("截止 ","Due ")}${esc(p.due)}</span>`:""}
-        ${p.space!=="shop"&&!p.repeat?`<button class="chip hz${p.today?" on":""}" data-pv="today" data-i="${i}" aria-pressed="${!!p.today}">${p.today?"✓ ":""}${L("今天做","Do today")}</button>`:""}${p.space!=="shop"?`<button class="chip split-chip${p.split?" on":""}" data-pv="split" data-i="${i}" aria-pressed="${!!p.split}">${p.split?"✓ ":""}${L("✨ 拆子任务","✨ Split into subtasks")}</button>`:""}${p.pri&&p.space!=="shop"?`<button class="chip" data-pv="pri" data-i="${i}" title="${priLabel(p.pri)}"><span class="psvg">${priIcon(p.pri)}</span>${PRI_NAMES()[p.pri]}</button>`:""}
+        ${p.space!=="shop"&&!p.repeat?`<button class="chip hz${p.today?" on":""}" data-pv="today" data-i="${i}" aria-pressed="${!!p.today}">${p.today?"✓ ":""}${L("今天做","Do today")}</button>`:""}${p.space!=="shop"?`<button class="chip split-chip${p.split?" on":""}" data-pv="split" data-i="${i}" aria-pressed="${!!p.split}">${p.split?"✓ ":IDEA_FACE}${L("拆子任务","Split into subtasks")}</button>`:""}${p.pri&&p.space!=="shop"?`<button class="chip" data-pv="pri" data-i="${i}" title="${priLabel(p.pri)}"><span class="psvg">${priIcon(p.pri)}</span>${PRI_NAMES()[p.pri]}</button>`:""}
       </div>
     </div></div>`).join("")+
   `<div class="cap-row"><button class="btn primary" id="saveParsed">${L(`保存选中的 ${pending.filter(p=>p.keep).length} 条`,`Save ${pending.filter(p=>p.keep).length} selected`)}</button><button class="btn" id="cancelParsed">${L("取消","Cancel")}</button></div>`;
