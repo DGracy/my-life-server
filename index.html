@@ -1076,8 +1076,8 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .fl-sum{margin-left:auto;font-size:12.5px;color:var(--muted)}
 .fl-mapw{border-radius:18px;overflow:hidden;width:100%;max-width:560px;align-self:center}
 .fl-map{display:block;width:100%;height:auto}
-.fl-ghost{fill:color-mix(in srgb,var(--water) 40%,var(--surface));opacity:.55}
-.fl-gline{fill:none;stroke:var(--faint);stroke-width:1.5;stroke-dasharray:4 3}
+.fl-ghost{fill:color-mix(in srgb,var(--muted) 30%,var(--surface))}.fl-ghost2{fill:color-mix(in srgb,var(--muted) 55%,var(--surface))}
+.fl-gline{fill:none;stroke:var(--surface);stroke-opacity:.9;stroke-width:1.6;stroke-dasharray:2 4;stroke-linecap:round}
 .fl-edge{fill:color-mix(in srgb,var(--leaf) 70%,#1d3b2a)}
 .fl-l1,.fl-l2{stroke:var(--surface);stroke-opacity:.85;stroke-width:1.6;stroke-dasharray:2 4;stroke-linecap:round}
 .fl-l1{fill:color-mix(in srgb,var(--leaf) 52%,var(--surface))}.fl-l2{fill:color-mix(in srgb,var(--leaf) 38%,var(--surface))}
@@ -1105,7 +1105,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .dx-q{fill:#000}.dood-bg{fill:#fffaf0;opacity:.9}
 .dx-rb{position:absolute;top:5px;right:5px;font-style:normal;font-size:10px;border-radius:99px;padding:1px 6px;color:#fff}.dx-rb.r1,.ft-sp.r1{background:#b07be8;color:#fff}.dx-rb.r2,.ft-sp.r2{background:#e8a13a;color:#fff}
 .dx-lands{display:flex;gap:8px;flex-wrap:wrap}.dx-ld{background:var(--surface-2);border-radius:14px;padding:6px 8px;display:flex;flex-direction:column;align-items:center;width:118px;font-size:12px}.dx-ld svg{width:100px;height:75px}.dx-ld small{color:var(--muted);font-size:11px}
-.dx-lf{fill:color-mix(in srgb,var(--leaf) 55%,var(--surface))}.dx-lg{fill:color-mix(in srgb,var(--water) 35%,var(--surface))}
+.dx-lf{fill:color-mix(in srgb,var(--leaf) 55%,var(--surface))}.dx-lg{fill:color-mix(in srgb,var(--muted) 35%,var(--surface))}
 .ft-hero{background:color-mix(in srgb,var(--water) 16%,var(--surface));border-radius:18px;display:grid;place-items:center;padding:8px}.ft-hero svg{width:140px;height:140px}
 .ft-name{display:flex;align-items:center;gap:6px;border-bottom:2px solid var(--line);padding:2px 4px;align-self:center}.ft-name:focus-within{border-color:var(--brand)}
 .ft-name input{border:none;background:none;font:inherit;font-size:20px;font-weight:700;color:var(--fg);text-align:center;width:9em;max-width:60vw;outline:none}.ft-name span{color:var(--muted)}
@@ -4857,7 +4857,7 @@ function flMap(y,months,nowY,nowM){
   let h=`<svg class="fl-map" viewBox="0 0 ${FLW} ${FLH}" role="img" aria-label="${L(`${y} 年的大陆`,`The ${y} continent`)}"><defs><clipPath id="${id}s">${shSVG(geo.sh)}</clipPath>
     <clipPath id="${id}p">${geo.cells.map((c,m)=>past(m)?`<polygon points="${poly(c)}"/>`:"").join("")}</clipPath><clipPath id="${id}f">${geo.cells.map((c,m)=>!past(m)?`<polygon points="${poly(c)}"/>`:"").join("")}</clipPath></defs>
     <rect width="${FLW}" height="${FLH}" class="fm-sea"/>${[[40,30],[420,26],[24,330],[440,330],[230,340]].map(([x,yy])=>`<path d="M${x} ${yy}q5 -4 10 0t10 0" class="fm-wave"/>`).join("")}
-    <g clip-path="url(#${id}f)"><g clip-path="url(#${id}s)"><rect width="${FLW}" height="${FLH}" class="fl-ghost"/>${geo.cells.map((c,m)=>!past(m)?`<polygon points="${poly(c)}" class="fl-gline"/>`:"").join("")}</g></g>`;
+    <g filter="url(#flRim)"><g clip-path="url(#${id}f)"><g clip-path="url(#${id}s)"><rect width="${FLW}" height="${FLH}" class="fl-ghost2"/></g></g></g><g clip-path="url(#${id}f)"><g clip-path="url(#${id}s)"><rect width="${FLW}" height="${FLH}" class="fl-ghost"/>${geo.cells.map((c,m)=>!past(m)?`<polygon points="${poly(c)}" class="fl-gline"/>`:"").join("")}</g></g>`;
   const land=cls=>`<g clip-path="url(#${id}p)"><g clip-path="url(#${id}s)"><rect width="${FLW}" height="${FLH}" class="${cls}"/></g></g>`;
   h+=`<g filter="url(#flRim2)">${land("fl-edge")}</g><g filter="url(#flRim)">${land("fm-sand")}</g>`;
   h+=`<g clip-path="url(#${id}s)">${geo.cells.map((c,m)=>past(m)?`<polygon points="${poly(c)}" class="${m%2?"fl-l2":"fl-l1"}"/>`:"").join("")}</g>`;
@@ -4911,7 +4911,7 @@ function flAfter(){const car=document.getElementById("flCar");if(!car)return;
   const go=(m,smooth)=>{const c=car.children[m];if(c)car.scrollTo({left:c.offsetLeft-car.offsetLeft-(car.clientWidth-c.clientWidth)/2,behavior:smooth?"smooth":"auto"})};
   go(forestMon,false);
   if(car._fl)return;car._fl=1;let tm;
-  car.addEventListener("scroll",()=>{clearTimeout(tm);tm=setTimeout(()=>{const mid=car.scrollLeft+car.clientWidth/2;let b=0,bd=1e9;[...car.children].forEach((c,j)=>{const d=Math.abs(c.offsetLeft-car.offsetLeft+c.clientWidth/2-mid);if(d<bd){bd=d;b=j}});
+  car.addEventListener("scroll",()=>{clearTimeout(tm);tm=setTimeout(()=>{if(!car.isConnected||!car.clientWidth)return;const mid=car.scrollLeft+car.clientWidth/2;let b=0,bd=1e9;[...car.children].forEach((c,j)=>{const d=Math.abs(c.offsetLeft-car.offsetLeft+c.clientWidth/2-mid);if(d<bd){bd=d;b=j}});
     if(b!==forestMon){forestMon=b;flMark()}},60)},{passive:true});
   car._go=go}
 function flMark(){document.querySelectorAll(".fl-hit").forEach(e=>e.classList.toggle("on",+e.dataset.v===forestMon));
