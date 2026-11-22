@@ -1102,6 +1102,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .fl-card.fut{align-items:center;text-align:center;color:var(--muted);font-size:13px;gap:6px;padding:16px}.fl-card.fut b{color:var(--fg);font-size:15px}
 .fl-piece{display:block;width:100%;height:auto;max-height:240px;flex:none}.fl-card.empty .fl-piece{max-height:150px;opacity:.75}
 .fl-cf{align-self:stretch;display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted)}.fl-cf b{color:var(--fg)}
+.fl-curring{fill:none;stroke:var(--brand);stroke-width:1.6;stroke-dasharray:3 3}.fl-curtag rect{fill:var(--brand)}.fl-curtag text{fill:#fff;text-anchor:middle;font-family:var(--f-body)}.fl-tt.cur{opacity:.9}
 .fl-tt{cursor:pointer;outline:none}.fl-tt:hover,.fl-tt:focus-visible{filter:drop-shadow(0 0 4px #fff)}
 .fl-tt.flash{animation:flFlash 1.2s ease-in-out 2}@keyframes flFlash{50%{filter:drop-shadow(0 0 8px var(--brand))}}
 .dx-prog{display:flex;gap:8px;flex-wrap:wrap}.dx-pg{flex:1;min-width:90px;background:var(--surface-2);border-radius:14px;padding:7px 10px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px}.dx-pg b{font-size:15px;color:var(--fg)}
@@ -4908,7 +4909,7 @@ function flPiece(y,m,ts,withCur){
   const land=cls=>`<g clip-path="url(#${id}c)"><g clip-path="url(#${id}s)"><rect width="${FLW}" height="${FLH}" class="${cls}"/></g></g>`;
   let h=`<svg class="fl-piece" viewBox="${(x0-pad).toFixed(1)} ${(y0-pad).toFixed(1)} ${(x1-x0+pad*2).toFixed(1)} ${(y1-y0+pad*2+6).toFixed(1)}"><defs><clipPath id="${id}s">${shSVG(geo.sh)}</clipPath><clipPath id="${id}c"><polygon points="${ld.poly.map(p=>p.join(",")).join(" ")}"/></clipPath></defs>`;
   h+=`<g filter="url(#flRim2)">${land("fl-edge")}</g><g filter="url(#flRim)">${land("fm-sand")}</g>${land(m%2?"fl-l2":"fl-l1")}`;
-  f.pos.forEach((p,j)=>{const it=items[j];if(it.cur)h+=placeAt(treeSVG("happy",stageOf(curWater()),false,curTheme),p[0],p[1],f.S,`class="fl-tt cur" data-act="fcur" role="button" tabindex="0" aria-label="${L("正在长的{pet}","The sprout growing now")}"`);
+  f.pos.forEach((p,j)=>{const it=items[j];if(it.cur)h+=`<ellipse cx="${p[0].toFixed(1)}" cy="${(p[1]-f.S*.03).toFixed(1)}" rx="${(f.S*.46).toFixed(1)}" ry="${(f.S*.12).toFixed(1)}" class="fl-curring"/><g class="fl-curtag"><rect x="${(p[0]-f.S*.42).toFixed(1)}" y="${(p[1]+f.S*.06).toFixed(1)}" width="${(f.S*.84).toFixed(1)}" height="${(f.S*.24).toFixed(1)}" rx="${(f.S*.12).toFixed(1)}"/><text x="${p[0].toFixed(1)}" y="${(p[1]+f.S*.23).toFixed(1)}" font-size="${(f.S*.15).toFixed(1)}">${L("还在长","growing")}</text></g>`+placeAt(treeSVG("happy",stageOf(curWater()),false,curTheme),p[0],p[1],f.S,`class="fl-tt cur" data-act="fcur" role="button" tabindex="0" aria-label="${L("正在长的{pet}","The sprout growing now")}"`);
     else h+=placeAt(spSVG(spOf(it.t),it.t.theme,forestFlash===it.t.id?"cheer":"happy"),p[0],p[1],f.S,`class="fl-tt${forestFlash===it.t.id?" flash":""}" data-act="fopen" data-id="${it.t.id}" role="button" tabindex="0" aria-label="${esc(treeName(it.t))}"`)});
   if(f.hidden)h+=`<text x="${ld.cx}" y="${y1+4}" class="fl-more" text-anchor="middle">+${f.hidden}</text>`;
   return h+"</svg>"}
