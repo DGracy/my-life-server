@@ -1142,6 +1142,49 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 #pomoPage .what.center,#pomoPage .what.ok i{color:var(--leaf-ink)}.nextbtn{color:var(--btn-ink)!important}.hm-ti.used{opacity:1}.hm-ti.used svg{opacity:.4}.hm-ti.used span{color:var(--muted)}
 :root:not([data-tod="night"]) .set-fold summary small{color:var(--brand-ink)}.fp{color:#a8374a}
 :root:not([data-tod="night"]) .wish .w-done{color:#7c60d6}:root:not([data-tod="night"]) .gl2 i{color:#8a6400}:root:not([data-tod="night"]) .due.plan,:root:not([data-tod="night"]) .ov-mv{color:var(--brand-ink)}
+.trpage{background:var(--bg)}
+.tr-in{max-width:760px;margin:0 auto;box-sizing:border-box;padding:0 max(16px,env(safe-area-inset-right,0px)) calc(110px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:12px}
+.tr-in.case{padding-top:calc(12px + env(safe-area-inset-top,0px))}
+.tr-nite{margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:calc(12px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px));background:radial-gradient(120% 90% at 50% 0%,#46358a,#241b4d);border-radius:0 0 24px 24px;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden}
+.tr-nite::after,.tr-spread::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1.2px 1.2px at 14% 20%,#fff9 50%,transparent 51%),radial-gradient(1px 1px at 80% 14%,#fff8 50%,transparent 51%),radial-gradient(1.4px 1.4px at 66% 40%,#ffe7a8aa 50%,transparent 51%),radial-gradient(1px 1px at 30% 70%,#fff7 50%,transparent 51%),radial-gradient(1.2px 1.2px at 90% 72%,#fff8 50%,transparent 51%)}
+.tr-top{display:flex;align-items:center;gap:10px;position:relative;z-index:1}.tr-top h2{margin:0;font-size:19px;color:var(--fg)}.tr-nite .tr-top h2{color:#f6f0ff}
+.tr-back{border:none;background:none;font:inherit;font-size:14px;color:#e9dcff;cursor:pointer;padding:4px 0}.tr-back.dk{color:var(--muted)}
+.tr-hero{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:8px;position:relative;z-index:1}
+.tr-hl{background:rgba(255,255,255,.08);border:1px solid rgba(240,199,90,.28);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:2px;color:#d8ccff;font-size:11.5px;min-width:0}.tr-hl b{font-family:Georgia,serif;font-size:24px;font-weight:400;color:#f3d27a}
+.tr-hl.fav{flex-direction:row;align-items:center;gap:8px}.tr-hl.fav .tr-img{border-radius:4px;flex:none}.tr-hl.fav em{font-style:normal;color:#fff;font-size:13px;font-weight:600}
+.tr-srch{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border-radius:99px;padding:8px 14px;color:#d8ccff;position:relative;z-index:1}.tr-srch input{flex:1;min-width:0;border:none;background:none;font:inherit;font-size:14px;color:#fff;outline:none;padding:0}.tr-srch input::placeholder{color:#c4b6ef}
+.tr-ppl{display:flex;gap:8px;overflow-x:auto;position:relative;z-index:1;padding-bottom:2px}.tr-ppl button{flex:none;display:flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);border-radius:99px;padding:4px 10px 4px 4px;color:#f3ecff;font:inherit;font-size:13px;cursor:pointer}.tr-ppl button.on{background:#f0c75a;color:#2a1d0a;border-color:#f0c75a}.tr-ppl i{width:24px;height:24px;border-radius:50%;background:#d9ccff;color:#2a1d4a;font-style:normal;font-size:12px;display:grid;place-items:center;font-weight:700}.tr-ppl small{font-size:11px;opacity:.85}
+.tr-list{display:flex;flex-direction:column;gap:10px}.tr-mon{font-size:12.5px;color:var(--muted);letter-spacing:.08em;margin-top:6px}
+.tr-case{display:grid;grid-template-columns:92px 1fr;gap:12px;align-items:center;background:var(--surface);border-radius:18px;box-shadow:0 0 0 1px var(--line);padding:12px;cursor:pointer;border:none;text-align:left;font:inherit;color:inherit;width:100%}
+.tr-fan{position:relative;height:84px;width:92px}.tr-fan span{position:absolute;bottom:0;left:50%;transform-origin:50% 110%;border-radius:5px;overflow:hidden;box-shadow:0 3px 6px rgba(0,0,0,.25);line-height:0}.tr-fan .tr-empty{width:42px;height:72px;border:1.5px dashed var(--line);background:none;box-shadow:none;transform:translateX(-50%)}
+.tr-img{display:block;border-radius:6px;background:#fff;object-fit:cover}
+.tr-cb{display:flex;flex-direction:column;gap:4px;min-width:0}.tr-ch{display:flex;align-items:center;gap:6px;min-width:0}.tr-ch b{font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tr-ch small{color:var(--muted);font-size:12px;white-space:nowrap}
+.tr-tag{margin-left:auto;font-size:11px;border-radius:99px;padding:1px 8px;background:var(--study-soft);color:var(--study-ink);white-space:nowrap}
+.tr-q{font-size:13.5px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}.tr-f{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tr-fab{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));border:none;border-radius:99px;padding:12px 20px;background:linear-gradient(135deg,#f6d77a,#e0a93a);color:#2a1d0a;font:inherit;font-size:15px;font-weight:600;box-shadow:0 6px 16px rgba(200,150,40,.35);cursor:pointer;z-index:2}
+.tr-spread{position:relative;background:radial-gradient(120% 80% at 50% 0%,#46358a 0%,#2a1f57 55%,#1b1540 100%);border-radius:22px;padding:22px 12px 16px;display:flex;flex-direction:column;gap:12px;align-items:center;overflow:hidden}
+.tr-spread::before{content:"";position:absolute;inset:7px;border-radius:16px;border:1px solid rgba(240,199,90,.35);pointer-events:none}
+.tr-sphd{display:flex;align-items:center;gap:8px;color:#efe6ff;font-size:12px;letter-spacing:.12em;position:relative;z-index:1}.tr-sphd i{width:26px;height:1px;background:linear-gradient(90deg,transparent,#f0c75a)}.tr-sphd i:last-child{transform:scaleX(-1)}
+.tr-tbl{display:flex;gap:10px;justify-content:center;align-items:flex-start;flex-wrap:wrap;position:relative;z-index:1}
+.tr-grp{display:flex;flex-direction:column;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(240,199,90,.24);border-radius:16px;padding:10px 8px;min-width:96px;box-sizing:border-box}
+.tr-rn{font-family:Georgia,serif;color:#f3d27a;font-size:12px;letter-spacing:.1em}
+.tr-card{border:none;background:none;padding:0;cursor:pointer;line-height:0;border-radius:6px}.tr-card .tr-img{filter:drop-shadow(0 4px 8px rgba(0,0,0,.35))}
+.tr-cap{text-align:center;color:#f6f0ff;font-size:12.5px;line-height:1.35;max-width:110px}.tr-cap em{display:inline-block;font-style:normal;font-size:10.5px;color:#2a1d0a;background:#ffc6d0;border-radius:99px;padding:0 6px;margin-left:4px;vertical-align:1px}
+.tr-subs{display:flex;gap:8px;border-top:1px dashed rgba(240,199,90,.35);padding-top:8px}.tr-sub{display:flex;flex-direction:column;align-items:center;gap:4px}.tr-sub .tr-cap{font-size:11.5px}.tr-subtag{font-size:10.5px;color:#f3d27a;letter-spacing:.1em}
+.tr-ghost{width:80px;height:137px;border-radius:8px;border:1.5px dashed rgba(240,199,90,.6);background:rgba(255,255,255,.05);color:#f8ecc6;font:inherit;font-size:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}.tr-ghost b{font-size:20px;font-weight:400;color:#f3d27a}
+.tr-acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}.tr-gbtn{border:1px solid rgba(240,199,90,.55);background:rgba(255,255,255,.07);color:#f8ecc6;border-radius:99px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer}
+.tr-txt{background:var(--surface);border-radius:18px;box-shadow:0 0 0 1px var(--line);padding:14px;display:flex;flex-direction:column;gap:12px}
+.tr-txt input,.tr-txt textarea{min-width:0;width:100%;box-sizing:border-box}.tr-txt textarea{min-height:72px;resize:vertical}
+.tr-row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tr-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted)}
+.tr-sheetbg{position:fixed;inset:0;background:rgba(20,15,45,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.tr-sheet{background:var(--surface);border-radius:22px 22px 0 0;width:100%;max-width:640px;max-height:86vh;overflow:auto;box-sizing:border-box;padding:16px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:12px}
+.tr-sheet>*{flex:none}.tr-shd{display:flex;align-items:center;justify-content:space-between}.tr-shd b{font-size:17px}
+.tr-suits{display:flex;gap:6px;overflow-x:auto}.tr-suits button{flex:none;border:none;border-radius:99px;padding:6px 14px;font:inherit;font-size:13.5px;background:var(--bg-2);color:var(--muted);cursor:pointer;box-shadow:0 0 0 1px var(--line)}.tr-suits button.on{background:var(--study-soft);color:var(--study-ink);font-weight:600;box-shadow:0 0 0 1.5px var(--study)}
+.tr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:10px 8px}.tr-grid button{border:none;background:none;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font:inherit;font-size:11px;color:var(--muted);text-align:center}.tr-grid button.pick .tr-img{outline:3px solid var(--study);outline-offset:2px}.tr-grid button.pick span{color:var(--study-ink);font-weight:600}
+.tr-zoom{position:fixed;inset:0;background:rgba(15,10,35,.86);z-index:21;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#f6f0ff;font-size:14.5px;padding:20px}.tr-zoom .tr-img{border-radius:10px;box-shadow:0 10px 40px #000a;max-height:60vh;width:auto!important}
+.tr-zb{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.tr-zb button{border:none;border-radius:99px;padding:8px 16px;font:inherit;font-size:13.5px;background:#ffffff26;color:#fff;cursor:pointer}
+.ov-tr{display:flex;align-items:center;gap:10px;width:100%;border:none;border-radius:14px;padding:9px 12px;margin:4px 0;background:color-mix(in srgb,#8b6cf0 12%,var(--surface));color:var(--fg);font:inherit;font-size:14px;text-align:left;cursor:pointer}.ov-tr span{flex:1;min-width:0}.ov-tr small{display:block;color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ov-tr i{font-style:normal;color:var(--muted)}
 .stkw{position:fixed;right:0;top:34%;z-index:16;display:flex;align-items:flex-start;pointer-events:none}
 .stkw>*{pointer-events:auto}
 .st-tab{position:relative;border:none;background:none;border-radius:16px;padding:2px 4px 2px 2px;cursor:pointer;filter:drop-shadow(0 3px 6px rgba(40,60,110,.22));margin-right:env(safe-area-inset-right,0px);line-height:0}
@@ -1457,7 +1500,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 <body>
 
 <div class="wrap">
-  <div class="title-row"><h1 id="appName">我的人生服务器</h1><span class="today" id="today"></span><span class="hd-acts"><button class="gear" id="homeBtn" aria-label="我的家园" title="我的家园"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" style="display:block;transform:translateY(.5px)"><path d="M19 9.6V19.5H17.2V8.2Z" fill="#e3a35c"/><path d="M5 10.4 12 4l7 5.6V20H5Z" fill="#ffd9a0"/><path d="M3.2 11.2 12 3.6l2-.9 7.6 6.6-2.6.6L12 4.4 4.6 12Z" fill="#ef5d6e"/><rect x="10" y="14" width="4" height="6" rx="1" fill="#a9744f"/><path d="M3.2 11.2 12 3.6l8.8 7.6" fill="none" stroke="#3a2a10" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg></button><button class="gear mbb" id="mbBtn" aria-label="信箱">📫<i class="mbdot" hidden></i></button><button class="jbtn" id="jbtn" aria-pressed="false">📔<span id="jbtnTxt"> 小结</span></button><button class="gear sync" id="syncBtn" hidden></button><button class="gear mbb" id="gear" aria-label="设置">⚙️<i class="mbdot" id="gearDot" hidden></i></button></span></div>
+  <div class="title-row"><h1 id="appName">我的人生服务器</h1><span class="today" id="today"></span><span class="hd-acts"><button class="gear" id="homeBtn" aria-label="我的家园" title="我的家园"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" style="display:block;transform:translateY(.5px)"><path d="M19 9.6V19.5H17.2V8.2Z" fill="#e3a35c"/><path d="M5 10.4 12 4l7 5.6V20H5Z" fill="#ffd9a0"/><path d="M3.2 11.2 12 3.6l2-.9 7.6 6.6-2.6.6L12 4.4 4.6 12Z" fill="#ef5d6e"/><rect x="10" y="14" width="4" height="6" rx="1" fill="#a9744f"/><path d="M3.2 11.2 12 3.6l8.8 7.6" fill="none" stroke="#3a2a10" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg></button><button class="gear mbb" id="mbBtn" aria-label="信箱">📫<i class="mbdot" hidden></i></button><button class="gear" id="tarotBtn" aria-label="塔罗小本子" title="塔罗小本子" hidden></button><button class="jbtn" id="jbtn" aria-pressed="false">📔<span id="jbtnTxt"> 小结</span></button><button class="gear sync" id="syncBtn" hidden></button><button class="gear mbb" id="gear" aria-label="设置">⚙️<i class="mbdot" id="gearDot" hidden></i></button></span></div>
   <section class="garden" aria-label="小芽的成长">
     <div class="buddy" id="buddy" role="img" aria-label="小芽"><span class="btree" id="btree"></span></div>
     <div class="g-text">
@@ -4047,7 +4090,7 @@ function overview(){
     ${(()=>{const {live,done}=habitStats();if(!live.length)return "";const ck=checkins[td]||{};const hs=[...live].sort((a,b)=>(a.order||0)-(b.order||0));
       return `<div class="ov-hab"><span class="ov-hl">${STAR}${L(`打卡 ${done}/${live.length}`,`Habits ${done}/${live.length}`)}</span>${hs.map(h=>`<button class="ov-hc${ck[h.id]?" on":""}" data-act="hdot" data-id="${h.id}" data-v="${td}" aria-pressed="${!!ck[h.id]}">${ck[h.id]?"✓ ":""}${esc(h.name)}</button>`).join("")}</div>`})()}
     ${over.length?`<p class="ov-sub">${L("过期了","Overdue")}</p>${over.map(t=>ovRow(t,t===first)).join("")}`:""}
-    ${today.length?`${over.length?`<p class="ov-sub">${L("今天","Today")}</p>`:""}${today.map(t=>ovRow(t,t===first)).join("")}`:""}
+    ${today.length?`${over.length?`<p class="ov-sub">${L("今天","Today")}</p>`:""}${today.map(t=>ovRow(t,t===first)).join("")}`:""}${tarotDueRow()}
     ${n?"":`<p class="ov-none">${L("今天还没排事情～","Nothing set for today yet～")}</p>`}<button class="ov-ask" data-act="ovask">${SF.happy||""}<span>${n?L("还想加点今天要做的？告诉小芽","Add more for today? Tell {pet}"):L("今天想做什么？告诉小芽，它帮你分好放进来","What's on today? Tell {pet} and it sorts them in")}</span></button></section>`;
   const busy=days.slice(1).filter(d=>by[d].length>OV_FULL),free=days.slice(1).filter(d=>by[d].length===0);
   const tip=busy.length&&free.length?`<div class="ov-tip">${SF.happy||""}<span>${L(`${ovDayName(busy[0],td)}排了 ${by[busy[0]].length} 件，${free.slice(0,2).map(d=>ovDayName(d,td)).join("和")}还空着～要不要挪一两件过去？`,`${ovDayName(busy[0],td)} has ${by[busy[0]].length} things while ${free.slice(0,2).map(d=>ovDayName(d,td)).join(" and ")} ${free.length>1?"are":"is"} free～ Move one or two?`)}</span></div>`:"";
@@ -4883,6 +4926,114 @@ async function shopClick(e){
     renderBuddy();renderShop();return}
 }
 function isWornIn(w,k){const x=SHOPI[k];const v=w[x.slot];return Array.isArray(v)?v.includes(k):v===k}
+/* ---------- 塔罗小本子 (only on the owner's account: ?tarot=on once) ---------- */
+let tarotOn=false;try{tarotOn=localStorage.getItem("lifeos-tarot")==="1"}catch(_){}
+let tarots=[],trOpen=false,trView="list",trId=null,trWho="",trQ="",trSheet=null,trZoom=null,trDel=false,trTimer=null;
+const TR_BASE="tarot/";
+const TR_MAJ=[["愚者","The Fool"],["魔术师","The Magician"],["女祭司","The High Priestess"],["皇后","The Empress"],["皇帝","The Emperor"],["教皇","The Hierophant"],["恋人","The Lovers"],["战车","The Chariot"],["力量","Strength"],["隐士","The Hermit"],["命运之轮","Wheel of Fortune"],["正义","Justice"],["倒吊人","The Hanged Man"],["死神","Death"],["节制","Temperance"],["恶魔","The Devil"],["塔","The Tower"],["星星","The Star"],["月亮","The Moon"],["太阳","The Sun"],["审判","Judgement"],["世界","The World"]];
+const TR_SUIT={w:["权杖","Wands"],c:["圣杯","Cups"],s:["宝剑","Swords"],p:["星币","Pentacles"]};
+const TR_RANK=[["王牌","Ace"],["二","Two"],["三","Three"],["四","Four"],["五","Five"],["六","Six"],["七","Seven"],["八","Eight"],["九","Nine"],["十","Ten"],["侍从","Page"],["骑士","Knight"],["王后","Queen"],["国王","King"]];
+const trName=k=>{if(!k)return "";if(k[0]==="m"){const x=TR_MAJ[+k.slice(1)]||["?","?"];return L(x[0],x[1])}const s=TR_SUIT[k[0]],r=TR_RANK[+k.slice(1)-1];return s&&r?L(s[0]+r[0],`${r[1]} of ${s[1]}`):k};
+const trNameZh=k=>k[0]==="m"?(TR_MAJ[+k.slice(1)]||[""])[0]:(TR_SUIT[k[0]]||[""])[0]+(TR_RANK[+k.slice(1)-1]||[""])[0];
+const trImg=(c,w,cls)=>`<img class="tr-img${cls?" "+cls:""}" src="${TR_BASE}${c.k}.jpg" alt="${esc(trName(c.k))}${c.rv?L(" 逆位"," reversed"):""}" style="width:${w}px;height:${Math.round(w*1.714)}px${c.rv?";transform:rotate(180deg)":""}" loading="lazy">`;
+const TR_TYPES=()=>[["love",L("感情","Love")],["work",L("事业","Career")],["study",L("学业","Study")],["people",L("人际","People")],["other",L("其他","Other")]];
+const trType=v=>(TR_TYPES().find(x=>x[0]===v)||["",""])[1];
+const trUid=()=>Math.random().toString(36).slice(2,8);
+const trCase=()=>tarots.find(x=>x.id===trId);
+const CRYSTAL=`<svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" style="display:block;transform:translateY(.5px)"><defs><radialGradient id="trcb" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".45" stop-color="#d9ccff" stop-opacity=".35"/><stop offset="1" stop-color="#7b5fe0" stop-opacity=".65"/></radialGradient></defs><circle cx="12" cy="11" r="7.2" fill="#b9a3ff"/><circle cx="12" cy="11" r="7.2" fill="url(#trcb)"/><path d="M14.6 7.6l.5 1.2 1.2.5-1.2.5-.5 1.2-.5-1.2-1.2-.5 1.2-.5z" fill="#fff"/><path d="M6.5 19.5h11l-1.3-2.6H7.8z" fill="#c9965a"/><path d="M6.5 19.5h11" stroke="#a6743c" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+function setTarot(v,sync=true){tarotOn=!!v;try{localStorage.setItem("lifeos-tarot",tarotOn?"1":"0")}catch(_){}if(sync&&db&&db.meta)db.meta.set({tarot:tarotOn},{merge:true}).catch(()=>{});const b=document.getElementById("tarotBtn");if(b)b.hidden=!tarotOn;if(!tarotOn&&trOpen)closeTarot()}
+try{const q=new URLSearchParams(location.search).get("tarot");if(q==="on"||q==="off")setTimeout(()=>setTarot(q==="on"),1500)}catch(_){}
+function openTarot(){if(!db||!tarotOn)return;trOpen=true;trView="list";trSheet=null;trZoom=null;document.body.classList.add("mb-on");renderTarot()}
+function closeTarot(){if(Object.keys(trPend).length)trSave({});trCleanup();trOpen=false;document.getElementById("tarotPage")?.remove();if(!mbOpen&&!idOpen&&!shOpen&&!hmOpen)document.body.classList.remove("mb-on")}
+function trCleanup(){const c=trCase();if(c&&!(c.cards||[]).length&&!c.who&&!c.q&&!c.read&&!c.advice&&!c.after){const r=db.doc("tarot/"+c.id);queued(r.path,()=>r.delete());tarots=tarots.filter(x=>x!==c)}}
+let trPend={};
+function trSave(patch){const c=trCase();if(!c)return;clearTimeout(trTimer);Object.assign(c,trPend,patch,{updatedAt:Date.now()});trPend={};const r=db.doc("tarot/"+c.id);const body={...c};delete body.id;queued(r.path,()=>r.set(body))}
+async function trNew(){const ref=db.collection("tarot").doc();const doc={who:trWho||"",date:todayStr(),type:"",q:"",read:"",advice:"",after:"",revisit:null,cards:[],createdAt:Date.now(),updatedAt:Date.now()};tarots.push({id:ref.id,...doc});trId=ref.id;trView="case";trDel=false;queued(ref.path,()=>ref.set(doc));renderTarot()}
+function trStats(){const mon=todayStr().slice(0,7),cnt={};tarots.forEach(t=>(t.cards||[]).forEach(c=>cnt[c.k]=(cnt[c.k]||0)+1));const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0];
+  return {mon:tarots.filter(t=>(t.date||"").startsWith(mon)).length,all:tarots.length,top:top?top[0]:null}}
+function trMatch(t){if(trWho&&t.who!==trWho)return false;const q=trQ.trim().toLowerCase();if(!q)return true;
+  return [t.who,t.q,t.read,t.advice,t.after].some(x=>(x||"").toLowerCase().includes(q))||(t.cards||[]).some(c=>trNameZh(c.k).includes(q)||trName(c.k).toLowerCase().includes(q))}
+function trListHTML(){const st=trStats(),people={};tarots.forEach(t=>{if(t.who)people[t.who]=(people[t.who]||0)+1});
+  const list=tarots.filter(trMatch).sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.createdAt||0)-(a.createdAt||0));
+  const col=n=>["#ffb3c4","#a6d8ff","#c6f0d8","#ffe08a","#d9ccff","#ffd0a8"][[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%6];
+  let mon="",rows="";for(const t of list){const m=(t.date||"").slice(0,7);if(m!==mon){mon=m;rows+=`<div class="tr-mon">${m?L(`${+m.slice(0,4)} 年 ${+m.slice(5)} 月`,`${MON[+m.slice(5)-1]} ${m.slice(0,4)}`):""}</div>`}
+    const main=(t.cards||[]).filter(c=>!c.of).slice(0,3),n=main.length,foot=t.after?L("后来：","After: ")+t.after:(t.revisit?L(`${md2(t.revisit)} 问问后来怎么样`,`Check in on ${md2(t.revisit)}`):"");
+    rows+=`<button class="tr-case" data-tr="open" data-id="${t.id}"><div class="tr-fan">${main.map((c,j)=>`<span style="transform:translateX(-50%) rotate(${(j-(n-1)/2)*15}deg)">${trImg(c,42)}</span>`).join("")||`<span class="tr-empty"></span>`}</div>
+      <div class="tr-cb"><div class="tr-ch"><b>${esc(t.who||L("还没写名字","No name yet"))}</b><small>${t.date?md2(t.date):""}${(t.cards||[]).length>3?L(` · ${t.cards.length} 张`,` · ${t.cards.length} cards`):""}</small>${t.type?`<span class="tr-tag">${trType(t.type)}</span>`:""}</div><div class="tr-q">${esc(t.q||"")}</div>${foot?`<div class="tr-f">${esc(foot)}</div>`:""}</div></button>`}
+  return `<div class="tr-nite"><div class="tr-top"><button class="tr-back" data-tr="x">‹ ${L("返回","Back")}</button><h2>${L("塔罗小本子","Tarot notebook")}</h2></div>
+    <div class="tr-hero"><div class="tr-hl"><b>${st.mon}</b><span>${L("这个月的案例","This month")}</span></div><div class="tr-hl"><b>${st.all}</b><span>${L("一共记了","In total")}</span></div><div class="tr-hl fav">${st.top?trImg({k:st.top},30):""}<span>${L("最常出现","Most drawn")}<br><em>${st.top?esc(trName(st.top)):"—"}</em></span></div></div>
+    <label class="tr-srch"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="trQ" value="${esc(trQ)}" placeholder="${L("找人、找牌，比如「塔」","Find a person or a card")}" aria-label="${L("搜索","Search")}"></label>
+    ${Object.keys(people).length?`<div class="tr-ppl"><button class="${trWho?"":"on"}" data-tr="who" data-v=""><i>${L("全","All")}</i>${L("全部","All")}</button>${Object.entries(people).sort((a,b)=>b[1]-a[1]).map(([n,c])=>`<button class="${trWho===n?"on":""}" data-tr="who" data-v="${esc(n)}"><i style="background:${col(n)}">${esc([...n][0].toUpperCase())}</i>${esc(n)}<small>${c}</small></button>`).join("")}</div>`:""}</div>
+    <div class="tr-list">${rows||`<div class="empty">${trQ||trWho?L("没有找到。","Nothing found."):L("还没有案例。帮人看完牌，点右下角记一笔。","No readings yet. After a reading, tap the button below to note it down.")}</div>`}</div>
+    <button class="tr-fab" data-tr="new">＋ ${L("新案例","New reading")}</button>`}
+function trCaseHTML(){const t=trCase();if(!t)return "";const cards=t.cards||[],main=cards.filter(c=>!c.of),first=main.slice(0,3),extra=main.slice(3),subsOf=c=>cards.filter(y=>y.of===c.u),R=["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
+  const nm=c=>`<div class="tr-cap">${esc(trName(c.k))}${c.rv?`<em>${L("逆","Rev")}</em>`:""}</div>`;
+  const one=(c,w)=>`<button class="tr-card" data-tr="zoom" data-u="${c.u}">${trImg(c,w)}</button>`;
+  const grp=(c,n)=>{const subs=subsOf(c);return `<div class="tr-grp"><span class="tr-rn">${R[n]}</span>${one(c,80)}${nm(c)}${subs.length?`<div class="tr-subs">${subs.map(y=>`<div class="tr-sub"><span class="tr-subtag">${L("补牌","Clarifier")}</span>${one(y,52)}${nm(y)}</div>`).join("")}</div>`:""}</div>`};
+  const majNoSub=first.filter(c=>c.k[0]==="m"&&!subsOf(c).length);
+  return `<div class="tr-top"><button class="tr-back dk" data-tr="list">‹ ${L("全部案例","All readings")}</button><h2>${esc(t.who||L("新案例","New reading"))}${t.date?` · ${md2(t.date)}`:""}</h2></div>
+  <div class="tr-spread"><div class="tr-sphd"><i></i>${L("三张 · 无牌阵","Three cards")}<i></i></div>
+    <div class="tr-tbl">${first.map(grp).join("")}${first.length<3?`<div class="tr-grp"><span class="tr-rn">${R[first.length]}</span><button class="tr-ghost" data-tr="add"><b>＋</b>${L("抽到了哪张","Which card?")}</button></div>`:""}</div>
+    ${extra.length?`<div class="tr-sphd"><i></i>${L("多抽的","Extra cards")}<i></i></div><div class="tr-tbl">${extra.map((c,n)=>grp(c,n+3)).join("")}</div>`:""}
+    <div class="tr-acts">${majNoSub.length?`<button class="tr-gbtn" data-tr="add" data-of="${majNoSub[0].u}">✦ ${L(`给「${trName(majNoSub[0].k)}」补一张`,`Add a clarifier to ${trName(majNoSub[0].k)}`)}</button>`:""}${first.length>=3?`<button class="tr-gbtn" data-tr="add">＋ ${L("再记一张","Add another card")}</button>`:""}</div></div>
+  <div class="tr-txt">
+    <div class="tr-row2"><label class="field"><span>${L("是谁","Who")}</span><input id="trWhoIn" data-trf="who" value="${esc(t.who||"")}" list="trWhoList" maxlength="30"></label><label class="field"><span>${L("哪天","Date")}</span><input type="date" data-trf="date" value="${esc(t.date||"")}"></label></div>
+    <datalist id="trWhoList">${[...new Set(tarots.map(x=>x.who).filter(Boolean))].map(n=>`<option value="${esc(n)}">`).join("")}</datalist>
+    <div class="field"><span>${L("问的什么","The question")}</span><div class="chips">${TR_TYPES().map(([k,n])=>`<button class="chip hz${t.type===k?" on":""}" data-tr="type" data-v="${k}" aria-pressed="${t.type===k}">${n}</button>`).join("")}</div><input data-trf="q" value="${esc(t.q||"")}" maxlength="200" aria-label="${L("问的什么","The question")}"></div>
+    <label class="field"><span>${L("我的解读","My reading")}</span><textarea data-trf="read" maxlength="5000">${esc(t.read||"")}</textarea></label>
+    <label class="field"><span>${L("给的建议 · optional","Advice · optional")}</span><textarea data-trf="advice" maxlength="3000">${esc(t.advice||"")}</textarea></label>
+    <div class="field"><span>${L("后来怎么样 · optional","What happened after · optional")}</span><div class="tr-row2"><input data-trf="after" value="${esc(t.after||"")}" placeholder="${L("她后来说…","They told me…")}" maxlength="500" aria-label="${L("后来怎么样","What happened after")}"><input type="date" data-trf="revisit" value="${esc(t.revisit||"")}" aria-label="${L("哪天问问后来怎么样","Check-in date")}"></div></div>
+    <div class="tr-foot"><span id="trSaved"></span><button class="btn danger" data-tr="del">${trDel?L("再点一次确认删除","Tap again to delete"):L("删掉这个案例","Delete reading")}</button></div>
+  </div>`}
+function trSheetHTML(){if(!trSheet)return "";const t=trCase(),s=trSheet,main=(t.cards||[]).filter(c=>!c.of&&c.u!==s.u);const ids=s.suit==="m"?TR_MAJ.map((_,i)=>"m"+String(i).padStart(2,"0")):TR_RANK.map((_,i)=>s.suit+String(i+1).padStart(2,"0"));
+  return `<div class="tr-sheetbg" data-tr="sheetx"><div class="tr-sheet" role="dialog" aria-label="${L("抽到了哪张","Which card?")}">
+    <div class="tr-shd"><b>${s.u?L("换成哪张","Change to"):L("抽到了哪张","Which card?")}</b><button class="tr-back dk" data-tr="sheetx">${L("关闭","Close")}</button></div>
+    <div class="tr-suits">${[["m",L("大牌","Major")],["w",L("权杖","Wands")],["c",L("圣杯","Cups")],["s",L("宝剑","Swords")],["p",L("星币","Pentacles")]].map(([k,n])=>`<button class="${s.suit===k?"on":""}" data-tr="suit" data-v="${k}">${n}</button>`).join("")}</div>
+    <div class="tr-grid">${ids.map(k=>`<button class="${s.k===k?"pick":""}" data-tr="pick" data-v="${k}" aria-pressed="${s.k===k}">${trImg({k},50)}<span>${esc(trName(k))}</span></button>`).join("")}</div>
+    <div class="field"><span>${L("正位还是逆位","Upright or reversed")}</span><div class="chips"><button class="chip hz${s.rv?"":" on"}" data-tr="rv" data-v="0">${L("正位","Upright")}</button><button class="chip hz${s.rv?" on":""}" data-tr="rv" data-v="1">${L("逆位","Reversed")}</button></div></div>
+    ${main.length?`<div class="field"><span>${L("这张是","This card is")}</span><div class="chips"><button class="chip hz${s.of?"":" on"}" data-tr="of" data-v="">${L("新的一张","A new card")}</button>${main.map((c,n)=>`<button class="chip hz${s.of===c.u?" on":""}" data-tr="of" data-v="${c.u}">${L(`补第 ${n+1} 张（${trName(c.k)}）`,`Clarifies #${n+1} (${trName(c.k)})`)}</button>`).join("")}</div></div>`:""}
+    <div class="sheet-actions"><span></span><span style="display:flex;gap:8px"><button class="btn" data-tr="sheetx">${L("取消","Cancel")}</button><button class="btn primary" data-tr="sheetok" ${s.k?"":"disabled"}>${s.u?L("换好了","Change"):L("放进牌阵","Add to spread")}</button></span></div></div></div>`}
+function trZoomHTML(){if(!trZoom)return "";const t=trCase(),c=(t.cards||[]).find(x=>x.u===trZoom);if(!c)return "";
+  return `<div class="tr-zoom" data-tr="zoomx" role="dialog" aria-label="${esc(trName(c.k))}">${trImg(c,200)}<div class="tr-zn">${esc(trName(c.k))} · ${c.rv?L("逆位","Reversed"):L("正位","Upright")}${c.of?L(" · 补牌"," · clarifier"):""}</div>
+    <div class="tr-zb"><button data-tr="zchange">${L("换一张","Change")}</button><button data-tr="zflip">${L("正 / 逆","Flip")}</button><button data-tr="zdel">${L("删掉","Remove")}</button><button data-tr="zoomx">${L("关闭","Close")}</button></div></div>`}
+function renderTarot(){if(!trOpen)return;let pg=document.getElementById("tarotPage");
+  if(!pg){pg=document.createElement("div");pg.id="tarotPage";pg.className="mbpage trpage";pg.setAttribute("role","dialog");pg.setAttribute("aria-label",L("塔罗小本子","Tarot notebook"));document.body.appendChild(pg);pg.addEventListener("click",trClick);pg.addEventListener("input",trInput);pg.addEventListener("change",trInput)}
+  const sc=pg.scrollTop;if(trView==="case"&&!trCase())trView="list";
+  pg.innerHTML=`<div class="tr-in${trView==="case"?" case":""}">${trView==="case"?trCaseHTML():trListHTML()}</div>${trSheetHTML()}${trZoomHTML()}`;pg.scrollTop=sc}
+function trInput(e){const f=e.target.dataset&&e.target.dataset.trf;
+  if(e.target.id==="trQ"){if(e.type!=="input")return;trQ=e.target.value;const pos=e.target.selectionStart;renderTarot();const n=document.getElementById("trQ");if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(_){}}return}
+  if(!f)return;const v=e.target.value;const c=trCase();if(!c)return;c[f]=trPend[f]=f==="revisit"?(v||null):v;const sv=document.getElementById("trSaved");if(sv)sv.textContent=L("正在保存…","Saving…");
+  clearTimeout(trTimer);trTimer=setTimeout(()=>{trSave({});const el=document.getElementById("trSaved");if(el)el.textContent=L("已保存 ✓","Saved ✓")},600);
+  if(f==="who"||f==="date"){const h=document.querySelector("#tarotPage .tr-top h2");if(h)h.textContent=(c.who||L("新案例","New reading"))+(c.date?" · "+md2(c.date):"")}}
+function trClick(e){const b=e.target.closest("[data-tr]");if(!b)return;const a=b.dataset.tr,t=trCase();
+  if(a==="sheetx"){if(e.target.closest(".tr-sheet")&&b.classList.contains("tr-sheetbg"))return;trSheet=null;renderTarot();return}
+  if(a==="zoomx"){if(b.classList.contains("tr-zoom")&&e.target!==b)return;trZoom=null;renderTarot();return}
+  if(a==="x"){closeTarot();return}
+  if(a==="list"){if(Object.keys(trPend).length)trSave({});trCleanup();trView="list";trZoom=null;trSheet=null;renderTarot();return}
+  if(a==="open"){trId=b.dataset.id;trView="case";trDel=false;renderTarot();document.getElementById("tarotPage").scrollTop=0;return}
+  if(a==="new"){trNew();return}
+  if(a==="who"){trWho=b.dataset.v;renderTarot();return}
+  if(!t)return;
+  if(a==="type"){trSave({type:t.type===b.dataset.v?"":b.dataset.v});renderTarot();return}
+  if(a==="add"){trSheet={suit:"m",k:"",rv:0,of:b.dataset.of||"",u:null};renderTarot();return}
+  if(a==="suit"){trSheet.suit=b.dataset.v;renderTarot();return}
+  if(a==="pick"){trSheet.k=b.dataset.v;renderTarot();return}
+  if(a==="rv"){trSheet.rv=+b.dataset.v;renderTarot();return}
+  if(a==="of"){trSheet.of=b.dataset.v;renderTarot();return}
+  if(a==="sheetok"){const s=trSheet;if(!s.k)return;const cards=[...(t.cards||[])];
+    if(s.u){const i=cards.findIndex(c=>c.u===s.u);if(i>=0)cards[i]={...cards[i],k:s.k,rv:s.rv}}else cards.push({u:trUid(),k:s.k,rv:s.rv,of:s.of||null});
+    trSheet=null;trZoom=null;trSave({cards});renderTarot();return}
+  if(a==="zoom"){trZoom=b.dataset.u;renderTarot();return}
+  if(a==="zflip"){const cards=(t.cards||[]).map(c=>c.u===trZoom?{...c,rv:c.rv?0:1}:c);trSave({cards});renderTarot();return}
+  if(a==="zchange"){const c=(t.cards||[]).find(x=>x.u===trZoom);trSheet={suit:c.k[0],k:c.k,rv:c.rv,of:c.of||"",u:c.u};trZoom=null;renderTarot();return}
+  if(a==="zdel"){const u=trZoom;const cards=(t.cards||[]).filter(c=>c.u!==u).map(c=>c.of===u?{...c,of:null}:c);trZoom=null;trSave({cards});renderTarot();return}
+  if(a==="del"){if(!trDel){trDel=true;renderTarot();return}const r=db.doc("tarot/"+t.id);queued(r.path,()=>r.delete());tarots=tarots.filter(x=>x!==t);trView="list";trDel=false;renderTarot();return}
+}
+function tarotDueRow(){if(!tarotOn)return "";const td=todayStr();const due=tarots.filter(t=>t.revisit&&t.revisit<=td&&!t.after);if(!due.length)return "";
+  return due.map(t=>`<button class="ov-tr" data-tropen="${t.id}">${CRYSTAL.replace(/<defs>.*?<\/defs>/,"")}<span>${L(`问问${esc(t.who||"")}后来怎么样`,`Check in with ${esc(t.who||"them")}`)}${t.q?`<small>${esc(t.q)}</small>`:""}</span><i>›</i></button>`).join("")}
+{const b=document.getElementById("tarotBtn");if(b){b.innerHTML=CRYSTAL;b.hidden=!tarotOn}}
+document.addEventListener("click",e=>{if(e.target.closest("#tarotBtn")){openTarot();return}const o=e.target.closest("[data-tropen]");if(o){openTarot();trId=o.dataset.tropen;trView="case";renderTarot()}});
+document.addEventListener("keydown",e=>{if(e.key!=="Escape"||!trOpen||document.querySelector(".sheet-bg"))return;if(trZoom){trZoom=null;renderTarot()}else if(trSheet){trSheet=null;renderTarot()}else if(trView==="case"){trCleanup();trView="list";renderTarot()}else closeTarot()});
 /* ---------- 我的家园: a little front-facing stage ---------- */
 let hmOpen=false,homeS={items:{},off:[]},hmEdit=false,hmSel=null;
 const HM_W=800,HM_H=500;
@@ -6841,7 +6992,7 @@ const FIREBASE_CONFIG={
   appId:"1:1053547899054:web:49caab221ae4f4171c253f"
 };
 const FB_VER="10.12.2";
-const COLS=["stickies","letters","tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","wishfund","closet","moon","memos","yearlyDays","pomos","meals","rests","eats","fridge","tlog","courses","sleep"];
+const COLS=["tarot","stickies","letters","tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","wishfund","closet","moon","memos","yearlyDays","pomos","meals","rests","eats","fridge","tlog","courses","sleep"];
 const CLOUD_KEY="lifeos-cloud-uid";
 let fb=null, cloudUser=null, cloudState=FIREBASE_CONFIG?"loading":"off"; // off | loading | unavailable | signedout | signedin
 let localDB=null, unsubs=[];
@@ -6903,6 +7054,7 @@ function startData(store){
   sub("weekly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());weekly=m;if(ok(s))loaded.w=true;render()});
   sub("yearly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());yearly=m;if(ok(s))loaded.y=true;render()});
   sub("memos",s=>{memos=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.me=true;render()});
+  sub("tarot",s=>{tarots=s.docs.map(d=>({id:d.id,...d.data()}));{const c=trCase();if(c)Object.assign(c,trPend)}if(trOpen&&!document.activeElement?.closest?.("#tarotPage"))renderTarot();if(tab==="ov")render()});
   sub("stickies",s=>{stickies=s.docs.map(d=>({id:d.id,...d.data()}));if(!(document.activeElement&&(document.activeElement.id==="stEd")))stRender()});
   sub("moon",s=>{const d=s.docs.find(x=>x.id==="cur");const v=d?d.data():{};const list=Array.isArray(v.list)?v.list:v.start?[{s:v.start,e:v.end||null}]:[];moonS={enabled:!!v.enabled,list};moonRefresh()});
   sub("wishfund",s=>{const d=s.docs.find(x=>x.id==="main");wfund=d?{pool:0,cur:"£",log:[],...d.data()}:{pool:0,cur:"£",log:[]};if(lifeSub==="wish")render()});
@@ -6941,7 +7093,7 @@ async function onSignedIn(user){
     if(m.shelf)setShelf(m.shelf,false);
     if(m.bedTime!=null)setBedTime(m.bedTime,false);
     if(m.birthday!=null)setBirthday(m.birthday,false);
-    if(m.zod!=null)setZod(m.zod,false);
+    if(m.zod!=null)setZod(m.zod,false);     if(m.tarot!=null)setTarot(m.tarot,false);
     if(m.stores)setStores(m.stores,false);
     startData(store);
     if(n&&!asked)openMergeAsk(store,localData,n,user.uid);

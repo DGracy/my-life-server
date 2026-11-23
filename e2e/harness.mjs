@@ -54,7 +54,7 @@ export async function run({ only, projects = ['desktop', 'mobile'], out = 'resul
     let status = 'pass', err = '';
     try { await Promise.race([t.fn({ project: pj, newPage: np }), new Promise((_, rj) => setTimeout(() => rj(new Fail('test timeout 45s')), 45000))]);
       if (!process.env.NOSWEEP) { // every test ends with an a11y + contrast scan of whatever screen it left open
-        const found = []; const { a11yScan } = await import('./a11y.mjs'); for (const p of ctx.pages) { try { const top = await p.evaluate(() => { const c = ['.sheet-bg', '#homePage', '#shopPage', '.mbpage', '#pomoPage', '.tour-ui']; for (const s of c) { const l = [...document.querySelectorAll(s)]; if (l.length) return s; } return null; });
+        const found = []; const { a11yScan } = await import('./a11y.mjs'); for (const p of ctx.pages) { try { const top = await p.evaluate(() => { const c = ['.tr-zoom', '.tr-sheetbg', '#tarotPage', '.sheet-bg', '#homePage', '#shopPage', '.mbpage', '#pomoPage', '.tour-ui']; for (const s of c) { const l = [...document.querySelectorAll(s)]; if (l.length) return s; } return null; });
         const v = await a11yScan(p, top); found.push(...v); } catch (_) {} }
         if (found.length) throw new Fail('a11y after test: ' + [...new Set(found)].join(' · ')); }
       for (const p of ctx.pages) if (!p.__allowErrors && p.__errors.length) throw new Fail('strict console: ' + p.__errors.slice(0, 3).join(' | '));

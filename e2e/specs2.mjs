@@ -124,3 +124,24 @@ test('journal: Chinese input is not interrupted while picking a word', async ({ 
   await cdp.send('Input.insertText', { text: '今天' });
   await poll(() => p.evaluate(() => (journal['2026-11-23']?.grat || []).join('').includes('今天')), 'committed text saved', 4000);
 }, { projects: ['desktop'] });
+test('tarot: hidden unless turned on for this account', async ({ newPage }) => {
+  const p = await newPage({ data: populated() }); await open(p); expect(await p.$eval('#tarotBtn', b => b.hidden), 'tarot button visible for everyone');
+});
+for (const theme of ['light', 'dark']) test(`tarot ${theme}: record a three-card reading with a clarifier`, async ({ newPage }) => {
+  const p = await newPage({ data: populated(), theme, extraLS: { 'lifeos-tarot': '1' } }); await open(p);
+  await p.click('#tarotBtn'); await poll(() => p.$('#tarotPage'), 'page'); await p.click('[data-tr="new"]'); await poll(() => p.$('.tr-spread'), 'case');
+  for (const [k, rv] of [['m06', 0], ['s03', 1], ['m17', 0]]) { await p.click('[data-tr="add"]'); await p.click(`[data-tr="suit"][data-v="${k[0]}"]`); await p.click(`[data-tr="pick"][data-v="${k}"]`); if (rv) await p.click('[data-tr="rv"][data-v="1"]'); await p.click('[data-tr="sheetok"]'); }
+  await p.locator('.tr-gbtn').first().click(); await p.click('[data-tr="suit"][data-v="c"]'); await p.click('[data-tr="pick"][data-v="c02"]'); await p.click('[data-tr="sheetok"]');
+  await p.fill('#trWhoIn', '小林'); await p.fill('[data-trf="q"]', '他最近冷淡？'); await p.click('[data-tr="type"][data-v="love"]');
+  await p.click('.tr-sub .tr-card'); await poll(() => p.$('.tr-zoom'), 'zoom'); await p.click('[data-tr="zflip"]'); await p.click('button[data-tr="zoomx"]');
+  await p.click('[data-tr="list"]'); await poll(() => p.$('.tr-case'), 'listed');
+  const d = await p.evaluate(() => tarots.map(t => [t.who, t.q, t.type, t.cards.map(c => c.k + (c.rv ? 'r' : '') + (c.of ? '*' : '')).join(',')]));
+  expect(JSON.stringify(d) === JSON.stringify([['小林', '他最近冷淡？', 'love', 'm06,s03r,m17,c02r*']]), 'saved ' + JSON.stringify(d));
+  await p.fill('#trQ', '恋人'); await poll(async () => (await p.locator('.tr-case').count()) === 1, 'search by card');
+  await p.fill('#trQ', '塔'); await poll(async () => (await p.locator('.tr-case').count()) === 0, 'search miss');
+});
+test('tarot: check-in day shows in Overview today', async ({ newPage }) => {
+  const d = populated(); d.tarot = { t1: { who: 'Momo', date: '2026-11-10', type: 'work', q: 'offer?', read: '', advice: '', after: '', revisit: '2026-11-23', cards: [{ u: 'a', k: 'w01', rv: 0, of: null }], createdAt: 1 } };
+  const p = await newPage({ data: d, tab: 'ov', extraLS: { 'lifeos-tarot': '1' } }); await open(p);
+  await p.click('.ov-tr'); await poll(() => p.$('.tr-spread'), 'opens the reading');
+});
