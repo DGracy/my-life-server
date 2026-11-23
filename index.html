@@ -1105,6 +1105,27 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 @media (prefers-reduced-motion:reduce){.dz-spin,.dz-blink,.dz-sway,.dz-crawl,.dz-wag,.dz-swing,.dz-flap,.dz-flame,.dz-buzz{animation:none}}
 @media (prefers-color-scheme:dark){:root:not([data-theme]):not([data-tod]) [filter="url(#dzc)"]{filter:none}}
 :root[data-theme="dark"] [filter="url(#dzc)"],:root:not([data-theme])[data-tod="night"] [filter="url(#dzc)"]{filter:none}
+.stk{position:fixed;right:0;top:34%;z-index:16;display:flex;align-items:flex-start;pointer-events:none}
+.stk>*{pointer-events:auto}
+.st-tab{writing-mode:vertical-rl;border:none;background:#ffe9a3;color:#5a4a1a;font:inherit;font-size:13px;font-weight:600;letter-spacing:2px;border-radius:12px 0 0 12px;padding:12px 6px calc(10px);display:flex;align-items:center;gap:6px;cursor:pointer;box-shadow:-2px 2px 8px rgba(0,0,0,.08);margin-right:env(safe-area-inset-right,0px)}
+.st-tab i{writing-mode:horizontal-tb;font-style:normal;background:#e2484f;color:#fff;border-radius:99px;font-size:11px;padding:0 6px;letter-spacing:0;line-height:16px}
+.stk.open .st-tab{display:none}
+.stk.open{width:min(320px,88vw)}.st-panel{flex:none;width:0;overflow:hidden;transition:width .22s ease;background:#fff6c8;border-radius:16px 0 0 16px;box-shadow:-6px 8px 24px rgba(0,0,0,.16)}
+.stk.open .st-panel{width:min(320px,88vw)}
+@media (prefers-reduced-motion:reduce){.st-panel{transition:none}}
+.st-in{width:min(320px,88vw);box-sizing:border-box;padding:12px 12px 14px calc(12px);padding-right:max(12px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:8px;max-height:min(70vh,560px);overflow:auto}
+.st-h{display:flex;align-items:center}.st-h b{font-size:15px;color:#4a3d14}.st-h button{margin-left:auto;border:none;background:rgba(0,0,0,.06);border-radius:50%;width:28px;height:28px;font-size:16px;color:#5a4a1a;cursor:pointer}
+.st-add{display:flex;align-items:center;gap:6px;background:#fff;border-radius:12px;padding:6px 10px}.st-add input{flex:1;min-width:0;border:none;background:none;font:inherit;font-size:14px;color:#2a2410;outline:none}
+.st-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.st-it{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.75);border-radius:12px;padding:7px 8px 7px 10px;font-size:14px;color:#2a2410}
+.st-ck{width:18px;height:18px;border-radius:50%;border:2px solid #c9b77a;background:none;flex:none;padding:0;cursor:pointer}.st-it.done .st-ck{background:#2fb38a;border-color:#2fb38a}
+.st-tx{flex:1;min-width:0;overflow-wrap:anywhere;cursor:text}.st-it.done .st-tx{text-decoration:line-through;color:#a69a72}
+.st-ed{flex:1;min-width:0;border:none;border-bottom:2px solid #e0c56a;background:none;font:inherit;font-size:14px;color:#2a2410;outline:none}
+.st-ch{flex:none;font-size:11.5px;border-radius:99px;padding:2px 8px;background:#f3ead0;color:#7a6a3a;white-space:nowrap}.st-ch.today{background:#2f7cf6;color:#fff}.st-ch.soon{background:#ffd88a;color:#7a4e00}.st-ch.late{background:#ffd9db;color:#c22b2b}
+.st-acts{display:flex;gap:2px;flex:none}.st-acts button{border:none;background:none;color:#a69a72;font-size:14px;width:22px;height:22px;border-radius:6px;cursor:pointer;padding:0}.st-acts button:hover{background:rgba(0,0,0,.06);color:#5a4a1a}
+@media (hover:hover){.st-acts{opacity:0;transition:opacity .15s}.st-it:hover .st-acts,.st-it:focus-within .st-acts{opacity:1}}
+.st-empty{margin:4px 2px;color:#8a7d55;font-size:13px}
+@media (max-width:640px){.stk{top:auto;bottom:24%}.st-tab{padding:10px 5px;font-size:12px}}
 .fl-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.fl-top b{font-size:15px}
 .fl-yb,.fl-mnav button{border:none;background:var(--surface-2);border-radius:50%;width:28px;height:28px;color:var(--fg);font-size:15px;flex:none}.fl-yb:disabled{opacity:.35}
 .fl-sum{margin-left:auto;font-size:12.5px;color:var(--muted)}
@@ -1785,6 +1806,69 @@ function errText(e){
 function setStatus(t){const el=$("#status");el.textContent=t||"";el.hidden=!t}
 
 /* ---------- rendering ---------- */
+/* ---------- sticky notes: a small tab on the right edge of every page ---------- */
+let stickies=[],stOpen=false,stEditing=null;
+const ST_WD_ZH="日一二三四五六",ST_WD_EN=["sun","mon","tue","wed","thu","fri","sat"];
+function stParse(raw){
+  let s=raw,date=null,time=null,before=false;const td=todayStr(),now=new Date(td+"T12:00:00"),dow=now.getDay();
+  const cut=re=>{const m=s.match(re);if(m)s=s.replace(m[0]," ");return m};
+  let m;
+  if((m=cut(/(之前|以前|前|截止|\bby\b|\bbefore\b)/i)))before=true;
+  if((m=cut(/前天/))&&!/之?前$/.test(m[0]))date=addDays(td,-2);else if((m=cut(/昨天|\byesterday\b/i)))date=addDays(td,-1);else if((m=cut(/大后天/)))date=addDays(td,3);else if((m=cut(/后天/)))date=addDays(td,2);else if((m=cut(/明天|明早|明晚|\btomorrow\b|\btmr\b/i)))date=addDays(td,1);else if((m=cut(/今天|今晚|今早|\btoday\b|\btonight\b/i)))date=td;
+  if(!date&&(m=cut(/(下下|下)?(?:周|星期|礼拜)([一二三四五六日天])/))){const w=m[2]==="天"?0:ST_WD_ZH.indexOf(m[2]);let d;if(m[1]){const wm=(w+6)%7,dm=(dow+6)%7;d=(7-dm)+wm+(m[1]==="下下"?7:0)}else d=(w-dow+7)%7;date=addDays(td,d)}
+  if(!date&&(m=cut(/\b(next\s+)?(sun|mon|tue|wed|thu|fri|sat)[a-z]*\b/i))){const w=ST_WD_EN.indexOf(m[2].toLowerCase());let d=(w-dow+7)%7;if(m[1])d+=7;date=addDays(td,d)}
+  if(!date&&(m=cut(/(\d{1,2})\s*[\/月.]\s*(\d{1,2})\s*[日号]?/))){const mo=+m[1],dd=+m[2];if(mo>=1&&mo<=12&&dd>=1&&dd<=31){let y=+td.slice(0,4);let c=`${y}-${pad(mo)}-${pad(dd)}`;if(c<addDays(td,-60))c=`${y+1}-${pad(mo)}-${pad(dd)}`;date=c}}
+  if((m=cut(/(\d{1,2})[:：](\d{2})/))){time=`${pad(+m[1])}:${m[2]}`}
+  else if((m=cut(/(上午|早上|中午|下午|晚上|傍晚)?\s*(\d{1,2}|[一二三四五六七八九十]{1,3})\s*点\s*(半|(\d{1,2})\s*分?)?/))){const zh="零一二三四五六七八九十";let h=/\d/.test(m[2])?+m[2]:(m[2].length===1?zh.indexOf(m[2]):m[2].startsWith("十")?10+zh.indexOf(m[2][1]||"零"):zh.indexOf(m[2][0])*10+(zh.indexOf(m[2][2]||"零")));if(/下午|晚上|傍晚/.test(m[1]||"")&&h<12)h+=12;if(m[1]==="中午"&&h<6)h+=12;const mi=m[3]==="半"?30:m[4]?+m[4]:0;if(h<24)time=`${pad(h)}:${pad(mi)}`}
+  else if((m=cut(/\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b/i))){let h=+m[1];if(/pm/i.test(m[3])&&h<12)h+=12;if(/am/i.test(m[3])&&h===12)h=0;time=`${pad(h)}:${m[2]||"00"}`}
+  if(time&&!date)date=td;
+  return {date,time,before}}
+function stChip(x){if(!x.date)return null;const td=todayStr(),diff=Math.round((new Date(x.date+"T12:00:00")-new Date(td+"T12:00:00"))/864e5);
+  const d=new Date(x.date+"T12:00:00");let lab=diff===0?L("今天","Today"):diff===1?L("明天","Tomorrow"):diff===-1?L("昨天","Yesterday"):diff>1&&diff<7?L("周"+ST_WD_ZH[d.getDay()],ST_WD_EN[d.getDay()][0].toUpperCase()+ST_WD_EN[d.getDay()].slice(1,3)):`${d.getMonth()+1}/${d.getDate()}`;
+  if(x.time)lab+=" "+x.time;if(x.before)lab+=L("前","");
+  const nowHM=new Date().toTimeString().slice(0,5);const late=!x.done&&(diff<0||(diff===0&&x.time&&!x.before&&x.time<nowHM&&false));
+  return {lab,cls:late?"late":diff===0?"today":diff>0&&diff<=2?"soon":""}}
+function stVisible(){const td=todayStr();return stickies.filter(x=>!x.done||(x.doneAt&&new Date(x.doneAt).toISOString()&&localDay(x.doneAt)>=td))}
+const localDay=ts=>{const d=new Date(ts);return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`};
+function stSorted(){return stVisible().sort((a,b)=>(a.done-b.done)||((a.date||"9999")+(a.time||"99")).localeCompare((b.date||"9999")+(b.time||"99"))||(a.createdAt||0)-(b.createdAt||0))}
+function stBadge(){const td=todayStr(),lim=addDays(td,2);return stickies.filter(x=>!x.done&&x.date&&x.date<=lim).length}
+function stRender(){
+  let el=document.getElementById("stk");if(!el){el=document.createElement("div");el.id="stk";document.body.appendChild(el);
+    el.addEventListener("click",stClick);el.addEventListener("keydown",stKey);el.addEventListener("input",e=>{if(e.target.id==="stIn")stPreview(e.target.value)})}
+  const n=stBadge(),list=stSorted();
+  const row=x=>{const c=stChip(x);return `<li class="st-it${x.done?" done":""}"><button class="st-ck" data-st="done" data-id="${x.id}" aria-label="${x.done?L("取消完成","Undo"):L("完成","Done")}"></button>${stEditing===x.id?`<input class="st-ed" id="stEd" value="${esc(x.raw||x.text)}" maxlength="120">`:`<span class="st-tx" data-st="edit" data-id="${x.id}">${esc(x.text)}</span>`}${c?`<span class="st-ch ${c.cls}">${c.lab}</span>`:""}<span class="st-acts"><button data-st="task" data-id="${x.id}" title="${L("变成任务","Make it a task")}" aria-label="${L("变成任务","Make it a task")}">↗</button><button data-st="del" data-id="${x.id}" title="${L("删掉","Delete")}" aria-label="${L("删掉","Delete")}">×</button></span></li>`};
+  const keep=document.activeElement&&document.activeElement.id==="stIn"?document.activeElement.value:null;
+  el.className="stk"+(stOpen?" open":"");
+  el.innerHTML=`<button class="st-tab" data-st="toggle" aria-expanded="${stOpen}" aria-label="${L("便签","Notes")}${n?" · "+n:""}"><span>${L("便签","Notes")}</span>${n?`<i>${n}</i>`:""}</button>
+    <div class="st-panel" role="region" aria-label="${L("便签","Notes")}"><div class="st-in">
+      <div class="st-h"><b>${L("便签","Notes")}</b><button data-st="toggle" aria-label="${L("收起","Close")}">›</button></div>
+      <div class="st-add"><input id="stIn" maxlength="120" placeholder="${L("写一句，比如 周五前看完 recording","e.g. watch the recording by Fri")}" autocomplete="off"><span class="st-ch" id="stPv" hidden></span></div>
+      ${list.length?`<ul class="st-list">${list.map(row).join("")}</ul>`:`<p class="st-empty">${L("还没有便签","No notes yet")}</p>`}
+    </div></div>`;
+  if(keep!==null){const i=document.getElementById("stIn");i.value=keep;i.focus();stPreview(keep)}
+  if(stEditing){const i=document.getElementById("stEd");if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);i.addEventListener("blur",()=>stSaveEdit(i),{once:true})}}
+}
+function stPreview(v){const pv=document.getElementById("stPv");if(!pv)return;const p=stParse(v||"");const c=p.date?stChip({...p}):null;pv.hidden=!c;if(c){pv.textContent=c.lab;pv.className="st-ch "+c.cls}}
+function stText(raw){const p=stParse(raw);let t=raw;
+  t=t.replace(/(昨天|大后天|后天|明天|明早|明晚|今天|今晚|今早|(下下|下)?(?:周|星期|礼拜)[一二三四五六日天]|\d{1,2}\s*[\/月.]\s*\d{1,2}\s*[日号]?|\d{1,2}[:：]\d{2}|(上午|早上|中午|下午|晚上|傍晚)?\s*(\d{1,2}|[一二三四五六七八九十]{1,3})\s*点\s*(半|\d{1,2}\s*分?)?)/g," ").replace(/^\s*(之前|以前|前|截止)\s*/,"").replace(/\s+(之前|以前|前)\s+/," ").replace(/\s{2,}/g," ").trim();
+  return {...p,text:t||raw.trim()}}
+function stAdd(raw){raw=(raw||"").trim();if(!raw||!db)return;const p=stText(raw);const ref=db.collection("stickies").doc();const doc={raw,text:p.text,date:p.date||null,time:p.time||null,before:!!p.before,done:false,createdAt:Date.now()};stickies.push({id:ref.id,...doc});queued(ref.path,()=>ref.set(doc));stRender()}
+function stSaveEdit(i){const id=stEditing;stEditing=null;const x=stickies.find(s=>s.id===id);const raw=i.value.trim();if(x&&raw&&raw!==(x.raw||x.text)){const p=stText(raw);Object.assign(x,{raw,text:p.text,date:p.date||null,time:p.time||null,before:!!p.before});const r=db.doc("stickies/"+id);queued(r.path,()=>r.update({raw,text:p.text,date:p.date||null,time:p.time||null,before:!!p.before}))}stRender()}
+function stKey(e){if(e.target.id==="stIn"&&e.key==="Enter"){if(e.isComposing||e.keyCode===229)return;e.preventDefault();const v=e.target.value;e.target.value="";stPreview("");stAdd(v);setTimeout(()=>document.getElementById("stIn")?.focus(),0)}
+  if(e.target.id==="stEd"){if(e.key==="Enter"&&!(e.isComposing||e.keyCode===229)){e.preventDefault();e.target.blur()}if(e.key==="Escape"){stEditing=null;stRender()}}
+  if(e.key==="Escape"&&stOpen&&e.target.id!=="stEd"){stOpen=false;stRender()}}
+function stClick(e){const b=e.target.closest("[data-st]");if(!b)return;const a=b.dataset.st,id=b.dataset.id,x=stickies.find(s=>s.id===id);
+  if(a==="toggle"){stOpen=!stOpen;stRender();if(stOpen)setTimeout(()=>document.getElementById("stIn")?.focus(),50);return}
+  if(!db)return;
+  if(a==="done"&&x){x.done=!x.done;x.doneAt=x.done?Date.now():null;const r=db.doc("stickies/"+id);queued(r.path,()=>r.update({done:x.done,doneAt:x.doneAt}));stRender();return}
+  if(a==="del"&&x){stickies=stickies.filter(s=>s.id!==id);const r=db.doc("stickies/"+id);queued(r.path,()=>r.delete());stRender();return}
+  if(a==="edit"&&x){stEditing=id;stRender();return}
+  if(a==="task"&&x){const sp=tab==="work"||tab==="study"||tab==="life"?tab:"study";const ref=db.collection("tasks").doc();const t={title:x.text,space:sp,horizon:"week",pri:0,done:false,note:"",createdAt:Date.now(),...(x.date?(x.before?{due:x.date}:{plan:x.date}):{}),...(x.time?{dueTime:x.time}:{})};
+    queued(ref.path,()=>ref.set(t));stickies=stickies.filter(s=>s.id!==id);const r=db.doc("stickies/"+id);queued(r.path,()=>r.delete());stRender();
+    cheer(L(`「${x.text}」放进${sp==="work"?"工作":sp==="life"?"生活":"学习"}的任务里了`,`Added “${x.text}” to your ${sp} tasks`),"happy");return}
+}
+document.addEventListener("click",e=>{if(stOpen&&!e.target.closest("#stk")&&!e.target.closest(".sheet-bg")){stOpen=false;stRender()}},true);
+
 function render(){
   if(inlineEditing||dragLock){renderPending=true;return}
   applyBoards();
@@ -2163,6 +2247,8 @@ NEWS_MORE.push(()=>({id:"1122d",steps:[
     {go:"forest",sel:".fl-top",alt:".fl-mapw",t:L("新功能 · 大陆形状系列","New · Continent series"),b:L("除了生肖，大陆还可以是星座、伦敦地标或者海洋动物。每年 12 月和 1 月初，森林最上面会问你明年想拼什么形状；不挑就用生肖。","Besides the zodiac, your continent can be a constellation, a London landmark or a sea creature. Each December and early January, the forest asks which shape you want for the year. If you don't pick, it uses the zodiac.")}]}));
 NEWS_MORE.push(()=>({id:"1122e",steps:[
     {sel:"#coinBtn",pad:4,t:L("小商店上新","New in the shop"),b:L("灵魂画手多了 5 个表情和 15 个会动的花园摆件；节日限定有舞狮头套、南瓜头套、彩蛋头套，生日那一周还有你属相的头套；主题套装加了魔法学徒、伦敦下雨天、小厨师和宇航员。","Doodles get 5 new faces and 15 moving garden pieces. Holiday items now include lion dance, pumpkin and Easter egg hoods, plus your zodiac hood in your birthday week. New sets: apprentice wizard, London rain, little chef and astronaut.")}]}));
+NEWS_MORE.push(()=>({id:"1123",steps:[
+    {sel:"#stk .st-tab",pad:4,t:L("新功能 · 随手便签","New · Sticky notes"),b:L("右边这一小截是便签，每个页面都在。点开随手写一句，比如「周五前看完 recording」「周三 14:00 组会」，日期会自动变成小标签，按时间排好；快到了会变黄，过了会变红。","This tab on the right edge is your sticky notes, on every page. Jot things like “watch the recording by Fri” or “Wed 14:00 meeting”. Dates become little tags, sorted by time, yellow when close and red when overdue.")}]}));
 const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
 let tourOn=null;
 function tourGo(go){
@@ -6250,7 +6336,7 @@ document.addEventListener("keydown",e=>{const id=e.target.dataset&&e.target.data
   if(e.key==="Escape"){subAdding=null;render();return}
   if(e.key==="Enter"){if(e.isComposing||e.keyCode===229)return;e.preventDefault();const v=e.target.value.trim();const t=tasks.find(x=>x.id===id);if(!t)return;
     if(!v){subAdding=null;render();return}
-    setSubs(t,[...(t.subs||[]).map(x=>({...x})),{t:v.slice(0,120),done:false}]);setTimeout(()=>document.getElementById("subin-"+id)?.focus(),0)}});
+    e.target.value="";setSubs(t,[...(t.subs||[]).map(x=>({...x})),{t:v.slice(0,120),done:false}]);setTimeout(()=>{const i=document.getElementById("subin-"+id);if(i){i.value="";i.focus()}},0)}});
 function saveSubEdit(el){if(!subEditing)return;const t=tasks.find(x=>x.id===el.dataset.subedit),i=+el.dataset.i;subEditing=null;if(!t||!t.subs||!t.subs[i]){render();return}
   const v=el.value.trim();const subs=t.subs.map(x=>({...x}));if(!v)subs.splice(i,1);else subs[i].t=v.slice(0,120);setSubs(t,subs)}
 document.addEventListener("keydown",e=>{if(!e.target.dataset||!e.target.dataset.subedit)return;if(e.key==="Escape"){subEditing=null;render();return}
@@ -6641,6 +6727,7 @@ function startData(store){
   sub("weekly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());weekly=m;if(ok(s))loaded.w=true;render()});
   sub("yearly",s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());yearly=m;if(ok(s))loaded.y=true;render()});
   sub("memos",s=>{memos=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.me=true;render()});
+  sub("stickies",s=>{stickies=s.docs.map(d=>({id:d.id,...d.data()}));if(!(document.activeElement&&(document.activeElement.id==="stEd")))stRender()});
   sub("moon",s=>{const d=s.docs.find(x=>x.id==="cur");const v=d?d.data():{};const list=Array.isArray(v.list)?v.list:v.start?[{s:v.start,e:v.end||null}]:[];moonS={enabled:!!v.enabled,list};moonRefresh()});
   sub("wishfund",s=>{const d=s.docs.find(x=>x.id==="main");wfund=d?{pool:0,cur:"£",log:[],...d.data()}:{pool:0,cur:"£",log:[]};if(lifeSub==="wish")render()});
   sub("wishes",s=>{wishes=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.wi=true;render();wishMsMigrate();wishMsSync()});
