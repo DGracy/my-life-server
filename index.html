@@ -925,7 +925,7 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .rc-legend.sm{margin-top:6px;font-size:12px}
 .tagset{display:inline-flex;align-items:center;gap:6px;justify-self:end;flex-wrap:wrap;justify-content:flex-end}.tagset>span{display:inline-flex;align-items:center;height:24px;line-height:1;box-sizing:border-box}.tagset .due{padding:0 10px}
 .rep{gap:4px;color:var(--study-ink);background:var(--study-soft);border-radius:999px;padding:0 9px 0 7px;font-size:12px;font-weight:600;white-space:nowrap}.rep svg{display:block;flex:none}.rep.pz{color:#8a7bb8;background:#f1edfb}.task.paused{opacity:.6}
-.prog{padding:0 9px;border-radius:999px;background:var(--study-soft);color:var(--study-ink);font-family:var(--f-num);font-size:12px;font-weight:700}
+.prog.fold{border:none;font:inherit;font-family:var(--f-num);display:inline-flex;align-items:center;gap:2px;cursor:pointer}.prog.fold svg{width:10px;height:10px;transition:transform .2s}.prog.fold.open svg{transform:rotate(180deg)}.t-main.fold{cursor:pointer;align-self:stretch;justify-content:center}.t-main.fold .t-title{cursor:text;align-self:flex-start}@media(hover:hover){.t-main.fold .t-title:hover{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}}.prog{padding:0 9px;border-radius:999px;background:var(--study-soft);color:var(--study-ink);font-family:var(--f-num);font-size:12px;font-weight:700}
 .rep-chip{display:inline-flex;align-items:center;gap:4px;background:var(--study-soft);color:var(--study-ink);border-color:transparent}.split-chip.on{background:var(--study-soft);color:var(--study-ink);border-color:var(--study)}
 .subwrap{margin:-4px 0 4px 52px;display:flex;flex-direction:column;gap:2px}
 .sub{display:flex;align-items:center;gap:10px;font-size:14px;padding:3px 0}.sub .c{width:20px;height:20px;border-radius:50%;border:2px solid var(--study);background:var(--surface);flex:none;display:grid;place-items:center;font-size:11px;color:#fff;padding:0}.sub.d .c{background:var(--study)}
@@ -1936,7 +1936,7 @@ function taskRow(t){
     t.repeat&&!t.done?(pz?`<span class="rep pz">${PAUSE_SVG}${L(`暂停到 ${md2(t.repeat.pause)}`,`Paused to ${md2(t.repeat.pause)}`)}</span>`:`<span class="rep">${REP_SVG}${repLabel(t.repeat)}</span>`):"",
     !t.done&&t.plan&&!t.repeat?`<span class="due plan">${t.plan===todayStr()?L("今天做","Today"):t.plan<todayStr()?L(`${md2(t.plan)} 没做完`,`from ${md2(t.plan)}`):L(`${md2(t.plan)} 做`,`do ${md2(t.plan)}`)}</span>`:"",
     wi&&wi.ph==="pre"&&!t.due?`<span class="due" title="${esc(wi.rng)}">${wi.txt}</span>`:!wi&&!t.done&&t.start&&t.start>todayStr()?`<span class="due">${L(`${md2(t.start)} 开始`,`Starts ${md2(t.start)}`)}</span>`:"",
-    sb.length&&!t.done?`<span class="prog">${sb.filter(x=>x.done).length}/${sb.length}</span>`:"",
+    sb.length&&!t.done?`<button class="prog fold${subOpen.has(t.id)?" open":""}" data-act="subopen" data-id="${t.id}" aria-label="${subOpen.has(t.id)?L("收起子任务","Hide subtasks"):L("展开子任务","Show subtasks")}">${sb.filter(x=>x.done).length}/${sb.length}<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 3.8 5 6.3l2.5-2.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`:"",
     d?(isOver(t)?`<button class="due ${d.cls} odbtn" data-act="odmenu" data-id="${t.id}" title="${L("点一下：今天做 / 换个日子 / 放下","Tap: today / another day / let it go")}">${d.txt}</button>`:`<span class="due ${d.cls}">${d.txt}</span>`):""].filter(Boolean);
   const fm=(t.space==="study"||t.space==="work")?taskMins(t.id):0;
   if(fm>=1)tags.unshift(`<span class="fp">${TOM_ICON}${fmtMins(fm)}</span>`);
@@ -1945,11 +1945,12 @@ function taskRow(t){
   const tt=!t.done&&t.repeat?todOf(t.repeat):[], sd=t.slotDone||{};
   if(tt.length>1)tags.splice(tags.findIndex(x=>x.includes('class="rep'))+1,0,`<span class="prog">${tt.filter(x=>sd[x[0]]).length}/${tt.length}</span>`);
   const tl=t.repeat?todOf(t.repeat):[];
+  const hasSub=!t.done&&sb.length>0;
   const whenLine=tl.filter(x=>sd[x[0]]).map(x=>`<span class="slt" data-act="slottime" data-id="${t.id}" data-v="${x[0]}" title="${L("点一下改时间","Tap to change the time")}">${L(`${x[1]} ${hhmm(sd[x[0]])} 做完`,`${x[1]} done ${hhmm(sd[x[0]])}`)}</span>`).join(" · ");
   return `<div class="task${t.done?" done":""}${pr?" p"+pr:""}${pz?" paused":""}${canPlay?" hasplay":""}">
     ${tt.length?`<span class="slots" style="--sc:var(--${t.space==="study"||t.space==="work"?t.space:"life"})">${tt.map(([k,n,sh])=>`<button class="slot${sd[k]?" on":""}" data-act="slot" data-id="${t.id}" data-v="${k}" aria-label="${n}${sd[k]?L(" · 已完成，点一下取消"," · done, tap to undo"):L(" · 点一下完成"," · tap when done")}" aria-pressed="${!!sd[k]}">${sd[k]?SLOT_CK:sh}</button>`).join("")}</span>`:`<button class="check${t.done?" on":""}" data-act="toggle" data-id="${t.id}" aria-label="${t.done?L("标记为未完成","Mark as not done"):L("标记为完成","Mark as done")}">${CHECK}</button>`}
-    <button class="t-main" data-act="edit" data-id="${t.id}">
-      <span class="t-title">${esc(t.title)}</span>${wi&&t.due?`<span class="t-note rng">${esc(wi.rng)}</span>`:""}${whenLine?`<span class="t-note">${whenLine}</span>`:""}
+    <button class="t-main${hasSub?" fold":""}" data-act="${hasSub?"subopen":"edit"}" data-id="${t.id}"${hasSub?` aria-expanded="${subOpen.has(t.id)}"`:""}>
+      <span class="t-title"${hasSub?` data-act="edit" data-id="${t.id}"`:""}>${esc(t.title)}</span>${wi&&t.due?`<span class="t-note rng">${esc(wi.rng)}</span>`:""}${whenLine?`<span class="t-note">${whenLine}</span>`:""}
       ${t.note?`<span class="t-note">${esc(t.note)}</span>`:""}
     </button>
     ${tags.length?`<span class="tagset">${tags.join("")}</span>`:"<span></span>"}
@@ -3814,17 +3815,17 @@ function resumeTask(t){
   cheer(L("恢复啦，接着来～","Back on. Let's go～"));
 }
 /* subtasks */
-let subOpen=new Set(), subAdding=null, subEditing=null;
+let subOpen=(()=>{try{return new Set(JSON.parse(localStorage.getItem("lifeos-subopen")||"[]"))}catch(_){return new Set()}})(), subAdding=null, subEditing=null;
+const subOpenSave=()=>{try{localStorage.setItem("lifeos-subopen",JSON.stringify([...subOpen].slice(-300)))}catch(_){}};
 function subsBlock(t){
   const s=t.subs||[]; if(t.done||!s.length&&subAdding!==t.id)return "";
   const next=s.findIndex(x=>!x.done);
-  const open=subOpen.has(t.id);
+  const open=!s.length||subOpen.has(t.id)||subAdding===t.id||!!(subEditing&&subEditing.id===t.id);
+  if(!open)return "";
   const rows=[]; let hidden=0;
   s.forEach((x,i)=>{
-    if(!x.done&&i!==next&&!open){hidden++;return}
     rows.push(`<div class="sub${x.done?" d":""}${i===next?" nx":""}"><button class="c" data-act="subtoggle" data-id="${t.id}" data-i="${i}" aria-label="${x.done?L("标记为没做完","Mark as not done"):L("这一步做完了","Mark step done")}">${x.done?"✓":""}</button><span class="tx">${subEditing&&subEditing.id===t.id&&subEditing.i===i?`<input class="subin subed" id="subed-${t.id}-${i}" data-subedit="${t.id}" data-i="${i}" maxlength="120" value="${esc(x.t)}">`:`<span class="subt" data-act="subedit" data-id="${t.id}" data-i="${i}" title="${L("点一下改这一步","Tap to edit")}">${esc(x.t)}</span>`}${i===next?`<em>${L("下一步","Next")}</em>`:""}</span>${x.done?"":`<button class="sday${x.day?" set":""}" data-act="ovsubday" data-id="${t.id}" data-i="${i}" title="${L("这一步哪天做","Which day for this step")}">${x.day?ovShort(x.day):L("哪天做","Which day")}</button>`}${i===next&&typeof startFocus==="function"?`<button class="go" data-act="substart" data-id="${t.id}" data-i="${i}">▶ ${L("开始","Start")}</button>`:""}</div>`)});
   return `<div class="subwrap">${rows.join("")}
-    ${hidden?`<button class="more" data-act="subopen" data-id="${t.id}">${L(`还有 ${hidden} 步 · 展开`,`${hidden} more ${n_(hidden,"step","steps")} · show`)}</button>`:open&&s.filter(x=>!x.done).length>1?`<button class="more" data-act="subopen" data-id="${t.id}">${L("收起","Show less")}</button>`:""}
     ${subAdding===t.id?`<input class="subin" id="subin-${t.id}" data-subadd="${t.id}" maxlength="120" placeholder="${L("加一步，回车保存","Add a step, press Enter")}">`:`<button class="addsub" data-act="subadd" data-id="${t.id}">＋ ${L("加子任务","Add subtask")}</button>`}</div>`;
 }
 function setSubs(t,subs){t.subs=subs;render();const ref=db.doc("tasks/"+t.id);queued(ref.path,()=>ref.update({subs}))}
@@ -3926,7 +3927,7 @@ function openSplit(id,auto){
     if(a==="add"){steps.push({t:""});draw();const ins=bg.querySelectorAll(".step input");ins[ins.length-1]?.focus();return}
     if(a==="ok"){const clean=steps.map(x=>({...x,t:(x.t||"").trim()})).filter(x=>x.t).slice(0,50);bg.remove();
       const subs=[...keepDone,...clean.map(x=>({...x,t:x.t.slice(0,120),done:false}))];
-      subOpen.delete(t.id);setSubs(t,subs);try{const off=JSON.parse(localStorage.getItem(NUDGE_KEY)||"[]");off.push(t.id);localStorage.setItem(NUDGE_KEY,JSON.stringify(off.slice(-200)))}catch(_){}
+      subOpen.add(t.id);subOpenSave();setSubs(t,subs);try{const off=JSON.parse(localStorage.getItem(NUDGE_KEY)||"[]");off.push(t.id);localStorage.setItem(NUDGE_KEY,JSON.stringify(off.slice(-200)))}catch(_){}
       if(clean.length)cheer(L(`存好啦，${clean.length} 个子任务`,`Saved ${clean.length} subtask${clean.length>1?"s":""}`),"happy")}
   });
 }
@@ -6386,7 +6387,7 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="pomoopen"){if(P){P.open=true;saveP();renderPomo()}return}
   if(act.dataset.act==="pickrest"){P=null;saveP();stopFlash();document.title=BASE_TITLE();render();return}
   if(act.dataset.act==="subtoggle"){const t=tasks.find(x=>x.id===id);if(t)toggleSub(t,+act.dataset.i,act);return}
-  if(act.dataset.act==="subopen"){subOpen.has(id)?subOpen.delete(id):subOpen.add(id);render();return}
+  if(act.dataset.act==="subopen"){subOpen.has(id)?subOpen.delete(id):subOpen.add(id);subOpenSave();render();return}
   if(act.dataset.act==="subedit"){subEditing={id,i:+act.dataset.i};render();setTimeout(()=>{const el=document.getElementById(`subed-${id}-${act.dataset.i}`);if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length)}},0);return}
   if(act.dataset.act==="subadd"){subAdding=id;render();setTimeout(()=>document.getElementById("subin-"+id)?.focus(),0);return}
   if(act.dataset.act==="substart"){if(typeof startFocus==="function")startFocus(id,+act.dataset.i);return}
