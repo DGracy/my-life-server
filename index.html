@@ -1090,6 +1090,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .fl-next{border:1.5px dashed var(--line);background:none;border-radius:12px;padding:7px 12px;font:inherit;font-size:12.5px;color:var(--brand);text-align:left;cursor:pointer}
 .dx-pk{align-self:flex-start}.dx-sr{display:flex;flex-direction:column;gap:6px}.dx-sr>b{font-size:13px;color:var(--muted)}.dx-st{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;padding-bottom:4px}
 .dx-si{flex:0 0 78px;background:var(--surface-2);border-radius:12px;padding:5px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--muted);text-align:center}.dx-si svg{width:68px;height:51px}.dx-si.night{background:#16203d;color:#c9d6f5}.dx-si.soon{opacity:.6}.dx-q2{fill:var(--line)}
+.zodfix{margin-left:6px;font-size:12px;color:var(--muted)}.zodfix select{margin-left:4px;font:inherit;font-size:12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:1px 4px}
 .dz-spin{animation:dzSpin 10s linear infinite}@keyframes dzSpin{to{transform:rotate(360deg)}}
 .dz-blink{animation:dzBlink 4s infinite}@keyframes dzBlink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
 .dz-sway{animation:dzSway 3s ease-in-out infinite}@keyframes dzSway{50%{transform:rotate(5deg)}}
@@ -4626,7 +4627,11 @@ function fxLayer(k,n=22){
   return `<div class="fxl fxl-${k}" aria-hidden="true">${s}</div>`;
 }
 function easterOf(Y){const a=Y%19,b=Math.floor(Y/100),c=Y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),dd=((h+l-7*m+114)%31)+1;return `${Y}-${pad(mo)}-${pad(dd)}`}
-const bdShow=k=>{const w=(SHOPI[k]||{}).win||"";if(!w.startsWith("bday:"))return true;if(owns(k))return true;const b=bdParts();return !(b&&b.y)||zodOf(b.y)===w.slice(5)};
+const CNY_OLD={1980:"02-16",1981:"02-05",1982:"01-25",1983:"02-13",1984:"02-02",1985:"02-20",1986:"02-09",1987:"01-29",1988:"02-17",1989:"02-06",1990:"01-27",1991:"02-15",1992:"02-04",1993:"01-23",1994:"02-10",1995:"01-31",1996:"02-19",1997:"02-07",1998:"01-28",1999:"02-16",2000:"02-05",2001:"01-24",2002:"02-12",2003:"02-01",2004:"01-22",2005:"02-09",2006:"01-29",2007:"02-18",2008:"02-07",2009:"01-26",2010:"02-14",2011:"02-03",2012:"01-23",2013:"02-10",2014:"01-31",2015:"02-19",2016:"02-08",2017:"01-28",2018:"02-16",2019:"02-05",2020:"01-25",2021:"02-12",2022:"02-01",2023:"01-22",2024:"02-10",2025:"01-29"};
+let zodPick="";try{zodPick=localStorage.getItem("lifeos-zod")||""}catch(_){}
+function setZod(v,sync=true){zodPick=v||"";try{localStorage.setItem("lifeos-zod",zodPick)}catch(_){};if(sync&&db&&db.meta)db.meta.set({zod:zodPick},{merge:true}).catch(()=>{});if(shOpen)renderShop()}
+function myZod(){if(zodPick&&ZOD_NAME[zodPick])return zodPick;const b=bdParts();if(!b||!b.y)return null;const md=`${pad(b.m)}-${pad(b.d)}`,c=CNY_OLD[b.y]||(LUNAR.cny||{})[b.y];const before=c?md<c:(b.m===1||(b.m===2&&b.d<5));return zodOf(before?b.y-1:b.y)}
+const bdShow=k=>{const w=(SHOPI[k]||{}).win||"";if(!w.startsWith("bday:"))return true;if(owns(k))return true;const z=myZod();return !z||z===w.slice(5)};
 function lim(k){ // holiday items: on sale only around their day
   const x=SHOPI[k];if(!x||!x.win)return {on:true};
   const t=todayStr(),y=+t.slice(0,4);
@@ -4664,7 +4669,7 @@ function shCard(k){
 function renderShop(){
   if(!shOpen)return;
   let pg=document.getElementById("shopPage");
-  if(!pg){pg=document.createElement("div");pg.id="shopPage";pg.className="mbpage shpage";pg.setAttribute("role","dialog");pg.setAttribute("aria-label",L("小商店","Shop"));document.body.appendChild(pg);pg.addEventListener("click",shopClick)}
+  if(!pg){pg=document.createElement("div");pg.id="shopPage";pg.className="mbpage shpage";pg.setAttribute("role","dialog");pg.setAttribute("aria-label",L("小商店","Shop"));document.body.appendChild(pg);pg.addEventListener("click",shopClick);pg.addEventListener("change",e=>{const z=e.target.closest('[data-sh="zod"]');if(z)setZod(z.value)})}
   const st=coinStats(), keys=c=>Object.keys(SHOPI).filter(k=>SHOPI[k].cat===c);
   const grid=a=>`<div class="shgrid">${a.map(shCard).join("")}</div>`;
   const pet=s=>s.replaceAll("{pet}",petName());
@@ -4673,7 +4678,7 @@ function renderShop(){
   else if(shTab==="expr")body=`<p class="cap">${pet(L("换上以后，{pet}平时就是这个表情；专注、休息的时候还是会闭眼、打盹。","{pet} wears this face most of the time; it still closes its eyes to focus and rest."))}</p>${grid(keys("expr"))}`;
   else if(shTab==="prop")body=`<p class="cap">${pet(L("花园摆件放在首页花园里{pet}的旁边，最多摆 3 个；书桌摆件放在自习室你的书桌上（自习室做好后就能看到），最多 2 个。","Garden pieces sit next to {pet} on your home page (up to 3). Desk pieces go on your study-room desk once it opens (up to 2)."))}</p><h4>${L("花园","Garden")}</h4>${grid(keys("prop").filter(k=>SHOPI[k].slot==="garden"))}<h4>${L("书桌","Desk")}</h4>${grid(keys("prop").filter(k=>SHOPI[k].slot==="desk"))}`;
   else if(shTab==="lim"){const xm=keys("lim").filter(k=>SHOPI[k].win==="x:12-20:12-26");
-    body=`<div class="limhd">${L("节日前后几天才能买，过了就下架，买到的永远留着。圣诞节的 12 月 20 日上架。","Only on sale around the holiday; once you have it, it's yours. Christmas items arrive on 20 Dec.")}</div><h4>${L("圣诞节","Christmas")}</h4>${grid(xm)}<h4>${L("其他节日","Other holidays")}</h4>${grid(keys("lim").filter(k=>!xm.includes(k)&&!(SHOPI[k].win||"").startsWith("bday:")))}<h4>${L("生日 · 属相头套","Birthday · zodiac hoods")}</h4><p class="cap">${(()=>{const b=bdParts();return !b?L("在信箱里填上生日，生日那一周就会上架你属相的头套。","Add your birthday in the mailbox and your zodiac hood goes on sale in your birthday week."):!b.y?L("生日那一周上架。填上出生年份，就只显示你自己属相的那一顶。","On sale in your birthday week. Add your birth year to see only your own zodiac."):L(`你属${ZOD_NAME[zodOf(b.y)][0]}，生日那一周上架这一顶。`,`You're a ${ZOD_NAME[zodOf(b.y)][1]}. It goes on sale in your birthday week.`)})()}</p>${grid(keys("lim").filter(k=>(SHOPI[k].win||"").startsWith("bday:")&&bdShow(k)))}`}
+    body=`<div class="limhd">${L("节日前后几天才能买，过了就下架，买到的永远留着。圣诞节的 12 月 20 日上架。","Only on sale around the holiday; once you have it, it's yours. Christmas items arrive on 20 Dec.")}</div><h4>${L("圣诞节","Christmas")}</h4>${grid(xm)}<h4>${L("其他节日","Other holidays")}</h4>${grid(keys("lim").filter(k=>!xm.includes(k)&&!(SHOPI[k].win||"").startsWith("bday:")))}<h4>${L("生日 · 属相头套","Birthday · zodiac hoods")}</h4><p class="cap">${(()=>{const b=bdParts();return !b?L("在信箱里填上生日，生日那一周就会上架你属相的头套。","Add your birthday in the mailbox and your zodiac hood goes on sale in your birthday week."):!b.y&&!zodPick?L("生日那一周上架。填上出生年份，就只显示你自己属相的那一顶。","On sale in your birthday week. Add your birth year to see only your own zodiac."):L(`你属${ZOD_NAME[myZod()][0]}（按农历新年算），生日那一周上架这一顶。`,`You're a ${ZOD_NAME[myZod()][1]} (by Lunar New Year). It goes on sale in your birthday week.`)})()} <label class="zodfix">${L("不对？","Not right?")}<select data-sh="zod">${["",...ZOD_ORDER.slice(4),...ZOD_ORDER.slice(0,4)].map(k=>`<option value="${k}" ${zodPick===k?"selected":""}>${k?L("属"+ZOD_NAME[k][0],ZOD_NAME[k][1]):L("按生日算","From my birthday")}</option>`).join("")}</select></label></p>${grid(keys("lim").filter(k=>(SHOPI[k].win||"").startsWith("bday:")&&bdShow(k)))}`}
   else if(shTab==="dood")body=`<p class="cap">${pet(L("歪歪扭扭的线条加蜡笔涂色，和森林里的灵魂画手树是一个画风。可以和别的衣服混着穿。","Wobbly lines and crayon colours, the same style as the doodle trees in your forest. Mix them with anything."))}</p><h4>${L("装扮","Outfits")}</h4>${grid(keys("dood").filter(k=>SHOPI[k].slot!=="expr"&&SHOPI[k].slot!=="garden"))}<h4>${L("表情","Faces")}</h4>${grid(keys("dood").filter(k=>SHOPI[k].slot==="expr"))}<h4>${L("花园摆件","Garden")}</h4><p class="cap">${L("和其他花园摆件一起算，最多摆 3 个。","Counts with your other garden pieces: up to 3.")}</p>${grid(keys("dood").filter(k=>SHOPI[k].slot==="garden"))}`;
   else if(shTab==="set"){const grps=[...new Set(keys("set").map(k=>SHOPI[k].grp).filter(Boolean))];body=`<div class="limhd">${L("动物连帽套装是一顶连帽加一件同款书桌摆件；小绅士套装是礼帽、西装和领结一整身。下面几套可以一件件买，也可以凑齐一整套。","Each animal set is a hood plus a matching desk piece. The gentleman set is a top hat, blazer and bow tie. The sets below can be bought piece by piece.")}</div>${grid(keys("set").filter(k=>!SHOPI[k].grp))}${grps.map(g=>`<h4>${g}</h4>${grid(keys("set").filter(k=>SHOPI[k].grp===g))}`).join("")}`}
   else if(shTab==="vibe")body=`<h4>${L("耳机","Headphones")}</h4><p class="cap">${pet(L("戴上以后，{pet}专注的时候也戴着这副。","{pet} wears them while focusing too."))}</p>${grid(keys("vibe").filter(k=>SHOPI[k].slot==="phones"))}<h4>${L("背景特效","Backgrounds")}</h4><p class="cap">${L("开着的那个会铺在专注页后面，一次开一个。","The one you switch on plays behind the focus page. One at a time.")}</p>${grid(keys("vibe").filter(k=>SHOPI[k].slot==="fx"))}`;
@@ -6671,6 +6676,7 @@ async function onSignedIn(user){
     if(m.shelf)setShelf(m.shelf,false);
     if(m.bedTime!=null)setBedTime(m.bedTime,false);
     if(m.birthday!=null)setBirthday(m.birthday,false);
+    if(m.zod!=null)setZod(m.zod,false);
     if(m.stores)setStores(m.stores,false);
     startData(store);
     if(n&&!asked)openMergeAsk(store,localData,n,user.uid);
