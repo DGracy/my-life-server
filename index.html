@@ -1111,7 +1111,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .hm-g{position:absolute;inset:0;width:100%;height:100%;transition:filter .6s}.hm-s1{stop-color:#a6d3ff}.hm-s2{stop-color:#e4f2ff}.hm-cl{fill:#fff;opacity:.9}
 .hm-scene [filter="url(#dzc)"]{filter:url(#dzc)!important}
 .hm-it{position:absolute;transform:translate(-50%,-100%)}.hm-art{position:relative;transform-origin:50% 100%}.hm-art svg{width:100%;height:auto;display:block;pointer-events:none}
-.hm-sh{position:absolute;left:50%;bottom:0;width:78%;height:16%;transform:translate(-50%,45%);border-radius:50%;background:radial-gradient(rgba(30,70,30,.32),rgba(30,70,30,0) 70%);pointer-events:none}.hm-it.sky .hm-sh{display:none}.hm-pet .hm-art{margin-bottom:-19%}
+.hm-sh{position:absolute;left:50%;bottom:0;width:78%;height:16%;transform:translate(-50%,45%);border-radius:50%;background:radial-gradient(rgba(30,70,30,.32),rgba(30,70,30,0) 70%);pointer-events:none}.hm-it.sky .hm-sh{display:none}.fhome{width:240px;flex:none;height:auto;aspect-ratio:800/500;box-shadow:none}.fhome .hm-it{pointer-events:none}@media(max-width:460px){.fhome{width:196px}.sh-fit .facts{flex-wrap:wrap;min-width:0}.sh-fit .facts .primary{flex:1 1 100%}}.fhome>small{z-index:999}.hm-pet .hm-art{margin-bottom:-19%}
 .hm-scene.edit .hm-it:not(.hm-pet){cursor:grab}.hm-it.drag{z-index:999!important}.hm-it.drag .hm-art{transform:translateY(-6%) scale(1.06)!important}
 .hm-it.sel .hm-art{filter:drop-shadow(0 0 3px var(--brand)) drop-shadow(0 0 1px var(--brand))}
 .hm-art.pop{animation:hmPop .45s cubic-bezier(.3,1.6,.5,1)}@keyframes hmPop{0%{transform:scale(.6,.4)}60%{transform:scale(1.08,.95)}100%{transform:none}}
@@ -4821,7 +4821,7 @@ function renderShop(){
   const canBuy=!shBought&&fk.length&&!blocked.length&&sum<=st.bal;
   const gp=(w.garden||[]).filter(k=>onFit(k)||isWorn(k)).slice(0,3), dp=(w.desk||[]).filter(k=>onFit(k)||isWorn(k)).slice(0,2);
   const pv=k=>`<svg viewBox="0 0 60 60" aria-hidden="true">${SHOPI[k].svg}</svg>`;
-  const gScene=gp.length?`<div class="fscene fgarden" aria-label="${L("花园里的样子","In your garden")}"><span class="fs-gnd"></span><span class="fs-tree">${treeSVG("happy",stageOf(curWater()),false)}</span><span class="fs-pal">${dressSVG(shFit,58)}</span>${(cl=>gp.map((k,i)=>`<span class="fs-p ${cl[i]}">${pv(k)}</span>`).join(""))(gpSlots(gp))}<small>${L("花园里","Garden")}</small></div>`:"";
+  const gScene=gp.length?hmPreview(gp,shFit):"";const gOld=gp.length?`<div class="fscene fgarden" aria-label="${L("花园里的样子","In your garden")}"><span class="fs-gnd"></span><span class="fs-tree">${treeSVG("happy",stageOf(curWater()),false)}</span><span class="fs-pal">${dressSVG(shFit,58)}</span>${(cl=>gp.map((k,i)=>`<span class="fs-p ${cl[i]}">${pv(k)}</span>`).join(""))(gpSlots(gp))}<small>${L("花园里","Garden")}</small></div>`:"";
   const dScene=dp.length?`<div class="fscene fdesk" aria-label="${L("书桌上的样子","On your desk")}"><span class="fs-chair"></span><span class="fs-pal">${dressSVG(shFit,64)}</span><svg class="fs-top" viewBox="0 0 160 40" preserveAspectRatio="none" aria-hidden="true"><path d="M10 4H150L160 26H0Z" fill="#e6b27a"/><path d="M0 26H160V32H0Z" fill="#c98a4e"/></svg>${dp.map((k,i)=>`<span class="fs-p dp${i}">${pv(k)}</span>`).join("")}<small>${L("自习室的书桌","Study desk")}</small></div>`:"";
   const fit=`<div class="sh-fit"><div class="fitpic">${big}${gScene}${dScene}</div>
     <div class="fitinfo"><h3>${fk.length?L(`试穿中 ${fk.length} 件`,`Trying on ${fk.length}`):pet(L("{pet}现在的样子","How {pet} looks now"))}</h3>${fk.length?`<div class="flist">${list}</div>`:`<p class="hint">${L("点右边的东西就能试穿，可以叠着穿，搭好了一起买。","Tap anything to try it on. Mix and match, then buy them together.")}</p>`}
@@ -4894,6 +4894,16 @@ function hmGround(){let t=`<defs><linearGradient id="hmSky" x1="0" y1="0" x2="0"
   t+=`<ellipse cx="720" cy="378" rx="80" ry="16" fill="#b98a5e"/><ellipse cx="720" cy="375" rx="76" ry="12" fill="#8f633f"/>`;
   [[60,300],[120,440],[520,430],[640,300],[780,440],[30,380]].forEach(([x,y])=>t+=`<path d="M${x} ${y}l-3-8M${x} ${y}v-10M${x} ${y}l4-8" stroke="#86c56d" stroke-width="2.4" stroke-linecap="round"/>`);
   return t}
+// small still picture of the home, used by the shop's fitting room
+function hmPreview(fitK,fit){const it=JSON.parse(JSON.stringify(homeS.items||{}));
+  if(!Object.keys(it).length){hmTrees().forEach((_,i)=>it["_t"+i]={s:i?"back1":"back3",sz:i?"S":"M"})}
+  for(const k of fitK){if(it[k])continue;if(hmRows(k)[0]==="walk"){it[k]={sz:"M"};continue}const fr=hmFree(k,it);if(fr.length)it[k]={s:fr[0].r+fr[0].i,sz:"M"}}
+  let wi=0,h="";
+  for(const [k,v] of Object.entries(it)){const a=hmArt(k);if(!a)continue;let x,y,sc;
+    if(hmRows(k)[0]==="walk"){x=[300,520,620][wi%3];y=[410,445,400][wi++%3];sc=.9}else{const p=hmSlot(v.s);if(!p)continue;x=p.x;y=p.y+(p.r==="sky"?40:0);sc=HM_RS[p.r]}
+    const w=hmW(k)*sc*(HM_SZ[v.sz]||1);h+=`<div class="hm-it${fitK.includes(k)?" fitnew":""}" style="left:${x/HM_W*100}%;top:${y/HM_H*100}%;width:${w/HM_W*100}%;z-index:${Math.round(y)}"><div class="hm-sh"></div><div class="hm-art"${v.f?' style="transform:scaleX(-1)"':""}>${a}</div></div>`}
+  h+=`<div class="hm-it hm-pet" style="left:${236/HM_W*100}%;top:${458/HM_H*100}%;width:${92/HM_W*100}%;z-index:458"><div class="hm-sh"></div><div class="hm-art">${dressSVG(fit,120)}</div></div>`;
+  return `<div class="fscene fhome hm-scene" aria-label="${L("家园里的样子","In your home")}"><svg class="hm-g" viewBox="0 0 800 500" aria-hidden="true">${hmGround()}</svg>${h}<small>${L("家园里","Home")}</small></div>`}
 function openHome(){if(!db)return;hmOpen=true;hmEdit=false;hmSel=null;document.body.classList.add("mb-on");hmAuto();renderHome()}
 function closeHome(){hmOpen=false;document.getElementById("homePage")?.remove();if(!mbOpen&&!idOpen&&!shOpen)document.body.classList.remove("mb-on")}
 function hmPos(e,v){const k=e.dataset.k;let x,y,s;if(v.s){const p=hmSlot(v.s);x=p.x;y=p.y;s=HM_RS[p.r];if(p.r==="sky")y+=40}else{x=e._x;y=e._y;s=y>430?1.05:.9}
