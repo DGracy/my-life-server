@@ -1917,7 +1917,7 @@ function stClick(e){const b=e.target.closest("[data-st]");if(!b)return;const a=b
 document.addEventListener("click",e=>{if(stOpen&&!e.target.closest("#stk")&&!e.target.closest(".sheet-bg")){stOpen=false;stRender()}},true);
 
 function render(){
-  if(inlineEditing||dragLock){renderPending=true;return}
+  if(inlineEditing||dragLock||imeOn){renderPending=true;return}
   applyBoards();
   document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.k===tab)));
   const open=k=>tasks.filter(t=>t.space===k&&!t.done&&!t.deleted&&!t.letGo).length;
@@ -6125,6 +6125,10 @@ document.addEventListener("keydown",e=>{
 });
 /* ---------- edit a line of text in place ---------- */
 let inlineEditing=false, renderPending=false;
+// Chinese/Japanese input: never redraw or autosave while a word is still being picked
+var imeOn=false;
+document.addEventListener("compositionstart",()=>{imeOn=true},true);
+document.addEventListener("compositionend",e=>{imeOn=false;const t=e.target;setTimeout(()=>{if(t&&t.isConnected)t.dispatchEvent(new Event("input",{bubbles:true}));if(renderPending&&!inlineEditing&&!dragLock){renderPending=false;render()}},0)},true);
 function inlineEdit(el,value,onSave){
   if(inlineEditing)return;
   inlineEditing=true;
@@ -6518,6 +6522,7 @@ $("#buddy").addEventListener("click",()=>cheer((lang==="en"?["Hehe, that tickles
 document.addEventListener("change",e=>{if(e.target.id==="wishCur"){wishCur=e.target.value;try{localStorage.setItem("los-cur",wishCur)}catch(_){}}});
 let memoTxTimer={};
 document.addEventListener("input",e=>{
+  if(e.isComposing||imeOn)return; // wait for compositionend, which re-sends this input
   if(e.target.dataset&&e.target.dataset.memoTitle&&db){const id=e.target.dataset.memoTitle, v=e.target.value, m=memos.find(x=>x.id===id); if(m)m.title=v;
     const sv=document.getElementById("memo-sv-"+id); if(sv)sv.textContent=L("正在保存…","Saving…");
     clearTimeout(memoTxTimer["t"+id]); memoTxTimer["t"+id]=setTimeout(()=>{const ref=db.doc("memos/"+id);queued(ref.path,()=>ref.update({title:v.trim().slice(0,60),updatedAt:Date.now()})).then(()=>{const el=document.getElementById("memo-sv-"+id);if(el)el.textContent=L("已保存 ✓","Saved ✓")}).catch(()=>{})},700);

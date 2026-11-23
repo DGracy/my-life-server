@@ -113,3 +113,14 @@ test('settings: export backup includes every collection', async ({ newPage }) =>
   const missing = await p.evaluate(() => { const used = new Set(); const src = document.documentElement.innerHTML; for (const m of src.matchAll(/sub\("([a-z]+)"/g)) used.add(m[1]); return [...used].filter(c => !COLS.includes(c)); });
   expect(!missing.length, 'collections not in backup/sync list: ' + missing.join(', '));
 });
+test('journal: Chinese input is not interrupted while picking a word', async ({ newPage, project }) => {
+  const p = await newPage({ data: populated() }); await open(p); await p.click('#jbtn');
+  const ta = p.locator('[data-jg]').first(); await ta.click();
+  const cdp = await p.context().newCDPSession(p);
+  await cdp.send('Input.imeSetComposition', { text: 'jintian', selectionStart: 7, selectionEnd: 7 });
+  await p.waitForTimeout(1500); // longer than the 800 ms autosave
+  const mid = await p.evaluate(() => [document.activeElement?.dataset?.jg != null, imeOn, Object.values(journal).some(j => JSON.stringify(j).includes('jintian'))]);
+  expect(mid[0] && mid[1] && !mid[2], 'composition was interrupted or pinyin saved: ' + mid);
+  await cdp.send('Input.insertText', { text: '今天' });
+  await poll(() => p.evaluate(() => (journal['2026-11-23']?.grat || []).join('').includes('今天')), 'committed text saved', 4000);
+}, { projects: ['desktop'] });
