@@ -14,7 +14,7 @@ export function expect(cond, msg) { if (!cond) throw new Fail(msg); }
 export async function poll(fn, msg, ms = 3000) { const t0 = Date.now(); let v; while (Date.now() - t0 < ms) { v = await fn(); if (v) return v; await new Promise(r => setTimeout(r, 50)); } throw new Fail(msg + ' (timed out)'); }
 
 let browser, coverage = [];
-export async function newPage(project, { data, theme = 'light', lang = 'zh', tab = 'ov', extraLS = {}, allowErrors = false } = {}) {
+export async function newPage(project, { data, theme = process.env.FORCE_THEME || 'light', lang = 'zh', tab = 'ov', extraLS = {}, allowErrors = false } = {}) {
   const ctx = await browser.newContext({ ...PROJECTS[project], colorScheme: theme, timezoneId: 'Europe/London', locale: 'zh-CN', reducedMotion: 'reduce' });
   const page = await ctx.newPage();
   page.__errors = [];
@@ -23,16 +23,19 @@ export async function newPage(project, { data, theme = 'light', lang = 'zh', tab
   page.on('dialog', d => { page.__errors.push('dialog: ' + d.message()); d.dismiss(); });
   await ctx.route(/^https?:/, r => r.abort());            // network boundary: no Firebase, fonts, AI
   await page.clock.install({ time: theme === 'dark' ? new Date(NOW.getTime() + 11 * 36e5) : NOW }); // pinned clock; the app goes dark by time of day (21:00)
-  const ls = { 'lifeos-welcomed': '1', 'lifeos-lang': lang, 'los-tab': tab, 'lifeos-tour': JSON.stringify(Object.fromEntries([['full', 1], ['new', 1], ...TOUR_SEEN.map(k => ['nf:' + k, 1]), ...HINTS_SEEN.map(k => [k, 1])])), ...extraLS };
+  const ls = { 'lifeos-welcomed': '1', 'lifeos-lang': lang, 'los-tab': tab, 'lifeos-tips': JSON.stringify(Object.fromEntries(HINTS_SEEN.map(k => [k, 1]))), 'lifeos-tour': JSON.stringify(Object.fromEntries([['full', 1], ['new', 1], ...TOUR_SEEN.map(k => ['nf:' + k, 1])])), ...extraLS };
   if (data !== undefined) ls['lifeos-data-v1'] = JSON.stringify(data);
   await page.addInitScript(() => { let a = 20261123; Math.random = () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }); // seeded randomness
-  await page.addInitScript(ls => { if (sessionStorage.getItem('__seeded')) return; sessionStorage.setItem('__seeded', '1'); localStorage.clear(); for (const k in ls) localStorage.setItem(k, ls[k]); }, ls);
+  await page.addInitScript(ls => { if (localStorage.getItem('__seeded')) return; localStorage.clear(); for (const k in ls) localStorage.setItem(k, ls[k]); localStorage.setItem('__seeded', '1'); /* once per test, survives reloads */ }, ls);
   await page.coverage.startJSCoverage({ resetOnNavigation: false });
   page.__allowErrors = allowErrors;
   return page;
 }
 export async function open(page) {
   await page.goto(APP);
+  await ready(page);
+}
+export async function ready(page) {
   await page.waitForFunction(() => typeof render === 'function' && document.querySelector('#main') && document.querySelector('#main').children.length > 0);
   await page.evaluate(() => document.querySelectorAll('.sleep-dim,.tour-ui').forEach(x => x.remove()));
   await page.waitForTimeout(250); // entrance animations (reducedMotion also set)
@@ -50,6 +53,10 @@ export async function run({ only, projects = ['desktop', 'mobile'], out = 'resul
     const np = async o => { const p = await newPage(pj, o); ctx.pages.push(p); return p; };
     let status = 'pass', err = '';
     try { await Promise.race([t.fn({ project: pj, newPage: np }), new Promise((_, rj) => setTimeout(() => rj(new Fail('test timeout 45s')), 45000))]);
+      if (!process.env.NOSWEEP) { // every test ends with an a11y + contrast scan of whatever screen it left open
+        const found = []; const { a11yScan } = await import('./a11y.mjs'); for (const p of ctx.pages) { try { const top = await p.evaluate(() => { const c = ['.sheet-bg', '#homePage', '#shopPage', '.mbpage', '#pomoPage', '.tour-ui']; for (const s of c) { const l = [...document.querySelectorAll(s)]; if (l.length) return s; } return null; });
+        const v = await a11yScan(p, top); found.push(...v); } catch (_) {} }
+        if (found.length) throw new Fail('a11y after test: ' + [...new Set(found)].join(' · ')); }
       for (const p of ctx.pages) if (!p.__allowErrors && p.__errors.length) throw new Fail('strict console: ' + p.__errors.slice(0, 3).join(' | '));
     } catch (e) { status = e.known ? 'known' : 'fail'; err = (e instanceof Fail ? '' : 'ERROR ') + (e.message || String(e)).split('\n')[0].slice(0, 4000); }
     for (const p of ctx.pages) await closePage(p);

@@ -26,7 +26,7 @@ export async function a11yScan(page, rootSel) {
       const bg = bgOf(el); if (!bg) continue; fg = blend([fg[0], fg[1], fg[2], fg[3] * op], bg);
       const L1 = lum(fg), L2 = lum(bg), ratio = (Math.max(L1, L2) + .05) / (Math.min(L1, L2) + .05);
       const px = parseFloat(s.fontSize), bold = +s.fontWeight >= 700, large = px >= 24 || (bold && px >= 18.66), need = large ? 3 : 4.5;
-      if (ratio < need - .05) out.push(`contrast ${ratio.toFixed(2)}<${need}: ${desc(el)}` + (window.__a11yDetail ? ` fg=${s.color} bg=${bg.map(Math.round).join(',')} px=${px}` : '')); }
+      if (ratio < need - .05) out.push(`contrast ${ratio.toFixed(2)}<${need}: ${desc(el)}` + (window.__a11yDetail || 1 ? ` fg=${s.color} bg=${bg.map(Math.round).join(',')} px=${px}` : '')); }
     return out;
   }, rootSel);
 }

@@ -1,4 +1,4 @@
-import { test, expect, poll, open, noSideScroll } from './harness.mjs';
+import { test, expect, poll, open, ready, noSideScroll } from './harness.mjs';
 import { populated, edge } from './fixtures/data.mjs';
 import { a11yScan, tabWalk } from './a11y.mjs';
 import { shot } from './visual.mjs';
@@ -28,8 +28,8 @@ for (const k of MAIN) test(`nav: tab ${k} highlights exactly itself`, async ({ n
   await noSideScroll(p, k);
 });
 test('nav: chosen tab survives reload', async ({ newPage }) => {
-  const p = await newPage({ data: populated() }); await open(p); await goTab(p, 'study'); await p.reload(); await open(p);
-  expect(await p.evaluate(() => tab) === 'study', 'tab not remembered');
+  const p = await newPage({ data: populated() }); await open(p); await goTab(p, 'study'); await p.reload(); await ready(p); // reload only, no second navigation
+  const got = await p.evaluate(() => [tab, localStorage.getItem('los-tab')]); expect(got[0] === 'study', 'tab not remembered: ' + got);
 });
 for (const k of LIFE) test(`nav: life section ${k}`, async ({ newPage }) => {
   const p = await newPage({ data: populated() }); await open(p); await lifeSub(p, k);
@@ -183,9 +183,8 @@ test('settings: switch language to English and back', async ({ newPage }) => {
 /* ---------------- Layer 5: accessibility + keyboard ---------------- */
 const OVERLAY = { home: '#homePage', shop: '#shopPage', mailbox: '.mbpage', sticky: '.stkw' };
 for (const theme of ['light', 'dark']) {
-  // names / alt / ids must pass; WCAG AA text contrast is tracked separately as a known issue until the palette is decided
-  const check = v => { const hard = v.filter(x => !x.startsWith('contrast')), soft = v.filter(x => x.startsWith('contrast'));
-    expect(!hard.length, hard.join(' · ')); if (soft.length) throw Object.assign(new Error(soft.join(' · ')), { known: true }); };
+  // names / alt / ids and WCAG AA text contrast must all pass
+  const check = v => expect(!v.length, v.join(' · '));
   for (const k of MAIN) test(`a11y ${theme}: ${k}`, async ({ newPage }) => {
     const p = await newPage({ data: populated(), tab: k, theme }); await open(p); check(await a11yScan(p));
   });
@@ -197,7 +196,26 @@ test('keyboard: Tab walk reaches every visible control with a focus ring', async
   const p = await newPage({ data: populated(), tab: 'study' }); await open(p); const r = await tabWalk(p, 60);
   expect(!r.noRing.length, 'no visible focus ring on: ' + r.noRing.slice(0, 6).join(', '));
 }, { projects: ['desktop'] });
-
+for (const theme of ['light', 'dark']) {
+  const check = v => expect(!v.length, v.join(' · '));
+  for (const v of ['shop', 'memo', 'wish', 'goals']) test(`a11y ${theme}: life/${v}`, async ({ newPage }) => {
+    const p = await newPage({ data: populated(), tab: 'life', theme }); await open(p); await p.click(`[data-act="lifesub"][data-v="${v}"]`); await p.waitForTimeout(150); check(await a11yScan(p));
+  });
+  test(`a11y ${theme}: focus page`, async ({ newPage }) => {
+    const p = await newPage({ data: populated(), tab: 'study', theme }); await open(p); await p.locator('.task:has(.t-title:text-is("写 essay")) [data-act="focus"]').click(); await poll(() => p.$('#pomoPage'), 'focus'); await p.waitForTimeout(250); check(await a11yScan(p, '#pomoPage'));
+  });
+  test(`a11y ${theme}: forest dex`, async ({ newPage }) => {
+    const p = await newPage({ data: populated(), theme }); await open(p); await SCREENS['forest-dex'](p); await p.waitForTimeout(250); check(await a11yScan(p));
+  });
+  test(`a11y ${theme}: task editor + subtasks`, async ({ newPage }) => {
+    const p = await newPage({ data: populated(), tab: 'study', theme }); await open(p); await p.locator('.t-main.fold .t-title').click(); await poll(() => p.$('#ed-title'), 'editor'); check(await a11yScan(p, '.sheet-bg'));
+  });
+  test(`a11y ${theme}: shop tabs`, async ({ newPage }) => {
+    const p = await newPage({ data: populated(), theme }); await open(p); await SCREENS.shop(p); const all = [];
+    for (const t of ['acc', 'expr', 'prop', 'lim', 'dood', 'set', 'vibe', 'mine']) { const b = p.locator(`[data-sh="tab"][data-v="${t}"]`); if (await b.count()) { await b.first().click(); await p.waitForTimeout(120); all.push(...(await a11yScan(p, '#shopPage')).map(x => t + ': ' + x)); } }
+    check([...new Set(all)]);
+  });
+}
 /* ---------------- Layer 4: visual regression ---------------- */
 for (const theme of ['light', 'dark']) {
   for (const k of MAIN) test(`visual ${theme}: ${k}`, async ({ newPage, project }) => {

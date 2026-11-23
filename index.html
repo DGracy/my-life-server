@@ -1105,7 +1105,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 @media (prefers-reduced-motion:reduce){.dz-spin,.dz-blink,.dz-sway,.dz-crawl,.dz-wag,.dz-swing,.dz-flap,.dz-flame,.dz-buzz{animation:none}}
 @media (prefers-color-scheme:dark){:root:not([data-theme]):not([data-tod]) [filter="url(#dzc)"]{filter:none}}
 :root[data-theme="dark"] [filter="url(#dzc)"],:root:not([data-theme])[data-tod="night"] [filter="url(#dzc)"]{filter:none}
-.hm-bar{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}.hm-bar button{border:none;border-radius:99px;padding:7px 15px;font:inherit;font-size:13.5px;background:var(--bg-2);color:var(--fg);cursor:pointer}.hm-bar button.on{background:var(--brand);color:#fff}
+.hm-bar{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}.hm-bar button{border:none;border-radius:99px;padding:7px 15px;font:inherit;font-size:13.5px;background:var(--bg-2);color:var(--fg);cursor:pointer}.hm-bar button.on{background:var(--brand-solid);color:#fff}
 .hm-scene{position:relative;aspect-ratio:800/500;border-radius:20px;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;box-shadow:0 0 0 1px var(--line)}
 .hm-scene.edit{touch-action:none}
 .hm-g{position:absolute;inset:0;width:100%;height:100%;transition:filter .6s}.hm-s1{stop-color:#a6d3ff}.hm-s2{stop-color:#e4f2ff}.hm-cl{fill:#fff;opacity:.9}
@@ -1124,6 +1124,24 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 @media (prefers-color-scheme:dark){:root:not([data-theme]):not([data-tod]) .hm-g{filter:brightness(.6) saturate(.85) hue-rotate(12deg)}:root:not([data-theme]):not([data-tod]) .hm-it:not([data-k=n_g_lamp]):not([data-k=n_g_fire]):not([data-k=n_h_lantern]) .hm-art{filter:brightness(.78)}}
 :root[data-theme="dark"] .hm-g,:root:not([data-theme])[data-tod="night"] .hm-g{filter:brightness(.6) saturate(.85) hue-rotate(12deg)}
 :root[data-theme="dark"] .hm-it:not([data-k=n_g_lamp]):not([data-k=n_g_fire]):not([data-k=n_h_lantern]) .hm-art,:root:not([data-theme])[data-tod="night"] .hm-it:not([data-k=n_g_lamp]):not([data-k=n_g_fire]):not([data-k=n_h_lantern]) .hm-art{filter:brightness(.78)}
+/* proposed contrast fix: same hues, text a little deeper; pastel buttons keep their colour */
+:root{--muted:#53678e;--faint:#66789a;--brand:#2b6fde;--danger:#d23a4d;--danger-ink:#b02e42;--life-ink:#1b795c;--habit-ink:#a6550e;--water-ink:#3577b5;--leaf-ink:#2d7952;--btn-ink:#3a2a10;--brand-solid:#2b6fde}
+:root[data-theme="dark"],:root:not([data-theme])[data-tod="night"]{--muted:#a3b7d8;--faint:#8ea0be;--brand:#6aa8ff;--brand-solid:#3073d4;--danger:#d23a4d;--danger-ink:#ff9ba6;--water-ink:#8cc8ff;--leaf-ink:#79caa3;--btn-ink:#2a1d0a}
+#water{color:var(--water-ink)}#stageLv{color:var(--leaf-ink)}
+#n-ov,.due.live,.ov-tag.live,.od-tag.over,.ov-pri,.play,b:has(+.ov-t){color:var(--danger-ink)}
+.btn.life{color:var(--btn-ink)}
+:root:not([data-tod="night"]) #slBtn{color:var(--btn-ink)}
+.btn.wish-btn{background:#7c60d6;color:#fff}.w-done{color:#7c60d6}
+.btn.primary,.ov-tag.go,#jbtn[aria-pressed="true"],.shnav button.on{background:var(--brand-solid)}
+.go,.new{background:var(--danger)}
+.habit-add .btn{color:var(--btn-ink)!important}.focusbar .go,.shgrid .new{background:var(--danger)!important}.eatmode button.on{color:var(--btn-ink)}
+.cal-day.today .cal-top b{background:var(--brand-solid)}.ov-chip b{color:var(--danger-ink)}.dtabs button{opacity:1}.slr{color:color-mix(in srgb,#7a73e8 55%,var(--fg))}.slr .ch,.slr.pre b{opacity:1}
+.dx-si.soon{opacity:1}.dx-si.soon>:not(span){opacity:.45}.shgrid .it.off{opacity:1}.shgrid .it.off svg,.shgrid .it.off .fxt{opacity:.5}
+.chips.c5 .chip.on{color:var(--danger-ink)}.cbtn.main:not(.up){background:var(--danger)}.donebtn{color:var(--leaf-ink)}
+:root:not([data-tod="night"]) .shgrid .lim{color:#a8291f}
+#pomoPage .what.center,#pomoPage .what.ok i{color:var(--leaf-ink)}.nextbtn{color:var(--btn-ink)!important}.hm-ti.used{opacity:1}.hm-ti.used svg{opacity:.4}.hm-ti.used span{color:var(--muted)}
+:root:not([data-tod="night"]) .set-fold summary small{color:var(--brand-ink)}.fp{color:#a8374a}
+:root:not([data-tod="night"]) .wish .w-done{color:#7c60d6}:root:not([data-tod="night"]) .gl2 i{color:#8a6400}:root:not([data-tod="night"]) .due.plan,:root:not([data-tod="night"]) .ov-mv{color:var(--brand-ink)}
 .stkw{position:fixed;right:0;top:34%;z-index:16;display:flex;align-items:flex-start;pointer-events:none}
 .stkw>*{pointer-events:auto}
 .st-tab{position:relative;border:none;background:none;border-radius:16px;padding:2px 4px 2px 2px;cursor:pointer;filter:drop-shadow(0 3px 6px rgba(40,60,110,.22));margin-right:env(safe-area-inset-right,0px);line-height:0}
@@ -1144,7 +1162,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .st-ck{width:18px;height:18px;border-radius:50%;border:2px solid #c9b77a;background:none;flex:none;padding:0;cursor:pointer}.st-it.done .st-ck{background:#2fb38a;border-color:#2fb38a}
 .st-tx{flex:1;min-width:0;overflow-wrap:anywhere;cursor:text}.st-it.done .st-tx{text-decoration:line-through;color:#a69a72}
 .st-ed{flex:1;min-width:0;border:none;border-bottom:2px solid #e0c56a;background:none;font:inherit;font-size:14px;color:#2a2410;outline:none}
-.st-ch{flex:none;font-size:11.5px;border-radius:99px;padding:2px 8px;background:#f3ead0;color:#7a6a3a;white-space:nowrap}.st-ch.today{background:#2f7cf6;color:#fff}.st-ch.soon{background:#ffd88a;color:#7a4e00}.st-ch.late{background:#ffd9db;color:#c22b2b}
+.st-ch{flex:none;font-size:11.5px;border-radius:99px;padding:2px 8px;background:#f3ead0;color:#6b5c30;white-space:nowrap}.st-ch.today{background:#2b6fde;color:#fff}.st-ch.soon{background:#ffd88a;color:#7a4e00}.st-ch.late{background:#ffd9db;color:#ad2424}
 .st-acts{display:flex;gap:2px;flex:none}.st-acts button{border:none;background:none;color:#a69a72;font-size:14px;width:22px;height:22px;border-radius:6px;cursor:pointer;padding:0}.st-acts button:hover{background:rgba(0,0,0,.06);color:#5a4a1a}
 @media (hover:hover){.st-acts{opacity:0;transition:opacity .15s}.st-it:hover .st-acts,.st-it:focus-within .st-acts{opacity:1}}
 .st-empty{margin:4px 2px;color:#8a7d55;font-size:13px}
@@ -1417,7 +1435,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .field input,.field textarea{border:2px solid var(--line);border-radius:14px;background:var(--bg-2);padding:8px 12px;width:100%}
 .field textarea{min-height:76px;resize:vertical}
 .sheet-actions{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap}
-.btn.danger{color:var(--danger)}
+.btn.danger{color:var(--danger-ink)}
 
 /* confetti */
 .spark{position:fixed;width:9px;height:9px;border-radius:2px;pointer-events:none;z-index:30}
@@ -6221,7 +6239,7 @@ function openEditor(id,preset){
       <button class="chip hz${other||pickDone?" on":""}" data-ed="ddpick">${other?md2(dd):L("选日期…","Pick a date…")}</button></div>
       ${pickDone||other?`<input type="date" id="ed-doneday" min="${addDays(td,-30)}" max="${td}" value="${dd}">`:""}</div>`};
   const dtRow=(p,date,time,canClear)=>{const [hh,mm]=(time||"").split(":"),dis=date?"":"disabled";const hl=h=>L(`${h<5?"凌晨":h<12?"上午":h<13?"中午":h<18?"下午":"晚上"} ${h<=12?h:h-12} 点`,`${h%12||12} ${h<12?"AM":"PM"}`);
-    return `<span class="dtrow"><input type="date" id="ed-${p}" value="${esc(date||"")}"><select id="ed-${p}h" aria-label="${L("几点","Hour")}" ${dis}><option value="">${L("几点","Hour")}</option>${[...Array(24)].map((_,h)=>`<option value="${pad(h)}" ${hh===pad(h)?"selected":""}>${hl(h)}</option>`).join("")}</select><select id="ed-${p}m" aria-label="${L("几分","Minute")}" ${dis}>${[...Array(12)].map((_,i)=>`<option value="${pad(i*5)}" ${(mm||"00")===pad(i*5)?"selected":""}>${pad(i*5)} ${L("分","min")}</option>`).join("")}</select>${canClear&&time?`<button class="link" data-ed="notime">${L("不要时间","No time")}</button>`:""}</span>`};
+    return `<span class="dtrow"><input type="date" id="ed-${p}" value="${esc(date||"")}" aria-label="${p==="s"?L("开始日期","Start date"):L("日期","Date")}"><select id="ed-${p}h" aria-label="${L("几点","Hour")}" ${dis}><option value="">${L("几点","Hour")}</option>${[...Array(24)].map((_,h)=>`<option value="${pad(h)}" ${hh===pad(h)?"selected":""}>${hl(h)}</option>`).join("")}</select><select id="ed-${p}m" aria-label="${L("几分","Minute")}" ${dis}>${[...Array(12)].map((_,i)=>`<option value="${pad(i*5)}" ${(mm||"00")===pad(i*5)?"selected":""}>${pad(i*5)} ${L("分","min")}</option>`).join("")}</select>${canClear&&time?`<button class="link" data-ed="notime">${L("不要时间","No time")}</button>`:""}</span>`};
   const bg=document.createElement("div"); bg.className="sheet-bg";
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑任务","Edit task")}">
     ${isNew?`<h3>${L("添加一条","Add a task")}</h3>
