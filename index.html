@@ -1087,6 +1087,9 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .fl-sl,.fl-sg,.fl-sd,.fl-so{pointer-events:none}
 .fl-pick{background:var(--surface-2);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px}.fl-pick b{font-size:14.5px}.fl-pick small{color:var(--muted);font-size:12px}
 .fl-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}.fl-op{border:none;background:var(--surface);border-radius:14px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:2px;font:inherit;font-size:12px;color:var(--fg);cursor:pointer}.fl-op svg{width:100%;height:auto}.fl-op.night{background:#16203d;color:#c9d6f5}.fl-opn{fill:#3d5a7a}
+.fl-next{border:1.5px dashed var(--line);background:none;border-radius:12px;padding:7px 12px;font:inherit;font-size:12.5px;color:var(--brand);text-align:left;cursor:pointer}
+.dx-pk{align-self:flex-start}.dx-sr{display:flex;flex-direction:column;gap:6px}.dx-sr>b{font-size:13px;color:var(--muted)}.dx-st{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;padding-bottom:4px}
+.dx-si{flex:0 0 78px;background:var(--surface-2);border-radius:12px;padding:5px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--muted);text-align:center}.dx-si svg{width:68px;height:51px}.dx-si.night{background:#16203d;color:#c9d6f5}.dx-si.soon{opacity:.6}.dx-q2{fill:var(--line)}
 .fl-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.fl-top b{font-size:15px}
 .fl-yb,.fl-mnav button{border:none;background:var(--surface-2);border-radius:50%;width:28px;height:28px;color:var(--fg);font-size:15px;flex:none}.fl-yb:disabled{opacity:.35}
 .fl-sum{margin-left:auto;font-size:12.5px;color:var(--muted)}
@@ -4905,6 +4908,18 @@ function landPicker(y){const zn=ZOD_NAME[zodOf(y)],z=ZOD_SHAPE[zodOf(y)]||ZOD_SH
   const opts=[["",L(`生肖 · ${zn[0]}年`,`Zodiac · ${zn[1]}`),z.sh,0],...Object.keys(SERIES).map(k=>{const i=landNext(k,y),it=SERIES[k].list[i];return [k+":"+i,L(`${SERIES[k].zh} · ${it.zh}`,`${SERIES[k].en} · ${it.en}`),it.sh||BLOB_SH,SERIES[k].night,it]})];
   const starOv=it=>it&&it.st?it.ln.map(([a,b])=>`<line x1="${it.st[a][0]}" y1="${it.st[a][1]}" x2="${it.st[b][0]}" y2="${it.st[b][1]}" stroke="#ffe58a" stroke-width="5"/>`).join("")+it.st.map(([x,yy])=>`<circle cx="${x}" cy="${yy}" r="9" fill="#fff6c8"/>`).join(""):"";
   return `<div class="fl-pick"><b>${L(`${y} 年想拼什么形状？`,`Which shape for ${y}?`)}</b><div class="fl-opts">${opts.map(([v,n,sh,nt,it])=>`<button class="fl-op${nt?" night":""}" data-act="fland" data-y="${y}" data-v="${v}"><svg viewBox="0 0 480 360"><g class="${nt?"fl-opn":"dx-lf"}">${shSVG(sh)}</g>${starOv(it)}</svg><span>${n}</span></button>`).join("")}</div><small>${L(`不挑的话就用生肖。`,`If you don't pick, it uses the zodiac.`)}</small></div>`}
+function landThumb(sh,night,it){const ov=it&&it.st?it.ln.map(([a,b])=>`<line x1="${it.st[a][0]}" y1="${it.st[a][1]}" x2="${it.st[b][0]}" y2="${it.st[b][1]}" stroke="#ffe58a" stroke-width="6"/>`).join("")+it.st.map(([x,yy])=>`<circle cx="${x}" cy="${yy}" r="10" fill="#fff6c8"/>`).join(""):"";return `<svg viewBox="0 0 480 360"><g class="${night?"fl-opn":"dx-lf"}">${shSVG(sh)}</g>${ov}</svg>`}
+function landCatalog(){const used={};for(const y in landPick)used[landPick[y]]=y;
+  const row=(title,items)=>`<div class="dx-sr"><b>${title}</b><div class="dx-st">${items.join("")}</div></div>`;
+  const y0=new Date().getFullYear(),zods=Array.from({length:12},(_,i)=>zodOf(y0+i)).map(k=>{const z=ZOD_SHAPE[k];return `<div class="dx-si${z?"":" soon"}">${z?landThumb(z.sh):`<svg viewBox="0 0 480 360"><circle cx="240" cy="180" r="120" class="dx-q2"/></svg>`}<span>${L(ZOD_NAME[k][0],ZOD_NAME[k][1])}</span></div>`});
+  const ser=k=>SERIES[k].list.map((it,i)=>{const u=Object.keys(landPick).find(y=>landPick[y]===k+":"+i);return `<div class="dx-si${SERIES[k].night?" night":""}">${landThumb(it.sh||BLOB_SH,SERIES[k].night,it)}<span>${L(it.zh,it.en)}${u?` · ${u}`:""}</span></div>`});
+  const ny=new Date().getFullYear()+1,cur=landKey(ny),cs=landShape(ny);
+  return `<div class="dx-h">${L("大陆形状","Continent shapes")} <small>${L("每年挑一个","Pick one each year")}</small></div>
+    <button class="btn dx-pk" data-act="fpick" data-v="${ny}">${L(`${ny} 年的形状：${cs.label}`,`${ny}: ${cs.label}`)} · ${landPick[ny]?L("换一个","Change"):L("提前挑","Pick now")}</button>
+    ${row(L("生肖","Zodiac"),zods)}${Object.keys(SERIES).map(k=>row(L(SERIES[k].zh,SERIES[k].en),ser(k))).join("")}
+    <p class="hint" style="margin:0">${L("伦敦和海洋的其他形状会陆续加进来。","More London and ocean shapes are on the way.")}</p>`}
+function openLandPick(y){const bg=document.createElement("div");bg.className="sheet-bg";bg.innerHTML=`<div class="sheet" role="dialog">${landPicker(y)}<div class="sheet-actions"><button class="btn" data-p="close">${L("关闭","Close")}</button></div></div>`;document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg||e.target.closest('[data-p="close"]')){bg.remove();return}const b=e.target.closest('[data-act="fland"]');if(b){bg.remove();setLand(+b.dataset.y,b.dataset.v)}})}
 function setLand(y,v){landPick={...landPick,[y]:v||"zod"};if(db){const r=db.doc("garden/land");queued(r.path,()=>r.set({years:{[y]:v||"zod"}},{merge:true}))}render()}
 
 const FLW=480,FLH=360;
@@ -4983,7 +4998,7 @@ function forestLand(){
     return `<div class="fl-card${nt}" data-m="${m}">${flPiece(y,m,ts,cur)}<div class="fl-cf"><b>${MONTH(m)}</b><span>${L(`${ts.length} 棵`,`${ts.length} ${n_(ts.length,"tree","trees")}`)}</span></div></div>`}).join("");
   return `<div class="fl-top"><button class="fl-yb" data-act="fyear" data-v="-1" ${yi>0?"":"disabled"} aria-label="${L("上一年","Previous year")}">‹</button><b>${y} · ${shp.label}</b><button class="fl-yb" data-act="fyear" data-v="1" ${yi<years.length-1?"":"disabled"} aria-label="${L("下一年","Next year")}">›</button>
       <span class="fl-sum">${L(`${done} / 12 块 · ${total} 棵`,`${done} / 12 pieces · ${total} ${n_(total,"tree","trees")}`)}</span></div>
-    ${showPick?landPicker(pickY):""}<div class="fl-mapw${nt}">${flMap(y,months,nowY,nowM)}</div>
+    ${showPick?landPicker(pickY):y===nowY&&!landPick[nowY+1]?`<button class="fl-next" data-act="fpick" data-v="${nowY+1}">${L(`${nowY+1} 年想拼什么形状？星座、伦敦、海洋都可以选 ›`,`Shape for ${nowY+1}? Stars, London or ocean ›`)}</button>`:""}<div class="fl-mapw${nt}">${flMap(y,months,nowY,nowM)}</div>
     <div class="fl-mnav"><button data-act="fmstep" data-v="-1" aria-label="${L("上个月","Previous month")}">‹</button><b id="flLab">${MONTH(forestMon)} · ${L(`${(months[forestMon]||[]).length} 棵`,`${(months[forestMon]||[]).length} ${n_((months[forestMon]||[]).length,"tree","trees")}`)}</b><button data-act="fmstep" data-v="1" aria-label="${L("下个月","Next month")}">›</button></div>
     <div class="fl-car" id="flCar">${cards}</div>`}
 function forestDex(){
@@ -4998,7 +5013,7 @@ function forestDex(){
     <div class="dx-h">${L("普通","Common")}</div><div class="dx-g">${SP_COMMON.map(card).join("")}</div>
     <div class="dx-h">${L("稀有","Rare")} <small>${L("大约 10 次出现一次","About 1 in 10 seed bags")}</small></div><div class="dx-g">${SP_RARE.map(card).join("")}</div>
     <div class="dx-h">${L("隐藏款","Hidden")} <small>${L("种下的时候偶尔会「变身」","Sometimes a tree transforms as you plant it")}</small></div><div class="dx-g">${SP_HID.map(card).join("")}</div>
-    <div class="dx-h">${L("生肖大陆","Zodiac continents")} <small>${L("每年拼完一只","One animal each year")}</small></div><div class="dx-lands">${lands}</div>`}
+    <div class="dx-h">${L("我的大陆","My continents")} <small>${L("每年拼完一块","One each year")}</small></div><div class="dx-lands">${lands}</div>${landCatalog()}`}
 function flAfter(){const car=document.getElementById("flCar");if(!car)return;
   const go=(m,smooth)=>{const c=car.children[m];if(c)car.scrollTo({left:c.offsetLeft-car.offsetLeft-(car.clientWidth-c.clientWidth)/2,behavior:smooth?"smooth":"auto"})};
   go(forestMon,false);
@@ -6046,6 +6061,7 @@ document.addEventListener("click",async e=>{
   const act=e.target.closest("[data-act]"); if(!act)return;
   if(act.dataset.act==="jday"){jDate=act.dataset.v;jSaved="";render();const j=document.querySelector(".jnav");if(j)j.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});return}
   if(act.dataset.act==="fyear"){const by=forestGroups(),nowY=new Date().getFullYear(),ys=[...new Set([...Object.keys(by).map(Number),nowY])].sort((a,b)=>a-b),i=ys.indexOf(forestYear)+(+act.dataset.v);if(ys[i]!==undefined){forestYear=ys[i];forestMon=forestYear===nowY?new Date().getMonth():11;render()}return}
+  if(act.dataset.act==="fpick"){openLandPick(+act.dataset.v);return}
   if(act.dataset.act==="fland"){setLand(+act.dataset.y,act.dataset.v);return}
   if(act.dataset.act==="fmon"){flGo(+act.dataset.v);return}
   if(act.dataset.act==="fmstep"){flGo(forestMon+(+act.dataset.v));return}
