@@ -956,7 +956,7 @@ button.due.odbtn{border:none;font:inherit;cursor:pointer}
 @media(max-width:520px){.nudge{flex-wrap:wrap;position:relative;padding-right:30px}.nudge .nt2{flex-basis:calc(100% - 50px)}.nudge .split{margin-left:44px}.nudge .nx-x{position:absolute;right:8px;top:8px}}
 .steps{display:flex;flex-direction:column;gap:6px}.step{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;background:var(--bg-2);border-radius:12px;padding:6px 8px 6px 12px;font-size:14.5px}
 .step input{border:none;background:transparent;font:inherit;color:var(--fg);padding:4px 0;min-width:0;width:100%}.step .x{border:none;background:none;color:var(--faint);font-size:18px;padding:0 4px}
-.step .n{width:22px;height:22px;border-radius:50%;background:var(--study-soft);color:var(--study-ink);font-family:var(--f-num);font-weight:700;font-size:12px;display:grid;place-items:center}
+.step{transition:transform .15s}.step.dragging{transition:none;position:relative;z-index:2;box-shadow:0 6px 16px rgba(20,40,80,.18)}.step .n{cursor:grab;touch-action:none;position:relative}.step .n svg{display:none;width:9px;height:13px;fill:currentColor}.step .n:hover b,.step.dragging .n b{display:none}.step .n:hover svg,.step.dragging .n svg{display:block}@media(hover:none){.step .n b{display:none}.step .n svg{display:block}}.step .n{width:22px;height:22px;border-radius:50%;background:var(--study-soft);color:var(--study-ink);font-family:var(--f-num);font-weight:700;font-size:12px;display:grid;place-items:center}
 .step.first{background:color-mix(in srgb,var(--study) 12%,var(--surface));outline:2px solid var(--study)}.step.first .n{background:var(--study);color:#fff}
 .gran{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);flex-wrap:wrap}.sp-btn{display:inline-flex;align-items:center;gap:6px}.sp-btn svg,.split-chip svg{width:20px;height:20px;flex:none;vertical-align:-5px;margin-right:2px}
 .sub-of{display:block;font-size:12.5px;font-weight:500;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -3894,30 +3894,38 @@ ${L("只返回 JSON 字符串数组。","Return only a JSON array of strings.")}
 function openSplit(id,auto){
   const t=tasks.find(x=>x.id===id); if(!t)return;
   const keepDone=(t.subs||[]).filter(x=>x.done);
-  let gran="just", variant=0, steps=(t.subs||[]).filter(x=>!x.done).map(x=>x.t), busy=false, ai=!!auto&&!steps.length;
-  if(!steps.length)steps=ai?splitSteps(t.title,gran,0):[""];
+  let gran="just", variant=0, steps=(t.subs||[]).filter(x=>!x.done).map(x=>({...x})), busy=false, ai=!!auto&&!steps.length;
+  const asObj=a=>a.map(x=>typeof x==="string"?{t:x}:x);
+  if(!steps.length)steps=asObj(ai?splitSteps(t.title,gran,0):[""]);
   const bg=document.createElement("div"); bg.className="sheet-bg";
-  const grab=()=>{const ins=[...bg.querySelectorAll(".step input")];if(ins.length)steps=ins.map(i=>i.value)};
+  const grab=()=>{const ins=[...bg.querySelectorAll(".step input")];if(ins.length)steps=ins.map((i,k)=>({...(steps[k]||{}),t:i.value}))};
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("子任务","Subtasks")}"><h3>${L("子任务","Subtasks")}<small class="sub-of">${esc(t.title)}</small></h3>
     ${busy?`<div class="say2">${IDEA_FACE}<span>${L("{pet}在想怎么拆…","{pet} is thinking…")}</span></div>`:""}
     ${ai?`<div class="gran"><span>${L("拆得","Size")}</span>${[["coarse",L("粗一点","Bigger")],["just",L("刚刚好","Just right")],["fine",L("细一点","Smaller")]].map(([k,n])=>`<button class="chip hz${gran===k?" on":""}" data-s="gran" data-v="${k}">${n}</button>`).join("")}</div>`:""}
-    <div class="steps">${steps.map((x,i)=>`<div class="step${i===0?" first":""}"><span class="n">${i+1}</span><input value="${esc(x)}" maxlength="120" placeholder="${L("子任务","Subtask")}" aria-label="${L(`第 ${i+1} 个子任务`,`Subtask ${i+1}`)}"><button class="x" data-s="del" data-i="${i}" aria-label="${L("删掉","Remove")}">×</button></div>`).join("")}
+    <div class="steps">${steps.map((x,i)=>`<div class="step${i===0?" first":""}" data-i="${i}"><span class="n" data-grip="${i}" title="${L("按住拖动，换顺序","Drag to reorder")}" aria-label="${L(`第 ${i+1} 步，按住拖动换顺序`,`Step ${i+1}, drag to reorder`)}"><b>${i+1}</b><svg viewBox="0 0 10 14" aria-hidden="true"><circle cx="3" cy="3" r="1.3"/><circle cx="7" cy="3" r="1.3"/><circle cx="3" cy="7" r="1.3"/><circle cx="7" cy="7" r="1.3"/><circle cx="3" cy="11" r="1.3"/><circle cx="7" cy="11" r="1.3"/></svg></span><input value="${esc(x.t)}" maxlength="120" placeholder="${L("子任务","Subtask")}" aria-label="${L(`第 ${i+1} 个子任务`,`Subtask ${i+1}`)}"><button class="x" data-s="del" data-i="${i}" aria-label="${L("删掉","Remove")}">×</button></div>`).join("")}
       ${steps.length<50?`<button class="addsub" data-s="add">＋ ${L("加子任务","Add subtask")}</button>`:""}</div>
     <div class="sheet-actions"><button class="btn sp-btn" data-s="again" ${busy?"disabled":""}>${IDEA_FACE}${ai?L("换一种拆法","Try another way"):L("帮我拆","Suggest")}</button><button class="btn primary" data-s="ok" ${busy?"disabled":""}>${L("保存","Save")}</button></div></div>`};
   const regen=async()=>{
-    if(sample){busy=true;draw();try{steps=await aiSteps(t.title,t.note,gran,steps)}catch(e){steps=splitSteps(t.title,gran,++variant)}busy=false;draw()}
-    else{steps=splitSteps(t.title,gran,variant);draw()}};
+    if(sample){busy=true;draw();try{steps=asObj(await aiSteps(t.title,t.note,gran,steps.map(x=>x.t)))}catch(e){steps=asObj(splitSteps(t.title,gran,++variant))}busy=false;draw()}
+    else{steps=asObj(splitSteps(t.title,gran,variant));draw()}};
   draw(); document.body.appendChild(bg);
   if(ai&&sample)regen();
   if(!ai)setTimeout(()=>{const ins=bg.querySelectorAll(".step input");const e=[...ins].find(x=>!x.value)||ins[ins.length-1];e&&e.focus()},60);
-  bg.addEventListener("keydown",e=>{if(e.key!=="Enter"||e.isComposing||e.keyCode===229||!e.target.closest(".step"))return;e.preventDefault();grab();const ins=[...bg.querySelectorAll(".step input")],i=ins.indexOf(e.target);steps.splice(i+1,0,"");draw();bg.querySelectorAll(".step input")[i+1]?.focus()});
+  bg.addEventListener("pointerdown",e=>{const g=e.target.closest("[data-grip]");if(!g||busy)return;e.preventDefault();grab();
+    const rows=[...bg.querySelectorAll(".step")],from=+g.dataset.grip,row=rows[from],r0=row.getBoundingClientRect(),mids=rows.map(r=>{const b=r.getBoundingClientRect();return b.top+b.height/2}),h=r0.height+8,y0=e.clientY;let to=from;
+    row.classList.add("dragging");
+    const mv=m=>{const dy=m.clientY-y0;row.style.transform=`translateY(${dy}px)`;const c=mids[from]+dy;to=from;for(let k=0;k<mids.length;k++){if(k<from&&c<mids[k]){to=k;break}if(k>from&&c>mids[k])to=k}
+      rows.forEach((r,k)=>{if(k===from)return;r.style.transform=k>=Math.min(from,to)&&k<=Math.max(from,to)&&to!==from?`translateY(${to>from?-h:h}px)`:""})};
+    const up=()=>{removeEventListener("pointermove",mv);removeEventListener("pointerup",up);removeEventListener("pointercancel",up);if(to!==from){const [x]=steps.splice(from,1);steps.splice(to,0,x)}draw()};
+    addEventListener("pointermove",mv);addEventListener("pointerup",up);addEventListener("pointercancel",up)});
+  bg.addEventListener("keydown",e=>{if(e.key!=="Enter"||e.isComposing||e.keyCode===229||!e.target.closest(".step"))return;e.preventDefault();grab();const ins=[...bg.querySelectorAll(".step input")],i=ins.indexOf(e.target);steps.splice(i+1,0,{t:""});draw();bg.querySelectorAll(".step input")[i+1]?.focus()});
   bg.addEventListener("click",e=>{if(e.target===bg){bg.remove();return}const b=e.target.closest("button[data-s]");if(!b||busy)return;grab();const a=b.dataset.s;
     if(a==="gran"){gran=b.dataset.v;regen();return}
-    if(a==="again"){if(!ai){ai=true;if(steps.every(x=>!x.trim()))steps=[]}else variant++;regen();return}
+    if(a==="again"){if(!ai){ai=true;if(steps.every(x=>!x.t.trim()))steps=[]}else variant++;regen();return}
     if(a==="del"){steps.splice(+b.dataset.i,1);draw();return}
-    if(a==="add"){steps.push("");draw();const ins=bg.querySelectorAll(".step input");ins[ins.length-1]?.focus();return}
-    if(a==="ok"){const clean=steps.map(x=>x.trim()).filter(Boolean).slice(0,50);bg.remove();
-      const subs=[...keepDone,...clean.map(x=>({t:x.slice(0,120),done:false}))];
+    if(a==="add"){steps.push({t:""});draw();const ins=bg.querySelectorAll(".step input");ins[ins.length-1]?.focus();return}
+    if(a==="ok"){const clean=steps.map(x=>({...x,t:(x.t||"").trim()})).filter(x=>x.t).slice(0,50);bg.remove();
+      const subs=[...keepDone,...clean.map(x=>({...x,t:x.t.slice(0,120),done:false}))];
       subOpen.delete(t.id);setSubs(t,subs);try{const off=JSON.parse(localStorage.getItem(NUDGE_KEY)||"[]");off.push(t.id);localStorage.setItem(NUDGE_KEY,JSON.stringify(off.slice(-200)))}catch(_){}
       if(clean.length)cheer(L(`存好啦，${clean.length} 个子任务`,`Saved ${clean.length} subtask${clean.length>1?"s":""}`),"happy")}
   });
