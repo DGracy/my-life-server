@@ -249,7 +249,7 @@ nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:v
 .task.done .t-title{color:var(--faint);text-decoration:line-through;font-weight:400}
 .t-note{font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .due{font-family:var(--f-num);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap;padding:2px 10px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
-.due.over{background:var(--danger);color:#fff}
+.due.over{background:var(--danger);color:#fff}.due.live,.ov-tag.live{background:color-mix(in srgb,var(--danger) 14%,var(--surface));color:var(--danger);font-weight:600}.tmseg{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:3px;border-radius:14px;background:var(--bg-2)}.tmseg button{border:none;background:none;border-radius:11px;padding:7px 4px;font:inherit;font-size:13.5px;color:var(--fg);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px}.tmseg button small{font-size:11px;color:var(--muted)}.tmseg button.on{background:var(--surface);box-shadow:0 1px 4px rgba(0,0,0,.1);font-weight:600}
 .due.soon{background:var(--habit-soft);color:var(--habit-ink)}
 details.done-box summary{cursor:pointer;font-size:13.5px;color:var(--muted);padding:4px 2px;list-style:none}
 details.done-box summary::before{content:"▸ ";}
@@ -1609,6 +1609,12 @@ const todayStr=()=>ymd(shifted());
 const addDays=(s,n)=>{const [y,m,d]=s.split("-").map(Number);return ymd(new Date(y,m-1,d+n))};
 const WD=["日","一","二","三","四","五","六"];
 const fmtToday=()=>{const d=shifted();return L(`${d.getMonth()+1}月${d.getDate()}日 · 周${WD[d.getDay()]}`,`${WDEN[d.getDay()]}, ${d.getDate()} ${MON[d.getMonth()]}`)};
+function winInfo(t){if(t.done||t.repeat||t.tmode!=="win"||!t.start)return null;
+  const a=new Date(t.start+"T"+(t.startTime||"00:00")+":00").getTime(),b=t.due?new Date(t.due+"T"+(t.dueTime||"23:59")+":00").getTime():Infinity,n=Date.now();
+  const rng=`${md2(t.start)}${t.startTime?" "+t.startTime:""} – ${t.due?md2(t.due)+(t.dueTime?" "+t.dueTime:""):"…"}`;
+  if(n<a)return {ph:"pre",rng,txt:L(`${md2(t.start)}${t.startTime?" "+t.startTime:""} 开始`,`Starts ${md2(t.start)}${t.startTime?" "+t.startTime:""}`)};
+  if(n<b){const l=b-n,h=Math.floor(l/36e5),d=Math.floor(h/24),m=Math.floor(l/6e4);return {ph:"live",rng,txt:b===Infinity?L("进行中","On now"):d>=2?L(`还剩 ${d} 天`,`${d}d left`):h>=1?L(`还剩 ${h} 小时`,`${h}h left`):L(`还剩 ${m} 分钟`,`${m}m left`)}}
+  return {ph:"over",rng}}
 function dueLabel(due,tm){
   if(!due)return null;
   const diff=Math.round((new Date(due)-new Date(todayStr()))/864e5);
@@ -1906,11 +1912,11 @@ function priIcon(p){
 }
 const priLabel=p=>L(["","低优先级","中优先级","高优先级"][p],["","Low priority","Medium priority","High priority"][p]);
 function taskRow(t){
-  const d=dueLabel(t.due,t.done?null:t.dueTime), pr=+t.pri||0, pz=!t.done&&isPaused(t), sb=t.subs||[];
+  const wi=winInfo(t), d=wi&&wi.ph==="pre"?null:wi&&wi.ph==="live"?{cls:"live",txt:wi.txt}:dueLabel(t.due,t.done?null:t.dueTime), pr=+t.pri||0, pz=!t.done&&isPaused(t), sb=t.subs||[];
   const tags=[
     t.repeat&&!t.done?(pz?`<span class="rep pz">${PAUSE_SVG}${L(`暂停到 ${md2(t.repeat.pause)}`,`Paused to ${md2(t.repeat.pause)}`)}</span>`:`<span class="rep">${REP_SVG}${repLabel(t.repeat)}</span>`):"",
     !t.done&&t.plan&&!t.repeat?`<span class="due plan">${t.plan===todayStr()?L("今天做","Today"):t.plan<todayStr()?L(`${md2(t.plan)} 没做完`,`from ${md2(t.plan)}`):L(`${md2(t.plan)} 做`,`do ${md2(t.plan)}`)}</span>`:"",
-    !t.done&&t.start&&t.start>todayStr()?`<span class="due">${L(`${md2(t.start)} 开始`,`Starts ${md2(t.start)}`)}</span>`:"",
+    wi&&wi.ph==="pre"?`<span class="due" title="${esc(wi.rng)}">${wi.txt}</span>`:!wi&&!t.done&&t.start&&t.start>todayStr()?`<span class="due">${L(`${md2(t.start)} 开始`,`Starts ${md2(t.start)}`)}</span>`:"",
     sb.length&&!t.done?`<span class="prog">${sb.filter(x=>x.done).length}/${sb.length}</span>`:"",
     d?(isOver(t)?`<button class="due ${d.cls} odbtn" data-act="odmenu" data-id="${t.id}" title="${L("点一下：今天做 / 换个日子 / 放下","Tap: today / another day / let it go")}">${d.txt}</button>`:`<span class="due ${d.cls}">${d.txt}</span>`):""].filter(Boolean);
   const fm=(t.space==="study"||t.space==="work")?taskMins(t.id):0;
@@ -2253,6 +2259,8 @@ NEWS_MORE.push(()=>({id:"1122e",steps:[
     {sel:"#coinBtn",pad:4,t:L("小商店上新","New in the shop"),b:L("灵魂画手多了 5 个表情和 15 个会动的花园摆件；节日限定有舞狮头套、南瓜头套、彩蛋头套，生日那一周还有你属相的头套；主题套装加了魔法学徒、伦敦下雨天、小厨师和宇航员。","Doodles get 5 new faces and 15 moving garden pieces. Holiday items now include lion dance, pumpkin and Easter egg hoods, plus your zodiac hood in your birthday week. New sets: apprentice wizard, London rain, little chef and astronaut.")}]}));
 NEWS_MORE.push(()=>({id:"1123",steps:[
     {sel:"#stk .st-tab",pad:4,t:L("新功能 · 随手便签","New · Sticky notes"),b:L("右边这一小截是便签，每个页面都在。点开随手写一句，比如「周五前看完 recording」「周三 14:00 组会」，日期会自动变成小标签，按时间排好；快到了会变黄，过了会变红。","This tab on the right edge is your sticky notes, on every page. Jot things like “watch the recording by Fri” or “Wed 14:00 meeting”. Dates become little tags, sorted by time, yellow when close and red when overdue.")}]}));
+NEWS_MORE.push(()=>({id:"1123b",steps:[
+    {go:"study",sel:".board .task",alt:".board",t:L("新功能 · 三种时间","New · Three kinds of time"),b:L("编辑任务时先选它是哪种时间：「截止」是在这之前做完；「一段时间」是从几点到几点，比如两天的线上考试，开始后每天都在 Overview 的今天里，写着还剩多久；「某个时间」是 meeting 这种到点去做的事。","When editing a task, first pick its kind of time: Due means finish before then; A window runs from one time to another, like a two-day online exam, and shows in Today with the time left once it starts; At a time is for things like meetings.")}]}));
 const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
 let tourOn=null;
 function tourGo(go){
@@ -3975,7 +3983,7 @@ function ovDayName(d,td){const dt=new Date(d+"T12:00:00");if(d===addDays(td,1))r
 function ovStepRow(st,first){const {t,i,x}=st,late=x.day<todayStr();
   return `<div class="ov-it ovstep${first?" first":""}" style="--c:var(--${t.space})"><button class="ov-ck" data-act="subtoggle" data-id="${t.id}" data-i="${i}" aria-label="${L("这一步做完了","Step done")}"></button><button class="ov-t" data-act="edit" data-id="${t.id}">${esc(x.t)}<small>${esc(t.title)} · ${L(`第 ${i+1} 步`,`step ${i+1}`)}</small></button>${late?`<span class="ov-tag late">${L(`原定 ${md2(x.day)}`,`was ${md2(x.day)}`)}</span>`:""}${first?`<span class="ov-tag go">${L("先做这个","Start here")}</span>`:""}<button class="ov-mv" data-act="ovsubday" data-id="${t.id}" data-i="${i}">${L("改期","Move")}</button></div>`}
 function ovRow(t,first){if(t.step)return ovStepRow(t,first);const s=t.space,over=isOver(t),canPlay=(s==="study"||s==="work")&&t.horizon!=="long";
-  const tags=[over?`<button class="due over odbtn" data-act="odmenu" data-id="${t.id}">${L(`过期 ${odDays(t.due)} 天`,`${odDays(t.due)}d overdue`)}</button>`:"",t.dueTime?`<span class="ov-tag">${t.dueTime}</span>`:"",t.plan&&t.plan<todayStr()&&!over?`<span class="ov-tag carry">${t.plan===addDays(todayStr(),-1)?L("昨天没做完","from yesterday"):L(`${md2(t.plan)} 没做完`,`from ${md2(t.plan)}`)}</span>`:"",(t.start||t.plan)&&t.due&&t.due>todayStr()?`<span class="ov-tag">${L(`${md2(t.due)} 截止`,`due ${md2(t.due)}`)}</span>`:"",first?`<span class="ov-tag go">${L("先做这个","Start here")}</span>`:""].filter(Boolean).join("");
+  const wi=winInfo(t);const tags=[over?`<button class="due over odbtn" data-act="odmenu" data-id="${t.id}">${L(`过期 ${odDays(t.due)} 天`,`${odDays(t.due)}d overdue`)}</button>`:"",wi&&wi.ph!=="over"?`<span class="ov-tag ${wi.ph==="live"?"live":""}" title="${esc(wi.rng)}">${wi.ph==="live"?wi.txt:wi.txt}</span>`:t.dueTime?`<span class="ov-tag">${t.dueTime}</span>`:"",t.plan&&t.plan<todayStr()&&!over?`<span class="ov-tag carry">${t.plan===addDays(todayStr(),-1)?L("昨天没做完","from yesterday"):L(`${md2(t.plan)} 没做完`,`from ${md2(t.plan)}`)}</span>`:"",!wi&&(t.start||t.plan)&&t.due&&t.due>todayStr()?`<span class="ov-tag">${L(`${md2(t.due)} 截止`,`due ${md2(t.due)}`)}</span>`:"",first?`<span class="ov-tag go">${L("先做这个","Start here")}</span>`:""].filter(Boolean).join("");
   const tt=!t.done&&t.repeat?todOf(t.repeat):[],sd=t.slotDone||{};
   const ck=tt.length?`<span class="slots ov-slots" style="--sc:var(--${s})">${tt.map(([k,n,sh])=>`<button class="slot${sd[k]?" on":""}" data-act="slot" data-id="${t.id}" data-v="${k}" aria-label="${n}${sd[k]?L(" · 已完成，点一下取消"," · done, tap to undo"):L(" · 点一下完成"," · tap when done")}" aria-pressed="${!!sd[k]}">${sd[k]?SLOT_CK:sh}</button>`).join("")}</span>`:`<button class="ov-ck" data-act="toggle" data-id="${t.id}" aria-label="${L("完成","Done")}"></button>`;
   return `<div class="ov-it${first?" first":""}" style="--c:var(--${s})">${ck}<button class="ov-t" data-act="edit" data-id="${t.id}">${esc(t.title)}</button>${(+t.pri||0)>=2?`<b class="ov-pri" title="${L("重要","Important")}">!</b>`:""}${tags}${over?"":`<button class="ov-mv" data-act="ovmove" data-id="${t.id}">${L("改期","Move")}</button>`}${canPlay?`<button class="ov-play" data-act="focus" data-id="${t.id}" aria-label="${L("开始专注","Focus")}">▶</button>`:""}</div>`}
@@ -5437,7 +5445,7 @@ ${text}`;
 }
 async function addTask(t){
   const ref=db.collection("tasks").doc();
-  const body={title:t.title,space:t.space,horizon:t.horizon,due:t.due||null,...(t.plan&&!t.repeat?{plan:t.plan}:{}),note:t.note||"",pri:+t.pri||0,done:false,createdAt:Date.now()};
+  const body={title:t.title,space:t.space,horizon:t.horizon,due:t.due||null,...(t.plan&&!t.repeat?{plan:t.plan}:{}),...(t.dueTime&&t.due?{dueTime:t.dueTime}:{}),...(t.tmode&&!t.repeat?{tmode:t.tmode}:{}),...(t.start&&!t.repeat?{start:t.start}:{}),...(t.startTime&&t.start&&!t.repeat?{startTime:t.startTime}:{}),note:t.note||"",pri:+t.pri||0,done:false,createdAt:Date.now()};
   if(t.repeat){body.repeat=normRepeat(t.repeat,t.due);if(!body.due)body.due=repFirst(body.repeat,todayStr())}
   if(t.subs&&t.subs.length)body.subs=t.subs;
   await queued(ref.path,()=>ref.set(body));
@@ -6059,7 +6067,7 @@ function openMemo(id){
 /* ---------- editor sheet ---------- */
 function openEditor(id,preset){
   const isNew=!id; const t=isNew?null:tasks.find(x=>x.id===id); if(!isNew&&!t)return;
-  const draft=isNew?{plan:"",start:"",dueTime:"",title:"",due:"",note:"",space:preset.space,horizon:preset.horizon,pri:0,repeat:null}:{plan:t.plan||"",start:t.start||"",dueTime:t.dueTime||"",title:t.title,due:t.due||"",note:t.note||"",space:t.space,horizon:t.horizon,pri:+t.pri||0,repeat:t.repeat?JSON.parse(JSON.stringify(t.repeat)):null,doneDay:t.done&&t.doneAt?dayOf(t.doneAt):null};
+  const draft=isNew?{tmode:"due",startTime:"",plan:"",start:"",dueTime:"",title:"",due:"",note:"",space:preset.space,horizon:preset.horizon,pri:0,repeat:null}:{tmode:t.tmode||(t.start?"win":"due"),startTime:t.startTime||"",plan:t.plan||"",start:t.start||"",dueTime:t.dueTime||"",title:t.title,due:t.due||"",note:t.note||"",space:t.space,horizon:t.horizon,pri:+t.pri||0,repeat:t.repeat?JSON.parse(JSON.stringify(t.repeat)):null,doneDay:t.done&&t.doneAt?dayOf(t.doneAt):null};
   let confirmDel=false, pickDone=false;
   const FREQ=[["",L("不重复","Never")],["day",L("每天","Daily")],["week",L("每周","Weekly")],["2week",L("每两周","Every 2 weeks")],["month",L("每月","Monthly")]];
   const repBlock=()=>{const r=draft.repeat;const base=draft.due||todayStr();
@@ -6076,16 +6084,18 @@ function openEditor(id,preset){
       <button class="chip hz${dd===y2?" on":""}" data-ed="dd" data-v="${y2}">${L("前天","2 days ago")}</button>
       <button class="chip hz${other||pickDone?" on":""}" data-ed="ddpick">${other?md2(dd):L("选日期…","Pick a date…")}</button></div>
       ${pickDone||other?`<input type="date" id="ed-doneday" min="${addDays(td,-30)}" max="${td}" value="${dd}">`:""}</div>`};
+  const dtRow=(p,date,time,canClear)=>{const [hh,mm]=(time||"").split(":"),dis=date?"":"disabled";const hl=h=>L(`${h<5?"凌晨":h<12?"上午":h<13?"中午":h<18?"下午":"晚上"} ${h<=12?h:h-12} 点`,`${h%12||12} ${h<12?"AM":"PM"}`);
+    return `<span class="dtrow"><input type="date" id="ed-${p}" value="${esc(date||"")}"><select id="ed-${p}h" aria-label="${L("几点","Hour")}" ${dis}><option value="">${L("几点","Hour")}</option>${[...Array(24)].map((_,h)=>`<option value="${pad(h)}" ${hh===pad(h)?"selected":""}>${hl(h)}</option>`).join("")}</select><select id="ed-${p}m" aria-label="${L("几分","Minute")}" ${dis}>${[...Array(12)].map((_,i)=>`<option value="${pad(i*5)}" ${(mm||"00")===pad(i*5)?"selected":""}>${pad(i*5)} ${L("分","min")}</option>`).join("")}</select>${canClear&&time?`<button class="link" data-ed="notime">${L("不要时间","No time")}</button>`:""}</span>`};
   const bg=document.createElement("div"); bg.className="sheet-bg";
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑任务","Edit task")}">
     ${isNew?`<h3>${L("添加一条","Add a task")}</h3>
     <label class="field"><span>${L("要做什么？","What needs doing?")}</span><input id="ed-title" value="${esc(draft.title)}" placeholder="${L("比如：整理 Week 6 笔记","e.g. Tidy up week 6 notes")}"></label>`:`<input id="ed-title" class="titlein" aria-label="${L("标题","Title")}" value="${esc(draft.title)}" placeholder="${L("比如：整理 Week 6 笔记","e.g. Tidy up week 6 notes")}">`}
     <div class="field"><span>${L("时间尺度","Timeframe")}</span><div class="chips">${HZ.map(h=>`<button class="chip hz${draft.horizon===h.k?" on":""}" data-ed="hz" data-v="${h.k}">${h.name}</button>`).join("")}</div></div>
     <div class="field"><span>${L("优先级","Priority")}</span><div class="chips">${[0,3,2,1].map(v=>`<button class="chip hz${draft.pri===v?" on":""}" data-ed="pri" data-v="${v}">${v?`<span class="psvg">${priIcon(v)}</span>`:""}${PRI_NAMES()[v]}</button>`).join("")}</div></div>
-    <label class="field"><span>${draft.repeat?(isNew?L("第一次是哪天","First date"):L("这一次是哪天","This one's date")):L("截止日期","Due date")}</span><span class="dtrow"><input type="date" id="ed-due" value="${esc(draft.due)}">${(()=>{const [hh,mm]=(draft.dueTime||"").split(":"),dis=draft.due?"":"disabled";const hl=h=>L(`${h<5?"凌晨":h<12?"上午":h<13?"中午":h<18?"下午":"晚上"} ${h<=12?h:h-12} 点`,`${h%12||12} ${h<12?"AM":"PM"}`);
-      return `<select id="ed-dh" aria-label="${L("几点","Hour")}" ${dis}><option value="">${L("几点","Hour")}</option>${[...Array(24)].map((_,h)=>`<option value="${pad(h)}" ${hh===pad(h)?"selected":""}>${hl(h)}</option>`).join("")}</select><select id="ed-dm" aria-label="${L("几分","Minute")}" ${dis}>${[...Array(12)].map((_,i)=>`<option value="${pad(i*5)}" ${(mm||"00")===pad(i*5)?"selected":""}>${pad(i*5)} ${L("分","min")}</option>`).join("")}</select>`})()}${draft.dueTime?`<button class="link" data-ed="notime">${L("不要时间","No time")}</button>`:""}</span></label>
-    ${draft.repeat?"":`<label class="field"><span>${L("想哪天做 · optional","Plan to do on · optional")}</span><input type="date" id="ed-plan" value="${esc(draft.plan)}"></label>`}
-    ${draft.repeat?"":`<label class="field"><span>${L("什么时候能开始 · optional","Can start on · optional")}</span><input type="date" id="ed-start" value="${esc(draft.start)}"></label>`}
+    ${draft.repeat?`<label class="field"><span>${isNew?L("第一次是哪天","First date"):L("这一次是哪天","This one's date")}</span>${dtRow("d",draft.due,draft.dueTime,true)}</label>`:`<div class="field"><span>${L("时间","When")}</span><div class="tmseg">${[["due",L("截止","Due"),L("在这之前做完","Finish before")],["win",L("一段时间","A window"),L("从…到…","From… to…")],["at",L("某个时间","At a time"),L("到点去做","Do it then")]].map(([k,n,sm])=>`<button class="${draft.tmode===k?"on":""}" data-ed="tmode" data-v="${k}" aria-pressed="${draft.tmode===k}">${n}<small>${sm}</small></button>`).join("")}</div></div>
+    ${draft.tmode==="win"?`<div class="field"><span>${L("从","From")}</span>${dtRow("s",draft.start,draft.startTime,false)}</div><div class="field"><span>${L("到","To")}</span>${dtRow("d",draft.due,draft.dueTime,false)}</div>`
+     :draft.tmode==="at"?`<div class="field"><span>${L("哪天几点","Date & time")}</span>${dtRow("d",draft.due,draft.dueTime,false)}</div>`
+     :`<div class="field"><span>${L("截止日期","Due date")}</span>${dtRow("d",draft.due,draft.dueTime,true)}</div><label class="field"><span>${L("想哪天做 · optional","Plan to do on · optional")}</span><input type="date" id="ed-plan" value="${esc(draft.plan)}"></label>`}`}
     ${repBlock()}
     ${doneBlock()}
     <label class="field"><span>${L("备注 / 计划细节","Notes / plan details")}</span><textarea id="ed-note">${esc(draft.note)}</textarea></label>
@@ -6094,7 +6104,7 @@ function openEditor(id,preset){
       ${isNew?"<span></span>":`<span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn danger" data-ed="del">${confirmDel?L("再点一次确认删除","Tap again to delete"):L("删除","Delete")}</button>${!t.done&&!t.repeat&&!t.letGo?`<button class="btn" data-ed="letgo" title="${L("先收起来，随时能捡回来","Put it away; pick it up anytime")}">${L("放下","Let it go")}</button>`:""}</span>`}
       <span style="display:flex;gap:8px"><button class="btn" data-ed="close">${L("取消","Cancel")}</button><button class="btn primary" data-ed="save">${isNew?L("添加","Add"):L("保存","Save")}</button></span>
     </div></div>`};
-  const grab=()=>{draft.title=bg.querySelector("#ed-title").value;{const st=bg.querySelector("#ed-start");if(st)draft.start=st.value;const pl=bg.querySelector("#ed-plan");if(pl)draft.plan=pl.value}draft.due=bg.querySelector("#ed-due").value;{const h=bg.querySelector("#ed-dh"),m=bg.querySelector("#ed-dm");draft.dueTime=h&&h.value&&draft.due?`${h.value}:${m?m.value:"00"}`:""}draft.note=bg.querySelector("#ed-note").value;
+  const grab=()=>{draft.title=bg.querySelector("#ed-title").value;{const st=bg.querySelector("#ed-s");if(st){draft.start=st.value;const h=bg.querySelector("#ed-sh"),m=bg.querySelector("#ed-sm");draft.startTime=h&&h.value&&draft.start?`${h.value}:${m?m.value:"00"}`:""}const pl=bg.querySelector("#ed-plan");if(pl)draft.plan=pl.value}draft.due=bg.querySelector("#ed-d").value;{const h=bg.querySelector("#ed-dh"),m=bg.querySelector("#ed-dm");draft.dueTime=h&&h.value&&draft.due?`${h.value}:${m?m.value:"00"}`:""}draft.note=bg.querySelector("#ed-note").value;
     const u=bg.querySelector("#ed-until");if(u&&draft.repeat){if(u.value)draft.repeat.until=u.value;else delete draft.repeat.until}
     const dd=bg.querySelector("#ed-doneday");if(dd&&dd.value&&dd.value<=todayStr())draft.doneDay=dd.value};
   draw(); document.body.appendChild(bg);
@@ -6106,6 +6116,7 @@ function openEditor(id,preset){
     if(a==="hz"){draft.horizon=b.dataset.v;draw();return}
     if(a==="pri"){draft.pri=+b.dataset.v;draw();return}
     if(a==="notime"){grab();draft.dueTime="";draw();return}
+    if(a==="tmode"){draft.tmode=b.dataset.v;draw();return}
     if(a==="freq"){const v=b.dataset.v;if(!v)draft.repeat=null;else{const bw=new Date((draft.due||todayStr())+"T12:00:00").getDay();draft.repeat={...(draft.repeat||{}),freq:v};if((v==="week"||v==="2week")&&!(draft.repeat.days||[]).length)draft.repeat.days=[bw];if(v!=="month"){delete draft.repeat.nth;delete draft.repeat.mday}}draw();return}
     if(a==="wd"){const d=+b.dataset.v,ds=new Set(draft.repeat.days||[]);ds.has(d)?ds.delete(d):ds.add(d);if(ds.size)draft.repeat.days=[...ds];draw();return}
     if(a==="nountil"){delete draft.repeat.until;draw();return}
@@ -6126,11 +6137,13 @@ function openEditor(id,preset){
       bg.remove(); const ref=db.doc("tasks/"+id); queued(ref.path,()=>t.done?ref.update({deleted:true}):ref.delete()); return}
     if(a==="save"){
       const rp=draft.repeat?normRepeat(draft.repeat,draft.due||null):null;
+      const md=rp?"due":draft.tmode,TF={tmode:md==="due"?null:md,start:md==="win"&&draft.start?draft.start:null,startTime:md==="win"&&draft.start&&draft.startTime?draft.startTime:null,plan:md==="due"&&!rp&&draft.plan?draft.plan:null};
+      if(md==="win"&&draft.start&&draft.due&&(draft.due+(draft.dueTime||"23:59"))<(draft.start+(draft.startTime||"00:00"))){const x=bg.querySelector("#ed-d");x&&x.focus();return}
       if(isNew){const title=draft.title.trim();if(!title){bg.querySelector("#ed-title").focus();return}
-        bg.remove();addTask({title:title.slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,dueTime:draft.due&&draft.dueTime?draft.dueTime:null,note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp});cheer(rp?L(`记好啦，${repLabel(rp)}都会出现～`,`Saved. It'll show up ${repLabel(rp).toLowerCase()}～`):L(`加进${SPACE[draft.space]}的「${HZNAME[draft.horizon]}」了～`,`Added to ${SPACE[draft.space]} · ${HZNAME[draft.horizon]}～`));return}
+        bg.remove();addTask({title:title.slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,dueTime:draft.due&&draft.dueTime?draft.dueTime:null,note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp,...TF});cheer(rp?L(`记好啦，${repLabel(rp)}都会出现～`,`Saved. It'll show up ${repLabel(rp).toLowerCase()}～`):L(`加进${SPACE[draft.space]}的「${HZNAME[draft.horizon]}」了～`,`Added to ${SPACE[draft.space]} · ${HZNAME[draft.horizon]}～`));return}
       bg.remove();
       const ref=db.doc("tasks/"+id);
-      const patch={title:(draft.title.trim()||L("未命名","Untitled")).slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,start:rp?null:(draft.start||null),plan:rp?null:(draft.plan||null),dueTime:draft.due&&draft.dueTime?draft.dueTime:null,note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp};
+      const patch={title:(draft.title.trim()||L("未命名","Untitled")).slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,...TF,dueTime:draft.due&&draft.dueTime?draft.dueTime:null,note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp};
       if(rp&&!patch.due&&!t.done)patch.due=repFirst(rp,todayStr());
       if(!t.done&&!rp&&t.due&&t.due<todayStr()&&patch.due&&patch.due>t.due)patch.moved=(+t.moved||0)+1;
       if(t.done&&draft.doneDay&&draft.doneDay!==dayOf(t.doneAt))patch.doneAt=draft.doneDay===todayStr()?Date.now():noonOf(draft.doneDay);
@@ -6144,7 +6157,7 @@ function openEditor(id,preset){
       queued(ref.path,()=>ref.update(patch))}
   });
   bg.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="ed-title"){e.preventDefault();bg.querySelector('[data-ed="save"]').click()}if(e.key==="Escape")bg.remove()});
-  bg.addEventListener("change",e=>{if(e.target.id==="ed-due"||e.target.id==="ed-doneday"||e.target.id==="ed-until"||e.target.id==="ed-dh"||e.target.id==="ed-dm"){grab();if(e.target.id!=="ed-until")draw()}});
+  bg.addEventListener("change",e=>{if(e.target.id==="ed-d"||e.target.id==="ed-s"||e.target.id==="ed-sh"||e.target.id==="ed-sm"||e.target.id==="ed-doneday"||e.target.id==="ed-until"||e.target.id==="ed-dh"||e.target.id==="ed-dm"){grab();if(e.target.id!=="ed-until")draw()}});
   bg.querySelector("#ed-title").focus();
 }
 
