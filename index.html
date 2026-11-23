@@ -249,7 +249,7 @@ nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:v
 .task.done .t-title{color:var(--faint);text-decoration:line-through;font-weight:400}
 .t-note{font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .due{font-family:var(--f-num);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap;padding:2px 10px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
-.due.over{background:var(--danger);color:#fff}.due.live,.ov-tag.live{background:color-mix(in srgb,var(--danger) 14%,var(--surface));color:var(--danger);font-weight:600}.tmseg{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:3px;border-radius:14px;background:var(--bg-2)}.tmseg button{border:none;background:none;border-radius:11px;padding:7px 4px;font:inherit;font-size:13.5px;color:var(--fg);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px}.tmseg button small{font-size:11px;color:var(--muted)}.tmseg button.on{background:var(--surface);box-shadow:0 1px 4px rgba(0,0,0,.1);font-weight:600}
+.due.over{background:var(--danger);color:#fff}.t-note.rng{white-space:normal;overflow:visible;text-overflow:clip;font-variant-numeric:tabular-nums}.due.live,.ov-tag.live{background:color-mix(in srgb,var(--danger) 14%,var(--surface));color:var(--danger);font-weight:600}.tmseg{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:3px;border-radius:14px;background:var(--bg-2)}.tmseg button{border:none;background:none;border-radius:11px;padding:7px 4px;font:inherit;font-size:13.5px;color:var(--fg);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px}.tmseg button small{font-size:11px;color:var(--muted)}.tmseg button.on{background:var(--surface);box-shadow:0 1px 4px rgba(0,0,0,.1);font-weight:600}
 .due.soon{background:var(--habit-soft);color:var(--habit-ink)}
 details.done-box summary{cursor:pointer;font-size:13.5px;color:var(--muted);padding:4px 2px;list-style:none}
 details.done-box summary::before{content:"▸ ";}
@@ -1609,11 +1609,11 @@ const todayStr=()=>ymd(shifted());
 const addDays=(s,n)=>{const [y,m,d]=s.split("-").map(Number);return ymd(new Date(y,m-1,d+n))};
 const WD=["日","一","二","三","四","五","六"];
 const fmtToday=()=>{const d=shifted();return L(`${d.getMonth()+1}月${d.getDate()}日 · 周${WD[d.getDay()]}`,`${WDEN[d.getDay()]}, ${d.getDate()} ${MON[d.getMonth()]}`)};
-function winInfo(t){if(t.done||t.repeat||t.tmode!=="win"||!t.start)return null;
+function winInfo(t){if(t.done||t.repeat||!t.start||(t.tmode&&t.tmode!=="win"))return null;
   const a=new Date(t.start+"T"+(t.startTime||"00:00")+":00").getTime(),b=t.due?new Date(t.due+"T"+(t.dueTime||"23:59")+":00").getTime():Infinity,n=Date.now();
   const rng=`${md2(t.start)}${t.startTime?" "+t.startTime:""} – ${t.due?md2(t.due)+(t.dueTime?" "+t.dueTime:""):"…"}`;
   if(n<a)return {ph:"pre",rng,txt:L(`${md2(t.start)}${t.startTime?" "+t.startTime:""} 开始`,`Starts ${md2(t.start)}${t.startTime?" "+t.startTime:""}`)};
-  if(n<b){const l=b-n,h=Math.floor(l/36e5),d=Math.floor(h/24),m=Math.floor(l/6e4);return {ph:"live",rng,txt:b===Infinity?L("进行中","On now"):d>=2?L(`还剩 ${d} 天`,`${d}d left`):h>=1?L(`还剩 ${h} 小时`,`${h}h left`):L(`还剩 ${m} 分钟`,`${m}m left`)}}
+  if(n<b){const l=b-n,h=Math.floor(l/36e5),d=Math.floor(h/24),m=Math.floor(l/6e4);const to=t.due?L(` · 到 ${md2(t.due)}${t.dueTime?" "+t.dueTime:""}`,` · until ${md2(t.due)}${t.dueTime?" "+t.dueTime:""}`):"";return {ph:"live",rng,txt:b===Infinity?L("进行中","On now"):(d>=2?L(`还剩 ${d} 天`,`${d}d left`):h>=1?L(`还剩 ${h} 小时`,`${h}h left`):L(`还剩 ${m} 分钟`,`${m}m left`))}}
   return {ph:"over",rng}}
 function dueLabel(due,tm){
   if(!due)return null;
@@ -1916,7 +1916,7 @@ function taskRow(t){
   const tags=[
     t.repeat&&!t.done?(pz?`<span class="rep pz">${PAUSE_SVG}${L(`暂停到 ${md2(t.repeat.pause)}`,`Paused to ${md2(t.repeat.pause)}`)}</span>`:`<span class="rep">${REP_SVG}${repLabel(t.repeat)}</span>`):"",
     !t.done&&t.plan&&!t.repeat?`<span class="due plan">${t.plan===todayStr()?L("今天做","Today"):t.plan<todayStr()?L(`${md2(t.plan)} 没做完`,`from ${md2(t.plan)}`):L(`${md2(t.plan)} 做`,`do ${md2(t.plan)}`)}</span>`:"",
-    wi&&wi.ph==="pre"?`<span class="due" title="${esc(wi.rng)}">${wi.txt}</span>`:!wi&&!t.done&&t.start&&t.start>todayStr()?`<span class="due">${L(`${md2(t.start)} 开始`,`Starts ${md2(t.start)}`)}</span>`:"",
+    wi&&wi.ph==="pre"&&!t.due?`<span class="due" title="${esc(wi.rng)}">${wi.txt}</span>`:!wi&&!t.done&&t.start&&t.start>todayStr()?`<span class="due">${L(`${md2(t.start)} 开始`,`Starts ${md2(t.start)}`)}</span>`:"",
     sb.length&&!t.done?`<span class="prog">${sb.filter(x=>x.done).length}/${sb.length}</span>`:"",
     d?(isOver(t)?`<button class="due ${d.cls} odbtn" data-act="odmenu" data-id="${t.id}" title="${L("点一下：今天做 / 换个日子 / 放下","Tap: today / another day / let it go")}">${d.txt}</button>`:`<span class="due ${d.cls}">${d.txt}</span>`):""].filter(Boolean);
   const fm=(t.space==="study"||t.space==="work")?taskMins(t.id):0;
@@ -1930,7 +1930,7 @@ function taskRow(t){
   return `<div class="task${t.done?" done":""}${pr?" p"+pr:""}${pz?" paused":""}${canPlay?" hasplay":""}">
     ${tt.length?`<span class="slots" style="--sc:var(--${t.space==="study"||t.space==="work"?t.space:"life"})">${tt.map(([k,n,sh])=>`<button class="slot${sd[k]?" on":""}" data-act="slot" data-id="${t.id}" data-v="${k}" aria-label="${n}${sd[k]?L(" · 已完成，点一下取消"," · done, tap to undo"):L(" · 点一下完成"," · tap when done")}" aria-pressed="${!!sd[k]}">${sd[k]?SLOT_CK:sh}</button>`).join("")}</span>`:`<button class="check${t.done?" on":""}" data-act="toggle" data-id="${t.id}" aria-label="${t.done?L("标记为未完成","Mark as not done"):L("标记为完成","Mark as done")}">${CHECK}</button>`}
     <button class="t-main" data-act="edit" data-id="${t.id}">
-      <span class="t-title">${esc(t.title)}</span>${whenLine?`<span class="t-note">${whenLine}</span>`:""}
+      <span class="t-title">${esc(t.title)}</span>${wi&&t.due?`<span class="t-note rng">${esc(wi.rng)}</span>`:""}${whenLine?`<span class="t-note">${whenLine}</span>`:""}
       ${t.note?`<span class="t-note">${esc(t.note)}</span>`:""}
     </button>
     ${tags.length?`<span class="tagset">${tags.join("")}</span>`:"<span></span>"}
