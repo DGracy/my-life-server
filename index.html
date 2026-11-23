@@ -1111,7 +1111,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .hm-g{position:absolute;inset:0;width:100%;height:100%;transition:filter .6s}.hm-s1{stop-color:#a6d3ff}.hm-s2{stop-color:#e4f2ff}.hm-cl{fill:#fff;opacity:.9}
 .hm-scene [filter="url(#dzc)"]{filter:url(#dzc)!important}
 .hm-it{position:absolute;transform:translate(-50%,-100%)}.hm-art{position:relative;transform-origin:50% 100%}.hm-art svg{width:100%;height:auto;display:block;pointer-events:none}
-.hm-sh{position:absolute;left:50%;bottom:0;width:78%;height:16%;transform:translate(-50%,45%);border-radius:50%;background:radial-gradient(rgba(30,70,30,.32),rgba(30,70,30,0) 70%);pointer-events:none}.hm-it.sky .hm-sh{display:none}
+.hm-sh{position:absolute;left:50%;bottom:0;width:78%;height:16%;transform:translate(-50%,45%);border-radius:50%;background:radial-gradient(rgba(30,70,30,.32),rgba(30,70,30,0) 70%);pointer-events:none}.hm-it.sky .hm-sh{display:none}.hm-pet .hm-art{margin-bottom:-19%}
 .hm-scene.edit .hm-it:not(.hm-pet){cursor:grab}.hm-it.drag{z-index:999!important}.hm-it.drag .hm-art{transform:translateY(-6%) scale(1.06)!important}
 .hm-it.sel .hm-art{filter:drop-shadow(0 0 3px var(--brand)) drop-shadow(0 0 1px var(--brand))}
 .hm-art.pop{animation:hmPop .45s cubic-bezier(.3,1.6,.5,1)}@keyframes hmPop{0%{transform:scale(.6,.4)}60%{transform:scale(1.08,.95)}100%{transform:none}}
@@ -4859,7 +4859,7 @@ function isWornIn(w,k){const x=SHOPI[k];const v=w[x.slot];return Array.isArray(v
 /* ---------- 我的家园: a little front-facing stage ---------- */
 let hmOpen=false,homeS={items:{},off:[]},hmEdit=false,hmSel=null;
 const HM_W=800,HM_H=500;
-const HM_SL={H:[{x:165,y:306}],back:[{x:330,y:282},{x:470,y:278},{x:610,y:282},{x:745,y:286}],mid:[{x:290,y:372},{x:560,y:366},{x:675,y:372},{x:768,y:380}],front:[{x:70,y:476},{x:560,y:482},{x:690,y:470},{x:775,y:492}],sky:[{x:95,y:95},{x:650,y:85},{x:455,y:60}]};
+const HM_SL={H:[{x:165,y:306}],back:[{x:330,y:282},{x:470,y:278},{x:610,y:282},{x:745,y:286}],mid:[{x:150,y:400},{x:560,y:366},{x:675,y:372},{x:768,y:380}],front:[{x:70,y:476},{x:560,y:482},{x:690,y:470},{x:775,y:492}],sky:[{x:95,y:95},{x:650,y:85},{x:455,y:60}]};
 const HM_RS={back:.72,mid:.88,front:1.05,H:1,sky:1};
 const hmBase=k=>k.replace(/^n_/,"");
 function hmRows(k){if(k.startsWith("_t"))return ["back","mid"];const b=hmBase(k);
@@ -4915,7 +4915,7 @@ function renderHome(){if(!hmOpen)return;let pg=document.getElementById("homePage
   let wi=0;
   for(const [k,v] of Object.entries(it)){const a=hmArt(k);if(!a)continue;const e=document.createElement("div");e.className="hm-it";e.dataset.k=k;e.innerHTML=`<div class="hm-sh"></div><div class="hm-art">${a}</div>`;sc.appendChild(e);
     if(hmRows(k)[0]==="walk"){e.classList.add("walk");e._y=[405,440,455][wi++%3];e._x=260+Math.random()*480;hmPos(e,v);hmWalk(e)}else if(v.s&&hmSlot(v.s))hmPos(e,v);else e.remove()}
-  const p=document.createElement("div");p.className="hm-it hm-pet";p.innerHTML=`<div class="hm-sh"></div><div class="hm-art">${dressSVG(null,120)}</div>`;p.style.cssText=`left:${340/HM_W*100}%;top:${470/HM_H*100}%;width:${92/HM_W*100}%;z-index:470`;sc.appendChild(p);
+  const p=document.createElement("div");p.className="hm-it hm-pet";p.innerHTML=`<div class="hm-sh"></div><div class="hm-art">${dressSVG(null,120)}</div>`;p.style.cssText=`left:${236/HM_W*100}%;top:${458/HM_H*100}%;width:${92/HM_W*100}%;z-index:458`;sc.appendChild(p);
   sc.addEventListener("pointerdown",hmDown)}
 function hmWalk(e){const step=()=>{if(!e.isConnected||!hmOpen)return;const nx=240+Math.random()*520,v=(homeS.items||{})[e.dataset.k]||{};const f=nx<e._x;e._x=nx;hmPos(e,{...v,f:v.f?!f:f});setTimeout(step,4200+Math.random()*2500)};setTimeout(step,600)}
 function hmPut(k,v){homeS={...homeS,items:{...(homeS.items||{}),[k]:v},off:(homeS.off||[]).filter(x=>x!==k)};hmSave()}
