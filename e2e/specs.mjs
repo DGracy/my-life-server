@@ -140,6 +140,22 @@ test('wish: no next-in-line tag', async ({ newPage }) => {
   await p.evaluate(() => { const r = db.collection('wishes').doc('w2'); r.set({ ...wishes.find(w => w.id === 'w2'), id: undefined, saved: 20 }) });
   await p.waitForTimeout(300); expect(!(await p.$('.w-next')), 'tag shown after saving');
 });
+test('wish fund: one pound pot, other currencies converted in list order', async ({ newPage }) => {
+  const d = populated(); d.wishfund = {};
+  d.wishes = { w1: { title: '狼蛛键盘', kind: 'buy', price: 359, cur: '¥', saved: 0, done: false, ord: 1, createdAt: 1 }, w2: { title: '小王子键帽', kind: 'buy', price: 99, cur: '¥', saved: 0, done: false, ord: 2, createdAt: 2 }, w3: { title: '耳机套', kind: 'buy', price: 15, cur: '£', saved: 0, done: false, ord: 3, createdAt: 3 }, w4: { title: '小台灯', kind: 'buy', done: false, ord: 4, createdAt: 4 } };
+  const p = await newPage({ data: d }); await open(p); await lifeSub(p, 'wish');
+  await poll(() => p.$('.wf-q'), 'queue shown on the fund card');
+  const names = await p.locator('.wf-q li span').allInnerTexts();
+  expect(JSON.stringify(names) === JSON.stringify(['狼蛛键盘', '小王子键帽', '耳机套', '小台灯']), 'order ' + JSON.stringify(names));
+  expect(/≈ £39\.89/.test(await p.locator('.wf-q li').first().innerText()), 'yuan not converted');
+  expect(/跳过/.test(await p.locator('.wf-q li.skip').innerText()), 'no-price wish not marked skipped');
+  await p.click('[data-act="fundpay"]'); await p.fill('#wfAmt', '45'); await p.click('[data-wf="ok"]');
+  await poll(() => p.evaluate(() => wishes.find(w => w.id === 'w1').saved === 359), 'first wish not filled in yuan');
+  const w2 = await p.evaluate(() => wishes.find(w => w.id === 'w2').saved); expect(Math.abs(w2 - 45.99) < 0.02, 'rest not converted into the second wish: ' + w2);
+  await p.fill('[data-fx="¥"]', '10'); await p.locator('[data-fx="¥"]').dispatchEvent('change');
+  await poll(() => p.evaluate(() => wfund.rates && wfund.rates['¥'] === 10), 'rate not saved');
+  expect(/≈ £5\.30/.test(await p.locator('.wf-q li').first().innerText()), 'rate change not applied');
+});
 test('sticky: add, tag date, done', async ({ newPage }) => {
   const p = await newPage({ data: populated() }); await open(p); await SCREENS.sticky(p);
   await p.fill('#stIn', '周三 14:00 组会'); await p.keyboard.press('Enter');
