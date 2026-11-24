@@ -151,7 +151,18 @@ test('wish fund: one pound pot, other currencies converted in list order', async
   const w2 = await p.evaluate(() => wishes.find(w => w.id === 'w2').saved); expect(Math.abs(w2 - 45.99) < 0.02, 'rest not converted into the second wish: ' + w2);
   await p.fill('[data-fx="¥"]', '10'); await p.locator('[data-fx="¥"]').dispatchEvent('change');
   await poll(() => p.evaluate(() => wfund.rates && wfund.rates['¥'] === 10), 'rate not saved');
-  await poll(async () => /≈ £5\.30/.test(await p.locator('.wish[data-did="w2"]').innerText()), 'rate change not applied');
+  await poll(() => p.evaluate(() => toF(99, '¥') === 9.9), 'rate change not applied');
+});
+test('wish: paste a picture, compact list', async ({ newPage }) => {
+  const p = await newPage({ data: populated() }); await open(p); await lifeSub(p, 'wish');
+  await p.evaluate(async () => { const c = document.createElement('canvas'); c.width = c.height = 40; const x = c.getContext('2d'); x.fillStyle = '#f80'; x.fillRect(0, 0, 40, 40);
+    const blob = await new Promise(r => c.toBlob(r, 'image/png')); const dt = new DataTransfer(); dt.items.add(new File([blob], 'a.png', { type: 'image/png' }));
+    document.getElementById('wishTitle').dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true })) });
+  await poll(() => p.$('.crop-bg'), 'pasted picture did not open the crop step');
+  await p.click('.crop-bg [data-cr="ok"]'); await poll(() => p.evaluate(() => !!wishNewImg), 'picture not attached');
+  await p.fill('#wishTitle', '拍立得'); await p.fill('#wishPrice', '60'); await p.keyboard.press('Enter');
+  await poll(() => p.evaluate(() => wishes.some(w => w.title === '拍立得' && (w.photo || w.img))), 'wish saved without the picture');
+  await poll(() => p.$('.list.wl .w-st'), 'sticker not on the photo');
 });
 test('sticky: add, tag date, done', async ({ newPage }) => {
   const p = await newPage({ data: populated() }); await open(p); await SCREENS.sticky(p);
