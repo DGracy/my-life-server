@@ -46,6 +46,13 @@ test('overdue: move to today', async ({ newPage }) => {
   await p.locator('[data-act="odtoday"]').first().click();
   await poll(() => p.evaluate(() => { const t = tasks.find(x => x.id === 's4'); return t.plan === '2026-11-23' || t.due === '2026-11-23'; }), 'moved to today');
 });
+test('move sheet: a task due tomorrow can still go to tomorrow', async ({ newPage }) => {
+  const d = populated(); d.tasks.dz1 = { title: '扫地', space: 'life', horizon: 'week', due: '2026-11-24', note: '', done: false, createdAt: 1 };
+  const p = await newPage({ data: d }); await open(p);
+  await p.evaluate(() => ovMove('dz1'));
+  await poll(() => p.$('.od-sheet [data-ov="2026-11-24"]'), 'tomorrow missing from the move sheet');
+  await p.click('.od-sheet [data-ov="2026-11-24"]'); await poll(() => p.evaluate(() => tasks.find(x => x.id === 'dz1').plan === '2026-11-24'), 'not moved');
+});
 test('memo: new checklist, tick, reset', async ({ newPage }) => {
   const p = await newPage({ data: populated() }); await open(p); await p.click('.tab[data-k="life"]'); await p.click('[data-act="lifesub"][data-v="memo"]');
   await p.locator('[data-act="memoitem"]').first().click({ force: true }); // the tick box is drawn by its label await poll(() => p.evaluate(() => memos.find(m => m.id === 'm1').items[0].done), 'item ticked');

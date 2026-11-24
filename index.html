@@ -4111,7 +4111,7 @@ function overview(){
 function ovMove(id){const t=tasks.find(x=>x.id===id);if(!t)return;const td=todayStr(),{by}=ovBuckets();const days=[...Array(6)].map((_,i)=>addDays(td,i+1));
   const bg=document.createElement("div");bg.className="sheet-bg";let pick=false;
   const draw=()=>{bg.innerHTML=`<div class="sheet od-sheet" role="dialog" aria-label="${L("改期","Move")}"><h3>${L(`「${esc(t.title)}」挪到哪天？`,`Move “${esc(t.title)}” to…`)}</h3>
-    <div class="chips">${t.due!==td?`<button class="chip hz" data-ov="${td}">${L("今天","Today")}</button>`:""}${days.filter(d=>d!==t.due).map(d=>`<button class="chip hz" data-ov="${d}">${ovDayName(d,td)}<small>${(by[d]||[]).length}</small></button>`).join("")}<button class="chip hz${pick?" on":""}" data-ov="pick">${L("选日期…","Pick a date…")}</button>${t.plan?`<button class="chip hz" data-ov="none">${L("不定日子","No day")}</button>`:""}</div>
+    <div class="chips">${(t.plan||t.due)!==td?`<button class="chip hz" data-ov="${td}">${L("今天","Today")}</button>`:""}${days.filter(d=>d!==t.plan).map(d=>`<button class="chip hz" data-ov="${d}">${ovDayName(d,td)}<small>${(by[d]||[]).length}</small></button>`).join("")}<button class="chip hz${pick?" on":""}" data-ov="pick">${L("选日期…","Pick a date…")}</button>${t.plan?`<button class="chip hz" data-ov="none">${L("不定日子","No day")}</button>`:""}</div>
     ${pick?`<div class="cap-row"><input type="date" id="ovDate" min="${td}"><button class="btn primary" data-ov="ok">${L("好","OK")}</button></div>`:""}
     <p class="hint">${L("这里改的是「想哪天做」，不会改截止日期。小数字是那天已经排了几件。","This sets the day you plan to do it; the deadline stays. The small number is how many that day has.")}${t.due?L(` 截止：${md2(t.due)}`,` Due ${md2(t.due)}`):""}</p></div>`};
   draw();document.body.appendChild(bg);
