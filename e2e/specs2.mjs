@@ -203,3 +203,33 @@ test('tarot: check-in day shows in Overview today', async ({ newPage }) => {
   const p = await newPage({ data: d, tab: 'ov', extraLS: { 'lifeos-tarot': '1' } }); await open(p);
   await p.click('.ov-tr'); await poll(() => p.$('.tr-spread'), 'opens the reading');
 });
+test('gacha: locked until a check-in, one draw a day, prize applied', async ({ newPage }) => {
+  const d = populated(); d.checkins = {}; Object.values(d.tasks).forEach(t => { if (t.doneAt) t.doneAt = 1 });
+  const p = await newPage({ data: d, tab: 'ov' }); await open(p);
+  expect(!(await p.$('#gachaBtn.ready')), 'ready before doing anything');
+  await p.click('#gachaBtn'); await poll(() => p.$('.g-sheet'), 'sheet'); expect(/打一次卡/.test(await p.locator('.g-sheet').innerText()), 'no locked message');
+  await p.click('[data-g="x"]');
+  await p.click('.tab[data-k="habit"]'); await p.locator('[data-act="check"], [data-act="hcheck"], .hcheck').first().click();
+  await poll(() => p.$('#gachaBtn.ready'), 'ready after a check-in');
+  const before = await p.evaluate(() => ({ bal: coinStats().bal, w: waterTotal(), n: Object.keys(closet).length }));
+  await p.click('#gachaBtn'); await p.click('[data-g="spin"]'); await poll(() => p.$('.g-cap'), 'capsule drops', 3000); await p.click('.g-cap');
+  await poll(() => p.$('.g-prize'), 'prize shown');
+  const g = await p.evaluate(() => gToday()); expect(g && g.tier && g.kind, 'draw not saved');
+  const after = await p.evaluate(() => ({ bal: coinStats().bal, w: waterTotal(), n: Object.keys(closet).length }));
+  expect(g.kind === 'coin' ? after.bal === before.bal + g.val : g.kind === 'water' ? after.w === before.w + 3 : after.n === before.n + 1, 'prize not applied ' + JSON.stringify([g, before, after]));
+  await p.click('[data-g="x"]'); expect(await p.$('#gachaBtn.done'), 'not marked done');
+  await p.click('#gachaBtn'); expect(/明天再来/.test(await p.locator('.g-sheet').innerText()), 'second draw allowed');
+});
+test('gacha: pity, festivals, cape layer', async ({ newPage }) => {
+  const p = await newPage({ data: populated() }); await open(p);
+  const r = await p.evaluate(() => {
+    gachas = [...Array(9)].map((_, i) => ({ id: addDays(todayStr(), -1 - i), tier: 'y', kind: 'coin', val: 5 }));
+    const tiers = new Set([...Array(60)].map(() => gRoll().tier));
+    const f = ['2026-12-05', '2027-01-10', '2027-02-14', '2027-04-02', '2026-09-20', '2026-10-30', '2026-06-01'].map(gFest);
+    const svg = dressSVG(null, 60, { body: 'dg_cape' });
+    return { y: tiers.has('y'), f, capeFirst: svg.indexOf('#ee5a66') < svg.indexOf('M60 30C88') };
+  });
+  expect(!r.y, 'pity let a common through');
+  expect(JSON.stringify(r.f) === JSON.stringify(['xmas', 'ny', 'val', 'easter', 'moon', 'hallo', 'plain']), 'festivals ' + JSON.stringify(r.f));
+  expect(r.capeFirst, 'cape not drawn behind the body');
+});

@@ -4,7 +4,7 @@ const T = NOW.getTime(), D = 864e5;
 const day = n => new Date(T + n * D).toISOString().slice(0, 10);
 
 export const HINTS_SEEN = ["bd", "grat", "habit", "memo", "ms", "sleep", "wish"];
-export const TOUR_SEEN = ['1118','1118b','1118c','1118d','1118e','1118f','1118g','1118h','1118i','1118j','1119','1119b','1119c','1119d','1119e','1119f','1121','1121b','1122','1122b','1122c','1122d','1122e','1123','1123b','1124'];
+export const TOUR_SEEN = ['1118','1118b','1118c','1118d','1118e','1118f','1118g','1118h','1118i','1118j','1119','1119b','1119c','1119d','1119e','1119f','1121','1121b','1122','1122b','1122c','1122d','1122e','1123','1123b','1124','1124b','1124c','1124d','1124e'];
 
 export function populated() {
   const tasks = {
