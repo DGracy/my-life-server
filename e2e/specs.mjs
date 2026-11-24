@@ -150,11 +150,27 @@ test('journal: write and save today', async ({ newPage }) => {
 });
 test('shop: try on, buy, go to home', async ({ newPage }) => {
   const p = await newPage({ data: { ...populated(), pomos: Object.fromEntries([...Array(40)].map((_, i) => ['pp' + i, { taskId: null, space: 'study', start: 0, end: 0, mins: 50, day: '2026-11-' + String(1 + (i % 20)).padStart(2, '0'), mode: 'pomo', tomato: true }])) } }); await open(p);
-  await SCREENS.shop(p); await p.click('[data-sh="tab"][data-v="dood"]'); await p.click('[data-sh="it"][data-k="n_g_lamp"]');
+  await SCREENS.shop(p); await p.click('[data-sh="tab"][data-v="prop"]'); await p.click('[data-sh="it"][data-k="n_g_lamp"]');
   await poll(() => p.$('.fhome'), 'home preview in fitting room');
   const buy = p.locator('[data-sh="buy"]'); if (await buy.isDisabled()) throw new Error('cannot afford in fixture');
   await buy.click(); await poll(() => p.evaluate(() => !!closet.n_g_lamp), 'bought');
   await p.click('[data-sh="home"]'); await poll(() => p.$('#homePage .hm-it[data-k="n_g_lamp"]'), 'lamp placed in home');
+});
+test('shop: star-sign hoods and bed flowers', async ({ newPage }) => {
+  const p = await newPage({ data: { ...populated(), pomos: Object.fromEntries([...Array(40)].map((_, i) => ['pp' + i, { taskId: null, space: 'study', start: 0, end: 0, mins: 50, day: '2026-11-' + String(1 + (i % 20)).padStart(2, '0'), mode: 'pomo', tomato: true }])) } }); await open(p);
+  await p.evaluate(() => { birthday = '2001-12-25'; });
+  await SCREENS.shop(p);
+  expect(!(await p.$('[data-sh="tab"][data-v="dood"]')), 'doodle tab still there');
+  await p.click('[data-sh="tab"][data-v="set"]');
+  expect(await p.locator('[data-sh="it"][data-k^="n_c_"]').count() === 12, 'not 12 sign hoods');
+  expect(/你的星座/.test(await p.locator('[data-sh="it"][data-k="n_c_capricorn"]').innerText()), 'your-sign tag missing');
+  expect(!/你的星座/.test(await p.locator('[data-sh="it"][data-k="n_c_aries"]').innerText()), 'tag on wrong sign');
+  await p.click('[data-sh="it"][data-k="n_c_capricorn"]'); await poll(() => p.evaluate(() => fitKeys().includes('n_c_capricorn')), 'hood tried on');
+  await p.click('[data-sh="tab"][data-v="prop"]'); expect(await p.locator('[data-sh="it"][data-k^="n_f_"]').count() === 6, 'not 6 flowers');
+  await p.click('[data-sh="it"][data-k="n_f_tulip"]'); const buy = p.locator('[data-sh="buy"]'); await buy.click();
+  await poll(() => p.evaluate(() => !!closet.n_f_tulip), 'flower bought');
+  await p.click('[data-sh="home"]'); await poll(() => p.$('#homePage .hm-it[data-k="n_f_tulip"]'), 'flower in home');
+  expect(await p.evaluate(() => /^bed/.test(homeS.items.n_f_tulip.s)), 'flower not in the bed');
 });
 test('home: arrange - size, move, put away', async ({ newPage }) => {
   const p = await newPage({ data: populated() }); await open(p); await SCREENS.home(p);
