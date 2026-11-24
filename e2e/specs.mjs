@@ -172,6 +172,18 @@ test('shop: star-sign hoods and bed flowers', async ({ newPage }) => {
   await p.click('[data-sh="home"]'); await poll(() => p.$('#homePage .hm-it[data-k="n_f_tulip"]'), 'flower in home');
   expect(await p.evaluate(() => /^bed/.test(homeS.items.n_f_tulip.s)), 'flower not in the bed');
 });
+test('shop: doodle seed bag grows a missing doodle tree', async ({ newPage }) => {
+  const p = await newPage({ data: { ...populated(), pomos: Object.fromEntries([...Array(40)].map((_, i) => ['pp' + i, { taskId: null, space: 'study', start: 0, end: 0, mins: 50, day: '2026-11-' + String(1 + (i % 20)).padStart(2, '0'), mode: 'pomo', tomato: true }])) } }); await open(p);
+  expect(await p.evaluate(() => SP_HID.length) === 21, 'not 21 doodle trees');
+  await SCREENS.shop(p); await p.click('[data-sh="tab"][data-v="prop"]');
+  const b0 = await p.evaluate(() => coinStats().bal); await p.click('[data-sh="seed"]');
+  await poll(() => p.evaluate(b0 => coinStats().bal === b0 - 150 && !!seedHeld(), b0), 'bag bought for 150');
+  expect(await p.locator('[data-sh="seed"]').isDisabled(), 'only one bag at a time');
+  await p.evaluate(() => { closeShop(); openPlant(); }); await poll(() => p.$('.bag.dseed[aria-pressed="true"]'), 'bag offered and picked when planting');
+  const before = await p.evaluate(() => dMissing());
+  await p.click('[data-p="ok"]'); await poll(() => p.evaluate(() => !seedHeld()), 'bag used');
+  await poll(() => p.evaluate(b => forest.some(f => b.includes(f.kind)), before), 'planted a doodle tree that was missing');
+});
 test('home: arrange - size, move, put away', async ({ newPage }) => {
   const p = await newPage({ data: populated() }); await open(p); await SCREENS.home(p);
   await p.click('[data-hm="edit"]'); const fire = p.locator('.hm-it[data-k="n_g_fire"]'); await fire.scrollIntoViewIfNeeded(); const bb = await fire.boundingBox();
