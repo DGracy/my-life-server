@@ -6216,14 +6216,14 @@ function wishItem(w){
   const pct=price?Math.round(saved/price*100):0, left=price?Math.max(0,price-saved):0;
   const pic=w.photo||w.img;
   const pop=wishSaveOpen===w.id&&!w.done?`<div class="w-pop"><div class="row"><span>${L(`这次存了 ${cur}`,`Saved this time ${cur}`)}</span><input type="number" id="wDep" min="0" step="0.01" inputmode="decimal" placeholder="10"><button class="btn primary" data-act="wishdep" data-id="${w.id}">${L("存进去","Add")}</button></div>${(w.deps||[]).length?`<ul>${[...w.deps].reverse().slice(0,8).map(d=>`<li>${fmtRange(dayOf(d.at),dayOf(d.at)).split(" – ")[0]} · +${money(d.a,cur)}</li>`).join("")}</ul>`:""}</div>`:"";
-  const debt=w.done&&w.pre&&price&&saved<price, nextUp=!w.done&&fundQueue(cur)[0]?.id===w.id;
+  const debt=w.done&&w.pre&&price&&saved<price, nextUp=!w.done&&((wfund.log||[]).length>0||+wfund.pool>0||wishes.some(x=>+x.saved>0))&&fundQueue(cur).length>1&&fundQueue(cur)[0]?.id===w.id;
   const menu=wishMenu===w.id&&!w.done?`<div class="w-menu"><button data-act="wishpre" data-id="${w.id}">${L("先买了，之后补","Bought it early, pay back later")}</button><button data-act="wishsave" data-id="${w.id}">${L("＋ 手动存一笔","＋ Add savings by hand")}</button><button data-act="wishedit" data-id="${w.id}">${L("编辑","Edit")}</button></div>`:"";
   if(debt)return `<div class="wish k-buy debt" data-did="${w.id}">${pic?`<span class="w-th">${wishImgTag(pic,w.title)}</span>`:`<span class="w-ic" aria-hidden="true">${sproutIcon("buy")}</span>`}<button class="w-main" data-act="wishedit" data-id="${w.id}"><b>${esc(w.title)} <span class="w-tag">${L(`先买了 · 还要补 ${money(left,cur)}`,`Bought early · ${money(left,cur)} to pay back`)}</span></b><span class="w-bar"><i style="width:${pct}%"></i></span><small>${L(`已经补了 ${money(saved,cur)} / ${money(price,cur)}`,`${money(saved,cur)} of ${money(price,cur)} paid back`)}</small></button></div>`;
   return `<div class="wish k-${K[0]}${w.done?" done":""}" data-did="${w.id}">
     ${w.done?"":`<span class="wgrip" aria-label="${L("按住拖动排序","Drag to reorder")}" title="${L("按住拖动排序","Drag to reorder")}">⋮⋮</span>`}
     ${pic?`<span class="w-th">${wishImgTag(pic,w.title)}</span>`:`<span class="w-ic" aria-hidden="true">${sproutIcon(K[0])}</span>`}
     <button class="w-main" data-act="wishedit" data-id="${w.id}">
-      <b>${esc(w.title)}${nextUp?`<span class="w-next">${L("下一笔先到这里","Next in line")}</span>`:""}</b>
+      <b>${esc(w.title)}${nextUp?`<span class="w-next">${L("下次存钱先存它","Next savings go here")}</span>`:""}</b>
       ${price?`<span class="w-money"><span>${saved?L(`已攒 ${money(saved,cur)} / ${money(price,cur)}`,`${money(saved,cur)} saved of ${money(price,cur)}`):money(price,cur)}${!w.done&&saved&&left?L(` · 还差 ${money(left,cur)}`,` · ${money(left,cur)} to go`):""}</span>${!w.done?`<span class="w-bar"><i style="width:${pct}%"></i></span>`:""}</span>`:""}
       ${w.line?`<small class="w-line">${esc(w.line)}</small>`:w.note?`<small>${esc(w.note)}</small>`:""}
       ${w.done&&w.pre&&w.paidAt?`<small>${L(`先买后补，${fmtRange(dayOf(w.paidAt),dayOf(w.paidAt)).split(" – ")[0]}补齐啦 🎉`,`Bought early, paid back on ${fmtRange(dayOf(w.paidAt),dayOf(w.paidAt)).split(" – ")[0]} 🎉`)}</small>`:""}

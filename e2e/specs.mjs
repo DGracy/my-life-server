@@ -132,6 +132,14 @@ test('life: add a wish', async ({ newPage }) => {
   await p.fill('#wishTitle', '去冰岛看极光'); await p.keyboard.press('Enter');
   await poll(() => p.evaluate(() => wishes.some(w => w.title === '去冰岛看极光')), 'wish saved');
 });
+test('wish: next-in-line tag only once the fund is in use', async ({ newPage }) => {
+  const d = populated(); d.wishes = { w1: { title: '狼蛛键盘', kind: 'buy', price: 359, cur: '¥', saved: 0, done: false, ord: 1, createdAt: 1 }, w2: { title: '耳机', kind: 'buy', price: 200, cur: '¥', saved: 0, done: false, ord: 2, createdAt: 2 } }; d.wishfund = {};
+  const p = await newPage({ data: d }); await open(p); await lifeSub(p, 'wish');
+  await poll(() => p.$('.wish[data-did="w1"]'), 'wish listed');
+  expect(!(await p.$('.w-next')), 'tag shown before any saving');
+  await p.evaluate(() => { const r = db.collection('wishes').doc('w2'); r.set({ ...wishes.find(w => w.id === 'w2'), id: undefined, saved: 20 }) });
+  await poll(() => p.$('.wish[data-did="w1"] .w-next'), 'tag missing once saving started');
+});
 test('sticky: add, tag date, done', async ({ newPage }) => {
   const p = await newPage({ data: populated() }); await open(p); await SCREENS.sticky(p);
   await p.fill('#stIn', '周三 14:00 组会'); await p.keyboard.press('Enter');
