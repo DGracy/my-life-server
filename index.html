@@ -1195,7 +1195,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .w-meta{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);white-space:nowrap;min-width:0}.w-pr{font-weight:700;font-size:12.5px;background:color-mix(in srgb,var(--pink) 22%,var(--surface));color:var(--fg);border-radius:99px;padding:1px 9px;flex:none;font-family:var(--f-num)}
 .w-meta .w-bar{flex:1;min-width:30px;max-width:120px;height:5px}.w-pct{font-family:var(--f-num)}
 .wl .w-more{font-size:17px}
-.wf-rates.sm{margin-top:0;font-size:12.5px}.wf-log .wf-rates{margin:6px 0 2px}
+.wf-rates.sm{margin-top:0;font-size:12.5px}button.ws-f{border:0;font:inherit;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:1px;border-radius:12px;padding:7px 11px;min-width:0}button.ws-f:hover{filter:brightness(.97)}.wf-hist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;max-height:50vh;overflow:auto;font-size:13.5px}.wf-hist li{display:flex;flex-direction:column;gap:1px;padding-bottom:8px;border-bottom:1px dashed var(--line)}.wf-hist span{font-size:12px;color:var(--muted);font-family:var(--f-num)}.wf-log .wf-rates{margin:6px 0 2px}
 .w-imgbtn.drop,.we-img.drop{outline:2.5px dashed var(--brand);outline-offset:2px}
 .wf-q{list-style:none;margin:8px 0 0;padding:10px 12px;display:flex;flex-direction:column;gap:6px;background:var(--surface);border-radius:14px;box-shadow:0 0 0 1px var(--line)}.wf-q li{display:flex;align-items:center;gap:8px;font-size:13.5px;min-width:0}.wf-q li span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wf-q i{font-style:normal;flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11.5px;font-weight:700;background:color-mix(in srgb,var(--brand) 14%,transparent);color:var(--fg)}.wf-q em{font-style:normal;color:var(--muted);font-size:12.5px;white-space:nowrap;flex:none}.wf-q li.skip,.wf-q li.more{color:var(--muted)}.wf-q li.skip i,.wf-q li.more i{background:var(--line);color:var(--muted)}
 .wf-rates{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:13px;color:var(--muted)}.wf-rates label{display:inline-flex;align-items:center;gap:4px}.wf-rates input{width:70px;font:inherit;border:1px solid var(--line);border-radius:99px;padding:3px 10px;background:var(--surface);color:var(--fg)}
@@ -6393,13 +6393,22 @@ function fundCard(){
   const qList=q.length||nop.length?`<ol class="wf-q">${q.slice(0,6).map((w,i)=>`<li><i>${i+1}</i><span>${w.done?L("补 ","Pay back "):""}${esc(w.title)}</span><em>${(w.cur||"£")!==cur?`${money(+w.price-(+w.saved||0),w.cur||"£")} ≈ `:""}${money(wNeed(w),cur)}</em></li>`).join("")}${q.length>6?`<li class="more"><i>…</i><span>${L(`还有 ${q.length-6} 个`,`${q.length-6} more`)}</span></li>`:""}${nop.map(w=>`<li class="skip"><i>–</i><span>${esc(w.title)}</span><em>${L("还没写价格，先跳过","No price yet, skipped")}</em></li>`).join("")}</ol>`:"";
   const rates=others.length?`<div class="wf-rates">${others.map(c=>`<label>${money(1,cur)} = ${esc(c)}<input type="number" min="0.0001" step="0.01" inputmode="decimal" data-fx="${esc(c)}" value="${fxRate(c)}" aria-label="${L(`${c} 汇率`,`${c} rate`)}"></label>`).join("")}</div>`:"";
   const lg=[...(wfund.log||[])].reverse().slice(0,12);
-  return `<div class="wstats"><div class="ws-f"><small>${L("愿望基金","Wish fund")}</small><b>${money(wfund.pool||0,cur)}</b></div><div><small>${L("想买的还差","Still to save")}</small><b>${money(need,cur)}</b></div><div><small>${L("先买的要补","To pay back")}</small><b class="${owe?"ws-red":""}">${money(owe,cur)}</b></div><button class="btn wf-pay" data-act="fundpay">＋ ${L("有进账啦","Money in")}</button></div>
-    ${wfund.pool>0&&q.length||lg.length||others.length?`<div class="ws-sub">${wfund.pool>0&&q.length?`<button class="link" data-act="fundsplit">${L("把基金里的钱分出去","Share out the fund")}</button>`:""}${others.length?`<details class="wf-log" data-keep="wfrate"><summary>${L("汇率","Rate")}</summary>${rates}</details>`:""}${lg.length?`<details class="wf-log" data-keep="wflog"><summary>${L("记录","History")}</summary><ul>${lg.map(l=>`<li>${fmtRange(dayOf(l.at),dayOf(l.at)).split(" – ")[0]} · ${esc(l.t)}</li>`).join("")}</ul></details>`:""}</div>`:""}`;
+  return `<div class="wstats"><button class="ws-f" data-act="fundinfo" aria-label="${L("愿望基金 · 看记录","Wish fund · history")}"><small>${L("愿望基金","Wish fund")}</small><b>${money(wfund.pool||0,cur)}</b></button><div><small>${L("想买的还差","Still to save")}</small><b>${money(need,cur)}</b></div><div><small>${L("先买的要补","To pay back")}</small><b class="${owe?"ws-red":""}">${money(owe,cur)}</b></div><button class="btn wf-pay" data-act="fundpay">＋ ${L("有进账啦","Money in")}</button></div>
+    ${wfund.pool>0&&q.length?`<div class="ws-sub">${wfund.pool>0&&q.length?`<button class="link" data-act="fundsplit">${L("把基金里的钱分出去","Share out the fund")}</button>`:""}</div>`:""}`;
 }
 document.addEventListener("change",e=>{const i=e.target.closest&&e.target.closest("[data-fx]");if(!i)return;const v=+i.value;if(!(v>0)){i.value=fxRate(i.dataset.fx);return}wfund.rates={...(wfund.rates||{}),[i.dataset.fx]:v};fundSave();const am=document.getElementById("wfAmt");if(am){am.dispatchEvent(new Event("input",{bubbles:true}));render();return}i.blur();setTimeout(render,0)});
 const FUND_SRC="lifeos-fund-src",FUND_SRCS="lifeos-fund-srcs";
 function fundSrcs(){let a=[];try{a=JSON.parse(localStorage.getItem(FUND_SRCS)||"[]")}catch(_){}const base=L(["工资","兼职","奖学金","红包"],["Salary","Side job","Grant","Gift"]);return [...base,...a.filter(x=>!base.includes(x))]}
 function fundSrc(){try{return localStorage.getItem(FUND_SRC)||""}catch(_){return ""}}
+function openFundInfo(){const cur=fundCur(),lg=[...(wfund.log||[])].reverse();
+  const others=[...new Set(wishes.filter(w=>!w.done&&+w.price>0||w.done&&w.pre&&+w.price>(+w.saved||0)).map(w=>w.cur||"£"))].filter(c=>c!==cur);
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  bg.innerHTML=`<div class="sheet wfs" role="dialog" aria-label="${L("愿望基金","Wish fund")}"><h3>${SF.happy||""}${L("愿望基金","Wish fund")} · ${money(wfund.pool||0,cur)}</h3>
+    ${others.length?`<div class="wf-rates sm">${others.map(c=>`<label>${L("汇率","Rate")} ${money(1,cur)} = ${esc(c)}<input type="number" min="0.0001" step="0.01" inputmode="decimal" data-fx="${esc(c)}" value="${fxRate(c)}" aria-label="${L(`${c} 汇率`,`${c} rate`)}"></label>`).join("")}</div>`:""}
+    ${lg.length?`<ul class="wf-hist">${lg.map(l=>`<li><span>${fmtRange(dayOf(l.at),dayOf(l.at)).split(" – ")[0]}</span>${esc(l.t)}</li>`).join("")}</ul>`:`<p class="g-msg">${L("还没有记录。","Nothing here yet.")}</p>`}
+    <div class="sheet-actions"><span></span><button class="btn primary" data-fi="x">${L("好","OK")}</button></div></div>`;
+  document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg||e.target.closest("[data-fi]"))bg.remove()})}
 function openFund(fromPool){
   const cur=fundCur();let mode="auto",pick="";
   const bg=document.createElement("div");bg.className="sheet-bg";
@@ -6922,6 +6931,7 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="wishmenu"){wishMenu=wishMenu===id?null:id;wishSaveOpen=null;render();return}
   if(act.dataset.act==="wishpre"){wishPre(id,act);return}
   if(act.dataset.act==="fundpay"){openFund(false);return}
+  if(act.dataset.act==="fundinfo"){openFundInfo();return}
   if(act.dataset.act==="fundsplit"){openFund(true);return}
   if(act.dataset.act==="wishsave"){wishMenu=null;wishSaveOpen=wishSaveOpen===id?null:id;render();setTimeout(()=>$("#wDep")?.focus(),30);return}
   if(act.dataset.act==="wishdep"){wishDeposit(id);return}

@@ -144,12 +144,12 @@ test('wish fund: one pound pot, other currencies converted in list order', async
   const d = populated(); d.wishfund = {};
   d.wishes = { w1: { title: '狼蛛键盘', kind: 'buy', price: 359, cur: '¥', saved: 0, done: false, ord: 1, createdAt: 1 }, w2: { title: '小王子键帽', kind: 'buy', price: 99, cur: '¥', saved: 0, done: false, ord: 2, createdAt: 2 }, w3: { title: '耳机套', kind: 'buy', price: 15, cur: '£', saved: 0, done: false, ord: 3, createdAt: 3 }, w4: { title: '小台灯', kind: 'buy', done: false, ord: 4, createdAt: 4 } };
   const p = await newPage({ data: d }); await open(p); await lifeSub(p, 'wish');
-  await poll(() => p.$('[data-fx="¥"]'), 'rate box shown');
+  expect(!(await p.$('[data-fx]')), 'rate box out on the page');
   expect(/≈ £39\.89/.test(await p.locator('.wish[data-did="w1"]').innerText()), 'yuan not converted');
   await p.click('[data-act="fundpay"]'); await p.fill('#wfAmt', '45'); await p.click('[data-wf="ok"]');
   await poll(() => p.evaluate(() => wishes.find(w => w.id === 'w1').saved === 359), 'first wish not filled in yuan');
   const w2 = await p.evaluate(() => wishes.find(w => w.id === 'w2').saved); expect(Math.abs(w2 - 45.99) < 0.02, 'rest not converted into the second wish: ' + w2);
-  await p.click('details[data-keep="wfrate"] summary'); await p.fill('.wstats ~ .ws-sub [data-fx="¥"], .ws-sub [data-fx="¥"]', '10'); await p.locator('.ws-sub [data-fx="¥"]').dispatchEvent('change');
+  await p.click('.ws-f'); await poll(() => p.$('.wf-hist'), 'fund history sheet'); await p.fill('.wfs [data-fx="¥"]', '10'); await p.locator('.wfs [data-fx="¥"]').dispatchEvent('change');
   await poll(() => p.evaluate(() => wfund.rates && wfund.rates['¥'] === 10), 'rate not saved');
   await poll(() => p.evaluate(() => toF(99, '¥') === 9.9), 'rate change not applied');
 });
@@ -169,7 +169,7 @@ test('wish: drag hint shows once, rate tucked away', async ({ newPage }) => {
   const p = await newPage({ data: d }); await open(p); await lifeSub(p, 'wish');
   await poll(() => p.$('.ghint'), 'hint not shown the first time');
   await p.evaluate(() => render()); expect(await p.$('.ghint'), 'hint vanished within the same visit');
-  expect(!(await p.locator('.ws-sub [data-fx]').isVisible()), 'rate box visible without opening');
+  expect(!(await p.$('[data-fx]')) && !(await p.$('details.wf-log')), 'rate or history out on the page');
   await p.reload(); await open(p); await lifeSub(p, 'wish'); await p.waitForTimeout(200);
   expect(!(await p.$('.ghint')), 'hint shown again after reload');
 });
