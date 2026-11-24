@@ -147,6 +147,38 @@ for (const theme of ['light', 'dark']) test(`tarot ${theme}: record a three-card
   await p.fill('#trQ', '恋人'); await poll(async () => (await p.locator('.tr-case').count()) === 1, 'search by card');
   await p.fill('#trQ', '塔'); await poll(async () => (await p.locator('.tr-case').count()) === 0, 'search miss');
 });
+for (const theme of ['light', 'dark']) test(`lenormand ${theme}: reading with pairs, spreads, card book`, async ({ newPage }) => {
+  const p = await newPage({ data: populated(), theme, extraLS: { 'lifeos-tarot': '1' } }); await open(p);
+  await p.click('#tarotBtn'); await poll(() => p.$('.oc-hd'), 'reading room');
+  await p.click('[data-tr="deck"][data-v="l"]'); await poll(() => p.$('.ln-prac'), 'lenormand list');
+  await p.click('[data-ln="new"]'); await poll(() => p.$('.ln-felt'), 'case');
+  await p.click('[data-ln="add"][data-i="0"]'); for (const n of [1, 27, 31]) await p.click(`.ln-grid [data-ln="pick"][data-v="${n}"]`);
+  await poll(async () => !(await p.$('.ln-grid')), 'sheet closes when full');
+  expect(await p.locator('[data-lnp]').count() === 2, 'two adjacent pairs');
+  await p.fill('[data-lnp="1-27"]', '很快收到消息'); await p.fill('[data-lnf="who"]', '小林'); await p.fill('[data-lnf="read"]', '会联系');
+  await p.click('[data-ln="spread"][data-v="5"]'); expect(await p.locator('.ln-ghost').count() === 2, 'five slots');
+  await p.click('.ln-slot >> nth=1'); await poll(() => p.$('.tr-zoom'), 'zoom'); await p.click('[data-ln="zmean"]'); await poll(() => p.$('.ln-csheet'), 'card sheet from zoom');
+  await p.click('button[data-ln="cardx"]'); await p.click('[data-ln="list"]'); await poll(() => p.$('.ln-case'), 'listed');
+  const d = await p.evaluate(() => lens.map(t => [t.who, t.spread, t.cards.join(','), t.pairs['1-27'], t.read]));
+  expect(JSON.stringify(d) === JSON.stringify([['小林', 5, '1,27,31,,', '很快收到消息', '会联系']]), 'saved ' + JSON.stringify(d));
+  await p.fill('#trQ', '太阳'); await poll(async () => (await p.locator('.ln-case').count()) === 1, 'search by card');
+  await p.fill('#trQ', ''); await p.click('[data-ln="seg"][data-v="book"]'); await poll(() => p.$('.ln-book'), 'card book');
+  expect(await p.locator('.ln-book [data-ln="card"]').count() === 36, '36 cards');
+  await p.click('.ln-book [data-ln="card"][data-v="27"]'); await poll(() => p.$('#lnKw'), 'my notes');
+  await p.fill('#lnKw', '书面'); await p.press('#lnKw', 'Enter'); await poll(() => p.evaluate(() => (lnNotes.c27 || {}).kw?.includes('书面')), 'keyword saved');
+  expect(/很快收到消息/.test(await p.locator('.ln-csheet').innerText()), 'pair note collected in card book');
+  await p.click('button[data-ln="cardx"]'); await p.click('[data-ln="daily"]'); await poll(() => p.$('.ln-daily [data-ln="card"]'), 'daily flipped');
+});
+test('lenormand: nightly practice, deck remembered', async ({ newPage }) => {
+  const p = await newPage({ data: populated(), extraLS: { 'lifeos-tarot': '1', 'lifeos-deck': 'l' } }); await open(p);
+  await p.click('#tarotBtn'); await poll(() => p.$('[data-ln="prac"]'), 'practice prompt');
+  await p.click('[data-ln="prac"]'); await poll(() => p.$('.ln-felt'), 'practice case'); expect(!(await p.$('[data-ln="spread"]')), 'practice has a fixed spread');
+  await p.click('[data-ln="add"][data-i="0"]'); for (const n of [13, 6, 31]) await p.click(`.ln-grid [data-ln="pick"][data-v="${n}"]`);
+  await p.fill('[data-lnf="read"]', '先乱后好'); await p.click('[data-ln="list"]');
+  await poll(() => p.evaluate(() => lens.some(x => x.practice && x.date === '2026-11-24' && x.cards.join() === '13,6,31')), 'practice saved for tomorrow');
+  expect(/明天的牌抽好了/.test(await p.locator('.ln-prac').innerText()), 'prompt switches');
+  expect(!(await p.$('.ln-rvbtn')), 'no review without the private book');
+});
 test('tarot: check-in day shows in Overview today', async ({ newPage }) => {
   const d = populated(); d.tarot = { t1: { who: 'Momo', date: '2026-11-10', type: 'work', q: 'offer?', read: '', advice: '', after: '', revisit: '2026-11-23', cards: [{ u: 'a', k: 'w01', rv: 0, of: null }], createdAt: 1 } };
   const p = await newPage({ data: d, tab: 'ov', extraLS: { 'lifeos-tarot': '1' } }); await open(p);
