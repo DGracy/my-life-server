@@ -4995,7 +4995,7 @@ const TR_RANK=[["王牌","Ace"],["二","Two"],["三","Three"],["四","Four"],["�
 const trName=k=>{if(!k)return "";if(k[0]==="m"){const x=TR_MAJ[+k.slice(1)]||["?","?"];return L(x[0],x[1])}const s=TR_SUIT[k[0]],r=TR_RANK[+k.slice(1)-1];return s&&r?L(s[0]+r[0],`${r[1]} of ${s[1]}`):k};
 const trNameZh=k=>k[0]==="m"?(TR_MAJ[+k.slice(1)]||[""])[0]:(TR_SUIT[k[0]]||[""])[0]+(TR_RANK[+k.slice(1)-1]||[""])[0];
 const trImg=(c,w,cls)=>`<img class="tr-img${cls?" "+cls:""}" src="${TR_BASE}${c.k}.jpg" alt="${esc(trName(c.k))}${c.rv?L(" 逆位"," reversed"):""}" style="width:${w}px;height:${Math.round(w*1.714)}px${c.rv?";transform:rotate(180deg)":""}" loading="lazy">`;
-const TR_TYPES=()=>[["love",L("感情","Love")],["work",L("事业","Career")],["study",L("学业","Study")],["people",L("人际","People")],["other",L("其他","Other")]];
+const TR_TYPES=()=>[["day",L("日运","Daily")],["love",L("感情","Love")],["work",L("事业","Career")],["study",L("学业","Study")],["people",L("人际","People")],["other",L("其他","Other")]];
 const trType=v=>(TR_TYPES().find(x=>x[0]===v)||["",""])[1];
 const trUid=()=>Math.random().toString(36).slice(2,8);
 const trCase=()=>tarots.find(x=>x.id===trId);

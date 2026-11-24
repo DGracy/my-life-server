@@ -159,6 +159,7 @@ for (const theme of ['light', 'dark']) test(`lenormand ${theme}: reading with pa
   await p.click('.ln-ghost'); for (const n of [27, 31]) await p.click(`.ln-grid [data-ln="pick"][data-v="${n}"]`); await p.click('button[data-ln="sheetx"]');
   expect(await p.locator('[data-lnp]').count() === 2, 'two adjacent pairs');
   await p.fill('[data-lnp="1-27"]', '很快收到消息'); await p.fill('[data-lnf="who"]', '小林'); await p.fill('[data-lnf="read"]', '会联系');
+  await p.click('[data-ln="type"][data-v="day"]'); await poll(() => p.evaluate(() => lens[0].type === 'day'), 'daily-fortune type');
   await p.click('[data-ln="spread"][data-v="9"]'); expect(await p.locator('.ln-ghost').count() === 6, 'nine slots'); await p.click('[data-ln="spread"][data-v="0"]');
   await p.click('.ln-slot >> nth=1'); await poll(() => p.$('.tr-zoom'), 'zoom'); await p.click('[data-ln="zmean"]'); await poll(() => p.$('.ln-csheet'), 'card sheet from zoom');
   await p.click('button[data-ln="cardx"]'); await p.click('[data-ln="list"]'); await poll(() => p.$('.ln-case'), 'listed');
