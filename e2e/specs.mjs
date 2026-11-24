@@ -132,7 +132,7 @@ test('life: add a wish', async ({ newPage }) => {
   await p.fill('#wishTitle', '去冰岛看极光'); await p.keyboard.press('Enter');
   await poll(() => p.evaluate(() => wishes.some(w => w.title === '去冰岛看极光')), 'wish saved');
 });
-test('wish: no next-in-line tag'), async ({ newPage }) => {
+test('wish: no next-in-line tag', async ({ newPage }) => {
   const d = populated(); d.wishes = { w1: { title: '狼蛛键盘', kind: 'buy', price: 359, cur: '¥', saved: 0, done: false, ord: 1, createdAt: 1 }, w2: { title: '耳机', kind: 'buy', price: 200, cur: '¥', saved: 0, done: false, ord: 2, createdAt: 2 } }; d.wishfund = {};
   const p = await newPage({ data: d }); await open(p); await lifeSub(p, 'wish');
   await poll(() => p.$('.wish[data-did="w1"]'), 'wish listed');
