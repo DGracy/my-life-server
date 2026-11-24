@@ -11,6 +11,21 @@ test('capture: sort free text into boards', async ({ newPage }) => {
   expect(await p.evaluate(() => shop.some(x => x.name.includes('鸡蛋'))), 'eggs not in shopping list');
   expect(await p.evaluate(() => tasks.some(t => t.title.includes('简历') && t.due === '2026-11-27')), 'CV task not due Friday');
 });
+test('capture: preview fills time kind, plan day and priority, details editor', async ({ newPage }) => {
+  const p = await newPage({ data: populated() }); await open(p); await p.click('#fab');
+  await p.fill('#cap', '周四下午2点到4点 seminar，周五前交 essay 初稿很急，明天想去洗衣服'); await p.click('#parseBtn');
+  await poll(() => p.$('#saveParsed'), 'preview shown');
+  expect(await p.locator('[data-pv="tm"][data-v="win"][data-i="0"][aria-pressed="true"]').count() === 1, 'seminar not a window');
+  expect(/14:00 → 16:00/.test(await p.locator('.pv-when').first().innerText()), 'window times not shown');
+  expect(await p.locator('[data-pv="pr"][data-v="3"][data-i="1"][aria-pressed="true"]').count() === 1, 'urgent essay not high');
+  expect(await p.locator('[data-pv="pl"][data-v="2026-11-24"][data-i="2"][aria-pressed="true"]').count() === 1, 'laundry not planned for tomorrow');
+  await p.click('[data-pv="pr"][data-v="2"][data-i="0"]');
+  await p.click('.pv-ed[data-i="1"]'); await poll(() => p.$('#ed-note'), 'full editor opens');
+  await p.fill('#ed-note', '2000 字'); await p.click('[data-ed="save"]'); await poll(async () => !(await p.$('#ed-note')), 'editor closes');
+  await p.click('#saveParsed'); await poll(() => p.evaluate(() => tasks.some(t => t.title === '交 essay 初稿')), 'saved');
+  const got = await p.evaluate(() => ['Seminar', '交 essay 初稿', '去洗衣服'].map(n => { const t = tasks.find(x => x.title === n); return t && [t.tmode || 'due', t.start || '', t.startTime || '', t.due || '', t.dueTime || '', t.plan || '', t.pri, t.note || ''] }));
+  expect(JSON.stringify(got) === JSON.stringify([['win', '2026-11-26', '14:00', '2026-11-26', '16:00', '', 2, ''], ['due', '', '', '2026-11-27', '', '', 3, '2000 字'], ['due', '', '', '', '', '2026-11-24', 0, '']]), 'saved ' + JSON.stringify(got));
+});
 test('capture: inbox keeps raw text', async ({ newPage }) => {
   const p = await newPage({ data: populated() }); await open(p); await p.click('#fab');
   await p.fill('#cap', '想想周末去哪'); await p.click('#inboxBtn'); await poll(() => p.evaluate(() => tasks.some(t => t.title.includes('周末去哪') && t.horizon === 'inbox')), 'inbox task');

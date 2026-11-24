@@ -1185,6 +1185,11 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .tr-zoom{position:fixed;inset:0;background:rgba(15,10,35,.86);z-index:21;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#f6f0ff;font-size:14.5px;padding:20px}.tr-zoom .tr-img{border-radius:10px;box-shadow:0 10px 40px #000a;max-height:60vh;width:auto!important}
 .tr-zb{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.tr-zb button{border:none;border-radius:99px;padding:8px 16px;font:inherit;font-size:13.5px;background:#ffffff26;color:#fff;cursor:pointer}
 .ov-tr{display:flex;align-items:center;gap:10px;width:100%;border:none;border-radius:14px;padding:9px 12px;margin:4px 0;background:color-mix(in srgb,#8b6cf0 12%,var(--surface));color:var(--fg);font:inherit;font-size:14px;text-align:left;cursor:pointer}.ov-tr span{flex:1;min-width:0}.ov-tr small{display:block;color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ov-tr i{font-style:normal;color:var(--muted)}
+.sheet-bg.over-cap{z-index:30}
+.pv-top{display:flex;gap:8px;align-items:center}.pv-top .pv-title{flex:1;min-width:0}.pv-ed{flex:none;border:none;background:none;color:var(--brand);font:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:4px 2px}
+.pv-line{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px}.pv-k{font-size:12px;color:var(--muted);min-width:52px}
+.pv-when{border:none;background:none;font:inherit;font-size:13px;font-weight:600;color:var(--fg);cursor:pointer;padding:2px 4px;text-decoration:underline dotted var(--muted);text-underline-offset:3px}.pv-when.none{color:var(--muted);font-weight:400}
+.pv-date{font:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:99px;padding:3px 8px;background:var(--surface);color:var(--muted);max-width:140px}.pv-date.on{border-color:var(--brand);color:var(--fg)}
 .sh-seed{display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:16px;box-shadow:0 0 0 1px var(--line);padding:10px 12px;margin:6px 0 4px}.sh-seed>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.sh-seed b{font-size:15px}.sh-seed small{color:var(--muted);font-size:12.5px;line-height:1.4}.sh-seed .btn{flex:none;display:inline-flex;align-items:center;gap:4px}.sh-seed .btn svg{width:16px;height:16px}
 .bag.dseed svg{width:56px;height:56px}
 .trpage{--oc-bg:#f7f1e5;--oc-card:#fffdf8;--oc-line:#e8dcc3;--oc-gold:#86560c;--oc-felt:#3d6b4f;--oc-felt-2:#2f5a40;background:var(--oc-bg)}
@@ -2270,7 +2275,7 @@ function ruleParse(text,today,fallback="life",dayFirst=false){
   const chunks=text.split(/[\n。；;！!？?]+|\.\s+|(?:还有|另外|然后|顺便|再就是)|\b(?:then|also|and then|plus also)\b/i).map(x=>x&&x.trim()).filter(Boolean);
   const out=[];
   const addTask=raw0=>{
-    const pr0=pickRepeat(raw0,today), raw=pr0.rest;
+    const pr0=pickRepeat(raw0,today),tk=pickTime(pr0.rest), raw=tk?tk.rest.replace(/^\s*(?:之前|以前|前)\s*/,"").replace(/(\s)(?:之前|以前|前)(?=\S)/,"$1"):pr0.rest;
     let {due,rest}=pr0.repeat?{due:null,rest:raw}:pickDate(raw,today,dayFirst);
     if(pr0.repeat&&!due)due=repFirst(normRepeat(pr0.repeat,today),today);
     const title=cleanTitle(rest); if(!title)return;
@@ -2283,7 +2288,12 @@ function ruleParse(text,today,fallback="life",dayFirst=false){
     else if(has(raw,RULES.long))horizon="long";
     const pri=/(紧急|很急|急！|急!|特别重要|非常重要|重要|马上|!!|！！|\burgent\b|\bimportant\b|\basap\b|\bcritical\b|\bpriority\b)/i.test(raw)?3:/(不急|不着急|有空再|随便|\bno rush\b|\bwhenever\b|\bsomeday\b|\blow priority\b)/i.test(raw)?1:0;
     if(pr0.repeat&&/房租|水电|账单|rent|bill/i.test(raw0)&&!s&&!w)space="life";
-    out.push({repeat:pr0.repeat?normRepeat(pr0.repeat,due):null,title:title.replace(/^(?:紧急|重要)[:：\s]*/,"").replace(/\s*(?:!!|！！)\s*$/,"").replace(/^(?:urgent|important)[:\s]+/i,"").slice(0,200)||title.slice(0,200),space,horizon,due,note:"",pri,keep:true});
+    const dl=/(前|之前|以前|截止|deadline|\bdue\b|\bby\b|\bbefore\b)/i.test(raw0),wish=/(想|打算|准备|计划|\bplan to\b|\bwant to\b)/i.test(raw0);
+    let tf={tmode:"due",dueTime:"",start:"",startTime:"",plan:""};
+    if(tk&&pr0.repeat)tf.dueTime=tk.kind==="win"?tk.s:tk.e;
+    else if(tk){const d=due||today;if(tk.kind==="win")tf={...tf,tmode:"win",start:d,startTime:tk.s,dueTime:tk.e};else if(dl)tf.dueTime=tk.e;else tf={...tf,tmode:"at",dueTime:tk.e};due=d}
+    else if(due&&!pr0.repeat&&!dl&&wish){tf.plan=due;due=null}
+    out.push({...tf,...(tf.plan&&tf.plan===today?{today:true}:{}),repeat:pr0.repeat?normRepeat(pr0.repeat,due):null,title:title.replace(/^(?:紧急|重要)[:：\s]*/,"").replace(/\s*(?:!!|！！)\s*$/,"").replace(/[，,\s]*(?:很急|特别急|超急|紧急|不急|不着急)$/,"").replace(/^(?:urgent|important)[:\s]+/i,"").slice(0,200)||title.slice(0,200),space,horizon,due,note:"",pri,keep:true});
   };
   const isTaskish=x=>has(x,RULES.study)||has(x,RULES.work);
   for(const chunk of chunks){
@@ -5916,6 +5926,14 @@ async function aiComment(){
 }
 
 /* ---------- capture & AI parsing ---------- */
+function pvWhen(p){const d=x=>x?`${md2(x)} ${L("周"+WD[new Date(x+"T12:00").getDay()],WDEN[new Date(x+"T12:00").getDay()].slice(0,3))}`:"";
+  if(p.tmode==="win")return p.start?`${d(p.start)}${p.startTime?" "+p.startTime:""} → ${p.due&&p.due!==p.start?d(p.due)+" ":""}${p.dueTime||""}`:"";
+  return p.due?`${d(p.due)}${p.dueTime?" "+p.dueTime:""}`:""}
+function pvRows(p,i){const td=todayStr(),tm=addDays(td,1),tmo=p.tmode||"due",w=pvWhen(p),pl=p.today?td:(p.plan||"");
+  const T=[["due",L("截止","Due")],["win",L("一段时间","A window")],["at",L("某个时间","At a time")]];
+  return `${p.repeat?"":`<div class="pv-line"><span class="pv-k">${L("时间","Time")}</span>${T.map(([k,n])=>`<button class="chip hz${tmo===k?" on":""}" data-pv="tm" data-v="${k}" data-i="${i}" aria-pressed="${tmo===k}">${n}</button>`).join("")}<button class="pv-when${w?"":" none"}" data-pv="edit" data-i="${i}">${w?esc(w):L("没定日期","No date")}</button></div>`}
+  ${p.repeat||tmo!=="due"?"":`<div class="pv-line"><span class="pv-k">${L("想哪天做","Do it on")}</span><button class="chip hz${pl===td?" on":""}" data-pv="pl" data-v="${td}" data-i="${i}" aria-pressed="${pl===td}">${L("今天","Today")}</button><button class="chip hz${pl===tm?" on":""}" data-pv="pl" data-v="${tm}" data-i="${i}" aria-pressed="${pl===tm}">${L("明天","Tomorrow")}</button><input type="date" class="pv-date${pl&&pl!==td&&pl!==tm?" on":""}" data-pv="plan" data-i="${i}" value="${pl&&pl!==td&&pl!==tm?pl:""}" min="${td}" aria-label="${L("选日期","Pick a date")}"></div>`}
+  <div class="pv-line"><span class="pv-k">${L("优先级","Priority")}</span>${[1,2,3].map(v=>`<button class="chip hz${+p.pri===v?" on":""}" data-pv="pr" data-v="${v}" data-i="${i}" aria-pressed="${+p.pri===v}">${PRI_NAMES()[v]}</button>`).join("")}</div>`}
 function renderPreview(){
   const box=$("#preview");if(capToday)pending.forEach(p=>{if(p.space!=="shop"&&!p.repeat&&!p.due&&p.today===undefined){p.today=true;if(p.horizon!=="week"&&p.horizon!=="long")p.horizon="week"}});
   if(!pending.length){box.hidden=true;box.innerHTML="";return}
@@ -5924,17 +5942,31 @@ function renderPreview(){
   box.innerHTML=(tdAll.length?`<div class="pv-today"><button class="chip hz${allOn?" on":""}" data-pv="todayall" aria-pressed="${!!allOn}">${allOn?"✓ ":""}${L("没写日期的都是今天要做的","Undated ones are for today")}</button></div>`:"")+pending.map((p,i)=>`<div class="pv">
     <input type="checkbox" id="pv-c-${i}" data-pv="keep" data-i="${i}" ${p.keep?"checked":""} aria-label="${L("保留这条","Keep this")}">
     <div class="pv-body">
-      <input class="pv-title" id="pv-t-${i}" data-pv="title" data-i="${i}" value="${esc(p.title)}" aria-label="${L("任务标题","Task title")}">
+      <div class="pv-top"><input class="pv-title" id="pv-t-${i}" data-pv="title" data-i="${i}" value="${esc(p.title)}" aria-label="${L("任务标题","Task title")}">${p.space!=="shop"?`<button class="pv-ed" data-pv="edit" data-i="${i}">✎ ${L("详细","Details")}</button>`:""}</div>
       <div class="chips">
         ${["life","study","work","shop"].filter(on).map(s=>`<button class="chip ${s==="shop"?"life":s}${p.space===s?" on":""}" data-pv="space" data-v="${s}" data-i="${i}">${s==="shop"?"🛒 "+SPACE.shop:SPACE[s]}</button>`).join("")}
         ${p.space==="shop"?"":`<span class="gap"></span>`+HZ.map(h=>`<button class="chip hz${p.horizon===h.k?" on":""}" data-pv="hz" data-v="${h.k}" data-i="${i}">${h.name}</button>`).join("")}
         ${p.repeat&&p.space!=="shop"?`<span class="chip rep-chip">${REP_SVG}${repLabel(p.repeat)}${p.repeat.until?L(` · 到 ${md2(p.repeat.until)}`,` · until ${md2(p.repeat.until)}`):""}</span>`:""}
-        ${p.due?`<span class="chip">${p.repeat?L("第一次 ","First ") :L("截止 ","Due ")}${esc(p.due)}</span>`:""}
-        ${p.space!=="shop"&&!p.repeat?`<button class="chip hz${p.today?" on":""}" data-pv="today" data-i="${i}" aria-pressed="${!!p.today}">${p.today?"✓ ":""}${L("今天做","Do today")}</button>`:""}${p.space!=="shop"?`<button class="chip split-chip${p.split?" on":""}" data-pv="split" data-i="${i}" aria-pressed="${!!p.split}">${p.split?"✓ ":IDEA_FACE}${L("拆子任务","Split into subtasks")}</button>`:""}${p.pri&&p.space!=="shop"?`<button class="chip" data-pv="pri" data-i="${i}" title="${priLabel(p.pri)}"><span class="psvg">${priIcon(p.pri)}</span>${PRI_NAMES()[p.pri]}</button>`:""}
-      </div>
+        ${p.repeat&&p.due?`<span class="chip">${L("第一次 ","First ")}${md2(p.due)}</span>`:""}
+      </div>${p.space==="shop"?"":pvRows(p,i)}${p.space!=="shop"?`<div class="chips"><button class="chip split-chip${p.split?" on":""}" data-pv="split" data-i="${i}" aria-pressed="${!!p.split}">${p.split?"✓ ":IDEA_FACE}${L("拆子任务","Split into subtasks")}</button></div>`:""}
     </div></div>`).join("")+
   `<div class="cap-row"><button class="btn primary" id="saveParsed">${L(`保存选中的 ${pending.filter(p=>p.keep).length} 条`,`Save ${pending.filter(p=>p.keep).length} selected`)}</button><button class="btn" id="cancelParsed">${L("取消","Cancel")}</button></div>`;
 }
+const isDay=v=>/^\d{4}-\d{2}-\d{2}$/.test(v||""),isHM=v=>/^\d{2}:\d{2}$/.test(v||"");
+function capTime(x){const tm=["due","win","at"].includes(x.tmode)?x.tmode:"due",o={tmode:tm,dueTime:isHM(x.dueTime)&&isDay(x.due)?x.dueTime:"",start:"",startTime:"",plan:""};
+  if(tm==="win"){o.start=isDay(x.start)?x.start:(isDay(x.due)?x.due:"");o.startTime=o.start&&isHM(x.startTime)?x.startTime:"";if(!o.start)o.tmode="due"}
+  if(tm==="at"&&!isDay(x.due))o.tmode="due";
+  if(o.tmode==="due"&&isDay(x.plan)&&!x.repeat){o.plan=x.plan;if(o.plan===todayStr())o.today=true}
+  return o}
+// "下午2点到4点" / "14:00" / "3pm" → time fields, plus 截止 vs 想哪天做
+function pickTime(raw){const P="(上午|下午|晚上|早上|中午|傍晚)?\\s*",H="(\\d{1,2})(?:[:：](\\d{2})|点半|点(?:(\\d{1,2})分?)?)\\s*(am|pm)?";
+  const hm=(ap,h,m1,m2,half,en)=>{h=+h;const m=half?30:+(m1||m2||0);if(/下午|晚上|傍晚/.test(ap||"")&&h<12)h+=12;if(ap==="中午"&&h<11)h+=12;if(/pm/i.test(en||"")&&h<12)h+=12;if(/am/i.test(en||"")&&h===12)h=0;return h<24&&m<60?String(h).padStart(2,"0")+":"+String(m).padStart(2,"0"):null};
+  const half=t=>/点半/.test(t);
+  let m=raw.match(new RegExp(P+H+"\\s*(?:到|至|-|~|～|—|–)\\s*"+P+H,"i"));
+  if(m){const a=hm(m[1],m[2],m[3],m[4],half(m[0].split(/到|至|-|~|～|—|–/)[0]),m[5]),b=hm(m[6]||m[1],m[7],m[8],m[9],half(m[0].split(/到|至|-|~|～|—|–/).pop()),m[10]||m[5]);if(a&&b)return {kind:"win",s:a,e:b,rest:raw.replace(m[0]," ")}}
+  m=raw.match(new RegExp(P+"(\\d{1,2})(?:[:：](\\d{2})|点半|点(?:(\\d{1,2})分?)?)","i"))||raw.match(/()\b(\d{1,2})(?::(\d{2}))?()\s*(am|pm)\b/i);
+  if(m){const tail=raw.slice(m.index+m[0].length).match(/^\s*(am|pm)\b/i),en=((m[0].match(/am|pm/i)||[])[0])||(tail&&tail[1])||"",t=m.length>6&&!m[1]?hm("",m[2],m[3],"",false,en):hm(m[1],m[2],m[3],m[4],half(m[0]),en);if(t)return {kind:"at",e:t,rest:raw.replace(tail?m[0]+tail[0]:m[0]," ")}}
+  return null}
 async function parseCapture(){
   const text=$("#cap").value.trim(); if(!text)return;
   if(!sample){
@@ -5952,7 +5984,11 @@ async function parseCapture(){
 - title：简洁的中文动作描述（保留用户原意和专有名词）
 - space："study"（课程、作业、笔记整理、考试复习、刷题、自学新技能）、"work"（求职、实习、工作项目、职业发展目标）、"shop"（要去超市或商店买的具体物品，每样东西单独一条，title 只写物品名，比如"鸡蛋"）或 "life"（其他生活事项和目标：健康、社交、家务、爱好）
 - horizon："week"（7 天内或很快要做）、"month"（一个月内）、"long"（长期目标或没有明确时间的大事）、"inbox"（实在无法判断）
-- due：如果提到具体或相对日期，换算成 YYYY-MM-DD；否则为 null
+- tmode：时间类型。"due"=截止（要在这之前做完，默认）；"win"=一段时间（有开始和结束，比如 2点到4点的 seminar、两天的线上考试）；"at"=某个时间（到点去做，比如几点开会、几点上课）
+- due：截止日期；at 时是那一天；win 时是结束那天。换算成 YYYY-MM-DD，没提到就是 null
+- dueTime：截止几点 / at 的时间 / win 的结束时间，"HH:MM" 24 小时制；没提到就是 null
+- start、startTime：只有 win 才填，开始那天 YYYY-MM-DD 和开始时间 "HH:MM"
+- plan：用户说的是“想哪天做 / 打算哪天去”而不是截止时，填那天 YYYY-MM-DD，这时 due 为 null；否则 null
 - note：用户提到的额外细节，没有则为空字符串
 - pri：优先级，3=高（提到紧急、重要、马上、急、!!、urgent、important），2=中，1=低（提到不急、有空再说、随便），没提到就是 0
 - repeat：如果是重复的事（每天、每周日、每个工作日、每两周三、每月1号、每月第一个周一…），返回 {"freq":"day"|"week"|"2week"|"month","days":[星期几，0=周日…6=周六],"mday":几号,"nth":第几个,"wd":星期几,"until":"YYYY-MM-DD 或 null"}；不重复就是 null。重复的事 due 填第一次的日期，title 里不要写"每周"这种词
@@ -5968,6 +6004,7 @@ ${text}`;
       space:["life","shop","study"].includes(x.space)?x.space:"work",
       horizon:HZNAME[x.horizon]?x.horizon:"inbox",
       due:/^\d{4}-\d{2}-\d{2}$/.test(x.due||"")?x.due:null,
+      ...capTime(x),
       note:String(x.note||"").slice(0,500),pri:[0,1,2,3].includes(+x.pri)?+x.pri:0,keep:true,
       repeat:x.repeat&&["day","week","2week","month"].includes(x.repeat.freq)?normRepeat({freq:x.repeat.freq,days:Array.isArray(x.repeat.days)?x.repeat.days.map(Number).filter(n=>n>=0&&n<=6):null,mday:+x.repeat.mday||null,nth:+x.repeat.nth||null,wd:+x.repeat.wd||0,until:/^\d{4}-\d{2}-\d{2}$/.test(x.repeat.until||"")?x.repeat.until:null},/^\d{4}-\d{2}-\d{2}$/.test(x.due||"")?x.due:null):null}));
     thinking=false;
@@ -6607,7 +6644,8 @@ function openMemo(id){
 /* ---------- editor sheet ---------- */
 function openEditor(id,preset){
   const isNew=!id; const t=isNew?null:tasks.find(x=>x.id===id); if(!isNew&&!t)return;
-  const draft=isNew?{tmode:"due",startTime:"",plan:"",start:"",dueTime:"",title:"",due:"",note:"",space:preset.space,horizon:preset.horizon,pri:0,repeat:null}:{tmode:t.tmode||(t.start?"win":"due"),startTime:t.startTime||"",plan:t.plan||"",start:t.start||"",dueTime:t.dueTime||"",title:t.title,due:t.due||"",note:t.note||"",space:t.space,horizon:t.horizon,pri:+t.pri||0,repeat:t.repeat?JSON.parse(JSON.stringify(t.repeat)):null,doneDay:t.done&&t.doneAt?dayOf(t.doneAt):null};
+  const pv=isNew&&preset&&preset.pv;
+  const draft=pv?{tmode:pv.tmode||"due",startTime:pv.startTime||"",plan:pv.today?todayStr():(pv.plan||""),start:pv.start||"",dueTime:pv.dueTime||"",title:pv.title||"",due:pv.due||"",note:pv.note||"",space:pv.space,horizon:pv.horizon,pri:+pv.pri||0,repeat:pv.repeat?JSON.parse(JSON.stringify(pv.repeat)):null}:isNew?{tmode:"due",startTime:"",plan:"",start:"",dueTime:"",title:"",due:"",note:"",space:preset.space,horizon:preset.horizon,pri:0,repeat:null}:{tmode:t.tmode||(t.start?"win":"due"),startTime:t.startTime||"",plan:t.plan||"",start:t.start||"",dueTime:t.dueTime||"",title:t.title,due:t.due||"",note:t.note||"",space:t.space,horizon:t.horizon,pri:+t.pri||0,repeat:t.repeat?JSON.parse(JSON.stringify(t.repeat)):null,doneDay:t.done&&t.doneAt?dayOf(t.doneAt):null};
   let confirmDel=false, pickDone=false;
   const FREQ=[["",L("不重复","Never")],["day",L("每天","Daily")],["week",L("每周","Weekly")],["2week",L("每两周","Every 2 weeks")],["month",L("每月","Monthly")]];
   const repBlock=()=>{const r=draft.repeat;const base=draft.due||todayStr();
@@ -6626,7 +6664,7 @@ function openEditor(id,preset){
       ${pickDone||other?`<input type="date" id="ed-doneday" min="${addDays(td,-30)}" max="${td}" value="${dd}">`:""}</div>`};
   const dtRow=(p,date,time,canClear)=>{const [hh,mm]=(time||"").split(":"),dis=date?"":"disabled";const hl=h=>L(`${h<5?"凌晨":h<12?"上午":h<13?"中午":h<18?"下午":"晚上"} ${h<=12?h:h-12} 点`,`${h%12||12} ${h<12?"AM":"PM"}`);
     return `<span class="dtrow"><input type="date" id="ed-${p}" value="${esc(date||"")}" aria-label="${p==="s"?L("开始日期","Start date"):L("日期","Date")}"><select id="ed-${p}h" aria-label="${L("几点","Hour")}" ${dis}><option value="">${L("几点","Hour")}</option>${[...Array(24)].map((_,h)=>`<option value="${pad(h)}" ${hh===pad(h)?"selected":""}>${hl(h)}</option>`).join("")}</select><select id="ed-${p}m" aria-label="${L("几分","Minute")}" ${dis}>${[...Array(12)].map((_,i)=>`<option value="${pad(i*5)}" ${(mm||"00")===pad(i*5)?"selected":""}>${pad(i*5)} ${L("分","min")}</option>`).join("")}</select>${canClear&&time?`<button class="link" data-ed="notime">${L("不要时间","No time")}</button>`:""}</span>`};
-  const bg=document.createElement("div"); bg.className="sheet-bg";
+  const bg=document.createElement("div"); bg.className="sheet-bg"+(pv?" over-cap":"");
   const draw=()=>{bg.innerHTML=`<div class="sheet" role="dialog" aria-label="${L("编辑任务","Edit task")}">
     ${isNew?`<h3>${L("添加一条","Add a task")}</h3>
     <label class="field"><span>${L("要做什么？","What needs doing?")}</span><input id="ed-title" value="${esc(draft.title)}" placeholder="${L("比如：整理 Week 6 笔记","e.g. Tidy up week 6 notes")}"></label>`:`<input id="ed-title" class="titlein" aria-label="${L("标题","Title")}" value="${esc(draft.title)}" placeholder="${L("比如：整理 Week 6 笔记","e.g. Tidy up week 6 notes")}">`}
@@ -6642,7 +6680,7 @@ function openEditor(id,preset){
     ${isNew||!t.done?`<button class="split ed-split" data-ed="split">${IDEA_FACE}${!isNew&&t.subs&&t.subs.length?L(`${t.subs.length} 个子任务 · 编辑`,`${t.subs.length} subtasks · edit`):L("加子任务","Add subtasks")}</button>`:""}
     <div class="sheet-actions">
       ${isNew?"<span></span>":`<span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn danger" data-ed="del">${confirmDel?L("再点一次确认删除","Tap again to delete"):L("删除","Delete")}</button>${!t.done&&!t.repeat&&!t.letGo?`<button class="btn" data-ed="letgo" title="${L("先收起来，随时能捡回来","Put it away; pick it up anytime")}">${L("放下","Let it go")}</button>`:""}</span>`}
-      <span style="display:flex;gap:8px"><button class="btn" data-ed="close">${L("取消","Cancel")}</button><button class="btn primary" data-ed="save">${isNew?L("添加","Add"):L("保存","Save")}</button></span>
+      <span style="display:flex;gap:8px"><button class="btn" data-ed="close">${L("取消","Cancel")}</button><button class="btn primary" data-ed="save">${pv?L("好","OK"):isNew?L("添加","Add"):L("保存","Save")}</button></span>
     </div></div>`};
   const grab=()=>{draft.title=bg.querySelector("#ed-title").value;{const st=bg.querySelector("#ed-s");if(st){draft.start=st.value;const h=bg.querySelector("#ed-sh"),m=bg.querySelector("#ed-sm");draft.startTime=h&&h.value&&draft.start?`${h.value}:${m?m.value:"00"}`:""}const pl=bg.querySelector("#ed-plan");if(pl)draft.plan=pl.value}draft.due=bg.querySelector("#ed-d").value;{const h=bg.querySelector("#ed-dh"),m=bg.querySelector("#ed-dm");draft.dueTime=h&&h.value&&draft.due?`${h.value}:${m?m.value:"00"}`:""}draft.note=bg.querySelector("#ed-note").value;
     const u=bg.querySelector("#ed-until");if(u&&draft.repeat){if(u.value)draft.repeat.until=u.value;else delete draft.repeat.until}
@@ -6668,6 +6706,7 @@ function openEditor(id,preset){
     if(a==="ddpick"){pickDone=true;draw();setTimeout(()=>{const el=bg.querySelector("#ed-doneday");if(el){el.focus();try{el.showPicker()}catch(_){}}},30);return}
     if(a==="close"){bg.remove();return}
     if(a==="split"){const title=draft.title.trim();if(!title){bg.querySelector("#ed-title").focus();return}
+      if(pv){grab();bg.remove();const rp=draft.repeat?normRepeat(draft.repeat,draft.due||null):null;preset.onSave({title:title.slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,dueTime:draft.due&&draft.dueTime?draft.dueTime:"",note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp,tmode:rp?"due":draft.tmode,start:draft.start||"",startTime:draft.startTime||"",plan:draft.plan||"",split:true});return}
       if(isNew){bg.remove();const rp=draft.repeat?normRepeat(draft.repeat,draft.due||null):null;addTask({title:title.slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,dueTime:draft.due&&draft.dueTime?draft.dueTime:null,note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp}).then(nid=>setTimeout(()=>openSplit(nid),250));return}
       bg.remove();openSplit(id);return}
     if(a==="letgo"){bg.remove();odLetGo(t);cheer(odLetMsg(t),"happy");render();return}
@@ -6680,6 +6719,7 @@ function openEditor(id,preset){
       const md=rp?"due":draft.tmode,TF={tmode:md==="due"?null:md,start:md==="win"&&draft.start?draft.start:null,startTime:md==="win"&&draft.start&&draft.startTime?draft.startTime:null,plan:md==="due"&&!rp&&draft.plan?draft.plan:null};
       if(md==="win"&&draft.start&&draft.due&&(draft.due+(draft.dueTime||"23:59"))<(draft.start+(draft.startTime||"00:00"))){const x=bg.querySelector("#ed-d");x&&x.focus();return}
       if(isNew){const title=draft.title.trim();if(!title){bg.querySelector("#ed-title").focus();return}
+        if(pv){bg.remove();preset.onSave({title:title.slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,dueTime:draft.due&&draft.dueTime?draft.dueTime:"",note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp,tmode:md,start:TF.start||"",startTime:TF.startTime||"",plan:TF.plan||""});return}
         bg.remove();addTask({title:title.slice(0,200),space:draft.space,horizon:draft.horizon,due:draft.due||null,dueTime:draft.due&&draft.dueTime?draft.dueTime:null,note:draft.note.slice(0,2000),pri:draft.pri,repeat:rp,...TF});cheer(rp?L(`记好啦，${repLabel(rp)}都会出现～`,`Saved. It'll show up ${repLabel(rp).toLowerCase()}～`):L(`加进${SPACE[draft.space]}的「${HZNAME[draft.horizon]}」了～`,`Added to ${SPACE[draft.space]} · ${HZNAME[draft.horizon]}～`));return}
       bg.remove();
       const ref=db.doc("tasks/"+id);
@@ -6711,6 +6751,10 @@ document.addEventListener("click",async e=>{
   if(e.target.closest("#jbtn")){tab=tab==="journal"?"habit":"journal";if(tab==="journal"){jDate=todayStr();jSaved="";calMonth=null}try{localStorage.setItem("los-tab",tab)}catch(_){};render();window.scrollTo({top:0,behavior:"smooth"});return}
   const pv=e.target.closest("[data-pv]");
   if(pv&&pv.dataset.pv==="todayall"){const l=pending.filter(p=>p.space!=="shop"&&!p.repeat&&!p.due),v=!l.every(p=>p.today);l.forEach(p=>{p.today=v;if(v&&p.horizon!=="week"&&p.horizon!=="long")p.horizon="week"});capToday=v;renderPreview();return}
+  if(pv&&pv.tagName==="BUTTON"&&pv.dataset.pv==="edit"){const i=+pv.dataset.i,p=pending[i];openEditor(null,{space:p.space,horizon:p.horizon,pv:p,onSave:d=>{Object.assign(p,d,{today:!!(d.plan&&d.plan===todayStr())});if(d.split)p.split=true;renderPreview()}});return}
+  if(pv&&pv.tagName==="BUTTON"&&pv.dataset.pv==="tm"){const p=pending[+pv.dataset.i],v=pv.dataset.v;p.tmode=v;if(v==="win"){if(!p.start)p.start=p.due||todayStr();if(!p.due)p.due=p.start}if(v==="at"&&!p.due)p.due=todayStr();if(v!=="win"){p.start="";p.startTime=""}if(v!=="due"){p.plan="";p.today=false}renderPreview();return}
+  if(pv&&pv.tagName==="BUTTON"&&pv.dataset.pv==="pl"){const p=pending[+pv.dataset.i],v=pv.dataset.v,cur=p.today?todayStr():p.plan;if(cur===v){p.plan="";p.today=false}else{p.plan=v===todayStr()?"":v;p.today=v===todayStr();if(p.horizon!=="week"&&p.horizon!=="long")p.horizon="week"}renderPreview();return}
+  if(pv&&pv.tagName==="BUTTON"&&pv.dataset.pv==="pr"){const p=pending[+pv.dataset.i],v=+pv.dataset.v;p.pri=+p.pri===v?0:v;renderPreview();return}
   if(pv&&pv.tagName==="BUTTON"){const p=pending[+pv.dataset.i];if(pv.dataset.pv==="space")p.space=pv.dataset.v;else if(pv.dataset.pv==="pri")p.pri={3:2,2:1,1:0}[p.pri]??0;else if(pv.dataset.pv==="split")p.split=!p.split;else if(pv.dataset.pv==="today"){p.today=!p.today;if(p.today&&p.horizon!=="week")p.horizon="week"}else p.horizon=pv.dataset.v;renderPreview();return}
   const id0=e.target.closest("button")?.id;
   if(id0==="parseBtn")return parseCapture();
@@ -6925,6 +6969,7 @@ document.addEventListener("input",e=>{
   }
   const pv=e.target.closest("[data-pv]"); if(!pv)return; const p=pending[+pv.dataset.i];
   if(pv.dataset.pv==="title")p.title=pv.value;
+  if(pv.dataset.pv==="plan"){p.plan=pv.value||"";p.today=!!pv.value&&pv.value===todayStr();if(p.today)p.plan=""}
   if(pv.dataset.pv==="keep"){p.keep=pv.checked;const b=$("#saveParsed");if(b)b.textContent=L(`保存选中的 ${pending.filter(x=>x.keep).length} 条`,`Save ${pending.filter(x=>x.keep).length} selected`)}
 });
 document.addEventListener("submit",async e=>{
