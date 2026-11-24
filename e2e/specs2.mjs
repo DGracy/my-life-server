@@ -137,8 +137,9 @@ test('tarot: hidden unless turned on for this account', async ({ newPage }) => {
 for (const theme of ['light', 'dark']) test(`tarot ${theme}: record a three-card reading with a clarifier`, async ({ newPage }) => {
   const p = await newPage({ data: populated(), theme, extraLS: { 'lifeos-tarot': '1' } }); await open(p);
   await p.click('#tarotBtn'); await poll(() => p.$('#tarotPage'), 'page'); await p.click('[data-tr="new"]'); await poll(() => p.$('.tr-spread'), 'case');
-  for (const [k, rv] of [['m06', 0], ['s03', 1], ['m17', 0]]) { await p.click('[data-tr="add"]'); await p.click(`[data-tr="suit"][data-v="${k[0]}"]`); await p.click(`[data-tr="pick"][data-v="${k}"]`); if (rv) await p.click('[data-tr="rv"][data-v="1"]'); await p.click('[data-tr="sheetok"]'); }
-  await p.locator('.tr-gbtn').first().click(); await p.click('[data-tr="suit"][data-v="c"]'); await p.click('[data-tr="pick"][data-v="c02"]'); await p.click('[data-tr="sheetok"]');
+  expect(await p.locator('.tr-ghost').count() === 1, 'starts with one open slot');
+  for (const [k, rv] of [['m06', 0], ['s03', 1], ['m17', 0]]) { await p.click('[data-tr="add"]:not([data-of])'); await p.click(`[data-tr="suit"][data-v="${k[0]}"]`); await p.click(`[data-tr="pick"][data-v="${k}"]`); if (rv) await p.click('[data-tr="rv"][data-v="1"]'); await p.click('[data-tr="sheetok"]'); }
+  await p.click('[data-tr="add"][data-of]'); await p.click('[data-tr="suit"][data-v="c"]'); await p.click('[data-tr="pick"][data-v="c02"]'); await p.click('[data-tr="sheetok"]');
   await p.fill('#trWhoIn', '小林'); await p.fill('[data-trf="q"]', '他最近冷淡？'); await p.click('[data-tr="type"][data-v="love"]');
   await p.click('.tr-sub .tr-card'); await poll(() => p.$('.tr-zoom'), 'zoom'); await p.click('[data-tr="zflip"]'); await p.click('button[data-tr="zoomx"]');
   await p.click('[data-tr="list"]'); await poll(() => p.$('.tr-case'), 'listed');
@@ -152,15 +153,17 @@ for (const theme of ['light', 'dark']) test(`lenormand ${theme}: reading with pa
   await p.click('#tarotBtn'); await poll(() => p.$('.oc-hd'), 'reading room');
   await p.click('[data-tr="deck"][data-v="l"]'); await poll(() => p.$('.ln-prac'), 'lenormand list');
   await p.click('[data-ln="new"]'); await poll(() => p.$('.ln-felt'), 'case');
-  await p.click('[data-ln="add"][data-i="0"]'); for (const n of [1, 27, 31]) await p.click(`.ln-grid [data-ln="pick"][data-v="${n}"]`);
-  await poll(async () => !(await p.$('.ln-grid')), 'sheet closes when full');
+  await p.click('[data-ln="add"][data-i="0"]'); await p.click('.ln-grid [data-ln="pick"][data-v="1"]');
+  expect(await p.$('.ln-grid'), 'picker stays open for the next card'); await p.click('button[data-ln="sheetx"]');
+  expect(await p.locator('.ln-slot').count() === 1 && await p.locator('[data-lnp]').count() === 0, 'a single card is fine');
+  await p.click('.ln-ghost'); for (const n of [27, 31]) await p.click(`.ln-grid [data-ln="pick"][data-v="${n}"]`); await p.click('button[data-ln="sheetx"]');
   expect(await p.locator('[data-lnp]').count() === 2, 'two adjacent pairs');
   await p.fill('[data-lnp="1-27"]', '很快收到消息'); await p.fill('[data-lnf="who"]', '小林'); await p.fill('[data-lnf="read"]', '会联系');
-  await p.click('[data-ln="spread"][data-v="5"]'); expect(await p.locator('.ln-ghost').count() === 2, 'five slots');
+  await p.click('[data-ln="spread"][data-v="9"]'); expect(await p.locator('.ln-ghost').count() === 6, 'nine slots'); await p.click('[data-ln="spread"][data-v="0"]');
   await p.click('.ln-slot >> nth=1'); await poll(() => p.$('.tr-zoom'), 'zoom'); await p.click('[data-ln="zmean"]'); await poll(() => p.$('.ln-csheet'), 'card sheet from zoom');
   await p.click('button[data-ln="cardx"]'); await p.click('[data-ln="list"]'); await poll(() => p.$('.ln-case'), 'listed');
   const d = await p.evaluate(() => lens.map(t => [t.who, t.spread, t.cards.join(','), t.pairs['1-27'], t.read]));
-  expect(JSON.stringify(d) === JSON.stringify([['小林', 5, '1,27,31,,', '很快收到消息', '会联系']]), 'saved ' + JSON.stringify(d));
+  expect(JSON.stringify(d) === JSON.stringify([['小林', 0, '1,27,31', '很快收到消息', '会联系']]), 'saved ' + JSON.stringify(d));
   await p.fill('#trQ', '太阳'); await poll(async () => (await p.locator('.ln-case').count()) === 1, 'search by card');
   await p.fill('#trQ', ''); await p.click('[data-ln="seg"][data-v="book"]'); await poll(() => p.$('.ln-book'), 'card book');
   expect(await p.locator('.ln-book [data-ln="card"]').count() === 36, '36 cards');
@@ -172,8 +175,8 @@ for (const theme of ['light', 'dark']) test(`lenormand ${theme}: reading with pa
 test('lenormand: nightly practice, deck remembered', async ({ newPage }) => {
   const p = await newPage({ data: populated(), extraLS: { 'lifeos-tarot': '1', 'lifeos-deck': 'l' } }); await open(p);
   await p.click('#tarotBtn'); await poll(() => p.$('[data-ln="prac"]'), 'practice prompt');
-  await p.click('[data-ln="prac"]'); await poll(() => p.$('.ln-felt'), 'practice case'); expect(!(await p.$('[data-ln="spread"]')), 'practice has a fixed spread');
-  await p.click('[data-ln="add"][data-i="0"]'); for (const n of [13, 6, 31]) await p.click(`.ln-grid [data-ln="pick"][data-v="${n}"]`);
+  await p.click('[data-ln="prac"]'); await poll(() => p.$('.ln-felt'), 'practice case');
+  await p.click('[data-ln="add"][data-i="0"]'); for (const n of [13, 6, 31]) await p.click(`.ln-grid [data-ln="pick"][data-v="${n}"]`); await p.click('button[data-ln="sheetx"]');
   await p.fill('[data-lnf="read"]', '先乱后好'); await p.click('[data-ln="list"]');
   await poll(() => p.evaluate(() => lens.some(x => x.practice && x.date === '2026-11-24' && x.cards.join() === '13,6,31')), 'practice saved for tomorrow');
   expect(/明天的牌抽好了/.test(await p.locator('.ln-prac').innerText()), 'prompt switches');

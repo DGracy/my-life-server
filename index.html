@@ -1231,8 +1231,9 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .ln-g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .ln-kw{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.ln-kw button{border:none;background:#fff3d6;color:#5a3d08;border-radius:99px;padding:4px 10px;font:inherit;font-size:13px;cursor:pointer}.ln-kw input{flex:1;min-width:120px}
 .ln-ex{display:flex;gap:8px;align-items:center}.ln-ex p{margin:0;font-size:13.5px;line-height:1.45}.ln-ex small{display:block;color:var(--muted);font-size:11.5px}
-:root[data-theme="dark"] .ln-seg button.on,:root:not([data-theme])[data-tod="night"] .ln-seg button.on{background:#f0c75a;border-color:#f0c75a;color:#2a1d0a}
 
+:root[data-theme="dark"] .ln-seg button.on,:root:not([data-theme])[data-tod="night"] .ln-seg button.on{background:#f0c75a;border-color:#f0c75a;color:#2a1d0a}
+.ln-cnt{font-size:12.5px;color:var(--muted);text-align:center;margin-top:-4px}
 .stkw{position:fixed;right:0;top:34%;z-index:16;display:flex;align-items:flex-start;pointer-events:none}
 .stkw>*{pointer-events:auto}
 .st-tab{position:relative;border:none;background:none;border-radius:16px;padding:2px 4px 2px 2px;cursor:pointer;filter:drop-shadow(0 3px 6px rgba(40,60,110,.22));margin-right:env(safe-area-inset-right,0px);line-height:0}
@@ -5022,16 +5023,15 @@ function trListHTML(){const st=trStats(),people={};tarots.forEach(t=>{if(t.who)p
     ${Object.keys(people).length?`<div class="tr-ppl"><button class="${trWho?"":"on"}" data-tr="who" data-v=""><i>${L("全","All")}</i>${L("全部","All")}</button>${Object.entries(people).sort((a,b)=>b[1]-a[1]).map(([n,c])=>`<button class="${trWho===n?"on":""}" data-tr="who" data-v="${esc(n)}"><i style="background:${col(n)}">${esc([...n][0].toUpperCase())}</i>${esc(n)}<small>${c}</small></button>`).join("")}</div>`:""}`)+`
     <div class="tr-list">${rows||`<div class="empty">${trQ||trWho?L("没有找到。","Nothing found."):L("还没有案例。帮人看完牌，点右下角记一笔。","No readings yet. After a reading, tap the button below to note it down.")}</div>`}</div>
     <button class="tr-fab" data-tr="new">＋ ${L("新案例","New reading")}</button>`}
-function trCaseHTML(){const t=trCase();if(!t)return "";const cards=t.cards||[],main=cards.filter(c=>!c.of),first=main.slice(0,3),extra=main.slice(3),subsOf=c=>cards.filter(y=>y.of===c.u),R=["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
+function trCaseHTML(){const t=trCase();if(!t)return "";const cards=t.cards||[],main=cards.filter(c=>!c.of),first=main,subsOf=c=>cards.filter(y=>y.of===c.u),R=["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
   const nm=c=>`<div class="tr-cap">${esc(trName(c.k))}${c.rv?`<em>${L("逆","Rev")}</em>`:""}</div>`;
   const one=(c,w)=>`<button class="tr-card" data-tr="zoom" data-u="${c.u}">${trImg(c,w)}</button>`;
-  const grp=(c,n)=>{const subs=subsOf(c);return `<div class="tr-grp"><span class="tr-rn">${R[n]}</span>${one(c,80)}${nm(c)}${subs.length?`<div class="tr-subs">${subs.map(y=>`<div class="tr-sub"><span class="tr-subtag">${L("补牌","Clarifier")}</span>${one(y,52)}${nm(y)}</div>`).join("")}</div>`:""}</div>`};
+  const grp=(c,n)=>{const subs=subsOf(c);return `<div class="tr-grp"><span class="tr-rn">${R[n]||n+1}</span>${one(c,80)}${nm(c)}${subs.length?`<div class="tr-subs">${subs.map(y=>`<div class="tr-sub"><span class="tr-subtag">${L("补牌","Clarifier")}</span>${one(y,52)}${nm(y)}</div>`).join("")}</div>`:""}</div>`};
   const majNoSub=first.filter(c=>c.k[0]==="m"&&!subsOf(c).length);
   return `<div class="tr-top"><button class="tr-back dk" data-tr="list">‹ ${L("全部案例","All readings")}</button><h2>${esc(t.who||L("新案例","New reading"))}${t.date?` · ${md2(t.date)}`:""}</h2></div>
-  <div class="tr-spread"><div class="tr-sphd"><i></i>${L("三张 · 无牌阵","Three cards")}<i></i></div>
-    <div class="tr-tbl">${first.map(grp).join("")}${first.length<3?`<div class="tr-grp"><span class="tr-rn">${R[first.length]}</span><button class="tr-ghost" data-tr="add"><b>＋</b>${L("抽到了哪张","Which card?")}</button></div>`:""}</div>
-    ${extra.length?`<div class="tr-sphd"><i></i>${L("多抽的","Extra cards")}<i></i></div><div class="tr-tbl">${extra.map((c,n)=>grp(c,n+3)).join("")}</div>`:""}
-    <div class="tr-acts">${majNoSub.length?`<button class="tr-gbtn" data-tr="add" data-of="${majNoSub[0].u}">✦ ${L(`给「${trName(majNoSub[0].k)}」补一张`,`Add a clarifier to ${trName(majNoSub[0].k)}`)}</button>`:""}${first.length>=3?`<button class="tr-gbtn" data-tr="add">＋ ${L("再记一张","Add another card")}</button>`:""}</div></div>
+  <div class="tr-spread"><div class="tr-sphd"><i></i>${main.length?L(`抽了 ${main.length} 张`,`${main.length} card${main.length>1?"s":""}`):L("抽牌","Cards")}<i></i></div>
+    <div class="tr-tbl">${first.map(grp).join("")}${main.length?"":`<div class="tr-grp"><span class="tr-rn">I</span><button class="tr-ghost" data-tr="add"><b>＋</b>${L("抽到了哪张","Which card?")}</button></div>`}</div>
+    <div class="tr-acts">${main.length?`<button class="tr-gbtn" data-tr="add">＋ ${L("再记一张","Add another card")}</button>`:""}${majNoSub.length?`<button class="tr-gbtn" data-tr="add" data-of="${majNoSub[0].u}">✦ ${L(`给「${trName(majNoSub[0].k)}」补一张`,`Add a clarifier to ${trName(majNoSub[0].k)}`)}</button>`:""}</div></div>
   <div class="tr-txt">
     <div class="tr-row2"><label class="field"><span>${L("是谁","Who")}</span><input id="trWhoIn" data-trf="who" value="${esc(t.who||"")}" list="trWhoList" maxlength="30"></label><label class="field"><span>${L("哪天","Date")}</span><input type="date" data-trf="date" value="${esc(t.date||"")}"></label></div>
     <datalist id="trWhoList">${[...new Set(tarots.map(x=>x.who).filter(Boolean))].map(n=>`<option value="${esc(n)}">`).join("")}</datalist>
@@ -5109,15 +5109,17 @@ function ocHead(extra){const ts=trStats(),ls=lnStats(),isT=trDeck==="t";
     <div class="oc-line">${line}</div>${extra||""}</div>`}
 const lnCase=()=>lens.find(x=>x.id===lnId);
 function lnSave(patch){const c=lnCase();if(!c)return;clearTimeout(lnTimer);Object.assign(c,lnPend,patch,{updatedAt:Date.now()});lnPend={};const r=db.doc("lenorm/"+c.id);const body={...c};delete body.id;queued(r.path,()=>r.set(body))}
-function lnNew(practice){const ref=db.collection("lenorm").doc();const td=todayStr();const doc={who:"",date:practice?addDays(td,1):td,type:"",q:practice?L("明天会怎样？","How will tomorrow go?"):"",spread:3,cards:[null,null,null],pairs:{},read:"",happened:"",after:"",revisit:null,practice:!!practice,review:null,createdAt:Date.now(),updatedAt:Date.now()};
+function lnNew(practice){const ref=db.collection("lenorm").doc();const td=todayStr();const doc={who:"",date:practice?addDays(td,1):td,type:"",q:practice?L("明天会怎样？","How will tomorrow go?"):"",spread:0,cards:[],pairs:{},read:"",happened:"",after:"",revisit:null,practice:!!practice,review:null,createdAt:Date.now(),updatedAt:Date.now()};
   lens.push({id:ref.id,...doc});lnId=ref.id;lnView="case";lnDel=false;lnErr="";queued(ref.path,()=>ref.set(doc));renderTarot()}
 function lnCleanup(){const c=lnCase();if(c&&!(c.cards||[]).some(Boolean)&&!c.who&&!c.read&&!(c.q&&!c.practice)&&!c.happened){const r=db.doc("lenorm/"+c.id);queued(r.path,()=>r.delete());lens=lens.filter(x=>x!==c)}}
 function lnMatch(t){const q=trQ.trim().toLowerCase();if(!q)return true;return [t.who,t.q,t.read,t.happened,t.after].some(x=>(x||"").toLowerCase().includes(q))||(t.cards||[]).some(n=>n&&(LN_C[n][0].includes(q)||LN_C[n][1].toLowerCase().includes(q)))}
-const lnPairKeys=c=>{const cs=c.cards||[],ks=[];if(c.spread<=5)for(let i=0;i<cs.length-1;i++)if(cs[i]&&cs[i+1])ks.push(cs[i]+"-"+cs[i+1]);Object.keys(c.pairs||{}).forEach(k=>{if(!ks.includes(k)){const [a,b]=k.split("-").map(Number);if(cs.includes(a)&&cs.includes(b))ks.push(k)}});return ks};
+const lnFree=c=>!(c.spread===9||c.spread===36);
+const lnCards=c=>lnFree(c)?(c.cards||[]).filter(Boolean):(c.cards||[]);
+const lnPairKeys=c=>{const cs=c.cards||[],ks=[];if(lnFree(c))for(let i=0;i<cs.length-1;i++)if(cs[i]&&cs[i+1])ks.push(cs[i]+"-"+cs[i+1]);Object.keys(c.pairs||{}).forEach(k=>{if(!ks.includes(k)){const [a,b]=k.split("-").map(Number);if(cs.includes(a)&&cs.includes(b))ks.push(k)}});return ks};
 function lnPracticeBox(){const td=todayStr(),tm=addDays(td,1),pr=lens.filter(x=>x.practice);const due=pr.find(x=>x.date<=td&&!x.happened&&(x.cards||[]).some(Boolean)),next=pr.find(x=>x.date===tm);
   if(due)return `<button class="ln-prac due" data-ln="open" data-id="${due.id}"><span class="ln-pc">${(due.cards||[]).filter(Boolean).map(n=>lnCard(n,26,false)).join("")}</span><span><b>${L("今天的练习：发生了什么？","Today's practice: what happened?")}</b><small>${L(`${md2(due.date)} 的三张牌`,`Cards for ${md2(due.date)}`)}</small></span><i>›</i></button>`;
   if(next)return `<button class="ln-prac" data-ln="open" data-id="${next.id}"><span class="ln-pc">${lnBack(20)}${lnBack(20)}${lnBack(20)}</span><span><b>${L("明天的牌抽好了","Tomorrow's cards are drawn")}</b><small>${L("明天晚上回来写发生了什么","Come back tomorrow night")}</small></span><i>›</i></button>`;
-  return `<button class="ln-prac" data-ln="prac"><span class="ln-pc">${lnBack(20,"?")}${lnBack(20,"?")}${lnBack(20,"?")}</span><span><b>${L("练一次：明天会怎样？","Practice: how will tomorrow go?")}</b><small>${L("抽三张，写下解读","Draw three, write your reading")}</small></span><i>›</i></button>`}
+  return `<button class="ln-prac" data-ln="prac"><span class="ln-pc">${lnBack(20,"?")}${lnBack(20,"?")}${lnBack(20,"?")}</span><span><b>${L("练一次：明天会怎样？","Practice: how will tomorrow go?")}</b><small>${L("抽几张都行，写下解读","Draw any number, write your reading")}</small></span><i>›</i></button>`}
 function lnListHTML(){const srch=`<label class="tr-srch oc-srch"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="trQ" value="${esc(trQ)}" placeholder="${L("找人、找牌","Find a person or a card")}" aria-label="${L("搜索","Search")}"></label>`;
   const seg=`<div class="ln-seg" role="tablist"><button class="${lnView==="book"?"":"on"}" data-ln="seg" data-v="list" role="tab" aria-selected="${lnView!=="book"}">${L("案例","Readings")}</button><button class="${lnView==="book"?"on":""}" data-ln="seg" data-v="book" role="tab" aria-selected="${lnView==="book"}">${L("牌义本","Card book")}</button></div>`;
   if(lnView==="book")return ocHead(seg)+lnBookHTML();
@@ -5127,18 +5129,21 @@ function lnListHTML(){const srch=`<label class="tr-srch oc-srch"><svg viewBox="0
     rows+=`<button class="tr-case ln-case" data-ln="open" data-id="${t.id}"><div class="ln-strip">${cs.slice(0,5).map(n=>lnCard(n,30,false)).join("")||`<span class="tr-empty"></span>`}${cs.length>5?`<em>+${cs.length-5}</em>`:""}</div>
       <div class="tr-cb"><div class="tr-ch"><b>${t.practice?L("每日练习","Practice"):esc(t.who||L("还没写名字","No name yet"))}</b><small>${t.date?md2(t.date):""}</small>${t.practice?`<span class="tr-tag ln-ptag">${L("练习","Practice")}</span>`:(t.type?`<span class="tr-tag">${trType(t.type)}</span>`:"")}</div><div class="tr-q">${esc(t.q||"")}</div>${foot?`<div class="tr-f">${esc(foot)}</div>`:""}</div></button>`}
   return ocHead(seg+srch)+`${lnPracticeBox()}<div class="tr-list">${rows||`<div class="empty">${trQ?L("没有找到。","Nothing found."):L("还没有雷诺曼案例。","No Lenormand readings yet.")}</div>`}</div><button class="tr-fab" data-ln="new">＋ ${L("记一次","New reading")}</button>`}
-const LN_SPREADS=()=>[[3,L("三张","Three")],[5,L("五张","Five")],[9,L("九宫格","3×3")],[36,L("大桌 36","Grand 36")]];
-function lnCaseHTML(){const c=lnCase();if(!c)return "";const cs=c.cards||[],sp=c.spread||3,used=cs.filter(Boolean).length;
-  const w=sp===3?72:sp===5?54:sp===9?62:34,cls=sp<=5?"row":sp===9?"g3":"g9";
-  const slots=cs.map((n,i)=>n?`<button class="ln-slot" data-ln="zoom" data-i="${i}" aria-label="${esc(lnName(n))}">${lnCard(n,w,sp!==36)}</button>`:`<button class="ln-ghost" data-ln="add" data-i="${i}" style="width:${w}px;height:${Math.round(w*1.4)}px" aria-label="${L(`第 ${i+1} 张`,`Card ${i+1}`)}"><b>＋</b>${sp<=9?`<small>${i+1}</small>`:""}</button>`).join(sp<=5?`<span class="ln-ar" aria-hidden="true">→</span>`:"");
+const LN_SPREADS=()=>[[0,L("一排","In a row")],[9,L("九宫格","3×3")],[36,L("大桌 36","Grand 36")]];
+function lnCaseHTML(){const c=lnCase();if(!c)return "";const free=lnFree(c),sp=free?0:c.spread,cs=free?(c.cards||[]).filter(Boolean):(c.cards||[]),used=cs.filter(Boolean).length;
+  const w=free?(used<=1?84:used<=3?72:used<=5?54:46):sp===9?62:34,cls=free?"row":sp===9?"g3":"g9";
+  const card=(n,i)=>`<button class="ln-slot" data-ln="zoom" data-i="${i}" aria-label="${esc(lnName(n))}">${lnCard(n,w,sp!==36)}</button>`;
+  const ghost=(i,label)=>`<button class="ln-ghost" data-ln="add" data-i="${i}" style="width:${w}px;height:${Math.round(w*1.4)}px" aria-label="${L(`第 ${i+1} 张`,`Card ${i+1}`)}"><b>＋</b>${label?`<small>${label}</small>`:""}</button>`;
+  const slots=free?cs.map(card).join(`<span class="ln-ar" aria-hidden="true">→</span>`)+(used?`<span class="ln-ar" aria-hidden="true"></span>`:"")+ghost(used,used?"":L("抽到了哪张","Which card?"))
+    :cs.map((n,i)=>n?card(n,i):ghost(i,sp<=9?String(i+1):"")).join("");
   const pks=lnPairKeys(c),bk=LEN_BOOK;
   const pairs=pks.map(k=>{const [a,b]=k.split("-").map(Number),bp=bk&&bk.pairs[k];return `<div class="ln-pair"><div class="ln-pp">${lnCard(a,30,false)}${lnCard(b,30,false)}</div><div class="ln-pt"><b>${esc(lnName(a))} + ${esc(lnName(b))}</b><input data-lnp="${k}" value="${esc((c.pairs||{})[k]||"")}" placeholder="${L("这一对怎么读…","How do these two read together…")}" maxlength="300" aria-label="${esc(lnName(a))} + ${esc(lnName(b))}">${bp?`<em>${L("书里：","Book: ")}${esc(bp)}</em>`:""}</div></div>`}).join("");
   const pp=lnPairPick?`<div class="ln-pick2"><span>${lnPairPick.a?L("再点第二张","Now the second card"):L("点第一张","Tap the first card")}</span><div>${[...new Set(cs.filter(Boolean))].map(n=>`<button class="${lnPairPick.a===n?"on":""}" data-ln="pp" data-v="${n}">${lnCard(n,30,false)}<small>${esc(lnName(n))}</small></button>`).join("")}</div><button class="tr-back dk" data-ln="ppx">${L("取消","Cancel")}</button></div>`:"";
   const rv=c.review;
   return `<div class="tr-top"><button class="tr-back dk" data-ln="list">‹ ${L("雷诺曼","Lenormand")}</button><h2>${c.practice?L("每日练习","Practice"):esc(c.who||L("新案例","New reading"))}${c.date?` · ${md2(c.date)}`:""}</h2></div>
-  ${c.practice?"":`<div class="ln-spr chips">${LN_SPREADS().map(([n,t])=>`<button class="chip hz${sp===n?" on":""}" data-ln="spread" data-v="${n}" aria-pressed="${sp===n}" ${used>n?"disabled":""}>${t}</button>`).join("")}</div>`}
-  <div class="ln-felt ${cls}">${slots}</div>
-  ${pks.length||sp>5?`<div class="ln-sec">${L("组合","Pairs")}</div>${pairs}${sp>5&&used>1?(pp||`<button class="tr-gbtn ln-addp" data-ln="ppstart">＋ ${L("记一组组合","Note a pair")}</button>`):""}`:""}
+  <div class="ln-spr chips">${LN_SPREADS().map(([n,t])=>`<button class="chip hz${sp===n?" on":""}" data-ln="spread" data-v="${n}" aria-pressed="${sp===n}" ${n&&used>n?"disabled":""}>${t}</button>`).join("")}</div>
+  <div class="ln-felt ${cls}">${slots}</div>${used?`<div class="ln-cnt">${L(`抽了 ${used} 张`,`${used} card${used>1?"s":""}`)}</div>`:""}
+  ${pks.length||!free?`<div class="ln-sec">${L("组合","Pairs")}</div>${pairs}${!free&&used>1?(pp||`<button class="tr-gbtn ln-addp" data-ln="ppstart">＋ ${L("记一组组合","Note a pair")}</button>`):""}`:""}
   <div class="tr-txt ln-txt">
     ${c.practice?`<div class="field"><span>${L("问题","Question")}</span><div class="ln-fixed">${esc(c.q)}</div></div>`:`<div class="tr-row2"><label class="field"><span>${L("是谁","Who")}</span><input data-lnf="who" value="${esc(c.who||"")}" list="lnWhoList" maxlength="30"></label><label class="field"><span>${L("哪天","Date")}</span><input type="date" data-lnf="date" value="${esc(c.date||"")}"></label></div>
     <datalist id="lnWhoList">${[...new Set([...lens,...tarots].map(x=>x.who).filter(Boolean))].map(n=>`<option value="${esc(n)}">`).join("")}</datalist>
@@ -5151,10 +5156,10 @@ function lnCaseHTML(){const c=lnCase();if(!c)return "";const cs=c.cards||[],sp=c
     ${rv?`<div class="ln-rv"><div class="ln-rvh">✦ ${L("复盘","Review")}</div>${rv.good?`<p><b>${L("读得好","What worked")}</b>${esc(rv.good)}</p>`:""}${rv.look?`<p><b>${L("可以再看看","Worth another look")}</b>${esc(rv.look)}</p>`:""}${rv.next?`<p><b>${L("下次试试","Try next time")}</b>${esc(rv.next)}</p>`:""}</div>`:""}
     <div class="tr-foot"><span id="lnSaved"></span><button class="btn danger" data-ln="del">${lnDel?L("再点一次确认删除","Tap again to delete"):L("删掉这条","Delete")}</button></div>
   </div>`}
-function lnSheetHTML(){if(!lnSheet)return "";const c=lnCase();if(!c)return "";const cs=c.cards||[];
+function lnSheetHTML(){if(!lnSheet)return "";const c=lnCase();if(!c)return "";const cs=lnCards(c);
   return `<div class="tr-sheetbg" data-ln="sheetx"><div class="tr-sheet" role="dialog" aria-label="${L("抽到了哪张","Which card?")}"><div class="tr-shd"><b>${L(`第 ${lnSheet.i+1} 张是？`,`Card ${lnSheet.i+1}?`)}</b><button class="tr-back dk" data-ln="sheetx">${L("好了","Done")}</button></div>
     <div class="ln-grid">${LN_C.slice(1).map((_,j)=>{const n=j+1,on=cs.includes(n);return `<button data-ln="pick" data-v="${n}" ${on&&cs[lnSheet.i]!==n?"disabled":""} class="${cs[lnSheet.i]===n?"pick":""}">${lnCard(n,52)}</button>`}).join("")}</div></div></div>`}
-function lnZoomHTML(){if(lnZoom===null)return "";const c=lnCase();const n=c&&(c.cards||[])[lnZoom];if(!n)return "";
+function lnZoomHTML(){if(lnZoom===null)return "";const c=lnCase();const n=c&&lnCards(c)[lnZoom];if(!n)return "";
   return `<div class="tr-zoom" data-ln="zoomx" role="dialog" aria-label="${esc(lnName(n))}">${lnCard(n,170)}<div class="tr-zn">${n} · ${esc(lnName(n))}</div><div class="tr-zb"><button data-ln="zmean" data-v="${n}">${L("牌义","Meaning")}</button><button data-ln="zchange">${L("换一张","Change")}</button><button data-ln="zdel">${L("拿掉","Remove")}</button><button data-ln="zoomx">${L("关闭","Close")}</button></div></div>`}
 function lnDaily(){let d=null;try{d=JSON.parse(localStorage.getItem("lifeos-len-daily")||"null")}catch(_){}return d&&d.d===todayStr()?d.n:null}
 function lnBookHTML(){const cnt={};lens.forEach(t=>(t.cards||[]).forEach(n=>{if(n)cnt[n]=(cnt[n]||0)+1}));const dn=lnDaily();
@@ -5179,7 +5184,7 @@ async function lnReview(){const c=lnCase();if(!c||!sample||!LEN_BOOK||lnBusy)ret
   const pairs=ks.map(k=>{const [a,b]=k.split("-").map(Number);return `${LN_C[a][0]}+${LN_C[b][0]}：书里「${bk.pairs[k]||"无"}」；她写的「${(c.pairs||{})[k]||"没写"}」`}).join("\n");
   const prompt=`你是她学雷诺曼的练习伙伴。根据下面这本书的牌义和读牌方法，帮她复盘这次解读。
 读牌方法（来自书）：雷诺曼没有逆位；单张抓核心再落到问题上；两张牌读“变化”：由 A 变成 B，或因为 A 所以 B（不一定按出牌顺序）；三张牌：A+B 是第一段变化，B+C 是第二段，连成“起因→过程→走向”；更多张也是两两组合再连起来。
-牌阵：${c.spread||3} 张${c.practice?"（每日练习：前一晚问明天会怎样）":""}
+牌阵：${lnFree(c)?`一排 ${cs.length} 张`:c.spread===9?"九宫格":"大桌 36 张"}${c.practice?"（每日练习：前一晚问明天会怎样）":""}
 问题：${c.q||"没写"}${c.type?`（${trType(c.type)}）`:""}
 牌（按顺序）：
 ${cards}
@@ -5204,13 +5209,13 @@ function lnClick(e){const b=e.target.closest("[data-ln]");if(!b)return;const a=b
   if(a==="kwdel"){const n=lnCardN,kw=[...((lnNotes["c"+n]||{}).kw||[])];kw.splice(+b.dataset.i,1);lnNoteSave(n,{kw});renderTarot();return}
   if(a==="zmean"){lnZoom=null;lnCardN=+b.dataset.v;lnTab=LEN_BOOK?"book":"me";renderTarot();return}
   if(!c)return;
-  if(a==="spread"){const n=+b.dataset.v,cs=(c.cards||[]).filter(Boolean);if(cs.length>n)return;lnSave({spread:n,cards:[...cs,...Array(n-cs.length).fill(null)]});renderTarot();return}
+  if(a==="spread"){const n=+b.dataset.v,cs=(c.cards||[]).filter(Boolean);if(n&&cs.length>n)return;lnSave({spread:n,cards:n?[...cs,...Array(n-cs.length).fill(null)]:cs});renderTarot();return}
   if(a==="type"){lnSave({type:c.type===b.dataset.v?"":b.dataset.v});renderTarot();return}
   if(a==="add"){lnSheet={i:+b.dataset.i};renderTarot();return}
-  if(a==="pick"){const n=+b.dataset.v,cs=[...(c.cards||[])];cs[lnSheet.i]=n;lnSave({cards:cs});const nx=cs.findIndex(x=>!x);if(nx>=0)lnSheet={i:nx};else lnSheet=null;renderTarot();return}
+  if(a==="pick"){const n=+b.dataset.v,free=lnFree(c),cs=[...lnCards(c)];const wasNew=lnSheet.i>=cs.length;cs[lnSheet.i]=n;lnSave({cards:cs});if(free)lnSheet=wasNew?{i:cs.length}:null;else{const nx=cs.findIndex(x=>!x);lnSheet=nx>=0?{i:nx}:null}renderTarot();return}
   if(a==="zoom"){lnZoom=+b.dataset.i;renderTarot();return}
   if(a==="zchange"){lnSheet={i:lnZoom};lnZoom=null;renderTarot();return}
-  if(a==="zdel"){const cs=[...(c.cards||[])];cs[lnZoom]=null;lnZoom=null;lnSave({cards:cs});renderTarot();return}
+  if(a==="zdel"){let cs=[...lnCards(c)];if(lnFree(c))cs.splice(lnZoom,1);else cs[lnZoom]=null;lnZoom=null;lnSave({cards:cs});renderTarot();return}
   if(a==="ppstart"){lnPairPick={a:null};renderTarot();return}
   if(a==="ppx"){lnPairPick=null;renderTarot();return}
   if(a==="pp"){const n=+b.dataset.v;if(!lnPairPick.a){lnPairPick.a=n;renderTarot();return}if(n===lnPairPick.a)return;const k=lnPairPick.a+"-"+n;lnPairPick=null;lnSave({pairs:{...(c.pairs||{}),[k]:(c.pairs||{})[k]||""}});renderTarot();setTimeout(()=>document.querySelector(`[data-lnp="${k}"]`)?.focus(),30);return}
