@@ -28,8 +28,8 @@ for (const k of MAIN) test(`nav: tab ${k} highlights exactly itself`, async ({ n
   await noSideScroll(p, k);
 });
 test('nav: chosen tab survives reload', async ({ newPage }) => {
-  const p = await newPage({ data: populated() }); await open(p); await goTab(p, 'study'); await p.reload(); await ready(p); // reload only, no second navigation
-  const got = await p.evaluate(() => [tab, localStorage.getItem('los-tab')]); expect(got[0] === 'study', 'tab not remembered: ' + got);
+  const p = await newPage({ data: populated() }); await open(p); await goTab(p, 'study'); const before = await p.evaluate(() => localStorage.getItem('los-tab')); expect(before === 'study', 'not stored before reload: ' + before); await p.reload(); await ready(p); // reload only, no second navigation
+  const got = await p.evaluate(() => [tab, localStorage.getItem('los-tab'), 'inits=' + sessionStorage.getItem('__inits'), 'seeded=' + localStorage.getItem('__seeded'), 'url=' + location.href.slice(-30)]); expect(got[0] === 'study', 'tab not remembered: ' + got);
 });
 for (const k of LIFE) test(`nav: life section ${k}`, async ({ newPage }) => {
   const p = await newPage({ data: populated() }); await open(p); await lifeSub(p, k);

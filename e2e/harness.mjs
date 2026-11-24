@@ -26,7 +26,7 @@ export async function newPage(project, { data, theme = process.env.FORCE_THEME |
   const ls = { 'lifeos-welcomed': '1', 'lifeos-lang': lang, 'los-tab': tab, 'lifeos-tips': JSON.stringify(Object.fromEntries(HINTS_SEEN.map(k => [k, 1]))), 'lifeos-tour': JSON.stringify(Object.fromEntries([['full', 1], ['new', 1], ...TOUR_SEEN.map(k => ['nf:' + k, 1])])), ...extraLS };
   if (data !== undefined) ls['lifeos-data-v1'] = JSON.stringify(data);
   await page.addInitScript(() => { let a = 20261123; Math.random = () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }); // seeded randomness
-  await page.addInitScript(ls => { if (localStorage.getItem('__seeded')) return; localStorage.clear(); for (const k in ls) localStorage.setItem(k, ls[k]); localStorage.setItem('__seeded', '1'); /* once per test, survives reloads */ }, ls);
+  await page.addInitScript(ls => { try { sessionStorage.setItem('__inits', String(+(sessionStorage.getItem('__inits') || 0) + 1)); } catch (_) {} if (localStorage.getItem('__seeded')) return; localStorage.clear(); for (const k in ls) localStorage.setItem(k, ls[k]); localStorage.setItem('__seeded', '1'); /* once per test, survives reloads */ }, ls);
   await page.coverage.startJSCoverage({ resetOnNavigation: false });
   page.__allowErrors = allowErrors;
   return page;
