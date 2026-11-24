@@ -149,7 +149,7 @@ test('wish fund: one pound pot, other currencies converted in list order', async
   await p.click('[data-act="fundpay"]'); await p.fill('#wfAmt', '45'); await p.click('[data-wf="ok"]');
   await poll(() => p.evaluate(() => wishes.find(w => w.id === 'w1').saved === 359), 'first wish not filled in yuan');
   const w2 = await p.evaluate(() => wishes.find(w => w.id === 'w2').saved); expect(Math.abs(w2 - 45.99) < 0.02, 'rest not converted into the second wish: ' + w2);
-  await p.fill('[data-fx="¥"]', '10'); await p.locator('[data-fx="¥"]').dispatchEvent('change');
+  await p.click('details[data-keep="wfrate"] summary'); await p.fill('.wstats ~ .ws-sub [data-fx="¥"], .ws-sub [data-fx="¥"]', '10'); await p.locator('.ws-sub [data-fx="¥"]').dispatchEvent('change');
   await poll(() => p.evaluate(() => wfund.rates && wfund.rates['¥'] === 10), 'rate not saved');
   await poll(() => p.evaluate(() => toF(99, '¥') === 9.9), 'rate change not applied');
 });
@@ -163,6 +163,15 @@ test('wish: paste a picture, compact list', async ({ newPage }) => {
   await p.fill('#wishTitle', '拍立得'); await p.fill('#wishPrice', '60'); await p.keyboard.press('Enter');
   await poll(() => p.evaluate(() => wishes.some(w => w.title === '拍立得' && (w.photo || w.img))), 'wish saved without the picture');
   await poll(() => p.$('.list.wl .w-st'), 'sticker not on the photo');
+});
+test('wish: drag hint shows once, rate tucked away', async ({ newPage }) => {
+  const d = populated(); d.wishes = { a: { title: '甲', kind: 'buy', price: 10, cur: '¥', done: false, ord: 1, createdAt: 1 }, b: { title: '乙', kind: 'buy', price: 20, cur: '£', done: false, ord: 2, createdAt: 2 } };
+  const p = await newPage({ data: d }); await open(p); await lifeSub(p, 'wish');
+  await poll(() => p.$('.ghint'), 'hint not shown the first time');
+  await p.evaluate(() => render()); expect(await p.$('.ghint'), 'hint vanished within the same visit');
+  expect(!(await p.locator('.ws-sub [data-fx]').isVisible()), 'rate box visible without opening');
+  await p.reload(); await open(p); await lifeSub(p, 'wish'); await p.waitForTimeout(200);
+  expect(!(await p.$('.ghint')), 'hint shown again after reload');
 });
 test('sticky: add, tag date, done', async ({ newPage }) => {
   const p = await newPage({ data: populated() }); await open(p); await SCREENS.sticky(p);
