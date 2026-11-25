@@ -3526,6 +3526,8 @@ function timelineItems(d){
   tasks.filter(t=>!t.deleted&&t.subs&&t.subs.length).forEach(t=>t.subs.forEach(x=>{if(x.done&&x.at&&dayOf(x.at)===d)it.push({t:x.at,k:t.space,txt:L(`做完一步「${esc(x.t)}」`,`Step done: “${esc(x.t)}”`),sub:esc(t.title)})}));
   pomos.filter(p=>p.day===d&&(+p.mins||0)>=1).forEach(p=>{const t=p.taskId&&tasks.find(x=>x.id===p.taskId);const st=p.end?p.end-(+p.mins)*6e4:p.start;
     it.push({t:st,mins:+p.mins,k:"pomo",txt:`${TOM_ICON}${L(`专注 ${Math.round(p.mins)} 分钟`,`Focused ${Math.round(p.mins)} min`)}${p.space?` <span class="tag ${p.space}">${BOARD_NAME(p.space)}</span>`:""}`,sub:t?esc(t.title):""})});
+  trips.filter(x=>x.date===d&&x.createdAt).forEach(x=>{const nm=(x.names||[]).filter(Boolean);
+    it.push({t:x.createdAt,k:"life",txt:L(`去超市 · 买了 ${x.items||nm.length} 样`,`Shopping · ${x.items||nm.length} ${n_(x.items||nm.length,"item","items")}`),sub:esc(nm.slice(0,6).join("、")+(nm.length>6?L(` 等 ${nm.length} 样`,` +${nm.length-6} more`):""))})});
   eats.filter(x=>x.day===d).forEach(x=>{const s=SLOTS().find(y=>y[0]===x.slot);it.push({t:x.at,k:"life",txt:`${s?s[2]:L("吃饭","Meal")} · ${esc(x.name)}`,eat:x.id,ed:`eat|${x.id}`})});
   const base=new Date(d+"T00:00:00");
   (on("classes")?coursesOn(d):[]).forEach(c=>{const st=new Date(base.getTime()+tmin(c.start)*6e4).getTime();it.push({t:st,mins:tmin(c.end)-tmin(c.start),k:"grey",txt:L(`上课 · ${esc(c.name)}`,`Class · ${esc(c.name)}`),sub:`${esc(c.start)}–${esc(c.end)}${c.loc?" · "+esc(c.loc):""}`})});
@@ -6065,7 +6067,7 @@ function journalView(){
   const wdIdx=new Date(y,m-1,dd).getDay();
   const list=(arr,key)=>arr.length?`<ul>${arr.map(x=>`<li>${esc(key?x[key]:x)}</li>`).join("")}</ul>`:`<span class="none">${L("这天没有完成的","Nothing finished this day")}</span>`;
   const box=(name,color,inner)=>`<div class="jbox" style="--c:var(${color})"><h4><i style="background:var(${color})"></i>${name}</h4>${inner}</div>`;
-  const lifeInner=list(D.life,"title")+(D.trip.length?`<button class="tripln" data-act="trips" data-v="${d}">🛒 ${L(`去了 ${D.trip.length} 趟超市，买了 ${D.trip.reduce((a,b)=>a+(b.items||0),0)} 样`,`${D.trip.length} shopping ${n_(D.trip.length,"trip","trips")}, ${D.trip.reduce((a,b)=>a+(b.items||0),0)} items`)} <em>›</em></button>`:"");
+  const lifeInner=list(D.life,"title")+(D.trip.length?`<button class="tripln" data-act="trips" data-v="${d}">${L(`去了 ${D.trip.length} 趟超市，买了 ${D.trip.reduce((a,b)=>a+(b.items||0),0)} 样`,`${D.trip.length} shopping ${n_(D.trip.length,"trip","trips")}, ${D.trip.reduce((a,b)=>a+(b.items||0),0)} items`)} <em>›</em></button>`:"");
   const comment=J.comment||"";
   return `<div class="board" data-k="journal">
     ${calendarCard(d)}
@@ -7395,7 +7397,7 @@ function seed(){
 
 /* ---------- settings: name, backup, restore ---------- */
 function boardChips(){
-  return [["habit","打卡","Habits"],["life","生活","Life"],["shop","🛒 购物清单","🛒 Shopping list"],["memo","📝 备忘录","📝 Notes"],["wish","✨ 愿望清单","✨ Wishlist"],["study","学习","Study"],["classes","📅 课程表","📅 Timetable"],["work","工作","Work"]]
+  return [["habit","打卡","Habits"],["life","生活","Life"],["shop","购物清单","Shopping list"],["memo","备忘录","Notes"],["wish","愿望清单","Wishlist"],["study","学习","Study"],["classes","课程表","Timetable"],["work","工作","Work"]]
     .map(([k,zh,en])=>{const off=((k==="shop"||k==="wish"||k==="memo")&&!boards.life)||(k==="classes"&&!boards.study);
       return `<button class="chip hz${boards[k]&&!off?" on":""}" data-set="board" data-v="${k}" ${off?'disabled style="opacity:.45"':""} aria-pressed="${boards[k]&&!off}">${boards[k]&&!off?"✓ ":""}${L(zh,en)}</button>`}).join("");
 }
