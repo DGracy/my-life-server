@@ -268,7 +268,7 @@ details.done-box .list{margin-top:8px}
 .card-head .sub{font-size:12.5px;color:var(--muted)}
 .card-head .right{margin-left:auto;display:flex;gap:6px}
 .link{border:none;background:none;color:var(--life-ink);font-size:13px;padding:2px 4px}
-.staples{display:flex;flex-wrap:wrap;gap:7px;align-items:flex-start}.staples .st{white-space:nowrap}
+.staples{display:flex;flex-wrap:wrap;gap:7px;align-items:flex-start;min-width:0}.staples .st{max-width:100%;min-width:0;box-sizing:border-box}.staples .stt,.staples .st .stn{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.staples .st .stn{flex:0 1 auto}.staples .st .sti,.staples .st .x{flex:none}.staples .st{white-space:nowrap}
 .st{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:14px;display:inline-flex;gap:6px;align-items:center;transition:transform .12s}
 .st:hover{transform:translateY(-1px)}
 .st.pick{background:var(--life);border-color:var(--life);color:#fff}
@@ -283,7 +283,7 @@ details.done-box .list{margin-top:8px}
 .items{display:flex;flex-direction:column}
 .item{display:grid;grid-template-columns:auto 1fr auto auto;gap:10px;align-items:center;padding:9px 2px;border-top:2px dotted var(--line)}
 .item:first-child{border-top:none}
-.item .nm{overflow-wrap:anywhere;min-width:0}
+.item .nm{overflow-wrap:anywhere;min-width:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
 .item.got .nm{color:var(--faint);text-decoration:line-through}
 .item .star{border:none;background:none;padding:2px;font-size:16px;color:var(--faint);line-height:1}
 .item .star.on{color:var(--habit)}
@@ -2120,7 +2120,7 @@ function shopBoard(){
     const sOn=stores.on&&stores.list.length;
     if(stapleEdit)return sOn?`<span class="st sted"><button class="stn" data-act="stren" data-id="${st.id}" title="${L("点一下改名字","Tap to rename")}">${esc(st.name)} <span class="stpen">✎</span></button><button class="sti" data-act="ststore" data-id="${st.id}" title="${L("点一下选在哪家买","Tap to pick shops")}">${esc(storeNames(st)||L("哪家都行","Any shop"))} ▾</button><button class="x" data-act="stdel" data-id="${st.id}" aria-label="${L("删掉","Delete")}">×</button></span>`:`<span class="st sted"><button class="stn" data-act="stren" data-id="${st.id}" title="${L("点一下改名字","Tap to rename")}">${esc(st.name)} <span class="stpen">✎</span></button><button class="x" data-act="stdel" data-id="${st.id}" aria-label="${L("删掉","Delete")}">×</button></span>`;
     if(sOn&&storesOf(st).length)return `<span class="st two${pick.has(st.id)?" pick":""}${has?" inlist":""}"><button class="stn" data-act="stpick" data-id="${st.id}" ${has?`title="${L("已在清单里","Already on the list")}"`:""}>${pick.has(st.id)?"✓ ":""}${esc(st.name)}</button><button class="sti" data-act="ststore" data-id="${st.id}" title="${L("点一下换超市","Tap to change shops")}">${esc(storeNames(st))}</button></span>`;
-    return `<button class="st${pick.has(st.id)?" pick":""}${has?" inlist":""}" data-act="stpick" data-id="${st.id}" ${has?`title="${L("已在清单里","Already on the list")}"`:""}>${pick.has(st.id)?"✓ ":""}${esc(st.name)}</button>`}).join("");
+    return `<button class="st${pick.has(st.id)?" pick":""}${has?" inlist":""}" data-act="stpick" data-id="${st.id}" title="${esc(st.name)}${has?" · "+L("已在清单里","already on the list"):""}">${pick.has(st.id)?"✓ ":""}<span class="stt">${esc(st.name)}</span></button>`}).join("");
   const need=shop.filter(x=>!x.bought).sort((a,b)=>(a.order??1e6)-(b.order??1e6)||(a.createdAt||0)-(b.createdAt||0));
   const got=shop.filter(x=>x.bought).sort((a,b)=>(a.boughtAt||0)-(b.boughtAt||0));
   const row=x=>`<div class="item${x.bought?" got":""}" ${x.bought?"":`data-row data-id="${x.id}"`}>
