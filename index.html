@@ -1543,6 +1543,34 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .h-del{border:none;background:none;color:var(--faint);font-size:12px;padding:0;text-align:left;width:fit-content}
 .h-del:hover{color:var(--danger)}
 .habit-add{display:flex;gap:8px}
+.habit-add{margin-bottom:2px}
+.hgs{display:flex;flex-direction:column;gap:12px}.hg-wrap{display:flex;flex-direction:column;gap:14px}
+.hg{display:flex;flex-direction:column;gap:10px}
+.hg-h{display:flex;align-items:center;gap:8px;padding:2px 2px 0}
+.hg-h .grip{opacity:.5}
+.hg-n{display:flex;align-items:center;gap:8px;border:0;background:none;padding:0;font:inherit;color:var(--fg);cursor:pointer;flex:none;max-width:60%;min-width:0}
+.hg-n b{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hg-n small{color:var(--muted);font-size:12.5px;font-weight:500}
+.hg-ic{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--gc) 75%,var(--surface))}.hg-ic svg{width:30px;height:30px}
+.hg-bar{flex:1;height:6px;border-radius:9px;background:var(--surface-2);overflow:hidden;min-width:24px}.hg-bar i{display:block;height:100%;background:var(--habit);border-radius:9px;transition:width .3s}
+.hg-f{border:0;background:none;color:var(--faint);font-size:14px;width:30px;height:30px;border-radius:10px;cursor:pointer;flex:none}
+.hg.fold .hg-h{opacity:.85}
+.hg-ch{display:flex;gap:8px;flex-wrap:wrap}
+.hg-ch button{display:flex;align-items:center;gap:6px;border:2px solid var(--line);background:var(--surface);color:var(--fg);border-radius:14px;padding:5px 12px 5px 6px;font:inherit;font-size:14px;cursor:pointer;max-width:100%}
+.hg-ch button svg{width:26px;height:26px;flex:none;border-radius:9px;background:color-mix(in srgb,var(--gc) 70%,var(--surface))}
+.hg-ch button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hg-ch button.on{border-color:var(--habit);background:var(--habit-soft);color:var(--habit-ink);font-weight:600}
+.hg-ch button.add{border-style:dashed;color:var(--muted);padding:5px 12px}.hg-ch button.add.on{color:var(--habit-ink)}
+.hg-new{display:flex;flex-direction:column;gap:8px;margin-top:10px}.hg-new[hidden]{display:none}
+.hg-new input{border:2px solid var(--line);border-radius:12px;padding:8px 12px;font:inherit;background:var(--surface);color:var(--fg)}
+.hg-pk{display:grid;grid-template-columns:repeat(8,minmax(0,44px));gap:5px}
+.hg-pk button{width:100%;aspect-ratio:1;border-radius:14px;border:2px solid transparent;background:color-mix(in srgb,var(--gc) 65%,var(--surface));display:grid;place-items:center;padding:0;cursor:pointer}
+.hg-pk button.on{border-color:var(--habit);box-shadow:0 0 0 2px var(--habit-soft)}
+.hg-pk svg{width:82%;height:82%}
+.jnav{position:relative}.jnav.hasmoon h2{padding:0 30px}
+.jnav .jmoon{position:absolute;right:58px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;display:grid;place-items:center;padding:0;cursor:pointer;background:none;border:1.5px dashed color-mix(in srgb,#e8789a 55%,var(--line))}
+.jnav .jmoon svg{width:16px;height:16px}.jnav .jmoon:not(.on) svg path{fill:none;stroke:#e8789a;stroke-width:1.9}
+.jnav .jmoon.on{border:none;background:color-mix(in srgb,#e8789a 20%,var(--surface))}
+.moonrow.on{gap:10px;padding:10px 14px;font-size:14px}.moonrow.on b{font-weight:700}.moonrow.on small{font-size:12px;opacity:.75;white-space:nowrap}
 .habit.hb{grid-template-columns:auto auto minmax(0,1fr) auto;gap:10px;padding:12px 10px 12px 2px}
 .habit.hb .grip{align-self:center}
 .h-st{display:flex;gap:6px;width:92px;justify-content:center;align-items:flex-start}
@@ -1776,7 +1804,7 @@ function treeSVG(mood,level,bloom,theme){
 function miniBuddy(){return `<svg viewBox="0 0 120 120" style="${themeStyle(curTheme)}"><path d="M60 30C60 24 60 20 60 18" stroke="var(--leaf)" stroke-width="5" stroke-linecap="round"/><path d="M60 22C53 22 48 18 48 12 55 12 59 16 60 22Z" fill="var(--leaf)"/><path d="M60 30C88 30 102 50 102 74 102 96 84 108 60 108 36 108 18 96 18 74 18 50 32 30 60 30Z" fill="var(--buddy)"/><circle cx="46" cy="66" r="5" fill="var(--buddy-ink)"/><circle cx="74" cy="66" r="5" fill="var(--buddy-ink)"/><path d="M54 80q6 4 12 0" stroke="var(--buddy-ink)" stroke-width="3.2" fill="none" stroke-linecap="round"/><ellipse cx="36" cy="78" rx="7" ry="4.5" fill="var(--pink)" opacity=".75"/><ellipse cx="84" cy="78" rx="7" ry="4.5" fill="var(--pink)" opacity=".75"/></svg>`}
 
 let db=null, sample=null;
-let hparts={};
+let hparts={}, hgroups=[];
 let tasks=[], habits=[], checkins={}, shop=[], staples=[], trips=[], journal={};
 let jDate=null, jBusy=false, jSaved="", noteTimer=null;
 let tab="habit", loaded={t:false,h:false,c:false,s:false,f:false,w:false,y:false,m:false,wi:false,me:false};
@@ -2200,6 +2228,34 @@ function streakOf(id){
 }
 let hDay=null; // the day the stamps check in for; null means today
 const BACKFILL_DAYS=30;
+const HG_BG={study:"#fff1b8",eat:"#d6ecfc",skin:"#ffe0ec",sport:"#ffe0dc",water:"#d9f1ff",sleep:"#e4e4ff",heart:"#ffe2e8",home:"#ffedd2"};
+const HG_GUESS=[[/学|课|单词|语|读|书|练|study|learn|read|lesson|language|spanish|french/i,"study"],[/吃|饭|餐|饮食|钙|胶|维生素|药|营养|eat|food|meal|vitamin|pill/i,"eat"],[/护肤|脸|霜|精华|面膜|酸|防晒|skin|face|serum|mask/i,"skin"],[/运动|跑|健身|瑜伽|走路|拉伸|散步|gym|run|sport|yoga|walk|stretch|workout/i,"sport"],[/水|喝|drink|water/i,"water"],[/睡|觉|早起|sleep|bed|wake/i,"sleep"],[/家务|打扫|洗衣|整理|收拾|clean|chore|tidy|laundry/i,"home"]];
+const hgGuess=n=>{for(const [re,k] of HG_GUESS)if(re.test(n||""))return k;return "heart"};
+const hgIcon=g=>HG_IC[g&&HG_IC[g.ic]?g.ic:"heart"];
+const hgSorted=()=>[...hgroups].sort((a,b)=>(a.order||0)-(b.order||0));
+let hgFold=(()=>{try{return new Set(JSON.parse(localStorage.getItem("lifeos-hgfold")||"[]"))}catch(_){return new Set()}})();
+function hgFoldToggle(id){hgFold.has(id)?hgFold.delete(id):hgFold.add(id);try{localStorage.setItem("lifeos-hgfold",JSON.stringify([...hgFold]))}catch(_){}render()}
+// a small "new group" editor shared by the habit sheet and the group sheet
+function hgPickerHTML(ic){return `<div class="hg-pk" role="radiogroup" aria-label="${L("小芽图标","Icon")}">${Object.keys(HG_IC).map(k=>`<button type="button" class="${k===ic?"on":""}" data-hgi="${k}" role="radio" aria-checked="${k===ic}" style="--gc:${HG_BG[k]}">${HG_IC[k]}</button>`).join("")}</div>`}
+function hgCreate(name,ic){const ref=db.collection("hgroups").doc();const g={id:ref.id,name:name.slice(0,16),ic,order:hgroups.length?Math.max(...hgroups.map(x=>x.order||0))+1:0};hgroups.push(g);queued(ref.path,()=>ref.set({name:g.name,ic:g.ic,order:g.order}));return g.id}
+function openGroupEdit(id){const g=hgroups.find(x=>x.id===id);if(!g)return;let ic=g.ic||"heart",conf=false;
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  bg.innerHTML=`<div class="sheet he-sheet" role="dialog" aria-label="${L("编辑分组","Edit group")}"><h3>${L("编辑分组","Edit group")}</h3>
+    <label class="field"><span>${L("名字","Name")}</span><input id="hg-name" maxlength="16" value="${esc(g.name)}"></label>
+    <div class="field"><span>${L("小芽图标","Icon")}</span>${hgPickerHTML(ic)}</div>
+    <div class="sheet-actions"><button class="btn he-del" data-he="del">${L("删除分组","Delete group")}</button><span class="he-sp"></span><button class="btn" data-he="x">${L("取消","Cancel")}</button><button class="btn primary" data-he="ok">${L("保存","Save")}</button></div></div>`;
+  document.body.appendChild(bg);
+  bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}
+    const pk=e.target.closest("[data-hgi]");if(pk){ic=pk.dataset.hgi;bg.querySelectorAll("[data-hgi]").forEach(x=>{const o=x.dataset.hgi===ic;x.classList.toggle("on",o);x.setAttribute("aria-checked",o)});return}
+    const b=e.target.closest("[data-he]");if(!b)return;const a=b.dataset.he;
+    if(a==="x"){bg.remove();return}
+    if(a==="del"){if(!conf){conf=true;b.textContent=L("再点一次：打卡会留下，只是不分组","Tap again: check-ins stay, just ungrouped");b.classList.add("sure");return}
+      for(const h of habits)if(h.g===id){h.g=null;const r=db.doc("habits/"+h.id);queued(r.path,()=>r.update({g:null}))}
+      hgroups=hgroups.filter(x=>x.id!==id);const r=db.doc("hgroups/"+id);queued(r.path,()=>r.delete());bg.remove();render();return}
+    if(a==="ok"){const nm=(bg.querySelector("#hg-name").value||"").trim().slice(0,16)||g.name;const ch={};if(nm!==g.name)ch.name=nm;if(ic!==g.ic)ch.ic=ic;
+      if(Object.keys(ch).length){Object.assign(g,ch);const r=db.doc("hgroups/"+id);queued(r.path,()=>r.update(ch));render()}bg.remove()}});
+}
+
 const HI_SUN='<svg viewBox="0 0 24 24" aria-hidden="true"><g stroke="#f2a33a" stroke-width="1.8" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g><circle cx="12" cy="12" r="4.6" fill="#ffd25e" stroke="#f2a33a" stroke-width="1.5"/></svg>';
 const HI_RISE='<svg viewBox="0 0 24 24" aria-hidden="true"><g stroke="#f2a33a" stroke-width="1.8" stroke-linecap="round"><path d="M12 5.5v2M5.6 8.4l1.4 1.4M18.4 8.4L17 9.8M3.5 14.5h2M18.5 14.5h2"/></g><path d="M7 16.5a5 5 0 0 1 10 0z" fill="#ffc47a" stroke="#f2a33a" stroke-width="1.5" stroke-linejoin="round"/><path d="M3 16.8h18" stroke="#e8a86a" stroke-width="1.8" stroke-linecap="round"/><path d="M7 19.6h10" stroke="#f1c79a" stroke-width="1.6" stroke-linecap="round"/></svg>';
 const HI_MOON='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4a8 8 0 1 0 5.5 12.6A6.5 6.5 0 0 1 14.5 4z" fill="#ffe28a" stroke="#d9a63a" stroke-width="1.5" stroke-linejoin="round"/><path d="M19.5 3.5l.5 1.2 1.2.5-1.2.5-.5 1.2-.5-1.2-1.2-.5 1.2-.5z" fill="#ffd25e"/></svg>';
@@ -2213,20 +2269,32 @@ function hState(h,d){const a=hSlots(h,d),k=a.filter(Boolean).length;return k===a
 function hNudges(){const t=todayStr(),hr=new Date().getHours(),due={m:11,n:15,e:20},out=[];
   for(const h of habitStats().live){const n=HT(h);if(n<2)continue;const sl=hSlots(h,t),ks=hKeys(n);let pick=-1;ks.forEach((k,i)=>{if(!sl[i]&&hr>=due[k])pick=i});if(pick>=0)out.push({h,i:pick,k:ks[pick]})}
   return out.sort((a,b)=>(a.h.order||0)-(b.h.order||0))}
-function openHabitEdit(id){const h=habits.find(x=>x.id===id);if(!h)return;let n=HT(h),conf=false;
+function openHabitEdit(id){const h=habits.find(x=>x.id===id);if(!h)return;let n=HT(h),conf=false,gsel=hgroups.some(g=>g.id===h.g)?h.g:"",newOn=false,newIc=hgGuess(h.name),icTouched=false;
   const NM=[L("一次","Once"),L("早晚","AM · PM"),L("早中晚","AM · noon · PM")];
   const bg=document.createElement("div");bg.className="sheet-bg";
   bg.innerHTML=`<div class="sheet he-sheet" role="dialog" aria-label="${L("编辑打卡","Edit check-in")}"><h3>${L("编辑打卡","Edit check-in")}</h3>
     <label class="field"><span>${L("名字","Name")}</span><input id="he-name" maxlength="40" value="${esc(h.name)}"></label>
     <div class="field"><span>${L("一天几次","Times a day")}</span><div class="he-n">${[1,2,3].map(k=>`<button type="button" class="${n===k?"on":""}" data-he="n" data-v="${k}" aria-pressed="${n===k}"><span class="he-ic">${HICON[k]}</span><small>${NM[k-1]}</small></button>`).join("")}</div></div>
+    <div class="field"><span>${L("分组 · optional","Group · optional")}</span><div class="hg-ch">${hgSorted().map(g=>`<button type="button" class="${g.id===gsel?"on":""}" data-hg="${g.id}" aria-pressed="${g.id===gsel}" style="--gc:${HG_BG[g.ic]||HG_BG.heart}">${hgIcon(g)}<span>${esc(g.name)}</span></button>`).join("")}<button type="button" class="add" data-hg="new">${L("＋ 新分组","＋ New group")}</button></div>
+      <div class="hg-new" hidden><input id="hg-nn" maxlength="16" placeholder="${L("新分组的名字","New group name")}" aria-label="${L("新分组的名字","New group name")}">${hgPickerHTML(newIc)}</div></div>
     <div class="sheet-actions"><button class="btn he-del" data-he="del">${L("移除","Remove")}</button><span class="he-sp"></span><button class="btn" data-he="x">${L("取消","Cancel")}</button><button class="btn primary" data-he="ok">${L("保存","Save")}</button></div></div>`;
   document.body.appendChild(bg);
-  bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-he]");if(!b)return;const a=b.dataset.he;
+  const nw=bg.querySelector(".hg-new"),nn=bg.querySelector("#hg-nn");
+  const setIc=k=>{newIc=k;nw.querySelectorAll("[data-hgi]").forEach(x=>{const o=x.dataset.hgi===k;x.classList.toggle("on",o);x.setAttribute("aria-checked",o)})};
+  nn.addEventListener("input",()=>{if(!icTouched)setIc(hgGuess(nn.value))});
+  bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}
+    const pk=e.target.closest("[data-hgi]");if(pk){icTouched=true;setIc(pk.dataset.hgi);return}
+    const hgb=e.target.closest("[data-hg]");if(hgb){const v=hgb.dataset.hg;
+      if(v==="new"){newOn=!newOn;nw.hidden=!newOn;hgb.classList.toggle("on",newOn);if(newOn){gsel="";bg.querySelectorAll('[data-hg]:not([data-hg="new"])').forEach(x=>{x.classList.remove("on");x.setAttribute("aria-pressed",false)});nn.focus()}return}
+      gsel=gsel===v?"":v;newOn=false;nw.hidden=true;bg.querySelectorAll("[data-hg]").forEach(x=>{const o=x.dataset.hg===gsel;x.classList.toggle("on",o);if(x.dataset.hg!=="new")x.setAttribute("aria-pressed",o)});return}
+    const b=e.target.closest("[data-he]");if(!b)return;const a=b.dataset.he;
     if(a==="x"){bg.remove();return}
     if(a==="n"){n=+b.dataset.v;bg.querySelectorAll('[data-he="n"]').forEach(x=>{const o=+x.dataset.v===n;x.classList.toggle("on",o);x.setAttribute("aria-pressed",o)});return}
     if(a==="del"){if(!conf){conf=true;b.textContent=L("再点一次确认移除","Tap again to remove");b.classList.add("sure");return}
       h.archived=true;const ref=db.doc("habits/"+id);queued(ref.path,()=>ref.update({archived:true}));bg.remove();render();return}
     if(a==="ok"){const nm=(bg.querySelector("#he-name").value||"").trim().slice(0,40)||h.name;const ch={};if(nm!==h.name)ch.name=nm;if(n!==HT(h))ch.times=n;
+      let g2=gsel;const nnm=(nn.value||"").trim();if(newOn&&nnm){const same=hgroups.find(x=>x.name===nnm);g2=same?same.id:hgCreate(nnm,newIc)}
+      if((g2||null)!==(h.g||null))ch.g=g2||null;
       if(Object.keys(ch).length){Object.assign(h,ch);const ref=db.doc("habits/"+id);queued(ref.path,()=>ref.update(ch));render()}bg.remove()}
   });
   bg.querySelector("#he-name").addEventListener("keydown",e=>{if(e.key==="Enter"&&!imeOn){e.preventDefault();bg.querySelector('[data-he="ok"]').click()}});
@@ -2241,7 +2309,7 @@ function habitBoard(){
   const dayName=day===t?L("今天","Today"):day===addDays(t,-1)?L("昨天","Yesterday"):day===addDays(t,-2)?L("前天","2 days ago"):L(`周${WD[wdi]}`,WDEN[wdi]);
   const wEnd=day>=addDays(t,-6)?t:day, week=[...Array(7)].map((_,i)=>addDays(wEnd,i-6));
   const WDS=L("日一二三四五六","SMTWTFS");
-  const rows=live.map(h=>{
+  const rowOf=h=>{
     const s=streakOf(h.id), n=HT(h), ks=hKeys(n), sl=hSlots(h,day);
     return `<div class="habit hb m${n}" data-row data-id="${h.id}">
       ${gripBtn()}
@@ -2251,7 +2319,14 @@ function habitBoard(){
         <div class="dots hwk" aria-label="${L("最近 7 天","Last 7 days")}">${week.map(d=>{const st=d>t?"":hState(h,d);return `<button class="dot${st?" "+st:""}${d===t?" today":""}${past&&d===day?" sel":""}${d>t?" fut":""}" data-act="hdot" data-id="${h.id}" data-v="${d}" title="${d}" ${d>t?"disabled":""} aria-label="${esc(h.name)} ${d}${st==="on"?L(" 已打卡"," checked in"):st==="half"?L(" 打了一部分"," partly done"):""}"></button>`}).join("")}${week.map(d=>`<b class="${d===t?"td":""}" aria-hidden="true">${WDS[new Date(d+"T12:00:00").getDay()]}</b>`).join("")}</div>
       </div>
       <div class="streak">${s?FLAME:""}<b>${s}</b><small>${L("连续天","day streak")}</small></div>
-    </div>`}).join("");
+    </div>`};
+  const gs=hgSorted(), inG=h=>gs.some(g=>g.id===h.g);
+  const loose=live.filter(h=>!inG(h)).map(rowOf).join("");
+  const gHTML=gs.map(g=>{const hs=live.filter(h=>h.g===g.id);if(!hs.length)return "";const fold=hgFold.has(g.id),dn=hs.filter(h=>hState(h,day)==="on").length;
+    return `<section class="hg${fold?" fold":""}" data-row data-id="${g.id}" style="--gc:${HG_BG[g.ic]||HG_BG.heart}">
+      <div class="hg-h">${gs.length>1?gripBtn():""}<button class="hg-n" data-act="hgedit" data-id="${g.id}" title="${L("点一下编辑分组","Tap to edit the group")}"><span class="hg-ic">${hgIcon(g)}</span><b>${esc(g.name)}</b><small>${dn}/${hs.length}</small></button><span class="hg-bar" aria-hidden="true"><i style="width:${Math.round(dn/hs.length*100)}%"></i></span><button class="hg-f" data-act="hgfold" data-id="${g.id}" aria-expanded="${!fold}" aria-label="${fold?L("展开","Expand"):L("收起","Collapse")} ${esc(g.name)}">${fold?"▸":"▾"}</button></div>
+      ${fold?"":`<div class="list" data-sort="habit:${g.id}">${hs.map(rowOf).join("")}</div>`}</section>`}).join("");
+  const rows=loose+gHTML;
   return `<div class="board" data-k="habit">
     <div class="hday" role="group" aria-label="${L("选择打卡日期","Pick a day to check in")}">
       <button data-act="hday" data-v="-1" ${day<=addDays(t,-BACKFILL_DAYS)?"disabled":""} aria-label="${L("前一天","Previous day")}">‹</button>
@@ -2260,8 +2335,8 @@ function habitBoard(){
       ${past?`<button class="hd-today" data-act="hday" data-v="0">${L("回到今天","Back to today")}</button>`:""}
     </div>
     ${past?`<p class="hd-note">${L(`正在给 ${dm}月${dd}日补打卡。补的打卡一样算进连续天数，也会给{pet}浇水。`,`Checking in for ${dd} ${MON[dm-1]}. Late check-ins still count toward your streak and water {pet}.`)}</p>`:""}
-    <div class="list" data-sort="habit">${!loaded.h?emptyBox(L("正在读取打卡项…","Loading check-ins…")):rows||emptyBox(L('还没有打卡项。加一个每天想坚持的小习惯，比如"背 30 个单词"。','No check-ins yet. Add a small daily habit, like "30 minutes of reading".'))}</div>
     <form class="habit-add" id="habitForm"><input id="habitName" placeholder="${L("新的每日小习惯","New daily habit")}" maxlength="40" aria-label="${L("新的每日小习惯","New daily habit")}"><button class="btn" type="submit">${L("添加","Add")}</button></form>
+    <div class="hgs">${!loaded.h?emptyBox(L("正在读取打卡项…","Loading check-ins…")):rows?`${loose?`<div class="list" data-sort="habit:">${loose}</div>`:""}${gHTML?`<div class="hg-wrap" data-sort="hgroup">${gHTML}</div>`:""}`:emptyBox(L('还没有打卡项。加一个每天想坚持的小习惯，比如"背 30 个单词"。','No check-ins yet. Add a small daily habit, like "30 minutes of reading".'))}</div>
     <p class="hint">${L("完成一件任务浇 1 滴水，打一次卡浇 2 滴水，水攒够了{pet}就会长大。当天打卡全部完成，它会开花。","Each finished task is 1 drop of water and each check-in is 2. Sprout grows as the water adds up, and blooms on days you finish every check-in.")}</p>
   </div>`;
 }
@@ -2496,6 +2571,10 @@ NEWS_MORE.push(()=>({id:"1124e",steps:[
     {sel:"#gachaBtn",pad:4,t:L("新功能 · 每日扭蛋","New · Daily capsule"),b:L("小芽旁边多了一台扭蛋机。每天打一次卡、或者完成一件事，就能抽一次：芽币、浇水、装扮、灵魂画手种子袋，还有只能抽到的节日扭蛋壳帽和灵魂画手限定装扮。","There's a capsule machine next to your sprout. Check in or finish something to draw once a day: coins, water, outfits, doodle seed bags, plus festival capsule hats and doodle pieces you can only get here.")}]}));
 NEWS_MORE.push(()=>({id:"1125a",steps:[
     {go:"habit",sel:'.board[data-k="habit"] .list',pad:4,t:L("新功能 · 早晚打卡","New · Morning & evening check-ins"),b:L("点打卡的名字就能编辑：改名字、选一天打一次、早晚两次，或者早中晚三次。按住左边的 ⋮⋮ 可以上下拖。一天里每次都打完，那天的小圆点才会全亮。","Tap a check-in's name to edit it: rename it, or pick once, morning & evening, or three times a day. Hold ⋮⋮ to reorder. A day's dot fills in once every time is done.")}]}));
+NEWS_MORE.push(()=>({id:"1125b",steps:[
+    {go:"habit",sel:".habit-add",pad:6,t:L("新功能 · 打卡分组","New · Check-in groups"),b:L("加新习惯的框挪到最上面啦。点打卡的名字，可以把它放进一个分组，比如「学习」「吃饭」「护肤」，每组配一个小芽表情。点组名能改名字和图标，点 ▾ 能把这组收起来。","The add box is at the top now. Tap a check-in's name to put it in a group like Study, Food or Skincare, each with its own {pet} icon. Tap a group's name to rename it or change the icon, and ▾ to fold it away.")}]}));
+NEWS_MORE.push(()=>moonS.enabled?{id:"1125c",steps:[
+    {go:"journal",sel:".jnav",pad:6,t:L("小月亮挪地方啦","Little moon moved"),b:L("「小结」标题右边有个小月亮，点一下就是这天开始了，下面会出现一条「第几天」。点那一条可以选结束，或者点错了删掉。","There's a little moon by the recap title now. Tap it to mark the start; a 'day N' strip appears below. Tap the strip to end it, or undo a mis-tap.")}]}:{id:"1125c",steps:[]});
 const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
 let tourOn=null;
 function tourGo(go){
@@ -3573,6 +3652,16 @@ const elapsed=()=>!P?0:((P.pausedAt||Date.now())-P.startAt-(P.pausedTotal||0));
 const remain=()=>{if(!P)return 0;const len=P.phase==="focus"?(P.focusMin?P.focusMin*6e4:null):P.breakMin*6e4;return len==null?null:len-elapsed()};
 /* faces */
 const SF_HEAD=`<path d="M20 14V8" stroke="#3faa74" stroke-width="2.4" stroke-linecap="round"/><path d="M20 11c-4 0-6-2-6-5 4 0 6 2 6 5zM20 11c4 0 6-2 6-5-4 0-6 2-6 5z" fill="#5cc98f"/><ellipse cx="20" cy="26" rx="13" ry="12" fill="#ffe08a"/>`;
+const HG_IC={
+  study:`<svg viewBox="0 0 40 40" aria-hidden="true">${SF_HEAD}<circle cx="16" cy="24" r="1.9" fill="#3a3350"/><circle cx="25" cy="24" r="1.9" fill="#3a3350"/><circle cx="16.6" cy="23.4" r=".6" fill="#fff"/><circle cx="25.6" cy="23.4" r=".6" fill="#fff"/><ellipse cx="21" cy="30" rx="1.6" ry="1.8" fill="#3a3350"/><ellipse cx="11.5" cy="28.5" rx="2.2" ry="1.3" fill="#ff8fb1" opacity=".8"/><ellipse cx="29.5" cy="28.5" rx="2.2" ry="1.3" fill="#ff8fb1" opacity=".8"/><g stroke="#ffc94a" stroke-width="1.4" stroke-linecap="round"><path d="M33 3.5v1.6M27.4 6l1.1 1.1M38.6 6l-1.1 1.1"/></g><circle cx="33" cy="11.5" r="4.4" fill="#fff3a6" stroke="#f2b33a" stroke-width="1.3"/><rect x="31.2" y="15.4" width="3.6" height="3" rx=".8" fill="#9fb3c8"/><path d="M31.8 11.5q1.2 1.4 2.4 0" stroke="#f2b33a" stroke-width="1" fill="none"/></svg>`,
+  eat:`<svg viewBox="0 0 40 40" aria-hidden="true">${SF_HEAD}<path d="M12.5 24q2.5-3 5 0M22.5 24q2.5-3 5 0" stroke="#3a3350" stroke-width="1.9" fill="none" stroke-linecap="round"/><ellipse cx="20" cy="28.6" rx="2" ry="1.6" fill="#3a3350"/><ellipse cx="11" cy="27.5" rx="2.3" ry="1.4" fill="#ff8fb1" opacity=".8"/><ellipse cx="29" cy="27.5" rx="2.3" ry="1.4" fill="#ff8fb1" opacity=".8"/><path d="M27 27.5l10-9M29.5 29.5l9-8" stroke="#b07a46" stroke-width="1.6" stroke-linecap="round"/><path d="M9 31.5c1.5-3.5 20.5-3.5 22 0z" fill="#fff" stroke="#e6dcc8" stroke-width="1"/><path d="M8.5 31.5h23c0 4.6-5 8-11.5 8s-11.5-3.4-11.5-8z" fill="#5aa9e6"/><path d="M12 35h16" stroke="#fff" stroke-width="1.3" stroke-dasharray="1.6 2" stroke-linecap="round"/></svg>`,
+  skin:`<svg viewBox="0 0 40 40" aria-hidden="true">${SF_HEAD}<path d="M10 20.5q10-6 20 0v8.5q-10 8-20 0z" fill="#fff" opacity=".95"/><path d="M12.8 24.2q2.2-2 4.4 0M22.8 24.2q2.2-2 4.4 0" stroke="#3a3350" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M18 29q2 1.5 4 0" stroke="#3a3350" stroke-width="1.6" fill="none" stroke-linecap="round"/><ellipse cx="12.5" cy="27.6" rx="1.8" ry="1.1" fill="#ff8fb1" opacity=".7"/><ellipse cx="27.5" cy="27.6" rx="1.8" ry="1.1" fill="#ff8fb1" opacity=".7"/><rect x="31" y="25" width="6.5" height="11" rx="2" fill="#ff9cc0"/><rect x="32.4" y="21.5" width="3.7" height="4" rx="1" fill="#e8669a"/><path d="M33 29h2.6" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/><path d="M6 15l.8 1.8 1.8.8-1.8.8L6 20.2l-.8-1.8-1.8-.8 1.8-.8z" fill="#ffc94a"/></svg>`,
+  sport:`<svg viewBox="0 0 40 40" aria-hidden="true">${SF_HEAD}<path d="M7.6 19.5q12.4-5 24.8 0l-.4 3q-12-4.6-24 0z" fill="#ef5d6e"/><path d="M31.5 20.5l4 -2.5M31.8 22l4.2.6" stroke="#ef5d6e" stroke-width="1.8" stroke-linecap="round"/><path d="M13 25.5l4-1.2M27 25.5l-4-1.2" stroke="#3a3350" stroke-width="1.9" stroke-linecap="round"/><path d="M17 29q3 2.6 6 0z" fill="#3a3350"/><rect x="9" y="33" width="22" height="2.6" rx="1.3" fill="#7f8db0"/><rect x="6" y="30.5" width="4.4" height="7.6" rx="1.6" fill="#3a3350"/><rect x="29.6" y="30.5" width="4.4" height="7.6" rx="1.6" fill="#3a3350"/><path d="M33.5 12q1.2 2 0 3.2-1.2-1.2 0-3.2z" fill="#7ec8f2"/></svg>`,
+  water:`<svg viewBox="0 0 40 40" aria-hidden="true">${SF_HEAD}<circle cx="14" cy="24" r="1.9" fill="#3a3350"/><circle cx="23" cy="24" r="1.9" fill="#3a3350"/><ellipse cx="10.5" cy="28" rx="2.2" ry="1.4" fill="#ff8fb1" opacity=".8"/><path d="M19 29.5l9-12" stroke="#ef5d6e" stroke-width="1.6" stroke-linecap="round"/><path d="M24 19h11l-1.4 18.5q-.1 1.5-1.6 1.5h-5q-1.5 0-1.6-1.5z" fill="#cfeafc" stroke="#5aa9e6" stroke-width="1.3"/><path d="M24.7 27h9.6l-.9 10.4q-.1 1.1-1.2 1.1h-5.4q-1.1 0-1.2-1.1z" fill="#7ec8f2"/><circle cx="18.6" cy="29.8" r="1.5" fill="#3a3350"/></svg>`,
+  sleep:`<svg viewBox="0 0 40 40" aria-hidden="true">${SF_HEAD}<path d="M12.5 25q2.5 2.4 5 0M22.5 25q2.5 2.4 5 0" stroke="#3a3350" stroke-width="1.9" fill="none" stroke-linecap="round"/><ellipse cx="20" cy="30.5" rx="1.3" ry="1.1" fill="#3a3350"/><ellipse cx="11.5" cy="28.5" rx="2.3" ry="1.4" fill="#ff8fb1" opacity=".8"/><ellipse cx="28.5" cy="28.5" rx="2.3" ry="1.4" fill="#ff8fb1" opacity=".8"/><path d="M6.5 17.5q6-6.5 13.5-6.8 7.5.3 13.5 6.8z" fill="#8b9cf0"/><circle cx="34.5" cy="17" r="2" fill="#fff" stroke="#8b9cf0" stroke-width="1"/><path d="M30 6h4l-4 4.5h4" stroke="#8b9cf0" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  heart:`<svg viewBox="0 0 40 40" aria-hidden="true">${SF_HEAD}<path d="M15 26.8l-3-2.8a1.8 1.8 0 0 1 3-2 1.8 1.8 0 0 1 3 2z" fill="#ef5d6e"/><path d="M25 26.8l-3-2.8a1.8 1.8 0 0 1 3-2 1.8 1.8 0 0 1 3 2z" fill="#ef5d6e"/><path d="M17 30q3 2.6 6 0" stroke="#3a3350" stroke-width="1.9" fill="none" stroke-linecap="round"/><ellipse cx="10.5" cy="29.5" rx="2.2" ry="1.4" fill="#ff8fb1" opacity=".8"/><ellipse cx="29.5" cy="29.5" rx="2.2" ry="1.4" fill="#ff8fb1" opacity=".8"/></svg>`,
+  home:`<svg viewBox="0 0 40 40" aria-hidden="true">${SF_HEAD}<path d="M13 25q2.5-3 5 0M22 25q2.5-3 5 0" stroke="#3a3350" stroke-width="1.9" fill="none" stroke-linecap="round"/><path d="M17 29.5q3 2.5 6 0" stroke="#3a3350" stroke-width="1.9" fill="none" stroke-linecap="round"/><ellipse cx="11.5" cy="28.5" rx="2.3" ry="1.4" fill="#ff8fb1" opacity=".8"/><ellipse cx="28.5" cy="28.5" rx="2.3" ry="1.4" fill="#ff8fb1" opacity=".8"/><path d="M29 31l3.5 6.5M31.5 30l-1 1.6" stroke="#b07a46" stroke-width="1.6" stroke-linecap="round"/><path d="M30.5 36.5l5-2.4 2 4.4-5 1.4z" fill="#ffc94a"/></svg>`
+};
 const SF={
   focus:`<svg class="sf" viewBox="0 0 40 40" aria-hidden="true">${SF_HEAD}<path d="M8 25q0-12 12-12t12 12" stroke="#3a3350" stroke-width="2.2" fill="none"/><rect x="5" y="22" width="5" height="9" rx="2.5" fill="#7f8db0"/><rect x="30" y="22" width="5" height="9" rx="2.5" fill="#7f8db0"/><path d="M14 25h4M22 25h4" stroke="#3a3350" stroke-width="2" stroke-linecap="round"/><path d="M18 30q2 1.6 4 0" stroke="#3a3350" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`,
   happy:`<svg class="sf" viewBox="0 0 40 40" aria-hidden="true">${SF_HEAD}<path d="M13 25q2.5-3 5 0M22 25q2.5-3 5 0" stroke="#3a3350" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M17 30q3 2.5 6 0" stroke="#3a3350" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="11.5" cy="29" rx="2.4" ry="1.5" fill="#ff8fb1" opacity=".8"/><ellipse cx="28.5" cy="29" rx="2.4" ry="1.5" fill="#ff8fb1" opacity=".8"/></svg>`,
@@ -4922,10 +5011,13 @@ function moonSay(){const s=MOON_SAYS();return s[(moonDay()-1+s.length)%s.length]
 // the little row in a day's 小结
 function moonRow(d){
   if(!moonS.enabled||d>todayStr())return "";const r=moonAt(d),t=todayStr();
-  if(r){const n=moonDay(d),open=!r.e;
-    return `<button class="moonrow on" data-act="moonmenu" data-v="${d}">${MOON_SVG}<span>${L(`小月亮 · 第 ${n} 天`,`Little moon · day ${n}`)}${r.e===d?L(" · 最后一天"," · last day"):""}</span><i class="mchev">›</i></button>`}
-  return `<div class="moonrow off">${MOON_SVG}<span>${L("小月亮","Little moon")}</span><button class="mb" data-act="moonstart" data-v="${d}">${d===t?L("今天开始了","Started today"):L("这天开始的","Started this day")}</button></div>`;
+  if(r){const n=moonDay(d);
+    return `<button class="moonrow on" data-act="moonmenu" data-v="${d}">${MOON_SVG}<span>${L(`小月亮 · 第 <b>${n}</b> 天`,`Little moon · day <b>${n}</b>`)}${r.e===d?L(" · 最后一天"," · last day"):""}</span><small>${L(`${md2(r.s)} 开始`,`from ${md2(r.s)}`)}</small><i class="mchev">›</i></button>`}
+  return "";
 }
+// the little moon next to a day's 小结 title: tap to start, tap again for end / undo
+function moonBtn(d){if(!moonS.enabled||d>todayStr())return "";const r=moonAt(d),t=todayStr();
+  return `<button class="jmoon${r?" on":""}" data-act="${r?"moonmenu":"moonstart"}" data-v="${d}" aria-label="${r?L(`小月亮 · 第 ${moonDay(d)} 天`,`Little moon · day ${moonDay(d)}`):d===t?L("小月亮：今天开始了","Little moon: started today"):L("小月亮：这天开始的","Little moon: started this day")}" title="${r?L("小月亮","Little moon"):d===t?L("点一下：小月亮今天开始了","Tap: little moon started today"):L("点一下：小月亮这天开始的","Tap: little moon started this day")}">${MOON_SVG}</button>`}
 function moonMenu(d){const r=moonAt(d);if(!r)return;const t=todayStr(),n=moonDay(d);const bg=document.createElement("div");bg.className="sheet-bg";
   bg.innerHTML=`<div class="sheet moon-sheet" role="dialog" aria-label="${L("小月亮","Little moon")}"><h3>${MOON_SVG}${L(`小月亮 · 第 ${n} 天`,`Little moon · day ${n}`)}</h3><p class="hint">${L(`从 ${md2(r.s)} 开始`,`Started ${md2(r.s)}`)}${r.e?L(`，${md2(r.e)} 结束`,`, ended ${md2(r.e)}`):""}</p>
     <div class="moon-acts">${r.e!==d?`<button class="btn primary moon-go" data-mm="end">${d===t?L("今天结束了","It ended today"):L(`${md2(d)} 结束的`,`It ended ${md2(d)}`)}</button>`:""}<button class="btn" data-mm="del">${L("点错了，删掉这一次","Undo, delete this one")}</button><button class="btn ghost" data-mm="x">${L("取消","Cancel")}</button></div></div>`;
@@ -5969,7 +6061,7 @@ function journalView(){
   const comment=J.comment||"";
   return `<div class="board" data-k="journal">
     ${calendarCard(d)}
-    <div class="jnav"><button data-act="jprev" aria-label="${L("前一天","Previous day")}">‹</button><h2>${L(label+"的小结",label==="Today"||label==="Yesterday"?label+"'s recap":"Recap · "+label)}<small>${L(`${m}月${dd}日 · 周${wd}`,`${WDEN[wdIdx]}, ${dd} ${MON[m-1]}`)}</small></h2><button data-act="jnext" aria-label="${L("后一天","Next day")}" ${d>=t?"disabled":""}>›</button></div>
+    <div class="jnav${moonS.enabled&&d<=t?" hasmoon":""}"><button data-act="jprev" aria-label="${L("前一天","Previous day")}">‹</button><h2>${L(label+"的小结",label==="Today"||label==="Yesterday"?label+"'s recap":"Recap · "+label)}<small>${L(`${m}月${dd}日 · 周${wd}`,`${WDEN[wdIdx]}, ${dd} ${MON[m-1]}`)}</small></h2>${moonBtn(d)}<button data-act="jnext" aria-label="${L("后一天","Next day")}" ${d>=t?"disabled":""}>›</button></div>
     ${moonRow(d)}
     <div class="jstats" style="grid-template-columns:repeat(${Math.min(["habit","life","study","work"].filter(on).length,4)},1fr)">
       ${on("habit")?`<div class="jstat"><b style="color:var(--habit-ink)">${D.hNames.length}<span style="font-size:13px"> / ${D.hTotal}</span></b><span>${L("打卡","Check-in")}</span></div>`:""}
@@ -6683,7 +6775,10 @@ function commitSort(box){
     const [,id,pi]=key.split(":"), m=memos.find(x=>x.id===id); if(!m)return;
     const order=rows.map(r=>+r.dataset.j); if(order.every((v,i)=>v===i))return;
     const items=cloneItems(m.items); items[+pi].sub=order.map(j=>items[+pi].sub[j]); memoUpdate(id,{items});
-  }else if(key==="habit"){
+  }else if(key==="hgroup"){
+    rows.forEach((r,i)=>{const x=hgroups.find(y=>y.id===r.dataset.id);if(x&&x.order!==i){x.order=i;const ref=db.doc("hgroups/"+x.id);queued(ref.path,()=>ref.update({order:i}))}});
+    render();
+  }else if(key==="habit"||key.startsWith("habit:")){
     rows.forEach((r,i)=>{const x=habits.find(y=>y.id===r.dataset.id);if(x&&x.order!==i){x.order=i;const ref=db.doc("habits/"+x.id);queued(ref.path,()=>ref.update({order:i}))}});
     render();
   }else if(key==="shop"){
@@ -7093,6 +7188,8 @@ document.addEventListener("click",async e=>{
   }
   if(act.dataset.act==="edit")openEditor(id);
   if(act.dataset.act==="hedit"){openHabitEdit(id);return}
+  if(act.dataset.act==="hgedit"){openGroupEdit(id);return}
+  if(act.dataset.act==="hgfold"){hgFoldToggle(id);return}
   if(act.dataset.act==="hcheck"||act.dataset.act==="hdot"){
     const t=act.dataset.v||(hDay||todayStr()); if(t>todayStr())return;
     const h=habits.find(x=>x.id===id), n=h?HT(h):1, ks=hKeys(n);
@@ -7453,7 +7550,7 @@ const FIREBASE_CONFIG={
   appId:"1:1053547899054:web:49caab221ae4f4171c253f"
 };
 const FB_VER="10.12.2";
-const COLS=["gacha","tarot","lenorm","lennotes","stickies","letters","tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","wishfund","closet","moon","memos","yearlyDays","pomos","meals","rests","eats","fridge","tlog","courses","sleep"];
+const COLS=["hgroups","gacha","tarot","lenorm","lennotes","stickies","letters","tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","wishfund","closet","moon","memos","yearlyDays","pomos","meals","rests","eats","fridge","tlog","courses","sleep"];
 const CLOUD_KEY="lifeos-cloud-uid";
 let fb=null, cloudUser=null, cloudState=FIREBASE_CONFIG?"loading":"off"; // off | loading | unavailable | signedout | signedin
 let localDB=null, unsubs=[];
@@ -7496,12 +7593,13 @@ function makeCloudDB(uid){
 function startData(store){
   unsubs.forEach(u=>{try{u()}catch(_){}}); unsubs=[];
   db=store;
-  closet={};letters=[];tasks=[];habits=[];checkins={};hparts={};shop=[];staples=[];trips=[];journal={};milestones=[];yearlyDays=[];pomos=[];meals=[];rests=[];eats=[];fridge=[];tlog=[];courses=[];sleeps={};weekly={};yearly={};wishes=[];memos=[];forest=[];curTheme="lemon";
+  closet={};letters=[];tasks=[];habits=[];checkins={};hparts={};hgroups=[];shop=[];staples=[];trips=[];journal={};milestones=[];yearlyDays=[];pomos=[];meals=[];rests=[];eats=[];fridge=[];tlog=[];courses=[];sleeps={};weekly={};yearly={};wishes=[];memos=[];forest=[];curTheme="lemon";
   for(const k in loaded)loaded[k]=false; recapChecked=false; lastStage=null; lastBuddy="";
   const fail=e=>{if(e&&e.code==="permission-denied")setStatus(L("没有权限读取数据，请重新登录。","No permission to read your data. Please sign in again."))};
   const sub=(c,fn,q)=>unsubs.push((q||db.collection(c)).onSnapshot(fn,fail));
   const ok=s=>!s.metadata.fromCache||!s.empty;
   sub("tasks",s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.t=true;render();odAutoRoll();midPromote()});
+  sub("hgroups",s=>{hgroups=s.docs.map(d=>({id:d.id,...d.data()})).filter(g=>g.name);render()});
   sub("habits",s=>{habits=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.h=true;render()});
   sub("shop",s=>{shop=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.s=true;render()});
   sub("staples",s=>{staples=s.docs.map(d=>({id:d.id,...d.data()}));render()});
