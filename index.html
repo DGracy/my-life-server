@@ -1544,6 +1544,7 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .h-del:hover{color:var(--danger)}
 .habit-add{display:flex;gap:8px}
 .habit-add{margin-bottom:2px}
+.task.rp-wait{opacity:.62}.task.rp-wait:hover,.task.rp-wait:focus-within{opacity:1}
 .hgs{display:flex;flex-direction:column;gap:12px}.hg-wrap{display:flex;flex-direction:column;gap:14px}
 .hg{display:flex;flex-direction:column;gap:10px}
 .hg-h{display:flex;align-items:center;gap:8px;padding:2px 2px 0}
@@ -2141,7 +2142,8 @@ function taskRow(t){
   const tl=t.repeat?todOf(t.repeat):[];
   const hasSub=!t.done&&sb.length>0;
   const whenLine=tl.filter(x=>sd[x[0]]).map(x=>`<span class="slt" data-act="slottime" data-id="${t.id}" data-v="${x[0]}" title="${L("点一下改时间","Tap to change the time")}">${L(`${x[1]} ${hhmm(sd[x[0]])} 做完`,`${x[1]} done ${hhmm(sd[x[0]])}`)}</span>`).join(" · ");
-  return `<div class="task${t.done?" done":""}${pr?" p"+pr:""}${pz?" paused":""}${canPlay?" hasplay":""}">
+  const wait=!t.done&&!pz&&t.repeat&&t.due&&t.due>todayStr();
+  return `<div class="task${t.done?" done":""}${pr?" p"+pr:""}${pz?" paused":""}${wait?" rp-wait":""}${canPlay?" hasplay":""}">
     ${tt.length?`<span class="slots" style="--sc:var(--${t.space==="study"||t.space==="work"?t.space:"life"})">${tt.map(([k,n,sh])=>`<button class="slot${sd[k]?" on":""}" data-act="slot" data-id="${t.id}" data-v="${k}" aria-label="${n}${sd[k]?L(" · 已完成，点一下取消"," · done, tap to undo"):L(" · 点一下完成"," · tap when done")}" aria-pressed="${!!sd[k]}">${sd[k]?SLOT_CK:sh}</button>`).join("")}</span>`:`<button class="check${t.done?" on":""}" data-act="toggle" data-id="${t.id}" aria-label="${t.done?L("标记为未完成","Mark as not done"):L("标记为完成","Mark as done")}">${CHECK}</button>`}
     <button class="t-main${hasSub?" fold":""}" data-act="${hasSub?"subopen":"edit"}" data-id="${t.id}"${hasSub?` aria-expanded="${subOpen.has(t.id)}"`:""}>
       <span class="t-title"${hasSub?` data-act="edit" data-id="${t.id}"`:""}>${esc(t.title)}</span>${wi&&t.due?`<span class="t-note rng">${esc(wi.rng)}</span>`:""}${whenLine?`<span class="t-note">${whenLine}</span>`:""}
@@ -2152,8 +2154,20 @@ function taskRow(t){
     ${canPlay?`<button class="play${hot?" hot":""}${P&&P.taskId===t.id&&P.phase==="focus"?" live":""}" data-act="focus" data-id="${t.id}" aria-label="${L("开始专注这件事","Focus on this")}">▶</button>`:""}
   </div>${subsBlock(t)}`;
 }
+// when it needs doing comes first, priority only orders tasks inside the same band:
+// 0 today / overdue · 1 within a week · 2 no date or later · 3 a repeat that's done for this round · 4 done
+function taskBucket(t){const td=todayStr();if(t.done)return 4;
+  const at=t.repeat?t.due:[t.plan,t.due].filter(Boolean).sort()[0];
+  if(t.repeat&&(isPaused(t)||(at&&at>td)))return 3;
+  if(at&&at<=td)return 0;
+  if(t.start&&t.start>td)return 2;
+  if(at&&at<=addDays(td,6))return 1;
+  return 2}
+const taskWhen=t=>(t.repeat?t.due:[t.plan,t.due].filter(Boolean).sort()[0])||"";
 function sortTasks(a,b){
+  const ba=taskBucket(a), bb=taskBucket(b); if(ba!==bb)return ba-bb;
   const pa=+a.pri||0, pb=+b.pri||0; if(pa!==pb)return pb-pa;
+  {const wa=taskWhen(a),wb=taskWhen(b);if(wa&&wb&&wa!==wb)return wa<wb?-1:1}
   if(a.due&&b.due){const x=a.due+(a.dueTime||"99"),y=b.due+(b.dueTime||"99");return x<y?-1:x>y?1:0}
   if(a.due)return -1; if(b.due)return 1;
   return (b.createdAt||0)-(a.createdAt||0);
