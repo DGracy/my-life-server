@@ -937,7 +937,7 @@ body.fvmode>*:not(.fv){display:none!important}body.fvmode{overflow:auto}
 .ed-split{align-self:flex-start}
 /* overdue stack */
 .odtray{background:var(--surface);border-radius:20px;padding:14px;margin:2px 0 12px;display:flex;flex-direction:column;gap:10px;box-shadow:0 0 0 1px var(--line)}
-.od-hd{display:flex;align-items:center;gap:10px}.od-hd>svg{width:38px;height:38px;flex:none}.od-hd b{font-size:15px;display:block}.od-hd small{color:var(--muted);font-size:12.5px}
+.od-hd{display:flex;align-items:center;gap:10px}.od-hd>div{flex:1;min-width:0}.od-x{flex:none;border:0;background:var(--surface-2);color:var(--muted);border-radius:99px;padding:5px 11px;font:inherit;font-size:12.5px;cursor:pointer;white-space:nowrap;align-self:flex-start}.od-hd>svg{width:38px;height:38px;flex:none}.od-hd b{font-size:15px;display:block}.od-hd small{color:var(--muted);font-size:12.5px}
 .od-list{display:flex;flex-direction:column;gap:8px}
 .od-row{display:flex;flex-direction:column;gap:8px;padding:10px 12px;border-radius:14px;background:var(--surface-2)}
 .od-t{display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap}.od-dot{width:8px;height:8px;border-radius:50%;flex:none;display:inline-block}
@@ -4239,8 +4239,9 @@ const NUDGE_KEY="lifeos-nudge-off";
 const OD_AUTO="lifeos-od-auto";let odAuto=false;try{odAuto=localStorage.getItem(OD_AUTO)==="on"}catch(_){}
 let odAll=false,odRolled="";
 const odOn=t=>!t.done&&!t.deleted&&!t.letGo&&!t.repeat&&!(t.start&&t.start>todayStr())&&on(t.space)&&(t.space!=="life"||true);
-const isOver=t=>odOn(t)&&t.due&&t.due<todayStr();
-const isStuck=t=>odOn(t)&&(+t.moved||0)>=3&&t.due&&t.due<=todayStr();
+const odPlanned=t=>!!(t.plan&&t.plan>=todayStr());
+const isOver=t=>odOn(t)&&t.due&&t.due<todayStr()&&!odPlanned(t);
+const isStuck=t=>odOn(t)&&(+t.moved||0)>=3&&t.due&&t.due<=todayStr()&&!(t.plan&&t.plan>todayStr());
 function odList(){const l=tasks.filter(t=>odAuto?isStuck(t):isOver(t)||isStuck(t)&&t.due<todayStr());return l.sort((a,b)=>(a.due<b.due?-1:a.due>b.due?1:0))}
 function odMove(t,due,count=true){const td=todayStr();const p={due:due||null,moved:count?(+t.moved||0)+1:(+t.moved||0)};
   if(!due)p.dueTime=null;else if(t.dueTime&&due===td&&new Date(due+"T"+t.dueTime+":00")<=Date.now())p.dueTime=null;
@@ -4253,7 +4254,11 @@ let midMoved="";
 function midPromote(){if(!loaded.t||!db)return;const td=todayStr();if(midMoved===td)return;midMoved=td;const lim=addDays(td,7),moved=[];
   tasks.filter(t=>!t.done&&!t.deleted&&!t.letGo&&!t.repeat&&(t.horizon==="month"||t.horizon==="inbox")&&t.due&&t.due<=lim).forEach(t=>{t.horizon="week";moved.push(t.title);const r=db.doc("tasks/"+t.id);queued(r.path,()=>r.update({horizon:"week"}))});
   if(moved.length){render();setTimeout(()=>cheer(L(`「${moved[0]}」${moved.length>1?` 等 ${moved.length} 件`:""}一周内就到期啦，我帮你挪到近期了～`,`“${moved[0]}”${moved.length>1?` and ${moved.length-1} more`:""} ${moved.length>1?"are":"is"} due within a week, so I moved ${moved.length>1?"them":"it"} to This week～`),"think"),600)}}
-function odAutoRoll(){if(!odAuto||!loaded.t||!db)return;const td=todayStr();if(odRolled===td)return;odRolled=td;tasks.filter(isOver).forEach(t=>odMove(t,td))}
+function odAutoRoll(){if(!odAuto||!loaded.t||!db)return;const td=todayStr();if(odRolled===td)return;odRolled=td;
+  // one-time clean-up: before this fix every automatic roll counted as a move, so counts got inflated
+  let fixed=false;try{fixed=localStorage.getItem("lifeos-od-fix1125")==="1"}catch(_){}
+  if(!fixed){tasks.filter(t=>(+t.moved||0)>0&&!t.done&&!t.deleted).forEach(t=>{t.moved=0;const r=db.doc("tasks/"+t.id);queued(r.path,()=>r.update({moved:0}))});try{localStorage.setItem("lifeos-od-fix1125","1")}catch(_){}}
+  tasks.filter(isOver).forEach(t=>odMove(t,td,false))}
 const odDays=d=>Math.round((new Date(todayStr())-new Date(d))/864e5);
 /* ---------- 四象限: one table for work, study and life — 重要 from the priority, 紧急 from the date or list ---------- */
 let qFilter="all",qMore={};try{const v=localStorage.getItem("lifeos-qf");if(v)qFilter=v}catch(_){}
@@ -4300,7 +4305,7 @@ const ovSort=(a,b)=>((+b.pri||0)>=2)-((+a.pri||0)>=2)||((a.dueTime||"99")<(b.due
 function ovBuckets(){const td=todayStr(),pool=ovPool(),days=[...Array(7)].map((_,i)=>addDays(td,i)),end=days[6];
   const over=[],today=[],by={},later=[],loose=[];days.slice(1).forEach(d=>by[d]=[]);
   pool.forEach(t=>{if(ovNotYet(t)){if(t.due||t.start)later.push(t);return}
-    if(t.due&&t.due<td){if(!t.repeat)over.push(t);return}
+    if(t.due&&t.due<td&&!(t.plan&&t.plan>=td)){if(!t.repeat)over.push(t);return}
     const at=t.plan||t.due;
     if(!at){if(t.start)today.push(t);else if(t.horizon==="week"&&!t.repeat)loose.push(t);return}
     if(at<=td||t.start&&t.start<=td&&!t.plan){today.push(t);return}
@@ -4397,8 +4402,10 @@ function ovAdd(d){const {loose,by}=ovBuckets(),td=todayStr();if(!loose.length)re
     if(t.due&&d>t.due)cheer(L(`排在 ${md2(d)}，比截止日期 ${md2(t.due)} 晚哦`,`Planned for ${md2(d)}, after its deadline ${md2(t.due)}`),"meh");
     b.remove();if(!bg.querySelector("[data-pk]"))bg.remove();render()});
 }
+let odHid="";try{odHid=localStorage.getItem("lifeos-od-hide")||""}catch(_){}
 function odTray(k){
   if(k!=="work"&&k!=="study"&&k!=="life")return "";
+  if(odHid===todayStr())return "";
   const l=odList();if(!l.length)return "";
   const show=odAll?l:l.slice(0,4),more=l.length-show.length;
   const row=t=>{const mv=+t.moved||0,dot=`<i class="od-dot" style="background:var(--${t.space})"></i>`;
@@ -4408,7 +4415,7 @@ function odTray(k){
     return `<div class="od-row"><div class="od-t">${dot}<button class="od-n" data-act="edit" data-id="${t.id}">${esc(t.title)}</button><em class="od-tag over">${L(`过期 ${odDays(t.due)} 天`,`${odDays(t.due)}d overdue`)}</em>${mv?`<em class="od-tag mv">${L(`挪过 ${mv} 次`,`moved ${mv}×`)}</em>`:""}</div>
       <div class="od-acts"><button class="btn primary" data-act="odtoday" data-id="${t.id}">${L("今天做","Today")}</button><button class="btn" data-act="odpick" data-id="${t.id}">${L("换个日子","Another day")}</button><button class="btn soft" data-act="odlet" data-id="${t.id}">${L("放下","Let it go")}</button></div></div>`};
   const n=l.filter(isOver).length;
-  return `<div class="odtray" id="odTray"><div class="od-hd">${SF.happy||""}<div><b>${odAuto?L("有几件一直在往后挪","A few keep getting pushed back"):L(`有 ${n} 件过期了`,`${n} ${n_(n,"thing is","things are")} overdue`)}</b><small>${L("不着急，我们一件件看～","No rush, one at a time～")}</small></div></div>
+  return `<div class="odtray" id="odTray"><div class="od-hd">${SF.happy||""}<div><b>${odAuto?L("有几件一直在往后挪","A few keep getting pushed back"):L(`有 ${n} 件过期了`,`${n} ${n_(n,"thing is","things are")} overdue`)}</b><small>${L("不着急，我们一件件看～","No rush, one at a time～")}</small></div><button class="od-x" data-act="odhide" aria-label="${L("今天先不看","Hide for today")}" title="${L("今天先不看","Hide for today")}">${L("今天先不看","Not today")}</button></div>
     <div class="od-list">${show.map(row).join("")}</div>
     ${more?`<button class="link od-more" data-act="odall">${L(`还有 ${more} 件 ▾`,`${more} more ▾`)}</button>`:""}
     ${!odAuto&&n>=2?`<div class="od-bulk"><button class="btn" data-act="odalltoday">${L("全部挪到今天","All to today")}</button><button class="btn" data-act="odalltmr">${L("全部挪到明天","All to tomorrow")}</button></div>`:""}</div>`;
@@ -4419,20 +4426,20 @@ const WDN=d=>L(`周${WD[d.getDay()]}`,WDEN[d.getDay()].slice(0,3));
 function odPick(id){
   const t=tasks.find(x=>x.id===id);if(!t)return;const td=todayStr(),dt=s=>new Date(s+"T12:00:00");
   const dow=dt(td).getDay(),tmr=addDays(td,1),sat=dow===6?addDays(td,1):addDays(td,(6-dow+7)%7||7),mon=addDays(td,((8-dow)%7)||7);
-  const opts=[["tmr",tmr,L("明天","Tomorrow")],["wkend",sat,dow===6?L("周日","Sunday"):L("这个周末","This weekend")],["mon",mon,L("下周一","Next Monday")]];
+  const opts=[["td",td,L("今天","Today")],["tmr",tmr,L("明天","Tomorrow")],["wkend",sat,dow===6?L("周日","Sunday"):L("这个周末","This weekend")],["mon",mon,L("下周一","Next Monday")]];
   let sel="tmr",custom=addDays(td,2);
   const bg=document.createElement("div");bg.className="sheet-bg";
   const draw=()=>{bg.innerHTML=`<div class="sheet od-sheet" role="dialog" aria-label="${L("换个日子","Pick another day")}"><h3>${L("换个日子","Pick another day")}</h3>
     <p class="od-what"><i class="od-dot" style="background:var(--${t.space})"></i>${esc(t.title)}</p>
-    <div class="chips">${opts.map(([k,d,n])=>`<button class="chip hz${sel===k?" on":""}" data-od="${k}">${n}<small>${k==="tmr"?WDN(dt(d)):`${+d.slice(5,7)}/${+d.slice(8)}`}</small></button>`).join("")}<button class="chip hz${sel==="pick"?" on":""}" data-od="pick">${L("选日期…","Pick a date…")}</button><button class="chip hz${sel==="none"?" on":""}" data-od="none">${L("有空再做","Someday")}</button></div>
-    ${sel==="pick"?`<input type="date" id="odDate" min="${tmr}" value="${custom}">`:""}
+    <div class="chips">${opts.map(([k,d,n])=>`<button class="chip hz${sel===k?" on":""}" data-od="${k}">${n}${k==="td"?"":`<small>${k==="tmr"?WDN(dt(d)):`${+d.slice(5,7)}/${+d.slice(8)}`}</small>`}</button>`).join("")}<button class="chip hz${sel==="pick"?" on":""}" data-od="pick">${L("选日期…","Pick a date…")}</button><button class="chip hz${sel==="none"?" on":""}" data-od="none">${L("有空再做","Someday")}</button></div>
+    ${sel==="pick"?`<input type="date" id="odDate" min="${td}" value="${custom}">`:""}
     ${sel==="none"?`<p class="hint">${L("去掉日期，留在列表里，有空的时候再做。","No date. It stays on your list for when you have time.")}</p>`:""}
     <div class="sheet-actions"><span></span><span style="display:flex;gap:8px"><button class="btn" data-od="x">${L("取消","Cancel")}</button><button class="btn primary" data-od="ok">${L("好","OK")}</button></span></div></div>`};
   draw();document.body.appendChild(bg);
   bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-od]");if(!b)return;const v=b.dataset.od;
     if(v==="x"){bg.remove();return}
     const di=bg.querySelector("#odDate");if(di&&di.value)custom=di.value;
-    if(v==="ok"){const due=sel==="none"?null:sel==="pick"?(custom>td?custom:tmr):opts.find(o=>o[0]===sel)[1];odMove(t,due);bg.remove();
+    if(v==="ok"){const due=sel==="none"?null:sel==="pick"?(custom>=td?custom:tmr):opts.find(o=>o[0]===sel)[1];odMove(t,due,sel!=="td");if(due===td&&t.plan&&t.plan!==td){t.plan=null;const r2=db.doc("tasks/"+t.id);queued(r2.path,()=>r2.update({plan:null}))}bg.remove();
       cheer(due?L(`好，挪到 ${+due.slice(5,7)}月${+due.slice(8)}日～`,`Moved to ${+due.slice(8)} ${MON[+due.slice(5,7)-1]}～`):L("好，有空再做～","OK, for when you have time～"),"happy");render();return}
     sel=v;draw()});
 }
@@ -4444,6 +4451,7 @@ function odMenu(id){const t=tasks.find(x=>x.id===id);if(!t)return;const bg=docum
   document.body.appendChild(bg);bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-om]");if(!b)return;bg.remove();odAct(b.dataset.om,id)})}
 function odAct(a,id){const t=tasks.find(x=>x.id===id);const td=todayStr();
   if(a==="odall"){odAll=true;render();return true}
+  if(a==="odhide"){odHid=todayStr();try{localStorage.setItem("lifeos-od-hide",odHid)}catch(_){}render();cheer(L("好，今天先不看它们，明天再说～","OK, not today. Let us look tomorrow～"),"happy");return true}
   if(a==="odalltoday"||a==="odalltmr"){const d=a==="odalltoday"?td:addDays(td,1);tasks.filter(isOver).forEach(x=>odMove(x,d));cheer(a==="odalltoday"?L("都放到今天啦，挑最要紧的先做～","All on today. Start with what matters most～"):L("都挪到明天啦，今天轻松一点～","All moved to tomorrow. Go easy today～"),"happy");render();return true}
   if(!t)return false;
   if(a==="odtoday"){odMove(t,td);cheer(L(`「${t.title}」放到今天啦`,`“${t.title}” is on today`),"happy");render();return true}
