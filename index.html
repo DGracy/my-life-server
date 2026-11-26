@@ -681,6 +681,7 @@ body.pomo-open{overflow:hidden}
 .sh-fit .flist{width:100%;display:flex;flex-direction:column;gap:6px}.sh-fit .row{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.8);border-radius:12px;padding:6px 10px;font-size:14px}.sh-fit .row>span:first-child{flex:1}.sh-fit .row i{font-style:normal;color:#5b7099;font-size:12.5px;margin-left:6px}
 .sh-fit .row .pr{display:inline-flex;align-items:center;gap:3px;font-family:var(--f-num);font-weight:600}.sh-fit .row button{border:0;background:none;color:#5b7099;font-size:17px;cursor:pointer;padding:0 2px}
 .sh-fit .facts{display:flex;gap:8px;width:100%}.sh-fit .facts .btn{white-space:nowrap}.sh-fit .facts .primary{flex:1}.sh-fit .facts .btn:disabled{opacity:.55}
+:root[data-theme="dark"] .facts .btn:not(.primary),:root:not([data-theme])[data-tod="night"] .facts .btn:not(.primary){background:#fff;color:#3a3350;border-color:#d9e1ee;box-shadow:0 3px 0 #c9d3e6}
 .shgrid .tagt{color:var(--brand);font-weight:600}.shgrid .it{position:relative}.shgrid .new{position:absolute;top:7px;left:7px;background:#ef5d6e;color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:1px 7px}
 @media(max-width:760px){.sh-body{grid-template-columns:1fr}.sh-in{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
  .sh-fit{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:3;border-radius:20px 20px 0 0;flex-direction:row;align-items:center;padding:10px max(14px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));box-shadow:0 -6px 20px rgba(20,40,80,.15)}
@@ -1544,6 +1545,92 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .h-del:hover{color:var(--danger)}
 .habit-add{display:flex;gap:8px}
 .habit-add{margin-bottom:2px}
+.focusbar+.dpent{margin-top:10px}
+.dpent{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;padding:12px 14px;border-radius:18px;background:linear-gradient(135deg,#eef4fd,#e1eafa);color:#22324f;box-shadow:0 2px 0 #d3def2;font:inherit;cursor:pointer;margin-top:10px}
+.dpent>span:nth-child(2){flex:1;min-width:0}.dpent b{display:block;font-size:15px}.dpent small{font-size:12px;color:#6b7c99}
+.dpbars{display:flex;gap:3px;align-items:flex-end;flex:none}.dpbars i{width:8px;border-radius:3px;background:#6b8cf5}.dpbars i:nth-child(2){background:#8b9cf0}.dpbars i:nth-child(3){background:#9b7af0}
+.dpent em{font-style:normal;background:#3d63dd;color:#fff;border-radius:99px;padding:7px 14px;font-weight:700;font-size:13px;flex:none}
+:root[data-theme="dark"] .dpent,:root:not([data-theme])[data-tod="night"] .dpent{background:linear-gradient(135deg,#26304a,#2a3354);color:#e8eeff;box-shadow:0 2px 0 #1a2136}
+:root[data-theme="dark"] .dpent small,:root:not([data-theme])[data-tod="night"] .dpent small{color:#a9b6d4}
+body.dp-on{overflow:hidden}
+.dp{--dp-bg:linear-gradient(160deg,#f1f6fe 0%,#e6eefb 100%);--dp-fg:#22324f;--dp-mut:#6b7c99;--dp-card:#fff;--dp-line:#eef2f9;--dp-track:#d9e4f6;--dp-chip:#d9e4f6;--dp-acc:#3d63dd;
+  position:fixed;inset:0;z-index:72;background:var(--dp-bg);color:var(--dp-fg);display:flex;flex-direction:column;overflow:auto;font-family:'Noto Sans SC',system-ui,sans-serif;padding-top:env(safe-area-inset-top,0px)}
+:root[data-theme="dark"] .dp,:root:not([data-theme])[data-tod="night"] .dp{--dp-bg:linear-gradient(160deg,#1c2338 0%,#161c2e 100%);--dp-fg:#e8eeff;--dp-mut:#9aa8c8;--dp-card:#232c45;--dp-line:#2c3654;--dp-track:#2c3654;--dp-chip:#2c3654;--dp-acc:#6b8cf5}
+.dp>*{flex-shrink:0}
+.dp-x{position:absolute;right:max(20px,env(safe-area-inset-right,0px));top:calc(18px + env(safe-area-inset-top,0px));width:40px;height:40px;border-radius:50%;border:0;background:var(--dp-card);color:var(--dp-mut);font-size:15px;box-shadow:0 2px 8px rgba(60,90,160,.08);cursor:pointer;z-index:2}
+.dp-hd{display:flex;align-items:flex-end;gap:10px;padding:72px 22px 0;max-width:760px;width:100%;box-sizing:border-box;margin:0 auto}.dp-hd>div{flex:1}
+.dp-hd h2{margin:0;font-family:'ZCOOL KuaiLe','Noto Sans SC',sans-serif;font-weight:400;font-size:28px}.dp-hd p{margin:6px 0 0;font-size:13px;color:var(--dp-mut)}
+.dp-pet{width:58px;height:58px;flex:none;margin-bottom:-4px}.dp-pet svg{width:100%;height:100%}
+.dp-paper{margin:16px auto 0;width:calc(100% - 32px);max-width:728px;box-sizing:border-box;background:var(--dp-card);border-radius:22px;box-shadow:0 10px 30px rgba(60,90,160,.08);display:grid;grid-template-columns:1.45fr 1fr;flex:1 0 auto;min-height:340px}
+.dp-col{padding:20px 14px 16px 18px;display:flex;flex-direction:column;min-width:0;position:relative}.dp-col.r{border-left:1.5px solid var(--dp-line);padding-left:14px}
+.dp-col h4{margin:0 0 4px;font-size:12px;letter-spacing:.18em;color:var(--dp-mut);font-weight:600}
+.dp-big{display:flex;align-items:center;gap:8px;height:60px;border-bottom:1px dashed var(--dp-line)}
+.dp-big .n{flex:none;width:24px;height:24px;border-radius:50%;background:#2e2840;color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}.n.n1{background:#5a6fd6}.n.n2{background:#e8789a}
+:root[data-theme="dark"] .dp .n0,:root:not([data-theme])[data-tod="night"] .dp .n0{background:#8b9cf0}
+.dp-big input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:16px;color:var(--dp-fg);outline:none;padding:6px 0}.dp-big input::placeholder{color:#b4c0d6}.dp-big em{font-style:normal;color:#6b8cf5;font-size:10px}
+.dp-pk{align-self:flex-start;margin-top:14px;border:0;font:inherit;font-size:12.5px;color:var(--dp-acc);background:color-mix(in srgb,var(--dp-acc) 12%,transparent);border-radius:99px;padding:6px 12px;cursor:pointer}
+.dp-pick{margin-top:8px;display:flex;flex-direction:column;gap:2px;max-height:220px;overflow:auto;border-radius:14px;background:color-mix(in srgb,var(--dp-acc) 6%,var(--dp-card));padding:6px}
+.dp-pick button{display:flex;align-items:center;gap:8px;border:0;background:none;text-align:left;padding:8px;border-radius:10px;font:inherit;font-size:13.5px;color:var(--dp-fg);cursor:pointer}.dp-pick button:hover{background:var(--dp-card)}.dp-pick i{width:7px;height:7px;border-radius:50%;flex:none}.dp-pick p{margin:6px;font-size:13px;color:var(--dp-mut)}
+.dp-sm{display:flex;align-items:center;gap:8px;height:42px;font-size:13.5px;border-bottom:1px dashed var(--dp-line);min-width:0}.dp-sm i{width:13px;height:13px;border-radius:4px;border:1.6px solid #c3d0e8;flex:none}.dp-sm span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dp-sm button{border:0;background:none;color:#b4c0d6;font-size:16px;cursor:pointer;padding:0 2px}
+.dp-addin{border:0;background:none;font:inherit;font-size:13.5px;color:var(--dp-fg);outline:none;padding:11px 0;min-width:0;width:100%}.dp-addin::placeholder{color:#a3b1c9}
+.dp-bot{padding:18px 18px calc(30px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;max-width:520px;width:100%;box-sizing:border-box;margin:0 auto}
+.dp-go{height:54px;border:0;border-radius:20px;background:var(--dp-acc);color:#fff;font:inherit;font-size:16.5px;font-weight:700;box-shadow:0 6px 16px rgba(61,99,221,.25);cursor:pointer}.dp-go:disabled{opacity:.35;box-shadow:none;cursor:default}
+.dp-back{border:0;background:none;font:inherit;font-size:13px;color:var(--dp-mut);cursor:pointer}
+.dp-ready{padding:20px 18px 0;display:flex;flex-direction:column;gap:9px;max-width:520px;width:100%;box-sizing:border-box;margin:0 auto;flex:1 0 auto;justify-content:center}
+.dp-rd{display:flex;align-items:center;gap:12px;border:0;text-align:left;background:var(--dp-card);border-radius:18px;padding:9px 14px;font:inherit;color:var(--dp-fg);box-shadow:0 2px 0 var(--dp-line);cursor:pointer}
+.dp-rd .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--dp-acc) 10%,var(--dp-card))}
+.dp-rd>span:nth-child(2){flex:1}.dp-rd b{display:block;font-size:15.5px}.dp-rd small{font-size:12.5px;color:var(--dp-mut)}
+.dp-rd .ck{width:28px;height:28px;border-radius:50%;border:2.5px solid #c9d5ea;flex:none;display:grid;place-items:center;color:#fff;font-weight:800}.dp-rd.on .ck{background:#3faa74;border-color:#3faa74}
+.dp-plan{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.dp-ph{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--dp-mut);margin-bottom:2px}.dp-ph input{border:1.5px solid var(--dp-line);border-radius:10px;padding:4px 8px;font:inherit;background:var(--dp-card);color:var(--dp-fg)}
+.dp-pre{display:flex;gap:4px;margin-left:auto}.dp-pre button{border:0;border-radius:99px;padding:4px 10px;font:inherit;font-size:12px;background:var(--dp-chip);color:var(--dp-mut);cursor:pointer}.dp-pre button.on{background:var(--dp-acc);color:#fff}
+.dp-tr{display:flex;gap:10px;align-items:stretch}.dp-tr .tm{width:44px;flex:none;font-size:12px;color:var(--dp-mut);padding-top:9px;font-family:Fredoka,Arial,sans-serif}
+.dp-tr .bk{flex:1;border-radius:14px;padding:8px 12px;color:#fff;font-size:12.5px;display:flex;flex-direction:column;position:relative;min-width:0}.dp-tr .bk b{font-size:13.5px}
+.bk.b0{background:#2e2840}.bk.b1{background:#5a6fd6}.bk.b2{background:#e8789a}
+.bk.ev{background:repeating-linear-gradient(135deg,var(--dp-chip) 0 8px,color-mix(in srgb,var(--dp-chip) 70%,var(--dp-card)) 8px 16px);color:var(--dp-fg)}.bk.ev button{position:absolute;right:8px;top:6px;border:0;background:none;color:var(--dp-mut);font-size:16px;cursor:pointer}
+.dp-addev{align-self:flex-start;margin-left:54px;border:0;font:inherit;font-size:12.5px;color:var(--dp-acc);background:color-mix(in srgb,var(--dp-acc) 12%,transparent);border-radius:99px;padding:5px 12px;cursor:pointer}
+.dp-evf{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:54px}.dp-evf input{border:1.5px solid var(--dp-line);border-radius:10px;padding:6px 8px;font:inherit;font-size:13px;background:var(--dp-card);color:var(--dp-fg);min-width:0}.dp-evf input:first-child{width:110px}
+.dp-bar{padding:24px 0 0;width:calc(100% - 64px);max-width:560px;margin:0 auto}
+.dp[data-step="run"] .dp-bar,.dp[data-step="between"] .dp-bar{padding-top:76px}
+.dp-segs{display:flex;gap:6px}.dp-segs div{height:6px;border-radius:6px;background:var(--dp-track);overflow:hidden}.dp-segs i{display:block;height:100%;background:linear-gradient(90deg,#6b8cf5,#9b7af0);border-radius:6px}
+.dp-lab{display:flex;justify-content:space-between;margin-top:9px;font-size:12px;color:var(--dp-mut);letter-spacing:.04em}
+.dp-body{flex:1 0 auto;display:flex;align-items:center;justify-content:center;gap:56px;padding:20px 22px 0}
+.dp-main{display:flex;flex-direction:column;align-items:center;gap:40px;padding-bottom:30px}
+.dp-ring{position:relative}.dp-ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:Fredoka,Arial,sans-serif;font-weight:600;font-size:58px;color:var(--dp-fg);letter-spacing:.01em}
+.dp-track{stroke:var(--dp-track)}
+.dp-cap{font-weight:500;font-size:17px;letter-spacing:.06em;color:color-mix(in srgb,var(--dp-fg) 82%,var(--dp-mut));background:var(--dp-card);padding:12px 24px;border-radius:99px;box-shadow:0 2px 10px rgba(60,90,160,.1);max-width:min(340px,80vw);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box}
+.dp-away{margin:-24px 0 0;font-size:13px;color:var(--dp-mut)}
+.dp-btns{display:flex;gap:16px;align-items:center}.dp-ic{width:54px;height:54px;border-radius:50%;border:0;background:var(--dp-card);display:grid;place-items:center;box-shadow:0 2px 8px rgba(60,90,160,.08);color:var(--dp-mut);cursor:pointer;font-size:14px}
+.dp-done{height:54px;padding:0 30px;border:0;border-radius:27px;background:var(--dp-acc);color:#fff;font:inherit;font-weight:700;font-size:16px;box-shadow:0 6px 16px rgba(61,99,221,.25);cursor:pointer}
+.dp-link{border:0;background:none;font:inherit;font-size:13px;color:var(--dp-mut);text-decoration:underline;text-underline-offset:3px;cursor:pointer;margin-top:-20px}
+.dp-side{display:none;flex-direction:column;gap:14px;width:360px}
+.dp-lst{background:var(--dp-card);border-radius:22px;padding:14px 18px;box-shadow:0 2px 0 var(--dp-line);display:flex;flex-direction:column}
+.dp-lst h4{margin:0 0 4px;font-size:12.5px;color:var(--dp-mut);font-weight:500;letter-spacing:.1em;display:flex;justify-content:space-between}
+.dp-r{display:flex;align-items:center;gap:11px;padding:10px 0;font:inherit;font-size:14.5px;border:0;border-top:1px solid var(--dp-line);background:none;color:var(--dp-fg);text-align:left;cursor:pointer}.dp-lst h4+.dp-r{border-top:0}
+.dp-r i{width:19px;height:19px;border-radius:6px;border:2px solid #c3d0e8;flex:none;box-sizing:border-box}.dp-r.d i{background:#8ee0b2;border-color:#8ee0b2}.dp-r.d span{text-decoration:line-through;opacity:.5}
+.dp-r.now{background:color-mix(in srgb,var(--dp-acc) 10%,var(--dp-card));margin:0 -10px;padding:10px;border-radius:12px;border-top-color:transparent;font-weight:600;color:var(--dp-acc)}.dp-r.now i{border-color:#6b8cf5}
+.dp[data-step="between"] .dp-side,.dp[data-step="break"] .dp-side,.dp[data-step="hold"] .dp-side{display:flex;width:auto;max-width:520px;margin:0 auto 30px;padding:0 18px;box-sizing:border-box;width:100%}
+.dp-mid{flex:1 0 auto;display:flex;flex-direction:column;justify-content:center;gap:22px;padding:70px 18px 20px;max-width:520px;width:100%;box-sizing:border-box;margin:0 auto}
+.dp-cele{text-align:center}.dp-cele>svg{width:84px;height:84px}.dp-cele .pet{width:120px;height:120px}.dp-cele h3{margin:8px 0 4px;font-family:'ZCOOL KuaiLe','Noto Sans SC',sans-serif;font-weight:400;font-size:26px}.dp-cele p{margin:0;font-size:13.5px;color:var(--dp-mut)}
+.dp-brk b{font-family:Fredoka,Arial,sans-serif;font-size:34px;color:var(--dp-fg)}
+.dp-ask{background:var(--dp-card);border-radius:18px;padding:12px 14px;text-align:center}.dp-ask p{margin:0 0 10px;font-size:14.5px}.dp-ask div{display:flex;gap:8px;justify-content:center}
+.dp-ask button{border:0;border-radius:99px;padding:8px 16px;font:inherit;font-size:13.5px;background:var(--dp-chip);color:var(--dp-fg);cursor:pointer}.dp-ask button:first-child{background:#3faa74;color:#fff}
+.dp-opts{display:flex;flex-direction:column;gap:8px}
+.dp-opt{border:0;text-align:left;background:var(--dp-card);border-radius:18px;padding:13px 16px;font:inherit;color:var(--dp-fg);box-shadow:0 2px 0 var(--dp-line);cursor:pointer}.dp-opt b{display:block;font-size:15.5px}.dp-opt small{font-size:12.5px;color:var(--dp-mut)}
+.dp-opt.dp-pri{background:var(--dp-acc);color:#fff;box-shadow:0 6px 16px rgba(61,99,221,.22)}.dp-opt.dp-pri small{color:#dbe4ff}
+.dp-cert{background:var(--dp-card);border-radius:26px;padding:22px 18px 18px;text-align:center;box-shadow:0 20px 40px rgba(60,90,160,.12);margin-top:30px}
+.dp-cert .pet{display:block;width:86px;height:86px;margin:-62px auto 0}.dp-cert .pet svg{width:100%;height:100%}
+.dp-cert h3{margin:6px 0 2px;font-family:'ZCOOL KuaiLe','Noto Sans SC',sans-serif;font-weight:400;font-size:26px}.dp-cert>p{margin:0 0 14px;font-size:13px;color:var(--dp-mut)}
+.dp-res{display:flex;flex-direction:column;gap:8px;text-align:left}.dp-res .r{display:flex;align-items:center;gap:10px;background:color-mix(in srgb,var(--dp-acc) 6%,var(--dp-card));border-radius:14px;padding:10px 12px;font-size:14.5px}
+.dp-res .n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;flex:none;background:#2e2840}.dp-res span:nth-child(2){flex:1;min-width:0}
+.dp-res em{font-style:normal;font-size:12px;color:#3faa74;font-weight:700;flex:none}.dp-res em.no{color:#c9a46a}
+.dp-stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.dp-stat div{background:color-mix(in srgb,var(--dp-acc) 6%,var(--dp-card));border-radius:14px;padding:10px 4px}.dp-stat b{display:block;font-size:17px;font-family:Fredoka,Arial,sans-serif}.dp-stat small{font-size:11.5px;color:var(--dp-mut)}
+.dp-later{display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;color:var(--dp-mut)}
+@media (min-width:900px){.dp[data-step="run"] .dp-side{display:flex}.dp-body{gap:72px}.dp-ring b{font-size:64px}}
+@media (max-width:420px){.dp-paper{grid-template-columns:1.3fr 1fr}.dp-big input{font-size:15px}.dp-hd h2{font-size:25px}}
+.dp[data-step="ready"] .dp-hd{max-width:520px}
+
 .jar-card{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;border-radius:20px;padding:12px 14px;margin:2px 0 10px;background:linear-gradient(135deg,#fff6dc,#ffe9f0);color:#3a3350;font:inherit;cursor:pointer;box-shadow:0 2px 0 #f3dcc0}
 .jar-card>svg{flex:none}.jar-card>span{flex:1;min-width:0}.jar-card b{display:block;font-size:15px}.jar-card small{font-size:12.5px;color:#7a6a80}
 .jar-card em{font-style:normal;background:#3a3350;color:#fff;border-radius:99px;padding:7px 14px;font-weight:700;font-size:13.5px;flex:none}
@@ -1610,6 +1697,13 @@ body.jz-on{overflow:hidden}
 .jz-ch{display:flex;gap:6px;flex-wrap:wrap}.jz-ch button{border:2px solid var(--line);background:var(--surface);color:var(--fg);border-radius:99px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
 .jz-ch button.on{border-color:#ff86a8;background:#fff0f4;color:#b03c66;font-weight:600}
 :root[data-theme="dark"] .jz-ch button.on,:root:not([data-theme])[data-tod="night"] .jz-ch button.on{background:#4a2f3c;color:#ffc2d4}
+.jz-start{background:var(--jz-card);border-radius:20px;padding:14px 14px 16px;box-shadow:0 2px 10px rgba(160,120,140,.1)}.jz-start p{margin:0 0 10px;font-size:13px;color:var(--jz-mut)}
+.jz-chips{display:flex;flex-wrap:wrap;gap:6px}.jz-chips span{font-size:12.5px;color:#4a3a50;padding:5px 10px;border-radius:8px}
+.jz-two{display:flex;gap:10px}.jz-b2{flex:1;height:50px;border-radius:18px;border:1.5px solid color-mix(in srgb,var(--jz-mut) 40%,transparent);background:transparent;color:var(--jz-fg);font:inherit;font-size:15px;font-weight:600;cursor:pointer}.jz-b2.pri{border:0;background:#3a3350;color:#fff}
+:root[data-theme="dark"] .jz-b2.pri,:root:not([data-theme])[data-tod="night"] .jz-b2.pri{background:#ffd76a;color:#2a1d0a}
+.jz-talk{display:flex;align-items:center;gap:10px;border:2px solid var(--line);background:var(--surface);color:var(--fg);border-radius:14px;padding:10px 12px;text-align:left;font:inherit;cursor:pointer}.jz-talk i{width:20px;height:20px;border-radius:6px;border:2px solid var(--line);flex:none;display:grid;place-items:center}.jz-talk.on{border-color:#ff86a8}.jz-talk.on i{background:#ff86a8;border-color:#ff86a8}.jz-talk.on i::after{content:"✓";color:#fff;font-size:12px;font-weight:800;font-style:normal}.jz-talk b{display:block;font-size:13.5px;font-weight:500}.jz-talk small{font-size:12px;color:var(--muted)}
+.jz-jarw.shaking .jz-pet{animation:jzHop .9s ease-in-out;transform-origin:50% 100%}
+@keyframes jzHop{0%,100%{transform:translate(0,0) rotate(0)}15%{transform:translate(-10px,-14px) rotate(-14deg)}30%{transform:translate(9px,-4px) rotate(12deg)}45%{transform:translate(-8px,-12px) rotate(-10deg)}60%{transform:translate(7px,-3px) rotate(8deg)}75%{transform:translate(-3px,-8px) rotate(-4deg)}}
 .jz-own{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);margin-top:2px}.jz-own input{width:70px}
 .jz-ep{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:14px}.jz-ep input{width:64px}
 .jz-act{display:flex;gap:8px;align-items:center}.jz-del{color:var(--danger-ink)}.jz-del.sure{background:var(--danger-ink);color:#fff}
@@ -2667,6 +2761,8 @@ NEWS_MORE.push(()=>moonS.enabled?{id:"1125c",steps:[
     {go:"journal",sel:".jnav",pad:6,t:L("小月亮挪地方啦","Little moon moved"),b:L("「小结」标题右边有个小月亮，点一下就是这天开始了，下面会出现一条「第几天」。点那一条可以选结束，或者点错了删掉。","There's a little moon by the recap title now. Tap it to mark the start; a 'day N' strip appears below. Tap the strip to end it, or undo a mis-tap.")}]}:{id:"1125c",steps:[]});
 NEWS_MORE.push(()=>({id:"1126a",steps:on("joy")?[
     {go:"ov",sel:".jar-card",pad:6,t:L("新功能 · 开心罐","New · Joy jar"),b:L("无聊又不知道干嘛的时候，点「抽一个」。把让你开心的小事写成小纸卷放进罐子，选一下现在的状态，摇一摇，{pet}帮你抽一卷。做过的会记进小结的「开心收集」。","When you're bored and don't know what to do, tap Pick one. Fill the jar with little things that make you happy, pick how you feel, shake, and {pet} draws one. What you do shows up in the recap.")}]:[]}));
+NEWS_MORE.push(()=>({id:"1126b",steps:on("study")||on("work")?[
+    {go:"study",sel:".dpent",pad:6,t:L("新功能 · 专注半天","New · Deep half-day"),b:L("先把三件大事和杂事写下来，做个开工小仪式，然后 90 · 90 · 60 一段段做。中间有会可以先排进去，做完一段也可以先停下，回来再继续。","Write down three big things and the little ones, do a tiny ritual, then work in 90 · 90 · 60 blocks. Add a meeting in between, or stop after a block and carry on later.")}]:[]}));
 const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
 let tourOn=null;
 function tourGo(go){
@@ -3612,11 +3708,12 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-co]");if(!
 let joys=[], joylog=[], joyOpen=false, joyView="jar", joyMood="fresh", joyPick=null, joyTok=3, joyLast=[], joyEdit=null, joyTab="all", joyBusy=false;
 const JOY_COLS=[["#ffc2d4","#f29ab5"],["#d9ccff","#b6a3f0"],["#c7ecd6","#97d3b0"],["#ffe7a3","#f2c860"],["#cfe7fb","#9fcbef"],["#ffd5bf","#f3ae8c"]];
 const JOY_MINS=[[5,L("5 分钟","5 min")],[15,L("15 分钟","15 min")],[30,L("半小时","30 min")],[60,L("一小时","1 hour")],[180,L("一晚上","An evening")]];
-const JOY_EN=[["lie",L("躺着就行","Lying down")],["sit",L("坐起来","Sitting up")],["out",L("要出门","Going out")]];
+const JOY_EN=[["lie",L("躺着就行","Lying down")],["sit",L("坐着","Sitting")],["walk",L("起身走动","Moving around")],["out",L("要出门","Going out")]];
 const JOY_KIND=[["solo",L("一个人也开心","Happy on my own")],["talk",L("想找人说话的时候","When I want to talk")]];
 const JOY_LINK=()=>[["",L("不用","Nothing")],...(tarotOn?[["tarot",L("打开塔罗","Open tarot")]]:[]),["pomo",L("开番茄钟","Start a focus")],["letter",L("写封信","Write a letter")],["journal",L("写小结","Open the recap")]];
 const JOY_MOODS=()=>[["fresh","happy",L("还挺精神","Fresh")],["tired","nap",L("有点累","Tired")],["short","focus",L("只有一会儿","Short on time")],["talk","star",L("想找人说话","Want to talk")]];
 const joyLinkGuess=t=>/塔罗|tarot|雷诺曼/i.test(t)?"tarot":/书|读|阅读|read|book|学/i.test(t)?"pomo":/信|letter/i.test(t)?"letter":/小结|日记|journal|写两句/i.test(t)?"journal":"";
+const joyW=ep=>ep?(ep.w!=null?+ep.w:+ep.e||0):0;
 const joyMinTxt=m=>{const k=JOY_MINS.find(x=>x[0]===m);if(k)return k[1];if(m<60)return L(`${m} 分钟`,`${m} min`);const h=Math.floor(m/60),r=m%60;return r?L(`${h} 小时 ${r} 分`,`${h} h ${r} min`):L(`${h} 小时`,`${h} h`)};
 const joyEnTxt=e=>(JOY_EN.find(x=>x[0]===e)||["",""])[1];
 const joyToday=()=>joylog.filter(x=>x.day===todayStr());
@@ -3662,35 +3759,36 @@ function joyShake(){if(joyBusy||!joys.length)return;const {pool,fallback}=joyPoo
     if(fallback)cheer(L("这一类的纸卷还没有，{pet}先从全部里抽了一张～","No rolls of that kind yet, so {pet} picked from all of them～").replace("{pet}",petName()),"meh")},reduce?0:1250)}
 function joyAccept(){const j=joys.find(x=>x.id===joyPick);if(!j)return;const at=Date.now(),day=todayStr();
   const r=db.collection("joylog").doc();const row={jid:j.id,text:j.text,c:j.c||0,day,at};joylog.push({id:r.id,...row});queued(r.path,()=>r.set(row));
-  if(j.ep&&+j.ep.e){const ep={s:+j.ep.s||1,e:(+j.ep.e)+1};j.ep=ep;const jr=db.doc("joys/"+j.id);queued(jr.path,()=>jr.update({ep}))}
+  if(j.ep&&joyW(j.ep)>=0&&(j.ep.w!=null||j.ep.e)){const ep={s:+j.ep.s||1,w:joyW(j.ep)+1};j.ep=ep;const jr=db.doc("joys/"+j.id);queued(jr.path,()=>jr.update({ep}))}
   const link=j.link;closeJoy();
   cheer(L("去吧～ 记进今天的开心收集啦","Go for it～ Added to today's little joys"),"happy");
   if(link==="tarot"&&tarotOn)openTarot();else if(link==="pomo")startFocus(null);else if(link==="letter"){openMailbox();setTimeout(()=>openLetter(),60)}else if(link==="journal"){tab="journal";jDate=todayStr();render()}}
-function joyStarters(){const S=[[L("给自己抽一张塔罗","Draw myself a tarot card"),5,"lie","solo","tarot"],[L("看一集克拉克森的农场","Watch an episode of Clarkson's Farm"),60,"lie","solo",""],[L("追正在看的剧","Catch up on my show"),60,"lie","solo",""],[L("看会儿书","Read for a bit"),30,"sit","solo","pomo"],[L("出门走一圈","Go for a walk"),30,"out","solo",""],[L("泡个热水澡","Have a warm bath"),30,"sit","solo",""],[L("整理房间里的一个小角落","Tidy one little corner"),30,"sit","solo",""],[L("在小结里写两句今天","Write a few lines in the recap"),5,"sit","talk","journal"],[L("给未来的自己写封信","Write to future me"),30,"sit","talk","letter"]].filter(x=>x[4]!=="tarot"||tarotOn);
+function joyStartList(){return [[L("给自己抽一张塔罗","Draw myself a tarot card"),5,"lie","solo","tarot"],[L("看一集克拉克森的农场","Watch an episode of Clarkson's Farm"),60,"lie","solo",""],[L("追正在看的剧","Catch up on my show"),60,"lie","solo",""],[L("看会儿书","Read for a bit"),30,"sit","solo","pomo"],[L("出门走一圈","Go for a walk"),30,"out","solo",""],[L("泡个热水澡","Have a warm bath"),30,"sit","solo",""],[L("整理房间里的一个小角落","Tidy one little corner"),30,"sit","solo",""],[L("在小结里写两句今天","Write a few lines in the recap"),5,"sit","talk","journal"],[L("给未来的自己写封信","Write to future me"),30,"sit","talk","letter"]].filter(x=>x[4]!=="tarot"||tarotOn)}
+function joyStarters(){const S=joyStartList();
   S.forEach(([text,mins,en,kind,link],i)=>{const r=db.collection("joys").doc();const row={text,mins,en,kind,link,c:i%JOY_COLS.length,createdAt:Date.now()+i};joys.push({id:r.id,...row});queued(r.path,()=>r.set(row))});renderJoy()}
 function joyEditorHTML(){const j=joyEdit;const ch=(k,opts,v)=>`<div class="jz-ch">${opts.map(([val,t])=>`<button type="button" class="${String(v)===String(val)?"on":""}" data-je="${k}" data-v="${val}">${t}</button>`).join("")}</div>`;
   return `<div class="jz-sheet-bg" data-j="edclose"><div class="jz-sheet" role="dialog" aria-label="${j.id?L("改一张纸卷","Edit a roll"):L("写一张新纸卷","Write a new roll")}"><h3>${j.id?L("改一张纸卷","Edit a roll"):L("写一张新纸卷","Write a new roll")}</h3>
   <label class="jz-f"><span>${L("会让你开心的一件小事","A little thing that makes you happy")}</span><input id="jzText" maxlength="30" value="${esc(j.text||"")}" placeholder="${L("比如：看一集克拉克森的农场","e.g. watch an episode of my show")}"></label>
   <div class="jz-f"><span>${L("大概多久","How long")}</span>${ch("mins",JOY_MINS,j.mins)}<label class="jz-own">${L("或者自己填","or type it")} <input id="jzMin" type="number" min="1" max="600" inputmode="numeric" value="${JOY_MINS.some(x=>x[0]===+j.mins)?"":(+j.mins||"")}" placeholder="40"> ${L("分钟","min")}</label></div>
   <div class="jz-f"><span>${L("要多少力气","How much energy")}</span>${ch("en",JOY_EN,j.en)}</div>
-  <div class="jz-f"><span>${L("什么时候抽它","When to pick it")}</span>${ch("kind",JOY_KIND,j.kind)}</div>
-  <div class="jz-f"><span>${L("追剧进度 · optional","Show progress · optional")}</span><div class="jz-ep">${L("第","Season")} <input id="jzS" type="number" min="1" max="99" value="${j.ep?j.ep.s:""}" placeholder="1"> ${L("季，下一集是第","· next episode")} <input id="jzE" type="number" min="1" max="999" value="${j.ep?j.ep.e:""}" placeholder="–"> ${L("集","")}</div></div>
+  <button type="button" class="jz-talk${j.kind==="talk"?" on":""}" data-je="kind" data-v="${j.kind==="talk"?"solo":"talk"}" aria-pressed="${j.kind==="talk"}"><i></i><span><b>${L("想找人说话的时候，也可以抽到它","Good for when I want to talk")}</b><small>${L("比如写信、跟小芽说说今天","e.g. writing a letter, telling {pet} about today")}</small></span></button>
+  <div class="jz-f"><span>${L("追剧进度 · optional","Show progress · optional")}</span><div class="jz-ep">${L("第","Season")} <input id="jzS" type="number" min="1" max="99" value="${j.ep?j.ep.s:""}" placeholder="1"> ${L("季，看到第","· watched up to episode")} <input id="jzE" type="number" min="0" max="999" value="${j.ep?joyW(j.ep):""}" placeholder="–"> ${L("集","")}</div></div>
   <div class="jz-act">${j.id?`<button class="btn jz-del" data-j="eddel">${L("拿出来","Remove")}</button>`:""}<span style="flex:1"></span><button class="btn" data-j="edclose">${L("取消","Cancel")}</button><button class="btn primary" data-j="edsave">${j.id?L("保存","Save"):L("放进罐子","Into the jar")}</button></div></div></div>`}
 function joyWallHTML(){const tabs=[["all",L(`全部 ${joys.length}`,`All ${joys.length}`)],["solo",L("一个人","On my own")],["talk",L("想找人说话","Want to talk")],["out",L("出门","Going out")]];
   const f={solo:j=>j.kind!=="talk",talk:j=>j.kind==="talk",out:j=>j.en==="out"}[joyTab];const xs=(f?joys.filter(f):joys).slice().sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
   return `<button class="jz-x" data-j="back" aria-label="${L("回到罐子","Back to the jar")}">‹</button><div class="jz-hd"><h2>${L("罐子里的纸卷","Rolls in the jar")}</h2><p>${L("点一卷可以改，想到新的就写一卷放进去","Tap a roll to edit it, or write a new one")}</p></div>
   <div class="jz-tabs">${tabs.map(([k,t])=>`<button class="${joyTab===k?"on":""}" data-j="tab" data-v="${k}">${t}</button>`).join("")}</div>
-  <div class="jz-wall"><button class="jz-pn add" data-j="new"><em>＋</em>${L("写一卷新的","Write a new one")}</button>${xs.map((j,i)=>{const c=JOY_COLS[(j.c||0)%JOY_COLS.length];return `<button class="jz-pn" data-j="edit" data-id="${j.id}" style="background:${c[0]};transform:rotate(${i%2?1.2:-1.3}deg)"><svg viewBox="-20 -8 40 16" width="44" height="18" aria-hidden="true">${joyScroll(0,0,-6,j.c||0,34)}</svg><b>${esc(j.text)}</b><small>${[joyMinTxt(+j.mins),joyEnTxt(j.en),j.ep&&+j.ep.e?L(`S${j.ep.s} · 下一集 E${j.ep.e}`,`S${j.ep.s} · next E${j.ep.e}`):""].filter(Boolean).join(" · ")}</small></button>`}).join("")}</div>${joyEdit?joyEditorHTML():""}`}
+  <div class="jz-wall"><button class="jz-pn add" data-j="new"><em>＋</em>${L("写一卷新的","Write a new one")}</button>${xs.map((j,i)=>{const c=JOY_COLS[(j.c||0)%JOY_COLS.length];return `<button class="jz-pn" data-j="edit" data-id="${j.id}" style="background:${c[0]};transform:rotate(${i%2?1.2:-1.3}deg)"><svg viewBox="-20 -8 40 16" width="44" height="18" aria-hidden="true">${joyScroll(0,0,-6,j.c||0,34)}</svg><b>${esc(j.text)}</b><small>${[joyMinTxt(+j.mins),joyEnTxt(j.en),j.ep&&(j.ep.w!=null||+j.ep.e)?L(`S${j.ep.s} · 看到 E${joyW(j.ep)}`,`S${j.ep.s} · watched E${joyW(j.ep)}`):""].filter(Boolean).join(" · ")}</small></button>`}).join("")}</div>${joyEdit?joyEditorHTML():""}`}
 function joyJarHTML(){const n=joys.length,k=joyToday().length;
   if(!n)return `<button class="jz-x" data-j="close" aria-label="${L("关上","Close")}">✕</button><div class="jz-stage"><div class="jz-jarw">${joyJarSVG()}<div class="jz-pet">${SF.happy}</div><div class="jz-bub">${L("罐子还是空的～","The jar is empty～")}</div></div></div>
-  <div class="jz-bot"><p class="jz-ml">${L("先放几卷让你开心的小事进去吧","Put in a few things that make you happy")}</p><button class="jz-go" data-j="starter">${L("用{pet}准备的几卷开始","Start with {pet}'s rolls").replace("{pet}",petName())}</button><div class="jz-lnk"><b data-j="new" role="button" tabindex="0">${L("自己写一卷 ›","Write my own ›")}</b></div></div>${joyEdit?joyEditorHTML():""}`;
+  <div class="jz-bot"><div class="jz-start"><p>${L("{pet}先帮你准备了这几卷：","{pet} has a few rolls ready for you:")}</p><div class="jz-chips">${joyStartList().map((x,i)=>`<span style="background:${JOY_COLS[i%JOY_COLS.length][0]}">${esc(x[0])}</span>`).join("")}</div></div><div class="jz-two"><button class="jz-b2" data-j="new">${L("自己写一卷","Write my own")}</button><button class="jz-b2 pri" data-j="starter">${L("就用这些","Use these")}</button></div></div>${joyEdit?joyEditorHTML():""}`;
   return `<button class="jz-x" data-j="close" aria-label="${L("关上","Close")}">✕</button><span class="jz-sp" style="left:11%;top:18%">✦</span><span class="jz-sp" style="right:14%;top:14%;font-size:10px">✦</span><span class="jz-sp" style="left:18%;top:58%;font-size:9px;color:#ff9ab8">✦</span><span class="jz-sp" style="right:10%;top:52%;color:#b6a3f0">✦</span>
   <div class="jz-stage"><div class="jz-jarw">${joyJarSVG()}<div class="jz-pet">${SF.happy}</div><div class="jz-bub r">${L("无聊啦？摇一摇我～","Bored? Give me a shake～")}</div></div></div>
   <div class="jz-bot"><p class="jz-ml">${L("现 在 的 我","RIGHT NOW I'M")}</p><div class="jz-moods" role="radiogroup">${JOY_MOODS().map(([k,f,t])=>`<button class="${joyMood===k?"on":""}" data-j="mood" data-v="${k}" role="radio" aria-checked="${joyMood===k}">${SF[f]||SF.happy}<span>${t}</span></button>`).join("")}</div>
   <button class="jz-go" data-j="shake">${L("摇 一 摇","Shake")}</button><div class="jz-lnk"><span>${L(`今天开心了 <b>${k}</b> 次`,`<b>${k}</b> today`)}</span><span>·</span><b data-j="wall" role="button" tabindex="0">${L("罐子里的纸卷 ›","Rolls in the jar ›")}</b></div></div>`}
 function joyDrawHTML(){const j=joys.find(x=>x.id===joyPick);if(!j){joyView="jar";return joyJarHTML()}
-  const ep=j.ep&&+j.ep.e?j.ep:null;let eps="";
-  if(ep){const e=+ep.e,from=Math.max(1,e-4),xs=[...Array(8)].map((_,i)=>from+i);eps=`<div class="jz-eps"><small>${L(`第 ${ep.s} 季 · 下一集是第 ${e} 集`,`Season ${ep.s} · next up: episode ${e}`)}</small><div>${xs.map(x=>`<i class="${x<e?"":x===e?"n":"f"}">${x}</i>`).join("")}</div></div>`}
+  const ep=j.ep&&(j.ep.w!=null||+j.ep.e)?j.ep:null;let eps="";
+  if(ep){const e=joyW(ep)+1,from=Math.max(1,e-4),xs=[...Array(8)].map((_,i)=>from+i);eps=`<div class="jz-eps"><small>${e>1?L(`第 ${ep.s} 季 · 看到第 ${e-1} 集，接着看第 ${e} 集`,`Season ${ep.s} · watched ${e-1}, next up: ${e}`):L(`第 ${ep.s} 季 · 从第 1 集开始`,`Season ${ep.s} · from episode 1`)}</small><div>${xs.map(x=>`<i class="${x<e?"":x===e?"n":"f"}">${x}</i>`).join("")}</div></div>`}
   const go={tarot:L("好，去抽！","OK, draw!"),pomo:L("好，开始！","OK, start!"),letter:L("好，去写！","OK, write!"),journal:L("好，去写！","OK, write!")}[j.link]||(ep?L("好，去看！","OK, watch!"):L("好，去做！","OK, go!"));
   return `<button class="jz-x" data-j="close" aria-label="${L("关上","Close")}">✕</button><span class="jz-sp" style="left:11%;top:18%">✦</span><span class="jz-sp" style="right:10%;top:56%;color:#b6a3f0">✦</span>
   <div class="jz-stage"><div class="jz-scr"><div class="jz-peek">${SF.star||SF.happy}</div><div class="jz-roll"></div><div class="jz-paper"><div class="jz-kick">${L("小 芽 给 你 抽 到 了","{pet} PICKED").replace("{pet}",petName().toUpperCase())}</div><div class="jz-big">${esc(j.text)}</div>
@@ -3701,6 +3799,7 @@ function renderJoy(){if(!joyOpen)return;let r=document.getElementById("joyRoot")
   r.dataset.view=joyView;r.innerHTML=joyView==="wall"?joyWallHTML():joyView==="draw"?joyDrawHTML():joyJarHTML();
   if(joyEdit){const i=r.querySelector("#jzText");if(i&&!i.value)setTimeout(()=>i.focus(),30)}}
 function joyClick(e){const b=e.target.closest("[data-j],[data-je]");if(!b)return;
+  if(b.dataset.je==="kind"){const on=!b.classList.contains("on");joyEdit.kind=on?"talk":"solo";b.classList.toggle("on",on);b.setAttribute("aria-pressed",on);return}
   if(b.dataset.je){const k=b.dataset.je,v=b.dataset.v;joyEdit[k]=k==="mins"?+v:v;b.parentElement.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));if(k==="mins"){const m=document.getElementById("jzMin");if(m)m.value=""}return}
   const a=b.dataset.j;
   if(a==="edclose"&&e.target!==b&&b.classList.contains("jz-sheet-bg"))return;
@@ -3719,13 +3818,182 @@ function joyClick(e){const b=e.target.closest("[data-j],[data-je]");if(!b)return
   if(a==="eddel"){if(!b.classList.contains("sure")){b.classList.add("sure");b.textContent=L("再点一次确认","Tap again to confirm");return}
     const id=joyEdit.id;joys=joys.filter(x=>x.id!==id);const r=db.doc("joys/"+id);queued(r.path,()=>r.delete());joyEdit=null;renderJoy();return}
   if(a==="edsave"){const root=document.getElementById("joyRoot");const text=(root.querySelector("#jzText").value||"").trim().slice(0,30);if(!text){root.querySelector("#jzText").focus();return}
-    const s=+root.querySelector("#jzS").value||0,ep_=+root.querySelector("#jzE").value||0;const ep=ep_?{s:s||1,e:ep_}:null;
+    const s=+root.querySelector("#jzS").value||0,ep_=root.querySelector("#jzE").value;const ep=ep_!==""?{s:s||1,w:Math.max(0,+ep_||0)}:null;
     const own=+root.querySelector("#jzMin").value||0;if(own>0)joyEdit.mins=Math.min(600,Math.round(own));
     const row={text,mins:+joyEdit.mins||30,en:joyEdit.en||"lie",kind:joyEdit.kind||"solo",link:joyLinkGuess(text),ep};
     if(joyEdit.id){const j=joys.find(x=>x.id===joyEdit.id);Object.assign(j,row);const r=db.doc("joys/"+j.id);queued(r.path,()=>r.update(row))}
     else{const r=db.collection("joys").doc();row.c=joys.length%JOY_COLS.length;row.createdAt=Date.now();joys.push({id:r.id,...row});queued(r.path,()=>r.set(row))}
     joyEdit=null;if(joyView==="jar"&&joys.length===1)joyView="jar";renderJoy();return}
 }
+
+/* ---------- 专注半天: three big things, 90 · 90 · 60, on top of the focus timer ---------- */
+const DEEP_KEY="lifeos-deep";
+let DS=null;try{DS=JSON.parse(localStorage.getItem(DEEP_KEY)||"null")}catch(_){DS=null}
+let deepOpen=false, deepPickOpen=false, deepEvtOpen=false, deepWarned=0;
+const saveDS=()=>{try{DS?localStorage.setItem(DEEP_KEY,JSON.stringify(DS)):localStorage.removeItem(DEEP_KEY)}catch(_){}};
+const DEEP_PRESETS=[[90,90,60],[60,60,45]];
+const deepLive=()=>!!(DS&&DS.step!=="done");
+const deepRunning=()=>!!(P&&P.deep);
+const hm2m=s=>{const [h,m]=(s||"0:0").split(":").map(Number);return h*60+m};
+const m2hm=m=>{m=((Math.round(m)%1440)+1440)%1440;return `${String(Math.floor(m/60)).padStart(2,"0")}:${String(m%60).padStart(2,"0")}`};
+const nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()};
+const segLeft=i=>{const s=DS.segs[i];return Math.max(0,s.min*6e4-(s.used||0))};
+const deepTotalLeft=()=>DS.segs.reduce((a,s,i)=>a+(s.done?0:segLeft(i)),0)-(deepRunning()?elapsed():0);
+function deepNew(space){DS={id:Date.now().toString(36),day:todayStr(),space:space||(tab==="work"?"work":"study"),step:"dump",bigs:[{t:""},{t:""},{t:""}],smalls:[],segs:DEEP_PRESETS[0].map((min,i)=>({min,big:i,used:0,done:false})),evts:[],start:m2hm(Math.ceil((nowMin()+5)/5)*5),ready:{},cur:0,focusMs:0};saveDS()}
+// planned start of each block: segments in order, 15-minute breaks between them, events push later blocks past them
+function deepPlan(){const out=[];let t=hm2m(DS.start);const ev=[...DS.evts].sort((a,b)=>hm2m(a.from)-hm2m(b.from));
+  DS.segs.forEach((s,i)=>{if(i>0)t+=15;let len=s.min;
+    for(const e of ev){const f=hm2m(e.from),to=hm2m(e.to);if(t<to&&t+len>f&&!e.placed){if(t<f){/* the block can't fit before the event: move it after */}t=Math.max(t,to)}}
+    out.push({k:"seg",i,at:t,len});t+=len});
+  const rows=[...out,...ev.map(e=>({k:"evt",e,at:hm2m(e.from)}))].sort((a,b)=>a.at-b.at||(a.k==="evt"?-1:1));return rows}
+function deepCard(k){if(k!=="study"&&k!=="work")return "";const on_=deepLive();
+  const bars=`<span class="dpbars" aria-hidden="true"><i style="height:22px"></i><i style="height:22px"></i><i style="height:15px"></i></span>`;
+  if(!on_)return `<button class="dpent" data-act="deepopen" data-space="${k}">${bars}<span><b>${L("专注半天","Deep half-day")}</b><small>${L("写下三件大事，一件件做完","Write down three big things, then do them one by one")}</small></span><em>${L("开始","Start")}</em></button>`;
+  const st=DS.step, n=DS.cur+1, run=deepRunning();
+  const sub=st==="dump"||st==="ready"?L("还没开始 · 接着准备","Not started yet · carry on"):run?(P.pausedAt?L(`第 ${n} / ${DS.segs.length} 段 · 暂停中`,`Block ${n} of ${DS.segs.length} · paused`):L(`第 ${n} / ${DS.segs.length} 段 · 还剩 ${Math.ceil(remain()/6e4)} 分`,`Block ${n} of ${DS.segs.length} · ${Math.ceil(remain()/6e4)} mins left`)):st==="break"?L("休息中","On a break"):L(`停在第 ${n} 段，回来接着做`,`Stopped at block ${n}`);
+  return `<button class="dpent on" data-act="deepopen" data-space="${k}">${bars}<span><b>${L("专注半天","Deep half-day")}</b><small>${sub}</small></span><em>${run?L("回到专注 ›","Back ›"):L("继续 ›","Continue ›")}</em></button>`}
+function openDeep(space){if(!db)return;if(!DS)deepNew(space);else if(DS.step==="done"){deepNew(space)}deepOpen=true;document.body.classList.add("dp-on");renderDeep()}
+function closeDeep(){deepOpen=false;deepPickOpen=false;deepEvtOpen=false;document.body.classList.remove("dp-on");const r=document.getElementById("deepRoot");if(r)r.remove();render()}
+function deepQuit(){if(deepRunning()){recordSession();P=null;saveP();wakeOff()}DS=null;saveDS();closeDeep();document.title=BASE_TITLE()}
+function deepStartSeg(){const i=DS.segs.findIndex(s=>!s.done);if(i<0){deepFinish();return}DS.cur=i;
+  if(P&&!P.deep){if(P.phase==="focus")recordSession();P=null}
+  const s=DS.segs[i],b=DS.bigs[s.big]||{},t=b.taskId?tasks.find(x=>x.id===b.taskId&&!x.done&&!x.deleted):null;
+  P={phase:"focus",mode:"deep",deep:true,focusMin:Math.max(1,segLeft(i)/6e4),breakMin:15,taskId:t?t.id:null,space:t?t.space:DS.space,subI:null,startAt:Date.now(),pausedAt:null,pausedTotal:0,segs:[],segAt:0,open:false,msg:null};
+  DS.step="run";DS.began=DS.began||Date.now();DS.evtSeen=DS.evtSeen||[];saveDS();saveP();askNotify();wakeOn();renderDeep();render()}
+// stop the running block (time up, done early, a meeting, or "stop here"), keeping what was done
+function deepStopSeg(why){if(!deepRunning())return;const e=elapsed();const r=recordSession();if(r.tomato)water(null,1);
+  const s=DS.segs[DS.cur];s.used=(s.used||0)+e;DS.focusMs=(DS.focusMs||0)+e;if(why==="time"||segLeft(DS.cur)<3e4)s.done=true;
+  P=null;saveP();wakeOff();DS.why=why;DS.step=why==="hold"||why==="evt"?"hold":"between";saveDS();
+  if(why==="time"){tflash([L("❗ 这一段结束啦","❗ Block done")],8000);notify(L("这一段结束啦","Block done"),L("起来走走，喝口水。","Stand up and have some water."),"pomo");buzz();ding()}
+  if(why==="evt"){const e2=DS.evtNow;tflash([L(`❗ ${e2?e2.name:"有事"}时间到啦`,`❗ Time for ${e2?e2.name:"your thing"}`)],8000);notify(L(`${e2?e2.name:"有事"}时间到啦`,`Time for ${e2?e2.name:"your thing"}`),L("这一段先停在这，回来再继续。","This block is paused. Carry on when you're back."),"pomo");buzz();ding()}
+  if(!deepOpen&&(why==="time"||why==="evt")){deepOpen=true;document.body.classList.add("dp-on")}
+  renderDeep();render()}
+function deepBigDone(i,v){const b=DS.bigs[i];if(!b)return;b.done=v;if(v&&b.taskId){const t=tasks.find(x=>x.id===b.taskId);if(t&&!t.done)completeTask(t,null)}saveDS()}
+function deepFinish(){if(deepRunning())deepStopSeg("hold");DS.step="done";DS.ended=Date.now();saveDS();renderDeep();render()}
+function deepSave(){const bigs=DS.bigs.filter(b=>b.t);const doc={day:DS.day,mins:Math.round((DS.focusMs||0)/6e4),bigs:bigs.map(b=>({t:b.t,done:!!b.done})),smalls:DS.smalls.length,smallsDone:DS.smalls.filter(x=>x.done).length,at:DS.ended||Date.now(),began:DS.began||null};
+  const r=db.collection("deeps").doc();deeps.push({id:r.id,...doc});queued(r.path,()=>r.set(doc))}
+function deepLater(){const tmr=addDays(todayStr(),1);let n=0;
+  DS.bigs.forEach(b=>{if(!b.t||b.done)return;n++;const t=b.taskId&&tasks.find(x=>x.id===b.taskId);if(t){const p={plan:tmr};Object.assign(t,p);const r=db.doc("tasks/"+t.id);queued(r.path,()=>r.update(p))}else{const r=db.collection("tasks").doc();const row={title:b.t,space:DS.space,horizon:"week",due:null,plan:tmr,note:"",done:false,createdAt:Date.now()};tasks.push({id:r.id,...row});queued(r.path,()=>r.set(row))}});
+  DS.smalls.forEach(x=>{if(x.done||!x.t)return;n++;const r=db.collection("tasks").doc();const row={title:x.t,space:DS.space,horizon:"inbox",due:null,note:"",done:false,createdAt:Date.now()};tasks.push({id:r.id,...row});queued(r.path,()=>r.set(row))});return n}
+let deeps=[];
+function deepTick(){if(!DS)return;
+  if(!P&&DS.step==="break"&&DS.breakEnd){document.title=flashMsgs&&Math.floor(Date.now()/1500)%2?flashMsgs[0]:Date.now()<DS.breakEnd?`Break · ${Math.ceil((DS.breakEnd-Date.now())/6e4)} mins`:BASE_TITLE()}
+  else if(!P&&flashMsgs&&Date.now()<flashUntil)document.title=Math.floor(Date.now()/1500)%2?flashMsgs[0]:BASE_TITLE();
+  if(deepRunning()&&P.phase==="focus"&&!P.pausedAt){const nm=nowMin();const e=DS.evts.find(x=>nm>=hm2m(x.from)&&nm<hm2m(x.to)&&!(DS.evtSeen||[]).includes(x.from+x.name));
+    if(e&&(Date.now()-P.startAt)>6e4){DS.evtSeen=[...(DS.evtSeen||[]),e.from+e.name];DS.evtNow=e;deepStopSeg("evt");return}}
+  if(deepRunning()&&P.pausedAt&&Date.now()-P.pausedAt>15*6e4&&deepWarned!==P.pausedAt){deepWarned=P.pausedAt;tflash([L("还回来吗？","Coming back?")],0)}
+  if(DS.step==="break"&&DS.breakEnd&&Date.now()>=DS.breakEnd&&!DS.breakRang){DS.breakRang=true;saveDS();tflash([L("❗ 休息结束啦","❗ Break's over")],0);notify(L("休息结束啦","Break's over"),L("回来开始下一段吧。","Come back for the next block."),"pomo");buzz();ding()}
+  const r=document.getElementById("deepRoot");if(!r)return;
+  r.querySelectorAll("[data-dp-tm]").forEach(el=>{const k=el.dataset.dpTm;el.textContent=k==="seg"?mmss(remain()):k==="brk"?mmss((DS.breakEnd||0)-Date.now()):k==="away"?(P&&P.pausedAt?L(`离开 ${Math.floor((Date.now()-P.pausedAt)/6e4)} 分钟`,`away ${Math.floor((Date.now()-P.pausedAt)/6e4)} mins`):""):k==="tot"?deepLeftTxt():""});
+  const arc=r.querySelector(".dp-arc");if(arc&&deepRunning()){const len=P.focusMin*6e4,c=+arc.dataset.c;arc.setAttribute("stroke-dasharray",`${(c*Math.max(0,remain())/len).toFixed(1)} ${c}`)}
+  r.querySelectorAll(".dp-segs i[data-i]").forEach(el=>{const i=+el.dataset.i,s=DS.segs[i];let u=s.used||0;if(deepRunning()&&DS.cur===i)u+=elapsed();el.style.width=(s.done?100:Math.min(100,u/(s.min*6e4)*100))+"%"})}
+const deepLeftTxt=()=>{const m=Math.max(0,Math.round(deepTotalLeft()/6e4)),h=Math.floor(m/60),r=m%60;return h?L(`还剩 ${h} 小时 ${r} 分`,`${h} h ${r} min to go`):L(`还剩 ${r} 分`,`${r} min to go`)};
+const DP_PAUSE=`<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1.5" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1.5" fill="currentColor"/></svg>`;
+const DP_PLAY=`<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="currentColor"/></svg>`;
+const DP_PIP=`<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="12" y="11" width="7" height="6" rx="1.5" fill="currentColor"/></svg>`;
+const DP_IC={tabs:`<svg viewBox="0 0 40 40" width="34" height="34" aria-hidden="true"><rect x="5" y="9" width="30" height="22" rx="4" fill="#fff" stroke="#5a6fd6" stroke-width="2"/><path d="M5 15h30" stroke="#5a6fd6" stroke-width="2"/><path d="M16 20l8 8M24 20l-8 8" stroke="#ef5d6e" stroke-width="2.4" stroke-linecap="round"/></svg>`,
+ phone:`<svg viewBox="0 0 40 40" width="34" height="34" aria-hidden="true"><g transform="rotate(-18 20 20)"><rect x="13" y="6" width="14" height="26" rx="3.5" fill="#fff" stroke="#e8789a" stroke-width="2"/><path d="M18 9h4" stroke="#e8789a" stroke-width="1.6" stroke-linecap="round"/></g><path d="M30 28q4 2 6 6M6 12q-2-3 0-6" stroke="#e8789a" stroke-width="1.8" stroke-linecap="round" fill="none" opacity=".6"/></svg>`,
+ water:`<svg viewBox="0 0 40 40" width="34" height="34" aria-hidden="true"><path d="M10 13h18l-2 19q-.2 2-2.2 2h-9.6q-2 0-2.2-2z" fill="#d6ecfc" stroke="#4a9ad6" stroke-width="2" stroke-linejoin="round"/><path d="M28 17h3q3 0 3 3.5T31 24h-3.4" stroke="#4a9ad6" stroke-width="2" fill="none"/><path d="M16 9q1-2 0-4M21 9q1-2 0-4" stroke="#9fc9e6" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>`};
+function dpRing(w,sw){const r=w/2-sw,c=2*Math.PI*r,len=P?P.focusMin*6e4:1,fr=P?Math.max(0,remain())/len:1;
+  return `<div class="dp-ring" style="width:${w}px;height:${w}px"><svg viewBox="0 0 ${w} ${w}" width="${w}" height="${w}" aria-hidden="true"><defs><linearGradient id="dpg" x1="0" x2="1"><stop offset="0" stop-color="#6b8cf5"/><stop offset="1" stop-color="#9b7af0"/></linearGradient></defs><circle cx="${w/2}" cy="${w/2}" r="${r}" fill="none" class="dp-track" stroke-width="${sw}"/><circle class="dp-arc" data-c="${c.toFixed(1)}" cx="${w/2}" cy="${w/2}" r="${r}" fill="none" stroke="url(#dpg)" stroke-width="${sw}" stroke-linecap="round" stroke-dasharray="${(c*fr).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 ${w/2} ${w/2})"/></svg><b data-dp-tm="seg">${mmss(remain())}</b></div>`}
+function dpSegsBar(){return `<div class="dp-bar"><div class="dp-segs">${DS.segs.map((s,i)=>`<div style="flex:${s.min}"><i data-i="${i}" style="width:${s.done?100:Math.min(100,(s.used||0)/(s.min*6e4)*100)}%"></i></div>`).join("")}</div><div class="dp-lab"><span>${L(`第 ${Math.min(DS.cur+1,DS.segs.length)} / ${DS.segs.length} 段`,`Block ${Math.min(DS.cur+1,DS.segs.length)} of ${DS.segs.length}`)}</span><span data-dp-tm="tot">${deepLeftTxt()}</span></div></div>`}
+function dpLists(){return `<div class="dp-side"><div class="dp-lst"><h4><span>${L("三件大事","Big things")}</span><span>${DS.bigs.filter(b=>b.t&&b.done).length}/${DS.bigs.filter(b=>b.t).length}</span></h4>${DS.bigs.map((b,i)=>b.t?`<button class="dp-r${b.done?" d":""}${deepRunning()&&DS.segs[DS.cur].big===i?" now":""}" data-dp="bigck" data-i="${i}"><i></i><span>${esc(b.t)}</span></button>`:"").join("")}</div>
+  <div class="dp-lst"><h4><span>${L("杂事","Little things")}</span><span>${DS.smalls.filter(x=>x.done).length}/${DS.smalls.length}</span></h4>${DS.smalls.map((x,i)=>`<button class="dp-r${x.done?" d":""}" data-dp="smallck" data-i="${i}"><i></i><span>${esc(x.t)}</span></button>`).join("")}<input class="dp-addin" data-dp-in="small" maxlength="40" placeholder="${L("＋ 想到就写","＋ Jot it down")}" aria-label="${L("加一件杂事","Add a little thing")}"></div></div>`}
+function deepDumpHTML(){const cand=tasks.filter(t=>(t.space==="study"||t.space==="work")&&!t.done&&!t.deleted&&!t.letGo&&t.horizon!=="long"&&!DS.bigs.some(b=>b.taskId===t.id)).sort(sortTasks).slice(0,12);
+  return `<div class="dp-hd"><div><h2>${L("先清空脑子","Empty your head first")}</h2><p>${L("今天的三件大事，和脑子里转着的杂事","Today's three big things, and the little things on your mind")}</p></div><span class="dp-pet">${SF.focus}</span></div>
+  <div class="dp-paper"><div class="dp-col"><h4>${L("三件大事","Three big things")}</h4>${DS.bigs.map((b,i)=>`<label class="dp-big"><span class="n n${i}">${i+1}</span><input data-dp-in="big" data-i="${i}" maxlength="40" value="${esc(b.t)}" placeholder="${[L("最想先搞定的","The one to do first"),L("第二件","Second"),L("第三件 · optional","Third · optional")][i]}" aria-label="${L(`大事 ${i+1}`,`Big thing ${i+1}`)}">${b.taskId?`<em title="${L("来自任务","From a task")}">●</em>`:""}</label>`).join("")}
+    <button class="dp-pk" data-dp="pick">${L("从任务里选 ›","Pick from tasks ›")}</button>
+    ${deepPickOpen?`<div class="dp-pick">${cand.length?cand.map(t=>`<button data-dp="pickt" data-id="${t.id}"><i style="background:var(--${t.space})"></i>${esc(t.title)}</button>`).join(""):`<p>${L("学习和工作里没有可以选的任务","No study or work tasks to pick")}</p>`}</div>`:""}</div>
+  <div class="dp-col r"><h4>${L("杂事","Little things")}</h4>${DS.smalls.map((x,i)=>`<div class="dp-sm"><i></i><span>${esc(x.t)}</span><button data-dp="smalldel" data-i="${i}" aria-label="${L("删掉","Remove")}">×</button></div>`).join("")}<input class="dp-addin" data-dp-in="small" maxlength="40" placeholder="${L("＋ 想到就写","＋ Jot it down")}" aria-label="${L("加一件杂事","Add a little thing")}"></div></div>
+  <div class="dp-bot"><button class="dp-go" data-dp="toready" ${DS.bigs.some(b=>b.t.trim())?"":"disabled"}>${L("下一步：准备开工","Next: get ready")}</button></div>`}
+function deepReadyHTML(){const R=DS.ready,all=R.tabs&&R.phone&&R.water,plan=deepPlan(),pre=DS.segs.map(s=>s.min).join(" · ");
+  const rd=(k,t,s)=>`<button class="dp-rd${R[k]?" on":""}" data-dp="rd" data-k="${k}" aria-pressed="${!!R[k]}"><span class="ic">${DP_IC[k]}</span><span><b>${t}</b><small>${s}</small></span><span class="ck">${R[k]?"✓":""}</span></button>`;
+  const name=i=>esc((DS.bigs[DS.segs[i].big]||{}).t||L("收尾","Wrap up"));
+  return `<div class="dp-hd"><div><h2>${L("开工前的小仪式","A little ritual first")}</h2><p>${L("三件都勾上，就可以开始了","Tick all three and you're ready")}</p></div><span class="dp-pet">${SF.happy}</span></div>
+  <div class="dp-ready">${rd("tabs",L("关掉无关的网页","Close unrelated tabs"),L("只留今天要用的","Keep only what you need"))}${rd("phone",L("手机扔远一点","Put your phone away"),L("放到够不着的地方","Somewhere out of reach"))}${rd("water",L("倒好一杯水","Get a glass of water"),L("中途就不用起来了","So you won't need to get up"))}
+  <div class="dp-plan"><div class="dp-ph"><label>${L("几点开始","Start at")} <input type="time" data-dp-in="start" value="${DS.start}"></label><span class="dp-pre">${DEEP_PRESETS.map(p=>`<button class="${p.join()===DS.segs.map(s=>s.min).join()?"on":""}" data-dp="preset" data-v="${p.join(",")}">${p.join(" · ")}</button>`).join("")}</span></div>
+  ${plan.map(r=>r.k==="seg"?`<div class="dp-tr"><span class="tm">${m2hm(r.at)}</span><span class="bk b${r.i}"><b>${L(`第${["一","二","三"][r.i]}段 · ${r.len}′`,`Block ${r.i+1} · ${r.len}′`)}</b>${name(r.i)}</span></div>`:`<div class="dp-tr"><span class="tm">${esc(r.e.from)}</span><span class="bk ev"><b>${esc(r.e.name)} · ${esc(r.e.from)}–${esc(r.e.to)}</b><button data-dp="evtdel" data-i="${DS.evts.indexOf(r.e)}" aria-label="${L("删掉","Remove")}">×</button></span></div>`).join("")}
+  ${deepEvtOpen?`<div class="dp-evf"><input data-dp-in="evname" maxlength="20" placeholder="${L("比如：组会","e.g. Lab meeting")}" aria-label="${L("什么事","What")}"><input type="time" data-dp-in="evfrom" aria-label="${L("开始","From")}"><span>–</span><input type="time" data-dp-in="evto" aria-label="${L("结束","To")}"><button class="btn primary" data-dp="evtadd">${L("加上","Add")}</button></div>`:`<button class="dp-addev" data-dp="evtopen">${L("＋ 中间有事","＋ Something in between")}</button>`}</div></div>
+  <div class="dp-bot"><button class="dp-go" data-dp="start" ${all?"":"disabled"}>${L(`开始专注`,`Start focusing`)}</button><button class="dp-back" data-dp="back">${L("‹ 回去改大事","‹ Back to the list")}</button></div>`}
+function deepRunHTML(){const s=DS.segs[DS.cur],b=DS.bigs[s.big]||{},paused=!!P.pausedAt;
+  return `${dpSegsBar()}<div class="dp-body"><div class="dp-main">${dpRing(260,12)}<div class="dp-cap">${esc(b.t||L("收尾","Wrap up"))}</div>
+  ${paused?`<p class="dp-away"><span>${L("暂停中","Paused")}</span> · <span data-dp-tm="away"></span></p>`:""}
+  <div class="dp-btns"><button class="dp-ic" data-dp="pause" aria-label="${paused?L("继续","Resume"):L("暂停","Pause")}">${paused?DP_PLAY:DP_PAUSE}</button><button class="dp-done" data-dp="done">${L("做完了 ✓","Done ✓")}</button>${pipOK()?`<button class="dp-ic" data-dp="pip" aria-label="${L("小窗","Mini window")}" title="${L("小窗","Mini window")}">${DP_PIP}</button>`:`<button class="dp-ic" data-dp="hold" aria-label="${L("先停在这","Stop here")}" title="${L("先停在这","Stop here")}">■</button>`}</div>
+  ${paused?`<button class="dp-link" data-dp="hold">${L("先停在这，回来再继续","Stop here, carry on later")}</button>`:""}</div>${dpLists()}</div>`}
+function deepBetweenHTML(){const why=DS.why,s=DS.segs[DS.cur],b=DS.bigs[s.big]||{},next=DS.segs.findIndex(x=>!x.done),nb=next>=0?DS.bigs[DS.segs[next].big]||{}:null;
+  const nextEvt=DS.evts.map(e=>({...e,f:hm2m(e.from)})).filter(e=>e.f>nowMin()).sort((a,b)=>a.f-b.f)[0];
+  const head=why==="time"?L(`第${["一","二","三"][DS.cur]}段完成啦！`,`Block ${DS.cur+1} done!`):why==="early"?L(`提前 ${Math.round(segLeft(DS.cur)/6e4)} 分钟做完啦！`,`Done ${Math.round(segLeft(DS.cur)/6e4)} mins early!`):L("好，先停一下","OK, a pause");
+  const ask=why==="time"&&b.t&&!b.done?`<div class="dp-ask"><p>${L(`「${esc(b.t)}」做完了吗？`,`Did you finish “${esc(b.t)}”?`)}</p><div><button data-dp="bigyes">${L("做完了 ✓","Yes ✓")}</button><button data-dp="bigno">${L("还没，接着做","Not yet")}</button></div></div>`:"";
+  return `<div class="dp-mid"><div class="dp-cele">${SF.star}<h3>${head}</h3>${nextEvt?`<p>${L(`${esc(nextEvt.from)} 有${esc(nextEvt.name)}`,`${esc(nextEvt.name)} at ${esc(nextEvt.from)}`)}</p>`:""}</div>${ask}
+  <div class="dp-opts">${next>=0?`<button class="dp-opt dp-pri" data-dp="next"><b>${L("直接开始下一段","Start the next block")}</b><small>${esc(nb&&nb.t||L("收尾","Wrap up"))}</small></button>`:""}<button class="dp-opt" data-dp="brk"><b>${L("先休息 15 分钟","Take 15 minutes")}</b><small>${L("顺手划掉几件杂事","Tick off a few little things")}</small></button><button class="dp-opt" data-dp="hold"><b>${L("先停在这，回来再继续","Stop here, carry on later")}</b><small>${L("比如去开会","e.g. off to a meeting")}</small></button>${next<0?`<button class="dp-opt dp-pri" data-dp="finish"><b>${L("收工","Wrap up")}</b></button>`:""}</div></div>${dpLists()}`}
+function deepBreakHTML(){const next=DS.segs.findIndex(x=>!x.done),over=DS.breakEnd&&Date.now()>=DS.breakEnd;
+  return `<div class="dp-mid"><div class="dp-cele">${PET_YOGA}<h3>${over?L("休息结束啦","Break's over"):L("休息一下","Take a break")}</h3><p class="dp-brk">${over?"":`<b data-dp-tm="brk">${mmss(DS.breakEnd-Date.now())}</b>`}</p></div>
+  <div class="dp-opts">${next>=0?`<button class="dp-opt dp-pri" data-dp="next"><b>${L(`开始第${["一","二","三"][next]}段`,`Start block ${next+1}`)}</b><small>${esc((DS.bigs[DS.segs[next].big]||{}).t||L("收尾","Wrap up"))}</small></button>`:`<button class="dp-opt dp-pri" data-dp="finish"><b>${L("收工","Wrap up")}</b></button>`}<button class="dp-opt" data-dp="hold"><b>${L("先停在这，回来再继续","Stop here, carry on later")}</b></button></div></div>${dpLists()}`}
+function deepHoldHTML(){const next=DS.segs.findIndex(x=>!x.done),e=DS.why==="evt"&&DS.evtNow;
+  return `<div class="dp-mid"><div class="dp-cele">${SF.happy}<h3>${e?L(`${esc(e.name)}时间到啦，去吧～`,`Time for ${esc(e.name)}, off you go～`):L("先停在这啦","Paused here")}</h3><p>${L("做了的都记着，回来点继续就好","Everything's saved. Tap continue when you're back")}</p></div>
+  <div class="dp-opts">${next>=0?`<button class="dp-opt dp-pri" data-dp="next"><b>${DS.segs[next].used?L(`继续第${["一","二","三"][next]}段`,`Continue block ${next+1}`):L(`开始第${["一","二","三"][next]}段`,`Start block ${next+1}`)}</b><small>${esc((DS.bigs[DS.segs[next].big]||{}).t||L("收尾","Wrap up"))}${DS.segs[next].used?L(` · 还剩 ${Math.round(segLeft(next)/6e4)} 分`,` · ${Math.round(segLeft(next)/6e4)} min left`):""}</small></button>`:""}<button class="dp-opt" data-dp="finish"><b>${L("今天就到这，收工","That's it for today")}</b></button></div></div>${dpLists()}`}
+function deepDoneHTML(){const mins=Math.round((DS.focusMs||0)/6e4),bigs=DS.bigs.filter(b=>b.t),bd=bigs.filter(b=>b.done).length,sd=DS.smalls.filter(x=>x.done).length,left=bigs.filter(b=>!b.done).length+DS.smalls.filter(x=>!x.done).length;
+  return `<div class="dp-mid"><div class="dp-cert"><span class="pet">${SF.star}</span><h3>${L(`专注了 ${fmtHM(mins)}！`,`${fmtHM(mins)} of focus!`)}</h3><p>${DS.began?`${hhmm(DS.began)} – ${hhmm(DS.ended||Date.now())}`:""}</p>
+  <div class="dp-res">${bigs.map((b,i)=>`<div class="r"><span class="n n${DS.bigs.indexOf(b)}">${DS.bigs.indexOf(b)+1}</span><span>${esc(b.t)}</span><em class="${b.done?"":"no"}">${b.done?L("✓ 完成","✓ Done"):L("还没做完","Not yet")}</em></div>`).join("")}</div>
+  <div class="dp-stat"><div><b>${fmtHM(mins)}</b><small>${L("专注","Focus")}</small></div><div><b>${bd}/${bigs.length}</b><small>${L("大事","Big things")}</small></div><div><b>${sd}/${DS.smalls.length}</b><small>${L("杂事","Little things")}</small></div></div></div></div>
+  <div class="dp-bot"><button class="dp-go" data-dp="save">${L("收工，记进小结","Done, save to my recap")}</button>${left?`<label class="dp-later"><input type="checkbox" id="dpLater" checked> ${L(`没做完的 ${left} 件放进明天的任务`,`Put the ${left} unfinished into tomorrow's tasks`)}</label>`:""}</div>`}
+function renderDeep(){if(!deepOpen||!DS)return;let r=document.getElementById("deepRoot");
+  if(!r){r=document.createElement("div");r.id="deepRoot";r.className="dp";r.setAttribute("role","dialog");r.setAttribute("aria-label",L("专注半天","Deep half-day"));document.body.appendChild(r);
+    r.addEventListener("click",deepClick);r.addEventListener("keydown",deepKey);r.addEventListener("change",deepChange);r.addEventListener("input",deepInput)}
+  const st=deepRunning()?"run":DS.step;r.dataset.step=st;
+  const keep=document.activeElement&&r.contains(document.activeElement)&&document.activeElement.dataset.dpIn;
+  r.innerHTML=`<button class="dp-x" data-dp="close" aria-label="${L("收起","Close")}">✕</button>`+(st==="dump"?deepDumpHTML():st==="ready"?deepReadyHTML():st==="run"?deepRunHTML():st==="between"?deepBetweenHTML():st==="break"?deepBreakHTML():st==="hold"?deepHoldHTML():deepDoneHTML());
+  if(keep){const el=r.querySelector(`[data-dp-in="${keep}"]`);if(el&&keep==="small")el.focus()}
+  if(pipWin)drawPip(true)}
+function deepKey(e){const el=e.target;if(e.key==="Escape"){closeDeep();return}
+  if(e.key==="Enter"&&!imeOn&&el.dataset&&el.dataset.dpIn==="small"){e.preventDefault();const v=el.value.trim();if(v){el.value="";DS.smalls.push({t:v.slice(0,40),done:false});saveDS();renderDeep();const n=document.querySelector('#deepRoot [data-dp-in="small"]');if(n)n.focus()}}
+  if(e.key==="Enter"&&!imeOn&&el.dataset&&el.dataset.dpIn==="big"){e.preventDefault();const nx=document.querySelector(`#deepRoot [data-dp-in="big"][data-i="${+el.dataset.i+1}"]`);if(nx)nx.focus();else el.blur()}}
+function deepInput(e){const el=e.target;if(el.dataset.dpIn==="big"){const b=DS.bigs[+el.dataset.i];b.t=el.value.slice(0,40);if(b.taskId){const t=tasks.find(x=>x.id===b.taskId);if(!t||t.title!==b.t)delete b.taskId}saveDS();const go=document.querySelector('#deepRoot [data-dp="toready"]');if(go)go.disabled=!DS.bigs.some(x=>x.t.trim())}}
+function deepChange(e){const el=e.target;if(el.dataset.dpIn==="start"&&el.value){DS.start=el.value;saveDS();renderDeep()}
+  if(el.dataset.dpIn==="small"&&el.value.trim()){const v=el.value.trim().slice(0,40);el.value="";DS.smalls.push({t:v,done:false});saveDS();renderDeep()}}
+function deepClick(e){const b=e.target.closest("[data-dp]");if(!b)return;const a=b.dataset.dp,i=+b.dataset.i;
+  if(a==="close"){closeDeep();return}
+  if(a==="pick"){deepPickOpen=!deepPickOpen;renderDeep();return}
+  if(a==="pickt"){const t=tasks.find(x=>x.id===b.dataset.id);if(!t)return;let k=DS.bigs.findIndex(x=>!x.t.trim());if(k<0)k=DS.bigs.length-1;DS.bigs[k]={t:t.title.slice(0,40),taskId:t.id};if(!DS.bigs.some(x=>!x.t.trim()))deepPickOpen=false;saveDS();renderDeep();return}
+  if(a==="smalldel"){DS.smalls.splice(i,1);saveDS();renderDeep();return}
+  if(a==="toready"){DS.bigs.forEach(x=>x.t=x.t.trim());const n=DS.bigs.filter(x=>x.t).length;DS.segs.forEach((s,k)=>s.big=k<n?k:Math.max(0,n-1));if(n<3&&DS.segs.length===3){/* fewer big things: the last block wraps up */}DS.step="ready";deepPickOpen=false;saveDS();renderDeep();return}
+  if(a==="back"){DS.step="dump";saveDS();renderDeep();return}
+  if(a==="rd"){DS.ready[b.dataset.k]=!DS.ready[b.dataset.k];saveDS();renderDeep();return}
+  if(a==="preset"){const v=b.dataset.v.split(",").map(Number);DS.segs=v.map((min,k)=>({min,big:DS.segs[k]?DS.segs[k].big:k,used:0,done:false}));saveDS();renderDeep();return}
+  if(a==="evtopen"){deepEvtOpen=true;renderDeep();const n=document.querySelector('#deepRoot [data-dp-in="evname"]');if(n)n.focus();return}
+  if(a==="evtadd"){const r=document.getElementById("deepRoot"),nm=r.querySelector('[data-dp-in="evname"]').value.trim()||L("有事","Busy"),f=r.querySelector('[data-dp-in="evfrom"]').value,t=r.querySelector('[data-dp-in="evto"]').value;if(!f||!t||t<=f){r.querySelector('[data-dp-in="'+(!f?"evfrom":"evto")+'"]').focus();return}DS.evts.push({name:nm.slice(0,20),from:f,to:t});deepEvtOpen=false;saveDS();renderDeep();return}
+  if(a==="evtdel"){DS.evts.splice(i,1);saveDS();renderDeep();return}
+  if(a==="start"||a==="next"){if(P&&!P.deep&&P.phase==="focus"){cheer(L("先把正在跑的番茄收好啦","Saved the tomato that was running"),"happy")}DS.breakEnd=null;DS.breakRang=false;stopFlash();deepStartSeg();return}
+  if(a==="pause"){if(!P)return;if(P.pausedAt){P.pausedTotal+=Date.now()-P.pausedAt;P.pausedAt=null;wakeOn();stopFlash()}else{P.pausedAt=Date.now();wakeOff()}saveP();renderDeep();render();return}
+  if(a==="pip"){openPip();return}
+  if(a==="done"){const s=DS.segs[DS.cur];deepBigDone(s.big,true);const left=segLeft(DS.cur)-elapsed();deepStopSeg(left>6e4?"early":"time");DS.segs[DS.cur].done=true;saveDS();if(DS.segs.every(x=>x.done)||DS.bigs.filter(x=>x.t).every(x=>x.done)){DS.segs.forEach(x=>x.done=true);deepFinish()}else renderDeep();return}
+  if(a==="hold"){if(deepRunning())deepStopSeg("hold");else{DS.step="hold";DS.why="hold";saveDS();renderDeep()}stopFlash();return}
+  if(a==="bigyes"){deepBigDone(DS.segs[DS.cur].big,true);renderDeep();return}
+  if(a==="bigno"){const s=DS.segs[DS.cur];const later=DS.segs.findIndex((x,k)=>k>DS.cur&&!x.done);if(later>=0&&DS.bigs.filter(x=>x.t).length<DS.segs.length)DS.segs[later].big=s.big;DS.why="hold2";saveDS();renderDeep();return}
+  if(a==="brk"){DS.step="break";DS.breakEnd=Date.now()+15*6e4;DS.breakRang=false;saveDS();renderDeep();render();return}
+  if(a==="finish"){deepFinish();return}
+  if(a==="bigck"){deepBigDone(i,!DS.bigs[i].done);renderDeep();return}
+  if(a==="smallck"){DS.smalls[i].done=!DS.smalls[i].done;saveDS();renderDeep();return}
+  if(a==="save"){const later=document.getElementById("dpLater");let n=0;if(later&&later.checked)n=deepLater();deepSave();const mins=Math.round((DS.focusMs||0)/6e4);DS=null;saveDS();closeDeep();document.title=BASE_TITLE();
+    cheer(L(`收工！专注了 ${fmtHM(mins)}${n?`，${n} 件放进了明天`:""}`,`Done! ${fmtHM(mins)} of focus${n?`, ${n} moved to tomorrow`:""}`),"cheer");return}
+}
+function dpPipTimer(fr,paused){const c=27,r=21,ang=fr*2*Math.PI,x=c+r*Math.sin(-ang),y=c-r*Math.cos(-ang),large=fr>.5?1:0;
+  const dots=[0,1,2,3].map(i=>`<circle cx="${c+23.5*Math.sin(i*Math.PI/2)}" cy="${c-23.5*Math.cos(i*Math.PI/2)}" r="1.3" fill="#b7c5e2"/>`).join("");
+  const wedge=fr>=.999?`<circle cx="27" cy="27" r="21" fill="${paused?"#c3cde0":"url(#pw)"}"/>`:fr<=0?"":`<path d="M27 27 L27 6 A21 21 0 ${large} 0 ${x.toFixed(1)} ${y.toFixed(1)} Z" fill="${paused?"#c3cde0":"url(#pw)"}"/>`;
+  return `<svg viewBox="0 0 54 54" width="54" height="54" aria-hidden="true"><defs><linearGradient id="pw" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6b8cf5"/><stop offset="1" stop-color="#3d63dd"/></linearGradient></defs><circle cx="27" cy="27" r="26" fill="#fff"/>${dots}${wedge}${paused?`<circle cx="27" cy="27" r="11" fill="#fff"/><rect x="22.5" y="21.5" width="3.4" height="11" rx="1.2" fill="#6b7c99"/><rect x="28.1" y="21.5" width="3.4" height="11" rx="1.2" fill="#6b7c99"/>`:`<circle cx="27" cy="27" r="3" fill="#fff"/>`}</svg>`}
+// the quiet mini window for 专注半天: a little blue timer and "52 mins left", pause on hover
+function drawDeepPip(force){const d=pipWin.document;
+  if(!d.getElementById("dpq")){const st=d.createElement("style");st.id="dpq";st.textContent=`body.dq{margin:0;background:#eef3fd;display:flex;align-items:center;justify-content:center;height:100vh;font-family:Arial,'Noto Sans SC',sans-serif;overflow:hidden}
+.dqp{display:flex;align-items:center;gap:10px;padding:8px 14px 8px 8px}.dqp .t{font-size:15px;color:#3d4f75;letter-spacing:.02em}.dqp .t small{display:block;font-size:11.5px;color:#8a99b5;margin-top:2px}
+.dqp .bt{width:30px;height:30px;border-radius:50%;border:0;background:#fff;display:grid;place-items:center;box-shadow:0 1px 4px rgba(60,90,160,.15);cursor:pointer;color:#5b6d8f;opacity:0;transition:opacity .15s}
+body:hover .dqp .bt,.dqp .bt.show{opacity:1}`;d.head.appendChild(st)}
+  d.body.className="dq";
+  const run=deepRunning(),paused=run&&!!P.pausedAt;let fr=1,t1,t2="";
+  if(run){const len=P.focusMin*6e4;fr=Math.max(0,remain())/len;t1=paused?"Paused":`${Math.max(1,Math.ceil(remain()/6e4))} mins left`;if(paused)t2=`away ${Math.floor((Date.now()-P.pausedAt)/6e4)} mins`}
+  else if(DS&&DS.step==="break"&&DS.breakEnd){fr=Math.max(0,(DS.breakEnd-Date.now())/(15*6e4));t1=`Break · ${Math.max(0,Math.ceil((DS.breakEnd-Date.now())/6e4))} mins`}
+  else{fr=0;t1=DS&&DS.step==="done"?"All done":"Paused here"}
+  const key=[run,paused,Math.ceil((run?remain():0)/6e4),t1,t2].join("|");if(!force&&d.body.dataset.k===key)return;d.body.dataset.k=key;
+  d.body.innerHTML=`<div class="dqp">${dpPipTimer(fr,paused||!run)}<div class="t">${t1}${t2?`<small>${t2}</small>`:""}</div>${run?`<button class="bt${paused?" show":""}" data-pp="dpause" title="${paused?"Resume":"Pause"}">${paused?`<svg viewBox="0 0 24 24" width="14" height="14"><path d="M8 5l11 7-11 7z" fill="#3d63dd"/></svg>`:`<svg viewBox="0 0 24 24" width="14" height="14"><rect x="6" y="5" width="4" height="14" rx="1.5" fill="#5b6d8f"/><rect x="14" y="5" width="4" height="14" rx="1.5" fill="#5b6d8f"/></svg>`}</button>`:""}</div>`}
 
 /* ---------- timeline ---------- */
 function timelineItems(d){
@@ -3737,6 +4005,7 @@ function timelineItems(d){
   tasks.filter(t=>!t.deleted&&t.subs&&t.subs.length).forEach(t=>t.subs.forEach(x=>{if(x.done&&x.at&&dayOf(x.at)===d)it.push({t:x.at,k:t.space,txt:L(`做完一步「${esc(x.t)}」`,`Step done: “${esc(x.t)}”`),sub:esc(t.title)})}));
   pomos.filter(p=>p.day===d&&(+p.mins||0)>=1).forEach(p=>{const t=p.taskId&&tasks.find(x=>x.id===p.taskId);const st=p.end?p.end-(+p.mins)*6e4:p.start;
     it.push({t:st,mins:+p.mins,k:"pomo",txt:`${TOM_ICON}${L(`专注 ${Math.round(p.mins)} 分钟`,`Focused ${Math.round(p.mins)} min`)}${p.space?` <span class="tag ${p.space}">${BOARD_NAME(p.space)}</span>`:""}`,sub:t?esc(t.title):""})});
+  deeps.filter(x=>x.day===d&&x.at).forEach(x=>{const b=x.bigs||[];it.push({t:x.at,k:"study",txt:L(`专注半天 · ${fmtHM(+x.mins||0)}`,`Deep half-day · ${fmtHM(+x.mins||0)}`),sub:b.length?L(`大事 ${b.filter(y=>y.done).length}/${b.length}`,`big things ${b.filter(y=>y.done).length}/${b.length}`):""})});
   joylog.filter(x=>x.day===d).forEach(x=>it.push({t:x.at,k:"life",txt:L(`开心罐 · ${esc(x.text)}`,`Joy jar · ${esc(x.text)}`)}));
   trips.filter(x=>x.date===d&&x.createdAt).forEach(x=>{const nm=(x.names||[]).filter(Boolean);
     it.push({t:x.createdAt,k:"life",txt:L(`去超市 · 买了 ${x.items||nm.length} 样`,`Shopping · ${x.items||nm.length} ${n_(x.items||nm.length,"item","items")}`),sub:esc(nm.slice(0,6).join("、")+(nm.length>6?L(` 等 ${nm.length} 样`,` +${nm.length-6} more`):""))})});
@@ -3904,6 +4173,7 @@ function curTask(){return P&&P.taskId?tasks.find(t=>t.id===P.taskId):null}
 function defaultTask(space){const list=tasks.filter(t=>t.space===space&&!t.done&&!t.deleted&&!t.letGo&&!isPaused(t)&&t.horizon!=="long").sort((a,b)=>{const qo=["q1","q2","q3","u","q4"],hz=["week","inbox","month","long"];return qo.indexOf(qOf(a))-qo.indexOf(qOf(b))||hz.indexOf(a.horizon)-hz.indexOf(b.horizon)||sortTasks(a,b)});return list[0]||null}
 function startFocus(taskId,subI){
   if(!db)return;
+  if(deepRunning()){openDeep();return}
   const t=taskId?tasks.find(x=>x.id===taskId):null;
   if(P&&P.phase==="focus"){
     if(taskId!==undefined&&taskId!==P.taskId)switchTask(taskId,subI);
@@ -3955,6 +4225,7 @@ function stopFlash(){flashMsgs=null;flashUntil=0}
 function pomoTitle(){
   if(!P||P.phase==="pick"){if(P&&P.ended&&flashMsgs)return Math.floor(Date.now()/1500)%2?flashMsgs[0]:BASE_TITLE();return BASE_TITLE()}
   if(flashMsgs&&Date.now()<flashUntil&&Math.floor(Date.now()/1500)%2)return flashMsgs[0];
+  if(P.deep&&P.phase==="focus")return P.pausedAt?L("暂停中","Paused"):`${Math.max(1,Math.ceil(remain()/6e4))} mins left`;
   if(P.phase==="break")return `🌱 ${L("休息","Break")} ${mmss(remain())}`;
   if(P.mode==="up")return `🍅 ${L("专注","Focus")} ${mmss(elapsed())}`;
   return `${P.pausedAt?"‖":"▶︎"} ${mmss(elapsed())}`;
@@ -3962,7 +4233,7 @@ function pomoTitle(){
 let pomoTimer=null;
 function pomoTick(){
   if(!P||P.phase==="pick"&&!(P.ended&&flashMsgs)){if(document.title!==BASE_TITLE()&&!P)document.title=BASE_TITLE();if(P&&P.phase==="pick")document.title=BASE_TITLE();return}
-  if(P.phase==="focus"&&!P.pausedAt&&P.focusMin&&remain()<=0){toBreak(null);return}
+  if(P.phase==="focus"&&!P.pausedAt&&P.focusMin&&remain()<=0){if(P.deep){deepStopSeg("time");return}toBreak(null);return}
   if(P.phase==="break"&&!P.pausedAt&&remain()<=0){toPick(true);return}
   document.title=pomoTitle();
   const pg=$("#pomoPage");
@@ -3999,7 +4270,7 @@ button{font:inherit;cursor:pointer}
 .pk{display:flex;align-items:center;gap:8px;font-size:13px;padding:7px 10px;border-radius:10px;background:var(--psf);border:0;color:var(--pfg);text-align:left;width:100%}.pk i{width:8px;height:8px;border-radius:50%;flex:none}.pk span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pk b{color:#3a8bff;font-size:12px}`;
 let pipBig=false,pipT=null;
 const PIP_MINI=[250,124],PIP_W=330;
-function pipFit(){if(!pipWin)return;try{const d=pipWin.document,dw=pipWin.outerWidth-pipWin.innerWidth,dh=pipWin.outerHeight-pipWin.innerHeight;
+function pipFit(){if(!pipWin)return;try{const d=pipWin.document,dw=pipWin.outerWidth-pipWin.innerWidth,dh=pipWin.outerHeight-pipWin.innerHeight;if(deepLive()){pipWin.resizeTo(230+dw,78+dh);return}
   if(pipBig){const bg=d.querySelector(".big");let h=300;if(bg){bg.style.height="auto";h=bg.scrollHeight;bg.style.height=""}h=Math.min(520,Math.max(190,h));pipWin.resizeTo(PIP_W+dw,h+dh)}else pipWin.resizeTo(PIP_MINI[0]+dw,PIP_MINI[1]+dh)}catch(_){}}
 function pipSet(big){pipBig=big;clearTimeout(pipT);drawPip(true);setTimeout(pipFit,30);if(big)pipArm(10000)}
 function pipArm(ms){clearTimeout(pipT);pipT=setTimeout(()=>{if(pipWin&&pipBig&&P&&P.phase!=="pick"&&!(P.phase==="break"&&P.doneTask)){pipBig=false;drawPip(true);pipFit()}},ms)}
@@ -4007,16 +4278,17 @@ async function openPip(){
   if(!pipOK()||!P)return;
   if(pipWin){pipWin.focus();return}
   pipBig=false;
-  try{pipWin=await documentPictureInPicture.requestWindow({width:PIP_MINI[0],height:PIP_MINI[1],preferInitialWindowPlacement:true})}catch(_){pipWin=null;return}
+  try{pipWin=await documentPictureInPicture.requestWindow({width:deepLive()?230:PIP_MINI[0],height:deepLive()?78:PIP_MINI[1],preferInitialWindowPlacement:true})}catch(_){pipWin=null;return}
   const d=pipWin.document; d.title=L("小芽陪你专注","Focusing with {pet}").replaceAll("{pet}",petName());
   const st=d.createElement("style");st.textContent=PIP_CSS;d.head.appendChild(st);
   const lk=d.createElement("link");lk.rel="stylesheet";lk.href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=swap";d.head.appendChild(lk);
   d.addEventListener("pointermove",()=>{if(pipBig)pipArm(10000)});
   d.body.addEventListener("click",e=>{
     const b=e.target.closest("[data-pp]");
-    if(!b){if(!pipBig&&e.target.closest(".row,.mini"))pipSet(true);return}
+    if(!b){if(deepLive())return;if(!pipBig&&e.target.closest(".row,.mini"))pipSet(true);return}
     const a=b.dataset.pp;
     if(a==="close"){pipBig=false;pipFit();pipWin.close();return}
+    if(a==="dpause"){if(!P)return;if(P.pausedAt){P.pausedTotal+=Date.now()-P.pausedAt;P.pausedAt=null;wakeOn();stopFlash()}else{P.pausedAt=Date.now();wakeOff()}saveP();drawPip(true);renderDeep();render();return}
     if(a==="min"){pipSet(false);return}
     if(a==="pick"){startFocus(b.dataset.id);pipBig=false;drawPip(true);pipFit();return}
     if(!P)return;
@@ -4038,7 +4310,9 @@ function pipRing(col,bgc,inner){return `<div class="ring"><svg class="rg" viewBo
 function pipPickList(){if(typeof ovBuckets!=="function")return "";const {over,today}=ovBuckets();const l=[...over,...today].filter(x=>!x.step&&(x.space==="study"||x.space==="work")).slice(0,4);
   return l.length?l.map(t=>`<button class="pk" data-pp="pick" data-id="${t.id}"><i style="background:${css("--"+t.space)}"></i><span>${esc(t.title)}</span><b>▶</b></button>`).join(""):`<p class="none">${L("今天的 Overview 里没有要做的事啦","Nothing left in today's Overview")}</p>`}
 function drawPip(force){
-  if(!pipWin)return; const d=pipWin.document; pipTheme(d);
+  if(!pipWin)return; const d=pipWin.document;
+  if(DS&&(deepRunning()||["break","hold","between","done"].includes(DS.step))){drawDeepPip(force);return}
+  d.body.className="";pipTheme(d);
   if(!P||P.phase==="pick"){
     const key="pick|"+(P?P.ended:"x")+"|"+lang;if(!force&&d.body.dataset.k===key)return;d.body.dataset.k=key;
     if(!P){d.body.innerHTML=`<div class="big"><div class="dn">${pipRing("#2fb38a","#d6f1e6",SF.happy)}<div>${L("这次专注结束啦","This session is over")}</div></div><div class="bs"><button data-pp="close">${L("关掉小窗","Close")}</button></div></div>`;return}
@@ -4060,14 +4334,14 @@ function drawPip(force){
   d.querySelectorAll(".tm").forEach(tm=>tm.textContent=brk?mmss(remain()):up?mmss(elapsed()):mmss(remain()));
   d.querySelectorAll(".arc").forEach(arc=>{const c=+arc.getAttribute("stroke-dasharray")||276.5;arc.setAttribute("stroke-dashoffset",String(len?c*Math.min(1,Math.max(0,elapsed()/len)):0))});
 }
-setInterval(()=>{pomoTick();if(pipWin)drawPip()},1000);
+setInterval(()=>{pomoTick();deepTick();if(pipWin)drawPip()},1000);
 if(IS_WEB&&/^https?:$/.test(location.protocol)&&"serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 /* page */
 function renderPomo(){
   let pg=$("#pomoPage"), pill=$("#pomoPill");
   if(!pg){pg=document.createElement("div");pg.id="pomoPage";pg.hidden=true;pg.setAttribute("role","dialog");pg.setAttribute("aria-label",L("番茄专注","Focus timer"));document.body.appendChild(pg)}
   if(!pill){pill=document.createElement("button");pill.id="pomoPill";pill.hidden=true;document.body.appendChild(pill)}
-  const active=P&&(P.phase==="focus"||P.phase==="break");
+  const active=P&&!P.deep&&(P.phase==="focus"||P.phase==="break");
   pill.hidden=!(active&&!P.open);
   if(!pill.hidden){pill.className=P.phase==="break"?"brk":"";pill.innerHTML=`${P.phase==="break"?SF.happy:SF.focus}<span>${P.phase==="break"?L("休息中","Break"):P.pausedAt?L("暂停中","Paused"):L("专注中","Focusing")}</span><b>${P.phase==="break"?mmss(remain()):P.mode==="up"?mmss(elapsed()):mmss(remain())}</b><span class="bk">${L("回去","Open")} ›</span>`}
   pg.hidden=!(active&&P.open);
@@ -4145,7 +4419,7 @@ function focusBar(k){
   if(P&&P.phase==="pick")return `<div class="pick">${SF.star}<div class="pt"><b>${P.ended?L("休息结束啦","Break's over"):L("挑下一件要专注的事","Pick what to focus on next")}</b><span>${P.ended?L("挑下一件，点右边的 ▶ 开始","Pick one and tap ▶ to start"):L("点右边的 ▶ 就开始新的番茄","Tap ▶ on a task to start a new tomato")}</span></div><button class="x" data-act="pickrest">${SF.nap}${P.ended?L("再歇会儿","Rest a bit more"):L("先歇会儿","Rest first")}</button></div>`;
   const live=P&&(P.phase==="focus"||P.phase==="break");
   return `<div class="focusbar">${FB_ICON}<div><b>${L("番茄专注","Focus")}</b><small>${n||m>=1?L(`今天 ${n} 个番茄 · ${fmtHM(m)}`,`Today: ${n} ${n_(n,"tomato","tomatoes")} · ${fmtHM(m)}`):L("挑一件事，专注一会儿","Pick something and focus for a while")}</small></div>
-    <button class="go" data-act="${live?"pomoopen":"focusstart"}" data-space="${k}">${live?(P.phase==="break"?L("休息中 ›","On break ›"):L("专注中 ›","Focusing ›")):"▶ "+L("开始","Start")}</button></div>`;
+    <button class="go" data-act="${live?"pomoopen":"focusstart"}" data-space="${k}">${live?(P.deep?L("专注半天中 ›","Deep focus ›"):P.phase==="break"?L("休息中 ›","On break ›"):L("专注中 ›","Focusing ›")):"▶ "+L("开始","Start")}</button></div>${deepCard(k)}`;
 }
 /* ---------- repeat / subtasks / snackbar ---------- */
 const REP_SVG=`<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M5 11a7 7 0 0 1 12-4.6M19 13a7 7 0 0 1-12 4.6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M17.5 2.8v4h-4M6.5 21.2v-4h4" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
@@ -7327,7 +7601,8 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="wishundraw"){wishDrawn=null;render();return}
   if(act.dataset.act==="focus"){startFocus(id);return}
   if(act.dataset.act==="focusstart"){const t=defaultTask(act.dataset.space);startFocus(t?t.id:null);return}
-  if(act.dataset.act==="pomoopen"){if(P){P.open=true;saveP();renderPomo()}return}
+  if(act.dataset.act==="deepopen"){openDeep(act.dataset.space);return}
+  if(act.dataset.act==="pomoopen"){if(P&&P.deep){openDeep();return}if(P){P.open=true;saveP();renderPomo()}return}
   if(act.dataset.act==="pickrest"){P=null;saveP();stopFlash();document.title=BASE_TITLE();render();return}
   if(act.dataset.act==="subtoggle"){const t=tasks.find(x=>x.id===id);if(t)toggleSub(t,+act.dataset.i,act);return}
   if(act.dataset.act==="subopen"){subOpen.has(id)?subOpen.delete(id):subOpen.add(id);subOpenSave();render();return}
@@ -7775,7 +8050,7 @@ const FIREBASE_CONFIG={
   appId:"1:1053547899054:web:49caab221ae4f4171c253f"
 };
 const FB_VER="10.12.2";
-const COLS=["joys","joylog","hgroups","gacha","tarot","lenorm","lennotes","stickies","letters","tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","wishfund","closet","moon","memos","yearlyDays","pomos","meals","rests","eats","fridge","tlog","courses","sleep"];
+const COLS=["deeps","joys","joylog","hgroups","gacha","tarot","lenorm","lennotes","stickies","letters","tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","wishfund","closet","moon","memos","yearlyDays","pomos","meals","rests","eats","fridge","tlog","courses","sleep"];
 const CLOUD_KEY="lifeos-cloud-uid";
 let fb=null, cloudUser=null, cloudState=FIREBASE_CONFIG?"loading":"off"; // off | loading | unavailable | signedout | signedin
 let localDB=null, unsubs=[];
@@ -7818,12 +8093,13 @@ function makeCloudDB(uid){
 function startData(store){
   unsubs.forEach(u=>{try{u()}catch(_){}}); unsubs=[];
   db=store;
-  closet={};letters=[];tasks=[];habits=[];checkins={};hparts={};hgroups=[];joys=[];joylog=[];shop=[];staples=[];trips=[];journal={};milestones=[];yearlyDays=[];pomos=[];meals=[];rests=[];eats=[];fridge=[];tlog=[];courses=[];sleeps={};weekly={};yearly={};wishes=[];memos=[];forest=[];curTheme="lemon";
+  closet={};letters=[];tasks=[];habits=[];checkins={};hparts={};hgroups=[];joys=[];joylog=[];deeps=[];shop=[];staples=[];trips=[];journal={};milestones=[];yearlyDays=[];pomos=[];meals=[];rests=[];eats=[];fridge=[];tlog=[];courses=[];sleeps={};weekly={};yearly={};wishes=[];memos=[];forest=[];curTheme="lemon";
   for(const k in loaded)loaded[k]=false; recapChecked=false; lastStage=null; lastBuddy="";
   const fail=e=>{if(e&&e.code==="permission-denied")setStatus(L("没有权限读取数据，请重新登录。","No permission to read your data. Please sign in again."))};
   const sub=(c,fn,q)=>unsubs.push((q||db.collection(c)).onSnapshot(fn,fail));
   const ok=s=>!s.metadata.fromCache||!s.empty;
   sub("tasks",s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.t=true;planFix();render();odAutoRoll();midPromote()});
+  sub("deeps",s=>{deeps=s.docs.map(d=>({id:d.id,...d.data()}));render()});
   sub("joys",s=>{joys=s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.text);renderJoy()});
   sub("joylog",s=>{joylog=s.docs.map(d=>({id:d.id,...d.data()}));render();renderJoy()});
   sub("hgroups",s=>{hgroups=s.docs.map(d=>({id:d.id,...d.data()})).filter(g=>g.name);render()});
