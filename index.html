@@ -1572,6 +1572,8 @@ body.dp-on{overflow:hidden}
 .dp-pick{margin-top:8px;display:flex;flex-direction:column;gap:2px;max-height:220px;overflow:auto;border-radius:14px;background:color-mix(in srgb,var(--dp-acc) 6%,var(--dp-card));padding:6px}
 .dp-pick button{display:flex;align-items:center;gap:8px;border:0;background:none;text-align:left;padding:8px;border-radius:10px;font:inherit;font-size:13.5px;color:var(--dp-fg);cursor:pointer}.dp-pick button:hover{background:var(--dp-card)}.dp-pick i{width:7px;height:7px;border-radius:50%;flex:none}.dp-pick p{margin:6px;font-size:13px;color:var(--dp-mut)}
 .dp-sm{display:flex;align-items:center;gap:8px;height:42px;font-size:13.5px;border-bottom:1px dashed var(--dp-line);min-width:0}.dp-sm i{width:13px;height:13px;border-radius:4px;border:1.6px solid #c3d0e8;flex:none}.dp-sm span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dp-sm em,.dp-r em.dp-rep{color:#6b8cf5;display:grid;flex:none}.dp-sm.rep span{color:var(--dp-fg)}.dp-r em.dp-rep{margin-left:auto}
+.dp-qh{display:block;font-size:11.5px;color:var(--dp-mut);letter-spacing:.06em;padding:8px 8px 2px}
 .dp-sm button{border:0;background:none;color:#b4c0d6;font-size:16px;cursor:pointer;padding:0 2px}
 .dp-addin{border:0;background:none;font:inherit;font-size:13.5px;color:var(--dp-fg);outline:none;padding:11px 0;min-width:0;width:100%}.dp-addin::placeholder{color:#a3b1c9}
 .dp-bot{padding:18px 18px calc(30px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;max-width:520px;width:100%;box-sizing:border-box;margin:0 auto}
@@ -1658,8 +1660,9 @@ body.jz-on{overflow:hidden}
 .jz-moods button{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 0 7px;border:0;background:none;border-radius:17px;font:inherit;font-size:12px;color:var(--jz-mut);cursor:pointer}
 .jz-moods svg{width:34px;height:34px}.jz-moods button.on{background:#3a3350;color:#fff}
 :root[data-theme="dark"] .jz-moods button.on,:root:not([data-theme])[data-tod="night"] .jz-moods button.on{background:#ffd76a;color:#2a1d0a}
-.jz-go{height:58px;border:0;border-radius:22px;background:linear-gradient(135deg,#ff86a8,#ffa46e);color:#fff;font-size:19px;font-weight:800;box-shadow:0 5px 0 #e0688a,0 12px 24px rgba(255,120,150,.3);font-family:'ZCOOL KuaiLe','Noto Sans SC',sans-serif;letter-spacing:.14em;cursor:pointer}
-.jz-go:active{transform:translateY(3px);box-shadow:0 2px 0 #e0688a}
+.jz-go{align-self:center;width:min(260px,100%);height:50px;border:0;border-radius:25px;background:#ff95b0;color:#fff;font-size:16px;font-weight:700;box-shadow:0 3px 0 #e8809c;font-family:'Noto Sans SC',sans-serif;letter-spacing:.08em;cursor:pointer}
+:root[data-theme="dark"] .jz-go,:root:not([data-theme])[data-tod="night"] .jz-go{background:#d97f98;box-shadow:0 3px 0 #b8657d;color:#fff6f8}
+.jz-go:active{transform:translateY(2px);box-shadow:0 1px 0 #e8809c}
 .jz-lnk{display:flex;justify-content:center;gap:12px;font-size:13px;color:var(--jz-mut)}.jz-lnk b{color:var(--jz-fg);font-weight:600;cursor:pointer}
 .jz-jarw.shaking .jz-jar{animation:jzShake .9s ease-in-out;transform-origin:50% 90%}
 @keyframes jzShake{0%,100%{transform:rotate(0)}15%{transform:rotate(-9deg)}30%{transform:rotate(8deg)}45%{transform:rotate(-7deg)}60%{transform:rotate(6deg)}75%{transform:rotate(-3deg)}}
@@ -1714,7 +1717,7 @@ body.jz-on{overflow:hidden}
 .jz-strip{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 4px}.jz-strip .jz-pn{flex:0 0 112px;min-height:70px;cursor:default}.jz-strip .jz-pn b{font-size:15px}.jz-strip .jz-pn.add{cursor:pointer}
 @media (prefers-reduced-motion:reduce){.jz-scr{animation:none}}
 
-.task.rp-wait{opacity:.62}.task.rp-wait:hover,.task.rp-wait:focus-within{opacity:1}
+.rp-box{margin-top:8px}.rp-all{margin:2px 4px;font-size:13px;color:var(--muted)}
 .hgs{display:flex;flex-direction:column;gap:12px}.hg-wrap{display:flex;flex-direction:column;gap:14px}
 .hg{display:flex;flex-direction:column;gap:10px}
 .hg-h{display:flex;align-items:center;gap:8px;padding:2px 2px 0}
@@ -2398,8 +2401,9 @@ function taskBoard(k){
   const groups=HZ.map(h=>{
     const items=mine.filter(t=>!t.done&&!t.letGo&&t.horizon===h.k).sort(sortTasks);
     if(h.k==="inbox"&&!items.length)return "";
-    return `<section class="group"><h2><span class="badge"></span>${k==="life"&&LIFE_HZ[h.k]?LIFE_HZ[h.k]:h.name}<span class="sub">${h.sub}</span><span class="cnt">${items.length}</span><button class="add" data-act="newtask" data-space="${k}" data-hz="${h.k}" aria-label="${L("在","Add to ")}${k==="life"&&LIFE_HZ[h.k]?LIFE_HZ[h.k]:h.name}${L("里添加","")}">${PLUS}</button></h2>
-      <div class="list">${items.length?items.map(taskRow).join(""):emptyBox(EMPTY[h.k])}</div></section>`;
+    const wait_=items.filter(t=>taskBucket(t)===3),act_=items.filter(t=>taskBucket(t)!==3);
+    return `<section class="group"><h2><span class="badge"></span>${k==="life"&&LIFE_HZ[h.k]?LIFE_HZ[h.k]:h.name}<span class="sub">${h.sub}</span><span class="cnt">${items.length-items.filter(t=>taskBucket(t)===3).length}</span><button class="add" data-act="newtask" data-space="${k}" data-hz="${h.k}" aria-label="${L("在","Add to ")}${k==="life"&&LIFE_HZ[h.k]?LIFE_HZ[h.k]:h.name}${L("里添加","")}">${PLUS}</button></h2>
+      <div class="list">${items.length?act_.map(taskRow).join("")||`<p class="rp-all">${L("这一轮都做完啦 ✓","All done for this round ✓")}</p>`:emptyBox(EMPTY[h.k])}</div>${wait_.length?`<details class="done-box rp-box" data-keep="rp-${k}-${h.k}"><summary>${L(`这一轮做完了 ${wait_.length} 件`,`${wait_.length} done for this round`)}</summary><div class="list">${wait_.map(taskRow).join("")}</div></details>`:""}</section>`;
   }).join("");
   const done=mine.filter(t=>t.done).sort((a,b)=>(b.doneAt||0)-(a.doneAt||0)).slice(0,50);
   const doneBox=done.length?`<details class="done-box" data-keep="done-${k}"><summary>${L(`已完成 ${done.length} 件`,`${done.length} done`)}</summary><div class="list">${done.map(taskRow).join("")}</div></details>`:"";
@@ -3839,7 +3843,8 @@ const m2hm=m=>{m=((Math.round(m)%1440)+1440)%1440;return `${String(Math.floor(m/
 const nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()};
 const segLeft=i=>{const s=DS.segs[i];return Math.max(0,s.min*6e4-(s.used||0))};
 const deepTotalLeft=()=>DS.segs.reduce((a,s,i)=>a+(s.done?0:segLeft(i)),0)-(deepRunning()?elapsed():0);
-function deepNew(space){DS={id:Date.now().toString(36),day:todayStr(),space:space||(tab==="work"?"work":"study"),step:"dump",bigs:[{t:""},{t:""},{t:""}],smalls:[],segs:DEEP_PRESETS[0].map((min,i)=>({min,big:i,used:0,done:false})),evts:[],start:m2hm(Math.ceil((nowMin()+5)/5)*5),ready:{},cur:0,focusMs:0};saveDS()}
+function deepRepSmalls(){const td=todayStr();return tasks.filter(t=>t.repeat&&!t.done&&!t.deleted&&!t.letGo&&!isPaused(t)&&t.due&&t.due<=td).sort(sortTasks).slice(0,8).map(t=>({t:t.title.slice(0,40),taskId:t.id,rep:true,done:false}))}
+function deepNew(space){DS={id:Date.now().toString(36),day:todayStr(),space:space||(tab==="work"?"work":"study"),step:"dump",bigs:[{t:""},{t:""},{t:""}],smalls:deepRepSmalls(),segs:DEEP_PRESETS[0].map((min,i)=>({min,big:i,used:0,done:false})),evts:[],start:m2hm(Math.ceil((nowMin()+5)/5)*5),ready:{},cur:0,focusMs:0};saveDS()}
 // planned start of each block: segments in order, 15-minute breaks between them, events push later blocks past them
 function deepPlan(){const out=[];let t=hm2m(DS.start);const ev=[...DS.evts].sort((a,b)=>hm2m(a.from)-hm2m(b.from));
   DS.segs.forEach((s,i)=>{if(i>0)t+=15;let len=s.min;
@@ -3874,7 +3879,7 @@ function deepSave(){const bigs=DS.bigs.filter(b=>b.t);const doc={day:DS.day,mins
   const r=db.collection("deeps").doc();deeps.push({id:r.id,...doc});queued(r.path,()=>r.set(doc))}
 function deepLater(){const tmr=addDays(todayStr(),1);let n=0;
   DS.bigs.forEach(b=>{if(!b.t||b.done)return;n++;const t=b.taskId&&tasks.find(x=>x.id===b.taskId);if(t){const p={plan:tmr};Object.assign(t,p);const r=db.doc("tasks/"+t.id);queued(r.path,()=>r.update(p))}else{const r=db.collection("tasks").doc();const row={title:b.t,space:DS.space,horizon:"week",due:null,plan:tmr,note:"",done:false,createdAt:Date.now()};tasks.push({id:r.id,...row});queued(r.path,()=>r.set(row))}});
-  DS.smalls.forEach(x=>{if(x.done||!x.t)return;n++;const r=db.collection("tasks").doc();const row={title:x.t,space:DS.space,horizon:"inbox",due:null,note:"",done:false,createdAt:Date.now()};tasks.push({id:r.id,...row});queued(r.path,()=>r.set(row))});return n}
+  DS.smalls.forEach(x=>{if(x.done||!x.t||x.taskId)return;n++;const r=db.collection("tasks").doc();const row={title:x.t,space:DS.space,horizon:"inbox",due:null,note:"",done:false,createdAt:Date.now()};tasks.push({id:r.id,...row});queued(r.path,()=>r.set(row))});return n}
 let deeps=[];
 function deepTick(){if(!DS)return;
   if(!P&&DS.step==="break"&&DS.breakEnd){document.title=flashMsgs&&Math.floor(Date.now()/1500)%2?flashMsgs[0]:Date.now()<DS.breakEnd?`Break · ${Math.ceil((DS.breakEnd-Date.now())/6e4)} mins`:BASE_TITLE()}
@@ -3898,13 +3903,14 @@ function dpRing(w,sw){const r=w/2-sw,c=2*Math.PI*r,len=P?P.focusMin*6e4:1,fr=P?M
   return `<div class="dp-ring" style="width:${w}px;height:${w}px"><svg viewBox="0 0 ${w} ${w}" width="${w}" height="${w}" aria-hidden="true"><defs><linearGradient id="dpg" x1="0" x2="1"><stop offset="0" stop-color="#6b8cf5"/><stop offset="1" stop-color="#9b7af0"/></linearGradient></defs><circle cx="${w/2}" cy="${w/2}" r="${r}" fill="none" class="dp-track" stroke-width="${sw}"/><circle class="dp-arc" data-c="${c.toFixed(1)}" cx="${w/2}" cy="${w/2}" r="${r}" fill="none" stroke="url(#dpg)" stroke-width="${sw}" stroke-linecap="round" stroke-dasharray="${(c*fr).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 ${w/2} ${w/2})"/></svg><b data-dp-tm="seg">${mmss(remain())}</b></div>`}
 function dpSegsBar(){return `<div class="dp-bar"><div class="dp-segs">${DS.segs.map((s,i)=>`<div style="flex:${s.min}"><i data-i="${i}" style="width:${s.done?100:Math.min(100,(s.used||0)/(s.min*6e4)*100)}%"></i></div>`).join("")}</div><div class="dp-lab"><span>${L(`第 ${Math.min(DS.cur+1,DS.segs.length)} / ${DS.segs.length} 段`,`Block ${Math.min(DS.cur+1,DS.segs.length)} of ${DS.segs.length}`)}</span><span data-dp-tm="tot">${deepLeftTxt()}</span></div></div>`}
 function dpLists(){return `<div class="dp-side"><div class="dp-lst"><h4><span>${L("三件大事","Big things")}</span><span>${DS.bigs.filter(b=>b.t&&b.done).length}/${DS.bigs.filter(b=>b.t).length}</span></h4>${DS.bigs.map((b,i)=>b.t?`<button class="dp-r${b.done?" d":""}${deepRunning()&&DS.segs[DS.cur].big===i?" now":""}" data-dp="bigck" data-i="${i}"><i></i><span>${esc(b.t)}</span></button>`:"").join("")}</div>
-  <div class="dp-lst"><h4><span>${L("杂事","Little things")}</span><span>${DS.smalls.filter(x=>x.done).length}/${DS.smalls.length}</span></h4>${DS.smalls.map((x,i)=>`<button class="dp-r${x.done?" d":""}" data-dp="smallck" data-i="${i}"><i></i><span>${esc(x.t)}</span></button>`).join("")}<input class="dp-addin" data-dp-in="small" maxlength="40" placeholder="${L("＋ 想到就写","＋ Jot it down")}" aria-label="${L("加一件杂事","Add a little thing")}"></div></div>`}
-function deepDumpHTML(){const cand=tasks.filter(t=>(t.space==="study"||t.space==="work")&&!t.done&&!t.deleted&&!t.letGo&&t.horizon!=="long"&&!DS.bigs.some(b=>b.taskId===t.id)).sort(sortTasks).slice(0,12);
+  <div class="dp-lst"><h4><span>${L("杂事","Little things")}</span><span>${DS.smalls.filter(x=>x.done).length}/${DS.smalls.length}</span></h4>${DS.smalls.map((x,i)=>`<button class="dp-r${x.done?" d":""}" data-dp="smallck" data-i="${i}"><i></i><span>${esc(x.t)}</span>${x.rep?`<em class="dp-rep">${REP_SVG}</em>`:""}</button>`).join("")}<input class="dp-addin" data-dp-in="small" maxlength="40" placeholder="${L("＋ 想到就写","＋ Jot it down")}" aria-label="${L("加一件杂事","Add a little thing")}"></div></div>`}
+function deepDumpHTML(){const cand=tasks.filter(t=>(t.space==="study"||t.space==="work")&&!t.done&&!t.deleted&&!t.letGo&&t.horizon!=="long"&&!(t.repeat&&t.due&&t.due>todayStr())&&!DS.bigs.some(b=>b.taskId===t.id)).sort(sortTasks);
+  const qd=QDEF(),groups=qd.map(([k,n])=>[n,cand.filter(t=>qOf(t)===k).slice(0,8)]).filter(g=>g[1].length);
   return `<div class="dp-hd"><div><h2>${L("先清空脑子","Empty your head first")}</h2><p>${L("今天的三件大事，和脑子里转着的杂事","Today's three big things, and the little things on your mind")}</p></div><span class="dp-pet">${SF.focus}</span></div>
   <div class="dp-paper"><div class="dp-col"><h4>${L("三件大事","Three big things")}</h4>${DS.bigs.map((b,i)=>`<label class="dp-big"><span class="n n${i}">${i+1}</span><input data-dp-in="big" data-i="${i}" maxlength="40" value="${esc(b.t)}" placeholder="${[L("最想先搞定的","The one to do first"),L("第二件","Second"),L("第三件 · optional","Third · optional")][i]}" aria-label="${L(`大事 ${i+1}`,`Big thing ${i+1}`)}">${b.taskId?`<em title="${L("来自任务","From a task")}">●</em>`:""}</label>`).join("")}
     <button class="dp-pk" data-dp="pick">${L("从任务里选 ›","Pick from tasks ›")}</button>
-    ${deepPickOpen?`<div class="dp-pick">${cand.length?cand.map(t=>`<button data-dp="pickt" data-id="${t.id}"><i style="background:var(--${t.space})"></i>${esc(t.title)}</button>`).join(""):`<p>${L("学习和工作里没有可以选的任务","No study or work tasks to pick")}</p>`}</div>`:""}</div>
-  <div class="dp-col r"><h4>${L("杂事","Little things")}</h4>${DS.smalls.map((x,i)=>`<div class="dp-sm"><i></i><span>${esc(x.t)}</span><button data-dp="smalldel" data-i="${i}" aria-label="${L("删掉","Remove")}">×</button></div>`).join("")}<input class="dp-addin" data-dp-in="small" maxlength="40" placeholder="${L("＋ 想到就写","＋ Jot it down")}" aria-label="${L("加一件杂事","Add a little thing")}"></div></div>
+    ${deepPickOpen?`<div class="dp-pick">${groups.length?groups.map(([n,xs])=>`<small class="dp-qh">${n}</small>${xs.map(t=>`<button data-dp="pickt" data-id="${t.id}"><i style="background:var(--${t.space})"></i>${esc(t.title)}</button>`).join("")}`).join(""):`<p>${L("学习和工作里没有可以选的任务","No study or work tasks to pick")}</p>`}</div>`:""}</div>
+  <div class="dp-col r"><h4>${L("杂事","Little things")}</h4>${DS.smalls.map((x,i)=>`<div class="dp-sm${x.rep?" rep":""}"><i></i><span>${esc(x.t)}</span>${x.rep?`<em title="${L("今天到期的循环任务","Repeating task due today")}">${REP_SVG}</em>`:""}<button data-dp="smalldel" data-i="${i}" aria-label="${L("删掉","Remove")}">×</button></div>`).join("")}<input class="dp-addin" data-dp-in="small" maxlength="40" placeholder="${L("＋ 想到就写","＋ Jot it down")}" aria-label="${L("加一件杂事","Add a little thing")}"></div></div>
   <div class="dp-bot"><button class="dp-go" data-dp="toready" ${DS.bigs.some(b=>b.t.trim())?"":"disabled"}>${L("下一步：准备开工","Next: get ready")}</button></div>`}
 function deepReadyHTML(){const R=DS.ready,all=R.tabs&&R.phone&&R.water,plan=deepPlan(),pre=DS.segs.map(s=>s.min).join(" · ");
   const rd=(k,t,s)=>`<button class="dp-rd${R[k]?" on":""}" data-dp="rd" data-k="${k}" aria-pressed="${!!R[k]}"><span class="ic">${DP_IC[k]}</span><span><b>${t}</b><small>${s}</small></span><span class="ck">${R[k]?"✓":""}</span></button>`;
@@ -3932,7 +3938,7 @@ function deepBreakHTML(){const next=DS.segs.findIndex(x=>!x.done),over=DS.breakE
 function deepHoldHTML(){const next=DS.segs.findIndex(x=>!x.done),e=DS.why==="evt"&&DS.evtNow;
   return `<div class="dp-mid"><div class="dp-cele">${SF.happy}<h3>${e?L(`${esc(e.name)}时间到啦，去吧～`,`Time for ${esc(e.name)}, off you go～`):L("先停在这啦","Paused here")}</h3><p>${L("做了的都记着，回来点继续就好","Everything's saved. Tap continue when you're back")}</p></div>
   <div class="dp-opts">${next>=0?`<button class="dp-opt dp-pri" data-dp="next"><b>${DS.segs[next].used?L(`继续第${["一","二","三"][next]}段`,`Continue block ${next+1}`):L(`开始第${["一","二","三"][next]}段`,`Start block ${next+1}`)}</b><small>${esc((DS.bigs[DS.segs[next].big]||{}).t||L("收尾","Wrap up"))}${DS.segs[next].used?L(` · 还剩 ${Math.round(segLeft(next)/6e4)} 分`,` · ${Math.round(segLeft(next)/6e4)} min left`):""}</small></button>`:""}<button class="dp-opt" data-dp="finish"><b>${L("今天就到这，收工","That's it for today")}</b></button></div></div>${dpLists()}`}
-function deepDoneHTML(){const mins=Math.round((DS.focusMs||0)/6e4),bigs=DS.bigs.filter(b=>b.t),bd=bigs.filter(b=>b.done).length,sd=DS.smalls.filter(x=>x.done).length,left=bigs.filter(b=>!b.done).length+DS.smalls.filter(x=>!x.done).length;
+function deepDoneHTML(){const mins=Math.round((DS.focusMs||0)/6e4),bigs=DS.bigs.filter(b=>b.t),bd=bigs.filter(b=>b.done).length,sd=DS.smalls.filter(x=>x.done).length,left=bigs.filter(b=>!b.done).length+DS.smalls.filter(x=>!x.done&&!x.taskId).length;
   return `<div class="dp-mid"><div class="dp-cert"><span class="pet">${SF.star}</span><h3>${L(`专注了 ${fmtHM(mins)}！`,`${fmtHM(mins)} of focus!`)}</h3><p>${DS.began?`${hhmm(DS.began)} – ${hhmm(DS.ended||Date.now())}`:""}</p>
   <div class="dp-res">${bigs.map((b,i)=>`<div class="r"><span class="n n${DS.bigs.indexOf(b)}">${DS.bigs.indexOf(b)+1}</span><span>${esc(b.t)}</span><em class="${b.done?"":"no"}">${b.done?L("✓ 完成","✓ Done"):L("还没做完","Not yet")}</em></div>`).join("")}</div>
   <div class="dp-stat"><div><b>${fmtHM(mins)}</b><small>${L("专注","Focus")}</small></div><div><b>${bd}/${bigs.length}</b><small>${L("大事","Big things")}</small></div><div><b>${sd}/${DS.smalls.length}</b><small>${L("杂事","Little things")}</small></div></div></div></div>
@@ -3973,7 +3979,7 @@ function deepClick(e){const b=e.target.closest("[data-dp]");if(!b)return;const a
   if(a==="brk"){DS.step="break";DS.breakEnd=Date.now()+15*6e4;DS.breakRang=false;saveDS();renderDeep();render();return}
   if(a==="finish"){deepFinish();return}
   if(a==="bigck"){deepBigDone(i,!DS.bigs[i].done);renderDeep();return}
-  if(a==="smallck"){DS.smalls[i].done=!DS.smalls[i].done;saveDS();renderDeep();return}
+  if(a==="smallck"){const x=DS.smalls[i];x.done=!x.done;if(x.done&&x.taskId){const t=tasks.find(y=>y.id===x.taskId);if(t&&!t.done&&!t.deleted)completeTask(t,null)}saveDS();renderDeep();return}
   if(a==="save"){const later=document.getElementById("dpLater");let n=0;if(later&&later.checked)n=deepLater();deepSave();const mins=Math.round((DS.focusMs||0)/6e4);DS=null;saveDS();closeDeep();document.title=BASE_TITLE();
     cheer(L(`收工！专注了 ${fmtHM(mins)}${n?`，${n} 件放进了明天`:""}`,`Done! ${fmtHM(mins)} of focus${n?`, ${n} moved to tomorrow`:""}`),"cheer");return}
 }
