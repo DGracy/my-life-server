@@ -1544,6 +1544,81 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .h-del:hover{color:var(--danger)}
 .habit-add{display:flex;gap:8px}
 .habit-add{margin-bottom:2px}
+.jar-card{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;border-radius:20px;padding:12px 14px;margin:2px 0 10px;background:linear-gradient(135deg,#fff6dc,#ffe9f0);color:#3a3350;font:inherit;cursor:pointer;box-shadow:0 2px 0 #f3dcc0}
+.jar-card>svg{flex:none}.jar-card>span{flex:1;min-width:0}.jar-card b{display:block;font-size:15px}.jar-card small{font-size:12.5px;color:#7a6a80}
+.jar-card em{font-style:normal;background:#3a3350;color:#fff;border-radius:99px;padding:7px 14px;font-weight:700;font-size:13.5px;flex:none}
+:root[data-theme="dark"] .jar-card,:root:not([data-theme])[data-tod="night"] .jar-card{background:linear-gradient(135deg,#3a3148,#43304a);color:#f3eaf6;box-shadow:0 2px 0 #2a2236}
+:root[data-theme="dark"] .jar-card small,:root:not([data-theme])[data-tod="night"] .jar-card small{color:#c9b8d4}
+:root[data-theme="dark"] .jar-card em,:root:not([data-theme])[data-tod="night"] .jar-card em{background:#ffd76a;color:#2a1d0a}
+body.jz-on{overflow:hidden}
+.jz>*{flex-shrink:0}
+:root[data-theme="dark"] .jz-jar .glass,:root:not([data-theme])[data-tod="night"] .jz-jar .glass{opacity:.28}
+.jz{--jz-fg:#3a3350;--jz-mut:#9a8aa0;--jz-card:rgba(255,255,255,.8);--jz-bg:radial-gradient(120% 70% at 50% 42%,#fffaf0 0%,#fff1e6 45%,#fbe6ee 75%,#efe6fb 100%);
+  position:fixed;inset:0;z-index:70;overflow:auto;color:var(--jz-fg);display:flex;flex-direction:column;background:var(--jz-bg);padding:env(safe-area-inset-top,0px) max(0px,env(safe-area-inset-right,0px)) 0 max(0px,env(safe-area-inset-left,0px))}
+:root[data-theme="dark"] .jz,:root:not([data-theme])[data-tod="night"] .jz{--jz-fg:#f3eaf6;--jz-mut:#b6a6c2;--jz-card:rgba(255,255,255,.1);--jz-bg:radial-gradient(120% 70% at 50% 42%,#3a3046 0%,#2c2538 50%,#221d2e 100%)}
+.jz-x{position:absolute;right:max(18px,env(safe-area-inset-right,0px));top:calc(18px + env(safe-area-inset-top,0px));width:40px;height:40px;border-radius:50%;border:0;background:var(--jz-card);display:grid;place-items:center;font-size:16px;color:var(--jz-mut);box-shadow:0 2px 6px rgba(160,120,140,.15);z-index:3;cursor:pointer}
+.jz[data-view="wall"] .jz-x{left:max(16px,env(safe-area-inset-left,0px));right:auto;font-size:24px}
+.jz-sp{position:absolute;color:#f2b33a;font-size:14px;opacity:.7;pointer-events:none}
+.jz-stage{flex:1;display:flex;align-items:center;justify-content:center;min-height:380px;padding-top:40px}
+.jz-jarw{position:relative;width:248px;height:310px}
+.jz-pet{position:absolute;left:86px;top:-14px;width:76px;height:76px}.jz-pet svg{width:100%;height:100%}
+.jz-bub{position:absolute;left:150px;top:-44px;background:#fff;border-radius:16px;padding:8px 12px;font-size:13.5px;color:#5a4a60;box-shadow:0 4px 14px rgba(160,120,140,.18);white-space:nowrap}
+.jz-bub::after{content:"";position:absolute;left:18px;bottom:-7px;border:7px solid transparent;border-top-color:#fff;border-bottom:0}
+@media (max-width:420px){.jz-bub{left:auto;right:-6px}}
+.jz-bot{padding:0 20px calc(30px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;max-width:460px;width:100%;box-sizing:border-box;margin:0 auto}
+.jz-ml{margin:0;font-size:13px;color:var(--jz-mut);text-align:center;letter-spacing:.08em}
+.jz-moods{display:flex;background:var(--jz-card);border-radius:22px;padding:5px;box-shadow:0 2px 10px rgba(160,120,140,.12)}
+.jz-moods button{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 0 7px;border:0;background:none;border-radius:17px;font:inherit;font-size:12px;color:var(--jz-mut);cursor:pointer}
+.jz-moods svg{width:34px;height:34px}.jz-moods button.on{background:#3a3350;color:#fff}
+:root[data-theme="dark"] .jz-moods button.on,:root:not([data-theme])[data-tod="night"] .jz-moods button.on{background:#ffd76a;color:#2a1d0a}
+.jz-go{height:58px;border:0;border-radius:22px;background:linear-gradient(135deg,#ff86a8,#ffa46e);color:#fff;font-size:19px;font-weight:800;box-shadow:0 5px 0 #e0688a,0 12px 24px rgba(255,120,150,.3);font-family:'ZCOOL KuaiLe','Noto Sans SC',sans-serif;letter-spacing:.14em;cursor:pointer}
+.jz-go:active{transform:translateY(3px);box-shadow:0 2px 0 #e0688a}
+.jz-lnk{display:flex;justify-content:center;gap:12px;font-size:13px;color:var(--jz-mut)}.jz-lnk b{color:var(--jz-fg);font-weight:600;cursor:pointer}
+.jz-jarw.shaking .jz-jar{animation:jzShake .9s ease-in-out;transform-origin:50% 90%}
+@keyframes jzShake{0%,100%{transform:rotate(0)}15%{transform:rotate(-9deg)}30%{transform:rotate(8deg)}45%{transform:rotate(-7deg)}60%{transform:rotate(6deg)}75%{transform:rotate(-3deg)}}
+.jz-fly{position:absolute;left:92px;top:150px;opacity:0;animation:jzFly .5s ease-out .8s forwards}
+@keyframes jzFly{0%{opacity:0;transform:translateY(0) rotate(0) scale(.8)}30%{opacity:1}100%{opacity:1;transform:translateY(-210px) rotate(-200deg) scale(1.6)}}
+.jz-scr{position:relative;width:min(300px,82vw);animation:jzOpen .55s cubic-bezier(.2,.8,.3,1.1)}
+@keyframes jzOpen{0%{transform:scaleY(.12);opacity:.4}100%{transform:scaleY(1);opacity:1}}
+.jz-roll{height:26px;border-radius:13px;background:linear-gradient(180deg,#f3e2c4 0%,#fff6e4 35%,#e8d2ab 100%);box-shadow:0 4px 8px rgba(150,110,60,.18);position:relative;z-index:2;margin:0 -10px}
+.jz-roll::before,.jz-roll::after{content:"";position:absolute;top:2px;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle,#d8bd8c 0 3px,#f5e6c8 4px 6px,#e5cfa5 7px 11px)}
+.jz-roll::before{left:-4px}.jz-roll::after{right:-4px}
+.jz-paper{background:#fffaf0;color:#2e2840;margin:-6px 0;padding:26px 22px 24px;box-shadow:inset 0 10px 10px -8px rgba(150,110,60,.25),inset 0 -10px 10px -8px rgba(150,110,60,.25);background-image:radial-gradient(#f1e3c8 .8px,transparent 1px);background-size:9px 9px;text-align:center}
+.jz-kick{font-size:12px;letter-spacing:.3em;color:#b39a74}
+.jz-big{font-family:'ZCOOL KuaiLe','Noto Sans SC',sans-serif;font-size:28px;line-height:1.35;margin:10px 0 14px;overflow-wrap:anywhere}
+.jz-meta{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}.jz-meta span{font-size:12px;padding:3px 10px;border-radius:99px;background:#fff1d6;color:#8a6a30}
+.jz-eps{margin-top:16px;display:flex;flex-direction:column;gap:7px;align-items:center}.jz-eps small{font-size:12px;color:#a08a6a}
+.jz-eps div{display:flex;gap:5px;flex-wrap:wrap;justify-content:center}.jz-eps i{width:24px;height:24px;border-radius:50%;background:#ffd99c;font-style:normal;font-size:11px;display:grid;place-items:center;color:#8a5a10;font-weight:700}
+.jz-eps i.n{background:#ff86a8;color:#fff;transform:scale(1.18);box-shadow:0 0 0 3px #ffe0ea}.jz-eps i.f{background:transparent;color:#cfb88f;box-shadow:inset 0 0 0 1.5px #ecd9b8}
+.jz-peek{position:absolute;right:-18px;top:-38px;width:68px;height:68px;z-index:3;transform:rotate(12deg)}.jz-peek svg{width:100%;height:100%}
+.jz-again{display:flex;justify-content:center;align-items:center;gap:8px;font-size:13.5px;color:var(--jz-mut);flex-wrap:wrap}.jz-again b{color:var(--jz-fg);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.jz-again .tk{display:flex;gap:4px}.jz-again .tk i{width:8px;height:8px;border-radius:50%;background:#ff9ab8}.jz-again .tk i.u{background:#e8dbe0;opacity:.6}
+.jz-hd{padding:calc(70px + env(safe-area-inset-top,0px)) 22px 0;max-width:560px;width:100%;box-sizing:border-box;margin:0 auto}
+.jz-hd h2{margin:0;font-family:'ZCOOL KuaiLe','Noto Sans SC',sans-serif;font-weight:400;font-size:26px}.jz-hd p{margin:4px 0 0;font-size:13px;color:var(--jz-mut)}
+.jz-tabs{display:flex;gap:6px;padding:16px 20px 0;overflow-x:auto;max-width:560px;width:100%;box-sizing:border-box;margin:0 auto}
+.jz-tabs button{flex:none;border:0;padding:7px 13px;border-radius:99px;background:var(--jz-card);font:inherit;font-size:13px;color:var(--jz-mut);box-shadow:0 2px 0 rgba(240,220,196,.8);cursor:pointer}
+.jz-tabs button.on{background:#3a3350;color:#fff;box-shadow:0 2px 0 #231d33}
+.jz-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px 14px;padding:22px 20px calc(36px + env(safe-area-inset-bottom,0px));max-width:560px;width:100%;box-sizing:border-box;margin:0 auto}
+.jz-pn{position:relative;border:0;border-radius:8px;padding:14px 12px 12px;min-height:96px;box-shadow:0 6px 12px rgba(160,120,140,.15);text-align:left;font:inherit;color:#2e2840;cursor:pointer;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.jz-pn b{font-family:'ZCOOL KuaiLe','Noto Sans SC',sans-serif;font-weight:400;font-size:18px;line-height:1.25;overflow-wrap:anywhere}.jz-pn small{font-size:11.5px;opacity:.8}
+.jz-pn.add{background:transparent;border:2.5px dashed #e3c9a6;box-shadow:none;align-items:center;justify-content:center;color:#a08a6a;font-size:13px}.jz-pn.add em{font-style:normal;font-size:26px;line-height:1}
+.jz-sheet-bg{position:fixed;inset:0;z-index:5;background:rgba(30,20,40,.35);display:flex;align-items:flex-end;justify-content:center}
+.jz-sheet{background:var(--surface);color:var(--fg);width:100%;max-width:520px;max-height:90vh;overflow:auto;border-radius:24px 24px 0 0;padding:20px 18px calc(22px + env(safe-area-inset-bottom,0px));box-sizing:border-box;display:flex;flex-direction:column;gap:14px}
+.jz-sheet h3{margin:0;font-size:18px}
+.jz-f{display:flex;flex-direction:column;gap:6px}.jz-f>span{font-size:13px;color:var(--muted)}
+.jz-f input{border:2px solid var(--line);border-radius:12px;padding:9px 12px;font:inherit;background:var(--surface);color:var(--fg);min-width:0}
+.jz-ch{display:flex;gap:6px;flex-wrap:wrap}.jz-ch button{border:2px solid var(--line);background:var(--surface);color:var(--fg);border-radius:99px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
+.jz-ch button.on{border-color:#ff86a8;background:#fff0f4;color:#b03c66;font-weight:600}
+:root[data-theme="dark"] .jz-ch button.on,:root:not([data-theme])[data-tod="night"] .jz-ch button.on{background:#4a2f3c;color:#ffc2d4}
+.jz-ep{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:14px}.jz-ep input{width:64px}
+.jz-act{display:flex;gap:8px;align-items:center}.jz-del{color:var(--danger-ink)}.jz-del.sure{background:var(--danger-ink);color:#fff}
+.jz-collect{background:linear-gradient(135deg,#fff7e6,#ffeef4);border-radius:22px;padding:14px 14px 18px;margin:0 0 14px;box-shadow:0 2px 0 #f0dcc4;color:#3a3350}
+:root[data-theme="dark"] .jz-collect,:root:not([data-theme])[data-tod="night"] .jz-collect{background:linear-gradient(135deg,#3a3148,#43304a);color:#f3eaf6;box-shadow:none}
+.jz-collect h4{margin:0 0 2px;font-family:'ZCOOL KuaiLe','Noto Sans SC',sans-serif;font-weight:400;font-size:18px;display:flex;align-items:center;gap:6px}
+.jz-collect p{margin:0 0 12px;font-size:12.5px;opacity:.7}
+.jz-strip{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 4px}.jz-strip .jz-pn{flex:0 0 112px;min-height:70px;cursor:default}.jz-strip .jz-pn b{font-size:15px}.jz-strip .jz-pn.add{cursor:pointer}
+@media (prefers-reduced-motion:reduce){.jz-scr{animation:none}}
+
 .task.rp-wait{opacity:.62}.task.rp-wait:hover,.task.rp-wait:focus-within{opacity:1}
 .hgs{display:flex;flex-direction:column;gap:12px}.hg-wrap{display:flex;flex-direction:column;gap:14px}
 .hg{display:flex;flex-direction:column;gap:10px}
@@ -1699,7 +1774,7 @@ const L=(zh,en)=>{const v=lang==="en"?en:zh;return typeof v==="string"&&v.includ
 
 /* ---------- which boards are switched on (per browser) ---------- */
 const BOARDS_KEY="lifeos-boards";
-const boards={habit:true,life:true,study:true,work:true,shop:true,wish:true,memo:true,classes:true};
+const boards={habit:true,life:true,study:true,work:true,shop:true,wish:true,memo:true,classes:true,joy:true};
 try{Object.assign(boards,JSON.parse(localStorage.getItem(BOARDS_KEY)||"{}"))}catch(e){}
 const on=k=>k==="shop"||k==="wish"||k==="memo"?boards.life&&boards[k]:k==="classes"?boards.study&&boards.classes:!!boards[k];
 const taskSpaces=()=>["life","study","work"].filter(on);
@@ -2589,6 +2664,8 @@ NEWS_MORE.push(()=>({id:"1125b",steps:[
     {go:"habit",sel:".habit-add",pad:6,t:L("新功能 · 打卡分组","New · Check-in groups"),b:L("加新习惯的框挪到最上面啦。点打卡的名字，可以把它放进一个分组，比如「学习」「吃饭」「护肤」，每组配一个小芽表情。点组名能改名字和图标，点 ▾ 能把这组收起来。","The add box is at the top now. Tap a check-in's name to put it in a group like Study, Food or Skincare, each with its own {pet} icon. Tap a group's name to rename it or change the icon, and ▾ to fold it away.")}]}));
 NEWS_MORE.push(()=>moonS.enabled?{id:"1125c",steps:[
     {go:"journal",sel:".jnav",pad:6,t:L("小月亮挪地方啦","Little moon moved"),b:L("「小结」标题右边有个小月亮，点一下就是这天开始了，下面会出现一条「第几天」。点那一条可以选结束，或者点错了删掉。","There's a little moon by the recap title now. Tap it to mark the start; a 'day N' strip appears below. Tap the strip to end it, or undo a mis-tap.")}]}:{id:"1125c",steps:[]});
+NEWS_MORE.push(()=>({id:"1126a",steps:on("joy")?[
+    {go:"ov",sel:".jar-card",pad:6,t:L("新功能 · 开心罐","New · Joy jar"),b:L("无聊又不知道干嘛的时候，点「抽一个」。把让你开心的小事写成小纸卷放进罐子，选一下现在的状态，摇一摇，{pet}帮你抽一卷。做过的会记进小结的「开心收集」。","When you're bored and don't know what to do, tap Pick one. Fill the jar with little things that make you happy, pick how you feel, shake, and {pet} draws one. What you do shows up in the recap.")}]:[]}));
 const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
 let tourOn=null;
 function tourGo(go){
@@ -3530,6 +3607,124 @@ function importIcs(txt){
   return names.length;
 }
 document.addEventListener("click",e=>{const b=e.target.closest("[data-co]");if(!b||!db)return;if(b.dataset.co==="all")openCourses();else if(b.dataset.co==="edit")openCourse(b.dataset.id)});
+/* ---------- 开心罐: little paper rolls of things that make the day better ---------- */
+let joys=[], joylog=[], joyOpen=false, joyView="jar", joyMood="fresh", joyPick=null, joyTok=3, joyLast=[], joyEdit=null, joyTab="all", joyBusy=false;
+const JOY_COLS=[["#ffc2d4","#f29ab5"],["#d9ccff","#b6a3f0"],["#c7ecd6","#97d3b0"],["#ffe7a3","#f2c860"],["#cfe7fb","#9fcbef"],["#ffd5bf","#f3ae8c"]];
+const JOY_MINS=[[5,L("5 分钟","5 min")],[30,L("半小时","30 min")],[60,L("一小时","1 hour")],[180,L("一晚上","An evening")]];
+const JOY_EN=[["lie",L("躺着就行","Lying down")],["sit",L("坐起来","Sitting up")],["out",L("要出门","Going out")]];
+const JOY_KIND=[["solo",L("一个人也开心","Happy on my own")],["talk",L("想找人说话的时候","When I want to talk")]];
+const JOY_LINK=()=>[["",L("不用","Nothing")],...(tarotOn?[["tarot",L("打开塔罗","Open tarot")]]:[]),["pomo",L("开番茄钟","Start a focus")],["letter",L("写封信","Write a letter")],["journal",L("写小结","Open the recap")]];
+const JOY_MOODS=()=>[["fresh","happy",L("还挺精神","Fresh")],["tired","nap",L("有点累","Tired")],["short","focus",L("只有一会儿","Short on time")],["talk","star",L("想找人说话","Want to talk")]];
+const joyMinTxt=m=>(JOY_MINS.find(x=>x[0]===m)||[0,L(`${m} 分钟`,`${m} min`)])[1];
+const joyEnTxt=e=>(JOY_EN.find(x=>x[0]===e)||["",""])[1];
+const joyToday=()=>joylog.filter(x=>x.day===todayStr());
+function joyScroll(x,y,r,c,len=34){const [a,d]=JOY_COLS[c%JOY_COLS.length];
+  return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${r.toFixed(0)})"><rect x="${-len/2}" y="-5.5" width="${len}" height="11" rx="5.5" fill="${a}"/><rect x="${-len/2}" y="-5.5" width="${len}" height="4" rx="2" fill="#fff" opacity=".45"/><ellipse cx="${len/2-3}" cy="0" rx="3" ry="5.5" fill="${d}"/><path d="M${len/2-3} -2.2a2 2 0 1 1 -.1 4" stroke="#fff" stroke-width=".9" fill="none" opacity=".8"/><rect x="-2" y="-6" width="4" height="12" rx="1" fill="#c98b5a"/></g>`}
+function joyStar(x,y,c,s=1){return `<path transform="translate(${x} ${y}) scale(${s})" d="M0 -6l1.8 3.7 4 .6-2.9 2.8.7 4L0 3.2-3.6 5.1l.7-4L-5.8 -1.7l4-.6z" fill="${c}" stroke="#fff" stroke-width=".6" stroke-linejoin="round"/>`}
+// the jar: one paper roll per slip (rows from the bottom up), a kraft tag with the count
+function joyJarSVG(){const n=joys.length,shown=n?Math.min(44,Math.max(12,n*2)):0;let seed=11;const R=()=>(seed=(seed*9301+49297)%233280)/233280;const rolls=[];
+  for(let i=0;i<shown;i++){const row=Math.floor(i/5),col=i%5;rolls.push(joyScroll(62+col*30+(row%2)*12+R()*8,284-row*15+R()*5,(R()-.5)*70,(joys[i%n].c!=null?joys[i%n].c:0)+Math.floor(i/n)*2))}
+  const top=Math.max(150,284-Math.ceil(shown/5)*15);
+  const stars=shown?[joyStar(70,272,"#ffd25e"),joyStar(184,262,"#ff9ab8",.9),joyStar(112,Math.max(top+20,206),"#b6a3f0",.8),joyStar(196,Math.max(top+10,190),"#97d3b0",.8)].slice(0,Math.min(4,Math.ceil(shown/4))).join(""):"";
+  return `<svg class="jz-jar" viewBox="0 0 248 310" width="248" height="310" aria-hidden="true">
+<defs><clipPath id="jzc"><path d="M58 92q-22 18-22 52v104q0 30 30 30h116q30 0 30-30V144q0-34-22-52z"/></clipPath>
+<linearGradient id="jzg" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".35" stop-color="#eaf6ff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity=".35"/></linearGradient>
+<linearGradient id="jzw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9c494"/><stop offset="1" stop-color="#cf9f68"/></linearGradient></defs>
+<ellipse cx="124" cy="292" rx="104" ry="12" fill="#e6c9b5" opacity=".55"/>
+<path class="glass" d="M58 92q-22 18-22 52v104q0 30 30 30h116q30 0 30-30V144q0-34-22-52z" fill="url(#jzg)"/>
+<g clip-path="url(#jzc)">${rolls.join("")}${stars}</g>
+<path d="M58 92q-22 18-22 52v104q0 30 30 30h116q30 0 30-30V144q0-34-22-52z" fill="none" stroke="#bcd9ee" stroke-width="3.5"/>
+<path d="M54 140q0-22 14-36" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".9"/><path d="M52 160v60" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".7"/>
+<rect x="58" y="72" width="132" height="24" rx="8" fill="#eaf4fb" stroke="#bcd9ee" stroke-width="3"/>
+<rect x="52" y="50" width="144" height="28" rx="11" fill="url(#jzw)"/><rect x="52" y="70" width="144" height="8" rx="4" fill="#b98652" opacity=".5"/><path d="M62 58h124" stroke="#f6dcb6" stroke-width="2.5" stroke-linecap="round" opacity=".8"/>
+<path d="M58 86q66 14 132 0" stroke="#c98b5a" stroke-width="3" fill="none"/><path d="M174 90q14 18 4 42" stroke="#c98b5a" stroke-width="2" fill="none"/>
+<g transform="translate(160 128) rotate(-8)"><path d="M0 0h52l10 15-10 15H0z" fill="#e7c08a"/><path d="M0 0h52l10 15-10 15H0z" fill="none" stroke="#c99a5e" stroke-width="1.2" stroke-dasharray="3 2"/><circle cx="54" cy="15" r="3" fill="#fff8ec"/><text x="25" y="13.5" font-size="11" text-anchor="middle" fill="#6a4a24" font-family="ZCOOL KuaiLe,Noto Sans SC,sans-serif">${L("开心罐","Joy jar")}</text><text x="25" y="25" font-size="8" text-anchor="middle" fill="#8a6a40" font-family="sans-serif">${L(`${n} 卷`,`${n} rolls`)}</text></g>
+</svg>`}
+const JOY_MINI=`<svg viewBox="0 0 56 56" width="52" height="52" aria-hidden="true"><rect x="15" y="8" width="26" height="7" rx="3" fill="#e2b07a"/><path d="M13 18q0-3 3-3h24q3 0 3 3v2q4 3 4 9v15q0 7-7 7H16q-7 0-7-7V29q0-6 4-9z" fill="#eef8ff" stroke="#a9cfe9" stroke-width="1.6"/><g transform="translate(16 38) rotate(-14)"><rect x="-6" y="-2.5" width="12" height="5" rx="2.5" fill="#ffc2d4"/><rect x="-1" y="-2.7" width="2" height="5.4" fill="#c98b5a"/></g><g transform="translate(29 42) rotate(10)"><rect x="-6" y="-2.5" width="12" height="5" rx="2.5" fill="#ffe7a3"/><rect x="-1" y="-2.7" width="2" height="5.4" fill="#c98b5a"/></g><g transform="translate(39 36) rotate(-30)"><rect x="-6" y="-2.5" width="12" height="5" rx="2.5" fill="#c7ecd6"/><rect x="-1" y="-2.7" width="2" height="5.4" fill="#c98b5a"/></g><g transform="translate(24 33) rotate(24)"><rect x="-6" y="-2.5" width="12" height="5" rx="2.5" fill="#d9ccff"/><rect x="-1" y="-2.7" width="2" height="5.4" fill="#c98b5a"/></g><path transform="translate(36 27) scale(.6)" d="M0 -6l1.8 3.7 4 .6-2.9 2.8.7 4L0 3.2-3.6 5.1l.7-4L-5.8 -1.7l4-.6z" fill="#ffd25e"/></svg>`;
+function joyCard(){if(!on("joy")||!db)return "";const k=joyToday().length;
+  return `<button class="jar-card" data-act="joyopen">${JOY_MINI}<span><b>${L("有点无聊？","A bit bored?")}</b><small>${k?L(`今天已经开心了 ${k} 次，再抽一个？`,`${k} happy ${n_(k,"thing","things")} today. Another?`):L("{pet}从你的开心罐里抽一件事给你","{pet} picks something from your joy jar").replace("{pet}",petName())}</small></span><em>${L("抽一个","Pick one")}</em></button>`}
+function joyCollect(d){const xs=joylog.filter(x=>x.day===d).sort((a,b)=>a.at-b.at);if(!xs.length)return "";
+  return `<div class="jz-collect"><h4>${JOY_MINI.replace('width="52" height="52"','width="30" height="30"')}${d===todayStr()?L("今天的开心收集","Today's little joys"):L("这天的开心收集","Little joys")}</h4><p>${L(`${xs.length} 张纸条 · ${d===todayStr()?"今天":"这天"}没有稀里糊涂地过去哦`,`${xs.length} ${n_(xs.length,"note","notes")} · not a wasted day`)}</p>
+  <div class="jz-strip">${xs.map((x,i)=>{const c=JOY_COLS[(x.c!=null?x.c:i)%JOY_COLS.length][0];return `<div class="jz-pn" style="background:${c};transform:rotate(${i%2?1.6:-1.8}deg)"><b>${esc(x.text)}</b><small>${hhmm(x.at)}</small></div>`}).join("")}${d===todayStr()?`<button class="jz-pn add" data-act="joyopen"><em>＋</em>${L("再摇一个","Another")}</button>`:""}</div></div>`}
+function openJoy(view){if(!db)return;joyOpen=true;joyView=view||"jar";joyPick=null;joyTok=3;joyLast=[];joyEdit=null;document.body.classList.add("jz-on");renderJoy()}
+function closeJoy(){joyOpen=false;document.body.classList.remove("jz-on");const r=document.getElementById("joyRoot");if(r)r.remove();render()}
+function joyPool(){const done=new Set(joyToday().map(x=>x.jid));let xs=joys.filter(j=>!joyLast.includes(j.id));
+  const f={tired:j=>j.en==="lie",short:j=>(+j.mins||30)<=15,talk:j=>j.kind==="talk"}[joyMood];let ys=f?xs.filter(f):xs;
+  const fresh=ys.filter(j=>!done.has(j.id));if(fresh.length)ys=fresh;
+  return {pool:ys.length?ys:xs.length?xs:joys,fallback:!!f&&!ys.length}}
+function joyShake(){if(joyBusy||!joys.length)return;const {pool,fallback}=joyPool();const pick=pool[Math.floor(Math.random()*pool.length)];
+  joyBusy=true;const root=document.getElementById("joyRoot");const jar=root&&root.querySelector(".jz-jarw");
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(jar&&!reduce){jar.classList.add("shaking");const fly=document.createElement("div");fly.className="jz-fly";fly.innerHTML=`<svg viewBox="-20 -8 40 16" width="64" height="26">${joyScroll(0,0,-8,pick.c||0,34)}</svg>`;jar.appendChild(fly)}
+  setTimeout(()=>{joyBusy=false;joyPick=pick.id;joyLast.push(pick.id);joyView="draw";renderJoy();
+    if(fallback)cheer(L("这一类的纸卷还没有，{pet}先从全部里抽了一张～","No rolls of that kind yet, so {pet} picked from all of them～").replace("{pet}",petName()),"meh")},reduce?0:1250)}
+function joyAccept(){const j=joys.find(x=>x.id===joyPick);if(!j)return;const at=Date.now(),day=todayStr();
+  const r=db.collection("joylog").doc();const row={jid:j.id,text:j.text,c:j.c||0,day,at};joylog.push({id:r.id,...row});queued(r.path,()=>r.set(row));
+  if(j.ep&&+j.ep.e){const ep={s:+j.ep.s||1,e:(+j.ep.e)+1};j.ep=ep;const jr=db.doc("joys/"+j.id);queued(jr.path,()=>jr.update({ep}))}
+  const link=j.link;closeJoy();
+  cheer(L("去吧～ 记进今天的开心收集啦","Go for it～ Added to today's little joys"),"happy");
+  if(link==="tarot"&&tarotOn)openTarot();else if(link==="pomo")startFocus(null);else if(link==="letter"){openMailbox();setTimeout(()=>openLetter(),60)}else if(link==="journal"){tab="journal";jDate=todayStr();render()}}
+function joyStarters(){const S=[[L("给自己抽一张塔罗","Draw myself a tarot card"),5,"lie","solo","tarot"],[L("看一集克拉克森的农场","Watch an episode of Clarkson's Farm"),60,"lie","solo",""],[L("追正在看的剧","Catch up on my show"),60,"lie","solo",""],[L("看会儿书","Read for a bit"),30,"sit","solo","pomo"],[L("出门走一圈","Go for a walk"),30,"out","solo",""],[L("泡个热水澡","Have a warm bath"),30,"sit","solo",""],[L("整理房间里的一个小角落","Tidy one little corner"),30,"sit","solo",""],[L("在小结里写两句今天","Write a few lines in the recap"),5,"sit","talk","journal"],[L("给未来的自己写封信","Write to future me"),30,"sit","talk","letter"]].filter(x=>x[4]!=="tarot"||tarotOn);
+  S.forEach(([text,mins,en,kind,link],i)=>{const r=db.collection("joys").doc();const row={text,mins,en,kind,link,c:i%JOY_COLS.length,createdAt:Date.now()+i};joys.push({id:r.id,...row});queued(r.path,()=>r.set(row))});renderJoy()}
+function joyEditorHTML(){const j=joyEdit;const ch=(k,opts,v)=>`<div class="jz-ch">${opts.map(([val,t])=>`<button type="button" class="${String(v)===String(val)?"on":""}" data-je="${k}" data-v="${val}">${t}</button>`).join("")}</div>`;
+  return `<div class="jz-sheet-bg" data-j="edclose"><div class="jz-sheet" role="dialog" aria-label="${j.id?L("改一张纸卷","Edit a roll"):L("写一张新纸卷","Write a new roll")}"><h3>${j.id?L("改一张纸卷","Edit a roll"):L("写一张新纸卷","Write a new roll")}</h3>
+  <label class="jz-f"><span>${L("会让你开心的一件小事","A little thing that makes you happy")}</span><input id="jzText" maxlength="30" value="${esc(j.text||"")}" placeholder="${L("比如：看一集克拉克森的农场","e.g. watch an episode of my show")}"></label>
+  <div class="jz-f"><span>${L("大概多久","How long")}</span>${ch("mins",JOY_MINS,j.mins)}</div>
+  <div class="jz-f"><span>${L("要多少力气","How much energy")}</span>${ch("en",JOY_EN,j.en)}</div>
+  <div class="jz-f"><span>${L("什么时候抽它","When to pick it")}</span>${ch("kind",JOY_KIND,j.kind)}</div>
+  <div class="jz-f"><span>${L("点「好」之后 · optional","After you say yes · optional")}</span>${ch("link",JOY_LINK(),j.link||"")}</div>
+  <div class="jz-f"><span>${L("追剧进度 · optional","Show progress · optional")}</span><div class="jz-ep">${L("第","Season")} <input id="jzS" type="number" min="1" max="99" value="${j.ep?j.ep.s:""}" placeholder="1"> ${L("季，下一集是第","· next episode")} <input id="jzE" type="number" min="1" max="999" value="${j.ep?j.ep.e:""}" placeholder="–"> ${L("集","")}</div></div>
+  <div class="jz-act">${j.id?`<button class="btn jz-del" data-j="eddel">${L("拿出来","Remove")}</button>`:""}<span style="flex:1"></span><button class="btn" data-j="edclose">${L("取消","Cancel")}</button><button class="btn primary" data-j="edsave">${j.id?L("保存","Save"):L("放进罐子","Into the jar")}</button></div></div></div>`}
+function joyWallHTML(){const tabs=[["all",L(`全部 ${joys.length}`,`All ${joys.length}`)],["solo",L("一个人","On my own")],["talk",L("想找人说话","Want to talk")],["out",L("出门","Going out")]];
+  const f={solo:j=>j.kind!=="talk",talk:j=>j.kind==="talk",out:j=>j.en==="out"}[joyTab];const xs=(f?joys.filter(f):joys).slice().sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
+  return `<button class="jz-x" data-j="back" aria-label="${L("回到罐子","Back to the jar")}">‹</button><div class="jz-hd"><h2>${L("罐子里的纸卷","Rolls in the jar")}</h2><p>${L("点一卷可以改，想到新的就写一卷放进去","Tap a roll to edit it, or write a new one")}</p></div>
+  <div class="jz-tabs">${tabs.map(([k,t])=>`<button class="${joyTab===k?"on":""}" data-j="tab" data-v="${k}">${t}</button>`).join("")}</div>
+  <div class="jz-wall"><button class="jz-pn add" data-j="new"><em>＋</em>${L("写一卷新的","Write a new one")}</button>${xs.map((j,i)=>{const c=JOY_COLS[(j.c||0)%JOY_COLS.length];return `<button class="jz-pn" data-j="edit" data-id="${j.id}" style="background:${c[0]};transform:rotate(${i%2?1.2:-1.3}deg)"><svg viewBox="-20 -8 40 16" width="44" height="18" aria-hidden="true">${joyScroll(0,0,-6,j.c||0,34)}</svg><b>${esc(j.text)}</b><small>${[joyMinTxt(+j.mins),joyEnTxt(j.en),j.ep&&+j.ep.e?L(`S${j.ep.s} · 下一集 E${j.ep.e}`,`S${j.ep.s} · next E${j.ep.e}`):""].filter(Boolean).join(" · ")}</small></button>`}).join("")}</div>${joyEdit?joyEditorHTML():""}`}
+function joyJarHTML(){const n=joys.length,k=joyToday().length;
+  if(!n)return `<button class="jz-x" data-j="close" aria-label="${L("关上","Close")}">✕</button><div class="jz-stage"><div class="jz-jarw">${joyJarSVG()}<div class="jz-pet">${SF.happy}</div><div class="jz-bub">${L("罐子还是空的～","The jar is empty～")}</div></div></div>
+  <div class="jz-bot"><p class="jz-ml">${L("先放几卷让你开心的小事进去吧","Put in a few things that make you happy")}</p><button class="jz-go" data-j="starter">${L("用{pet}准备的几卷开始","Start with {pet}'s rolls").replace("{pet}",petName())}</button><div class="jz-lnk"><b data-j="new" role="button" tabindex="0">${L("自己写一卷 ›","Write my own ›")}</b></div></div>${joyEdit?joyEditorHTML():""}`;
+  return `<button class="jz-x" data-j="close" aria-label="${L("关上","Close")}">✕</button><span class="jz-sp" style="left:11%;top:18%">✦</span><span class="jz-sp" style="right:14%;top:14%;font-size:10px">✦</span><span class="jz-sp" style="left:18%;top:58%;font-size:9px;color:#ff9ab8">✦</span><span class="jz-sp" style="right:10%;top:52%;color:#b6a3f0">✦</span>
+  <div class="jz-stage"><div class="jz-jarw">${joyJarSVG()}<div class="jz-pet">${SF.happy}</div><div class="jz-bub r">${L("无聊啦？摇一摇我～","Bored? Give me a shake～")}</div></div></div>
+  <div class="jz-bot"><p class="jz-ml">${L("现 在 的 我","RIGHT NOW I'M")}</p><div class="jz-moods" role="radiogroup">${JOY_MOODS().map(([k,f,t])=>`<button class="${joyMood===k?"on":""}" data-j="mood" data-v="${k}" role="radio" aria-checked="${joyMood===k}">${SF[f]||SF.happy}<span>${t}</span></button>`).join("")}</div>
+  <button class="jz-go" data-j="shake">${L("摇 一 摇","Shake")}</button><div class="jz-lnk"><span>${L(`今天开心了 <b>${k}</b> 次`,`<b>${k}</b> today`)}</span><span>·</span><b data-j="wall" role="button" tabindex="0">${L("罐子里的纸卷 ›","Rolls in the jar ›")}</b></div></div>`}
+function joyDrawHTML(){const j=joys.find(x=>x.id===joyPick);if(!j){joyView="jar";return joyJarHTML()}
+  const ep=j.ep&&+j.ep.e?j.ep:null;let eps="";
+  if(ep){const e=+ep.e,from=Math.max(1,e-4),xs=[...Array(8)].map((_,i)=>from+i);eps=`<div class="jz-eps"><small>${L(`第 ${ep.s} 季 · 下一集是第 ${e} 集`,`Season ${ep.s} · next up: episode ${e}`)}</small><div>${xs.map(x=>`<i class="${x<e?"":x===e?"n":"f"}">${x}</i>`).join("")}</div></div>`}
+  const go={tarot:L("好，去抽！","OK, draw!"),pomo:L("好，开始！","OK, start!"),letter:L("好，去写！","OK, write!"),journal:L("好，去写！","OK, write!")}[j.link]||(ep?L("好，去看！","OK, watch!"):L("好，去做！","OK, go!"));
+  return `<button class="jz-x" data-j="close" aria-label="${L("关上","Close")}">✕</button><span class="jz-sp" style="left:11%;top:18%">✦</span><span class="jz-sp" style="right:10%;top:56%;color:#b6a3f0">✦</span>
+  <div class="jz-stage"><div class="jz-scr"><div class="jz-peek">${SF.star||SF.happy}</div><div class="jz-roll"></div><div class="jz-paper"><div class="jz-kick">${L("小 芽 给 你 抽 到 了","{pet} PICKED").replace("{pet}",petName().toUpperCase())}</div><div class="jz-big">${esc(j.text)}</div>
+  <div class="jz-meta"><span>${joyMinTxt(+j.mins)}</span><span>${joyEnTxt(j.en)}</span></div>${eps}</div><div class="jz-roll"></div></div></div>
+  <div class="jz-bot"><button class="jz-go" data-j="accept">${go}</button><div class="jz-again">${joyTok>0&&joys.length>1?`${L("不太想？","Not feeling it?")}<b data-j="again" role="button" tabindex="0">${L("放回去，再摇一次","Put it back, shake again")}</b>`:`<span>${L("今天就它啦～","This one it is～")}</span>`}<span class="tk">${[0,1,2].map(i=>`<i class="${i<joyTok?"":"u"}"></i>`).join("")}</span></div></div>`}
+function renderJoy(){if(!joyOpen)return;let r=document.getElementById("joyRoot");
+  if(!r){r=document.createElement("div");r.id="joyRoot";r.className="jz";r.setAttribute("role","dialog");r.setAttribute("aria-label",L("开心罐","Joy jar"));document.body.appendChild(r);r.addEventListener("click",joyClick);r.addEventListener("keydown",e=>{if(e.key==="Escape"){if(joyEdit){joyEdit=null;renderJoy()}else closeJoy()}else if((e.key==="Enter"||e.key===" ")&&e.target.matches("[data-j][role=button]")){e.preventDefault();e.target.click()}})}
+  r.dataset.view=joyView;r.innerHTML=joyView==="wall"?joyWallHTML():joyView==="draw"?joyDrawHTML():joyJarHTML();
+  if(joyEdit){const i=r.querySelector("#jzText");if(i&&!i.value)setTimeout(()=>i.focus(),30)}}
+function joyClick(e){const b=e.target.closest("[data-j],[data-je]");if(!b)return;
+  if(b.dataset.je){const k=b.dataset.je,v=b.dataset.v;joyEdit[k]=k==="mins"?+v:v;b.parentElement.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));return}
+  const a=b.dataset.j;
+  if(a==="edclose"&&e.target!==b&&b.classList.contains("jz-sheet-bg"))return;
+  if(a==="close"){closeJoy();return}
+  if(a==="mood"){joyMood=b.dataset.v;renderJoy();return}
+  if(a==="shake"){joyShake();return}
+  if(a==="again"){if(joyTok<=0)return;joyTok--;joyView="jar";renderJoy();setTimeout(joyShake,60);return}
+  if(a==="accept"){joyAccept();return}
+  if(a==="wall"){joyView="wall";renderJoy();return}
+  if(a==="back"){joyView="jar";joyEdit=null;renderJoy();return}
+  if(a==="tab"){joyTab=b.dataset.v;renderJoy();return}
+  if(a==="starter"){joyStarters();return}
+  if(a==="new"){joyEdit={text:"",mins:30,en:"lie",kind:joyTab==="talk"?"talk":"solo",link:"",ep:null};renderJoy();return}
+  if(a==="edit"){const j=joys.find(x=>x.id===b.dataset.id);if(j){joyEdit={...j,ep:j.ep?{...j.ep}:null};renderJoy()}return}
+  if(a==="edclose"){joyEdit=null;renderJoy();return}
+  if(a==="eddel"){if(!b.classList.contains("sure")){b.classList.add("sure");b.textContent=L("再点一次确认","Tap again to confirm");return}
+    const id=joyEdit.id;joys=joys.filter(x=>x.id!==id);const r=db.doc("joys/"+id);queued(r.path,()=>r.delete());joyEdit=null;renderJoy();return}
+  if(a==="edsave"){const root=document.getElementById("joyRoot");const text=(root.querySelector("#jzText").value||"").trim().slice(0,30);if(!text){root.querySelector("#jzText").focus();return}
+    const s=+root.querySelector("#jzS").value||0,ep_=+root.querySelector("#jzE").value||0;const ep=ep_?{s:s||1,e:ep_}:null;
+    const row={text,mins:+joyEdit.mins||30,en:joyEdit.en||"lie",kind:joyEdit.kind||"solo",link:joyEdit.link||"",ep};
+    if(joyEdit.id){const j=joys.find(x=>x.id===joyEdit.id);Object.assign(j,row);const r=db.doc("joys/"+j.id);queued(r.path,()=>r.update(row))}
+    else{const r=db.collection("joys").doc();row.c=joys.length%JOY_COLS.length;row.createdAt=Date.now();joys.push({id:r.id,...row});queued(r.path,()=>r.set(row))}
+    joyEdit=null;if(joyView==="jar"&&joys.length===1)joyView="jar";renderJoy();return}
+}
+
 /* ---------- timeline ---------- */
 function timelineItems(d){
   const it=[];
@@ -3540,6 +3735,7 @@ function timelineItems(d){
   tasks.filter(t=>!t.deleted&&t.subs&&t.subs.length).forEach(t=>t.subs.forEach(x=>{if(x.done&&x.at&&dayOf(x.at)===d)it.push({t:x.at,k:t.space,txt:L(`做完一步「${esc(x.t)}」`,`Step done: “${esc(x.t)}”`),sub:esc(t.title)})}));
   pomos.filter(p=>p.day===d&&(+p.mins||0)>=1).forEach(p=>{const t=p.taskId&&tasks.find(x=>x.id===p.taskId);const st=p.end?p.end-(+p.mins)*6e4:p.start;
     it.push({t:st,mins:+p.mins,k:"pomo",txt:`${TOM_ICON}${L(`专注 ${Math.round(p.mins)} 分钟`,`Focused ${Math.round(p.mins)} min`)}${p.space?` <span class="tag ${p.space}">${BOARD_NAME(p.space)}</span>`:""}`,sub:t?esc(t.title):""})});
+  joylog.filter(x=>x.day===d).forEach(x=>it.push({t:x.at,k:"life",txt:L(`开心罐 · ${esc(x.text)}`,`Joy jar · ${esc(x.text)}`)}));
   trips.filter(x=>x.date===d&&x.createdAt).forEach(x=>{const nm=(x.names||[]).filter(Boolean);
     it.push({t:x.createdAt,k:"life",txt:L(`去超市 · 买了 ${x.items||nm.length} 样`,`Shopping · ${x.items||nm.length} ${n_(x.items||nm.length,"item","items")}`),sub:esc(nm.slice(0,6).join("、")+(nm.length>6?L(` 等 ${nm.length} 样`,` +${nm.length-6} more`):""))})});
   eats.filter(x=>x.day===d).forEach(x=>{const s=SLOTS().find(y=>y[0]===x.slot);it.push({t:x.at,k:"life",txt:`${s?s[2]:L("吃饭","Meal")} · ${esc(x.name)}`,eat:x.id,ed:`eat|${x.id}`})});
@@ -4351,6 +4547,7 @@ function overview(){
   const first=over[0]||today[0];
   const todayBox=`<section class="ov-today"><div class="ov-th"><b>${L("今天","Today")}</b><small>${L(`${dt.getMonth()+1}月${dt.getDate()}日 · 周${WD[dt.getDay()]}`,`${WDEN[dt.getDay()]}, ${dt.getDate()} ${MON[dt.getMonth()]}`)}</small><em>${n?L(`${n} 件`,`${n} to do`):""}</em></div>
     ${on("habit")||OV_SP.some(on)?sleepRow():""}
+    ${joyCard()}
     ${(()=>{const {live,done}=habitStats();if(!live.length)return "";const ck=checkins[td]||{};const hs=[...live].sort((a,b)=>(a.order||0)-(b.order||0));
       const PER={m:L("早上","Morning"),n:L("中午","Midday"),e:L("晚上","Evening")};
       const chip=h=>{const n=HT(h);if(n<2)return `<button class="ov-hc${ck[h.id]?" on":""}" data-act="hdot" data-id="${h.id}" data-v="${td}" aria-pressed="${!!ck[h.id]}">${ck[h.id]?"✓ ":""}${esc(h.name)}</button>`;
@@ -6096,7 +6293,7 @@ function journalView(){
     </div>
     ${(()=>{const pm=dayPomos(d),m=pm.reduce((a,p)=>a+(+p.mins||0),0);if(m<1)return "";const tn=pm.filter(p=>p.tomato).length;const by=["study","work"].map(k=>[k,pm.filter(p=>p.space===k).reduce((a,p)=>a+(+p.mins||0),0)]).filter(x=>x[1]>=1);
       return `<div class="focusline">${TOM_ICON}<span>${d===todayStr()?L("今天","Today"):L("这天","This day")}${L("专注了","")} <b>${fmtHM(m)}</b>${L("",` of focus`)} · ${L(`${tn} 个番茄`,`${tn} ${n_(tn,"tomato","tomatoes")}`)}</span>${by.length?`<span class="fsplit">${by.map(([k,v])=>`${BOARD_NAME(k)} ${fmtMins(v)}`).join(" · ")}</span>`:""}</div>`})()}
-    ${timelineCard(d)}
+    ${joyCollect(d)}${timelineCard(d)}
     <div class="jgrid">
       ${on("habit")?box(L("打卡","Check-in"),"--habit",list(D.hNames)):""}
       ${on("life")?box(L("生活","Life"),"--life",lifeInner):""}
@@ -7212,6 +7409,7 @@ document.addEventListener("click",async e=>{
     if(!t.done)completeTask(t,act);else uncompleteTask(t);
   }
   if(act.dataset.act==="edit")openEditor(id);
+  if(act.dataset.act==="joyopen"){openJoy();return}
   if(act.dataset.act==="hedit"){openHabitEdit(id);return}
   if(act.dataset.act==="hgedit"){openGroupEdit(id);return}
   if(act.dataset.act==="hgfold"){hgFoldToggle(id);return}
@@ -7412,7 +7610,7 @@ function seed(){
 
 /* ---------- settings: name, backup, restore ---------- */
 function boardChips(){
-  return [["habit","打卡","Habits"],["life","生活","Life"],["shop","购物清单","Shopping list"],["memo","备忘录","Notes"],["wish","愿望清单","Wishlist"],["study","学习","Study"],["classes","课程表","Timetable"],["work","工作","Work"]]
+  return [["habit","打卡","Habits"],["life","生活","Life"],["shop","购物清单","Shopping list"],["memo","备忘录","Notes"],["wish","愿望清单","Wishlist"],["joy","开心罐","Joy jar"],["study","学习","Study"],["classes","课程表","Timetable"],["work","工作","Work"]]
     .map(([k,zh,en])=>{const off=((k==="shop"||k==="wish"||k==="memo")&&!boards.life)||(k==="classes"&&!boards.study);
       return `<button class="chip hz${boards[k]&&!off?" on":""}" data-set="board" data-v="${k}" ${off?'disabled style="opacity:.45"':""} aria-pressed="${boards[k]&&!off}">${boards[k]&&!off?"✓ ":""}${L(zh,en)}</button>`}).join("");
 }
@@ -7575,7 +7773,7 @@ const FIREBASE_CONFIG={
   appId:"1:1053547899054:web:49caab221ae4f4171c253f"
 };
 const FB_VER="10.12.2";
-const COLS=["hgroups","gacha","tarot","lenorm","lennotes","stickies","letters","tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","wishfund","closet","moon","memos","yearlyDays","pomos","meals","rests","eats","fridge","tlog","courses","sleep"];
+const COLS=["joys","joylog","hgroups","gacha","tarot","lenorm","lennotes","stickies","letters","tasks","habits","checkins","shop","staples","trips","journal","forest","garden","milestones","weekly","yearly","wishes","wishfund","closet","moon","memos","yearlyDays","pomos","meals","rests","eats","fridge","tlog","courses","sleep"];
 const CLOUD_KEY="lifeos-cloud-uid";
 let fb=null, cloudUser=null, cloudState=FIREBASE_CONFIG?"loading":"off"; // off | loading | unavailable | signedout | signedin
 let localDB=null, unsubs=[];
@@ -7618,12 +7816,14 @@ function makeCloudDB(uid){
 function startData(store){
   unsubs.forEach(u=>{try{u()}catch(_){}}); unsubs=[];
   db=store;
-  closet={};letters=[];tasks=[];habits=[];checkins={};hparts={};hgroups=[];shop=[];staples=[];trips=[];journal={};milestones=[];yearlyDays=[];pomos=[];meals=[];rests=[];eats=[];fridge=[];tlog=[];courses=[];sleeps={};weekly={};yearly={};wishes=[];memos=[];forest=[];curTheme="lemon";
+  closet={};letters=[];tasks=[];habits=[];checkins={};hparts={};hgroups=[];joys=[];joylog=[];shop=[];staples=[];trips=[];journal={};milestones=[];yearlyDays=[];pomos=[];meals=[];rests=[];eats=[];fridge=[];tlog=[];courses=[];sleeps={};weekly={};yearly={};wishes=[];memos=[];forest=[];curTheme="lemon";
   for(const k in loaded)loaded[k]=false; recapChecked=false; lastStage=null; lastBuddy="";
   const fail=e=>{if(e&&e.code==="permission-denied")setStatus(L("没有权限读取数据，请重新登录。","No permission to read your data. Please sign in again."))};
   const sub=(c,fn,q)=>unsubs.push((q||db.collection(c)).onSnapshot(fn,fail));
   const ok=s=>!s.metadata.fromCache||!s.empty;
   sub("tasks",s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.t=true;planFix();render();odAutoRoll();midPromote()});
+  sub("joys",s=>{joys=s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.text);renderJoy()});
+  sub("joylog",s=>{joylog=s.docs.map(d=>({id:d.id,...d.data()}));render();renderJoy()});
   sub("hgroups",s=>{hgroups=s.docs.map(d=>({id:d.id,...d.data()})).filter(g=>g.name);render()});
   sub("habits",s=>{habits=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.h=true;render()});
   sub("shop",s=>{shop=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.s=true;render()});
