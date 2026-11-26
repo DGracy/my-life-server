@@ -4270,6 +4270,7 @@ let midMoved="";
 function midPromote(){if(!loaded.t||!db)return;const td=todayStr();if(midMoved===td)return;midMoved=td;const lim=addDays(td,7),moved=[];
   tasks.filter(t=>!t.done&&!t.deleted&&!t.letGo&&!t.repeat&&(t.horizon==="month"||t.horizon==="inbox")&&t.due&&t.due<=lim).forEach(t=>{t.horizon="week";moved.push(t.title);const r=db.doc("tasks/"+t.id);queued(r.path,()=>r.update({horizon:"week"}))});
   if(moved.length){render();setTimeout(()=>cheer(L(`「${moved[0]}」${moved.length>1?` 等 ${moved.length} 件`:""}一周内就到期啦，我帮你挪到近期了～`,`“${moved[0]}”${moved.length>1?` and ${moved.length-1} more`:""} ${moved.length>1?"are":"is"} due within a week, so I moved ${moved.length>1?"them":"it"} to This week～`),"think"),600)}}
+function planFix(){if(!loaded.t||!db)return;tasks.filter(t=>!t.done&&!t.deleted&&!t.repeat&&t.plan&&t.due&&t.plan>t.due).forEach(t=>{const p={due:t.plan,plan:null};Object.assign(t,p);const r=db.doc("tasks/"+t.id);queued(r.path,()=>r.update(p))})}
 function odAutoRoll(){if(!odAuto||!loaded.t||!db)return;const td=todayStr();if(odRolled===td)return;odRolled=td;
   // one-time clean-up: before this fix every automatic roll counted as a move, so counts got inflated
   let fixed=false;try{fixed=localStorage.getItem("lifeos-od-fix1125")==="1"}catch(_){}
@@ -4377,14 +4378,14 @@ function ovMove(id){const t=tasks.find(x=>x.id===id);if(!t)return;const td=today
   const draw=()=>{bg.innerHTML=`<div class="sheet od-sheet" role="dialog" aria-label="${L("改期","Move")}"><h3>${L(`「${esc(t.title)}」挪到哪天？`,`Move “${esc(t.title)}” to…`)}</h3>
     <div class="chips">${(t.plan||t.due)!==td?`<button class="chip hz" data-ov="${td}">${L("今天","Today")}</button>`:""}${days.filter(d=>d!==t.plan).map(d=>`<button class="chip hz" data-ov="${d}">${ovDayName(d,td)}<small>${(by[d]||[]).length}</small></button>`).join("")}<button class="chip hz${pick?" on":""}" data-ov="pick">${L("选日期…","Pick a date…")}</button>${t.plan?`<button class="chip hz" data-ov="none">${L("不定日子","No day")}</button>`:""}</div>
     ${pick?`<div class="cap-row"><input type="date" id="ovDate" min="${td}"><button class="btn primary" data-ov="ok">${L("好","OK")}</button></div>`:""}
-    <p class="hint">${L("这里改的是「想哪天做」，不会改截止日期。小数字是那天已经排了几件。","This sets the day you plan to do it; the deadline stays. The small number is how many that day has.")}${t.due?L(` 截止：${md2(t.due)}`,` Due ${md2(t.due)}`):""}</p></div>`};
+    <p class="hint">${L("挪到截止日期之前，截止日期不变；挪到之后，日期会一起改。小数字是那天已经排了几件。","Before the deadline, the deadline stays; after it, the date moves too. The small number is how many that day has.")}${t.due?L(` 截止：${md2(t.due)}`,` Due ${md2(t.due)}`):""}</p></div>`};
   draw();document.body.appendChild(bg);
   bg.addEventListener("click",e=>{e.stopPropagation();if(e.target===bg){bg.remove();return}const b=e.target.closest("[data-ov]");if(!b)return;let v=b.dataset.ov;
     if(v==="pick"){pick=true;draw();return}
     if(v==="ok"){v=bg.querySelector("#ovDate").value;if(!v)return}
     const plan=v==="none"?null:v,prev=t.plan||t.due,p={plan};if(plan&&prev&&plan>prev)p.moved=(+t.moved||0)+1;if(t.start&&plan&&t.start>plan)p.start=null;
+    if(plan&&t.due&&plan>t.due){p.due=plan;p.plan=null}
     Object.assign(t,p);const r=db.doc("tasks/"+id);queued(r.path,()=>r.update(p));
-    if(plan&&t.due&&plan>t.due)cheer(L(`排在 ${md2(plan)}，比截止日期 ${md2(t.due)} 晚哦`,`Planned for ${md2(plan)}, after its deadline ${md2(t.due)}`),"meh");
     bg.remove();render()});
 }
 const ovShort=d=>{const td=todayStr();return d===td?L("今天","Today"):d<td?L(`${md2(d)} 没做`,`missed ${md2(d)}`):d<=addDays(td,6)?ovDayName(d,td):md2(d)};
@@ -7622,7 +7623,7 @@ function startData(store){
   const fail=e=>{if(e&&e.code==="permission-denied")setStatus(L("没有权限读取数据，请重新登录。","No permission to read your data. Please sign in again."))};
   const sub=(c,fn,q)=>unsubs.push((q||db.collection(c)).onSnapshot(fn,fail));
   const ok=s=>!s.metadata.fromCache||!s.empty;
-  sub("tasks",s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.t=true;render();odAutoRoll();midPromote()});
+  sub("tasks",s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.t=true;planFix();render();odAutoRoll();midPromote()});
   sub("hgroups",s=>{hgroups=s.docs.map(d=>({id:d.id,...d.data()})).filter(g=>g.name);render()});
   sub("habits",s=>{habits=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.h=true;render()});
   sub("shop",s=>{shop=s.docs.map(d=>({id:d.id,...d.data()}));if(ok(s))loaded.s=true;render()});
