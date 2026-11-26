@@ -1610,6 +1610,7 @@ body.jz-on{overflow:hidden}
 .jz-ch{display:flex;gap:6px;flex-wrap:wrap}.jz-ch button{border:2px solid var(--line);background:var(--surface);color:var(--fg);border-radius:99px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
 .jz-ch button.on{border-color:#ff86a8;background:#fff0f4;color:#b03c66;font-weight:600}
 :root[data-theme="dark"] .jz-ch button.on,:root:not([data-theme])[data-tod="night"] .jz-ch button.on{background:#4a2f3c;color:#ffc2d4}
+.jz-own{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);margin-top:2px}.jz-own input{width:70px}
 .jz-ep{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:14px}.jz-ep input{width:64px}
 .jz-act{display:flex;gap:8px;align-items:center}.jz-del{color:var(--danger-ink)}.jz-del.sure{background:var(--danger-ink);color:#fff}
 .jz-collect{background:linear-gradient(135deg,#fff7e6,#ffeef4);border-radius:22px;padding:14px 14px 18px;margin:0 0 14px;box-shadow:0 2px 0 #f0dcc4;color:#3a3350}
@@ -3610,12 +3611,13 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-co]");if(!
 /* ---------- 开心罐: little paper rolls of things that make the day better ---------- */
 let joys=[], joylog=[], joyOpen=false, joyView="jar", joyMood="fresh", joyPick=null, joyTok=3, joyLast=[], joyEdit=null, joyTab="all", joyBusy=false;
 const JOY_COLS=[["#ffc2d4","#f29ab5"],["#d9ccff","#b6a3f0"],["#c7ecd6","#97d3b0"],["#ffe7a3","#f2c860"],["#cfe7fb","#9fcbef"],["#ffd5bf","#f3ae8c"]];
-const JOY_MINS=[[5,L("5 分钟","5 min")],[30,L("半小时","30 min")],[60,L("一小时","1 hour")],[180,L("一晚上","An evening")]];
+const JOY_MINS=[[5,L("5 分钟","5 min")],[15,L("15 分钟","15 min")],[30,L("半小时","30 min")],[60,L("一小时","1 hour")],[180,L("一晚上","An evening")]];
 const JOY_EN=[["lie",L("躺着就行","Lying down")],["sit",L("坐起来","Sitting up")],["out",L("要出门","Going out")]];
 const JOY_KIND=[["solo",L("一个人也开心","Happy on my own")],["talk",L("想找人说话的时候","When I want to talk")]];
 const JOY_LINK=()=>[["",L("不用","Nothing")],...(tarotOn?[["tarot",L("打开塔罗","Open tarot")]]:[]),["pomo",L("开番茄钟","Start a focus")],["letter",L("写封信","Write a letter")],["journal",L("写小结","Open the recap")]];
 const JOY_MOODS=()=>[["fresh","happy",L("还挺精神","Fresh")],["tired","nap",L("有点累","Tired")],["short","focus",L("只有一会儿","Short on time")],["talk","star",L("想找人说话","Want to talk")]];
-const joyMinTxt=m=>(JOY_MINS.find(x=>x[0]===m)||[0,L(`${m} 分钟`,`${m} min`)])[1];
+const joyLinkGuess=t=>/塔罗|tarot|雷诺曼/i.test(t)?"tarot":/书|读|阅读|read|book|学/i.test(t)?"pomo":/信|letter/i.test(t)?"letter":/小结|日记|journal|写两句/i.test(t)?"journal":"";
+const joyMinTxt=m=>{const k=JOY_MINS.find(x=>x[0]===m);if(k)return k[1];if(m<60)return L(`${m} 分钟`,`${m} min`);const h=Math.floor(m/60),r=m%60;return r?L(`${h} 小时 ${r} 分`,`${h} h ${r} min`):L(`${h} 小时`,`${h} h`)};
 const joyEnTxt=e=>(JOY_EN.find(x=>x[0]===e)||["",""])[1];
 const joyToday=()=>joylog.filter(x=>x.day===todayStr());
 function joyScroll(x,y,r,c,len=34){const [a,d]=JOY_COLS[c%JOY_COLS.length];
@@ -3669,10 +3671,9 @@ function joyStarters(){const S=[[L("给自己抽一张塔罗","Draw myself a tar
 function joyEditorHTML(){const j=joyEdit;const ch=(k,opts,v)=>`<div class="jz-ch">${opts.map(([val,t])=>`<button type="button" class="${String(v)===String(val)?"on":""}" data-je="${k}" data-v="${val}">${t}</button>`).join("")}</div>`;
   return `<div class="jz-sheet-bg" data-j="edclose"><div class="jz-sheet" role="dialog" aria-label="${j.id?L("改一张纸卷","Edit a roll"):L("写一张新纸卷","Write a new roll")}"><h3>${j.id?L("改一张纸卷","Edit a roll"):L("写一张新纸卷","Write a new roll")}</h3>
   <label class="jz-f"><span>${L("会让你开心的一件小事","A little thing that makes you happy")}</span><input id="jzText" maxlength="30" value="${esc(j.text||"")}" placeholder="${L("比如：看一集克拉克森的农场","e.g. watch an episode of my show")}"></label>
-  <div class="jz-f"><span>${L("大概多久","How long")}</span>${ch("mins",JOY_MINS,j.mins)}</div>
+  <div class="jz-f"><span>${L("大概多久","How long")}</span>${ch("mins",JOY_MINS,j.mins)}<label class="jz-own">${L("或者自己填","or type it")} <input id="jzMin" type="number" min="1" max="600" inputmode="numeric" value="${JOY_MINS.some(x=>x[0]===+j.mins)?"":(+j.mins||"")}" placeholder="40"> ${L("分钟","min")}</label></div>
   <div class="jz-f"><span>${L("要多少力气","How much energy")}</span>${ch("en",JOY_EN,j.en)}</div>
   <div class="jz-f"><span>${L("什么时候抽它","When to pick it")}</span>${ch("kind",JOY_KIND,j.kind)}</div>
-  <div class="jz-f"><span>${L("点「好」之后 · optional","After you say yes · optional")}</span>${ch("link",JOY_LINK(),j.link||"")}</div>
   <div class="jz-f"><span>${L("追剧进度 · optional","Show progress · optional")}</span><div class="jz-ep">${L("第","Season")} <input id="jzS" type="number" min="1" max="99" value="${j.ep?j.ep.s:""}" placeholder="1"> ${L("季，下一集是第","· next episode")} <input id="jzE" type="number" min="1" max="999" value="${j.ep?j.ep.e:""}" placeholder="–"> ${L("集","")}</div></div>
   <div class="jz-act">${j.id?`<button class="btn jz-del" data-j="eddel">${L("拿出来","Remove")}</button>`:""}<span style="flex:1"></span><button class="btn" data-j="edclose">${L("取消","Cancel")}</button><button class="btn primary" data-j="edsave">${j.id?L("保存","Save"):L("放进罐子","Into the jar")}</button></div></div></div>`}
 function joyWallHTML(){const tabs=[["all",L(`全部 ${joys.length}`,`All ${joys.length}`)],["solo",L("一个人","On my own")],["talk",L("想找人说话","Want to talk")],["out",L("出门","Going out")]];
@@ -3696,11 +3697,11 @@ function joyDrawHTML(){const j=joys.find(x=>x.id===joyPick);if(!j){joyView="jar"
   <div class="jz-meta"><span>${joyMinTxt(+j.mins)}</span><span>${joyEnTxt(j.en)}</span></div>${eps}</div><div class="jz-roll"></div></div></div>
   <div class="jz-bot"><button class="jz-go" data-j="accept">${go}</button><div class="jz-again">${joyTok>0&&joys.length>1?`${L("不太想？","Not feeling it?")}<b data-j="again" role="button" tabindex="0">${L("放回去，再摇一次","Put it back, shake again")}</b>`:`<span>${L("今天就它啦～","This one it is～")}</span>`}<span class="tk">${[0,1,2].map(i=>`<i class="${i<joyTok?"":"u"}"></i>`).join("")}</span></div></div>`}
 function renderJoy(){if(!joyOpen)return;let r=document.getElementById("joyRoot");
-  if(!r){r=document.createElement("div");r.id="joyRoot";r.className="jz";r.setAttribute("role","dialog");r.setAttribute("aria-label",L("开心罐","Joy jar"));document.body.appendChild(r);r.addEventListener("click",joyClick);r.addEventListener("keydown",e=>{if(e.key==="Escape"){if(joyEdit){joyEdit=null;renderJoy()}else closeJoy()}else if((e.key==="Enter"||e.key===" ")&&e.target.matches("[data-j][role=button]")){e.preventDefault();e.target.click()}})}
+  if(!r){r=document.createElement("div");r.id="joyRoot";r.className="jz";r.setAttribute("role","dialog");r.setAttribute("aria-label",L("开心罐","Joy jar"));document.body.appendChild(r);r.addEventListener("click",joyClick);r.addEventListener("input",e=>{if(e.target.id==="jzMin"&&e.target.value)e.target.closest(".jz-f").querySelectorAll("[data-je=mins]").forEach(x=>x.classList.remove("on"))});r.addEventListener("keydown",e=>{if(e.key==="Escape"){if(joyEdit){joyEdit=null;renderJoy()}else closeJoy()}else if((e.key==="Enter"||e.key===" ")&&e.target.matches("[data-j][role=button]")){e.preventDefault();e.target.click()}})}
   r.dataset.view=joyView;r.innerHTML=joyView==="wall"?joyWallHTML():joyView==="draw"?joyDrawHTML():joyJarHTML();
   if(joyEdit){const i=r.querySelector("#jzText");if(i&&!i.value)setTimeout(()=>i.focus(),30)}}
 function joyClick(e){const b=e.target.closest("[data-j],[data-je]");if(!b)return;
-  if(b.dataset.je){const k=b.dataset.je,v=b.dataset.v;joyEdit[k]=k==="mins"?+v:v;b.parentElement.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));return}
+  if(b.dataset.je){const k=b.dataset.je,v=b.dataset.v;joyEdit[k]=k==="mins"?+v:v;b.parentElement.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));if(k==="mins"){const m=document.getElementById("jzMin");if(m)m.value=""}return}
   const a=b.dataset.j;
   if(a==="edclose"&&e.target!==b&&b.classList.contains("jz-sheet-bg"))return;
   if(a==="close"){closeJoy();return}
@@ -3719,7 +3720,8 @@ function joyClick(e){const b=e.target.closest("[data-j],[data-je]");if(!b)return
     const id=joyEdit.id;joys=joys.filter(x=>x.id!==id);const r=db.doc("joys/"+id);queued(r.path,()=>r.delete());joyEdit=null;renderJoy();return}
   if(a==="edsave"){const root=document.getElementById("joyRoot");const text=(root.querySelector("#jzText").value||"").trim().slice(0,30);if(!text){root.querySelector("#jzText").focus();return}
     const s=+root.querySelector("#jzS").value||0,ep_=+root.querySelector("#jzE").value||0;const ep=ep_?{s:s||1,e:ep_}:null;
-    const row={text,mins:+joyEdit.mins||30,en:joyEdit.en||"lie",kind:joyEdit.kind||"solo",link:joyEdit.link||"",ep};
+    const own=+root.querySelector("#jzMin").value||0;if(own>0)joyEdit.mins=Math.min(600,Math.round(own));
+    const row={text,mins:+joyEdit.mins||30,en:joyEdit.en||"lie",kind:joyEdit.kind||"solo",link:joyLinkGuess(text),ep};
     if(joyEdit.id){const j=joys.find(x=>x.id===joyEdit.id);Object.assign(j,row);const r=db.doc("joys/"+j.id);queued(r.path,()=>r.update(row))}
     else{const r=db.collection("joys").doc();row.c=joys.length%JOY_COLS.length;row.createdAt=Date.now();joys.push({id:r.id,...row});queued(r.path,()=>r.set(row))}
     joyEdit=null;if(joyView==="jar"&&joys.length===1)joyView="jar";renderJoy();return}
