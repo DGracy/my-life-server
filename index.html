@@ -2316,7 +2316,7 @@ function taskRow(t){
   const hasSub=!t.done&&sb.length>0;
   const whenLine=tl.filter(x=>sd[x[0]]).map(x=>`<span class="slt" data-act="slottime" data-id="${t.id}" data-v="${x[0]}" title="${L("点一下改时间","Tap to change the time")}">${L(`${x[1]} ${hhmm(sd[x[0]])} 做完`,`${x[1]} done ${hhmm(sd[x[0]])}`)}</span>`).join(" · ");
   const wait=!t.done&&!pz&&t.repeat&&t.due&&t.due>todayStr();
-  return `<div class="task${t.done?" done":""}${pr?" p"+pr:""}${pz?" paused":""}${wait?" rp-wait":""}${canPlay?" hasplay":""}">
+  return `<div class="task${t.done?" done":""}${pr?" p"+pr:""}${pz?" paused":""}${canPlay?" hasplay":""}">
     ${tt.length?`<span class="slots" style="--sc:var(--${t.space==="study"||t.space==="work"?t.space:"life"})">${tt.map(([k,n,sh])=>`<button class="slot${sd[k]?" on":""}" data-act="slot" data-id="${t.id}" data-v="${k}" aria-label="${n}${sd[k]?L(" · 已完成，点一下取消"," · done, tap to undo"):L(" · 点一下完成"," · tap when done")}" aria-pressed="${!!sd[k]}">${sd[k]?SLOT_CK:sh}</button>`).join("")}</span>`:`<button class="check${t.done?" on":""}" data-act="toggle" data-id="${t.id}" aria-label="${t.done?L("标记为未完成","Mark as not done"):L("标记为完成","Mark as done")}">${CHECK}</button>`}
     <button class="t-main${hasSub?" fold":""}" data-act="${hasSub?"subopen":"edit"}" data-id="${t.id}"${hasSub?` aria-expanded="${subOpen.has(t.id)}"`:""}>
       <span class="t-title"${hasSub?` data-act="edit" data-id="${t.id}"`:""}>${esc(t.title)}</span>${wi&&t.due?`<span class="t-note rng">${esc(wi.rng)}</span>`:""}${whenLine?`<span class="t-note">${whenLine}</span>`:""}
@@ -2401,9 +2401,8 @@ function taskBoard(k){
   const groups=HZ.map(h=>{
     const items=mine.filter(t=>!t.done&&!t.letGo&&t.horizon===h.k).sort(sortTasks);
     if(h.k==="inbox"&&!items.length)return "";
-    const wait_=items.filter(t=>taskBucket(t)===3),act_=items.filter(t=>taskBucket(t)!==3);
-    return `<section class="group"><h2><span class="badge"></span>${k==="life"&&LIFE_HZ[h.k]?LIFE_HZ[h.k]:h.name}<span class="sub">${h.sub}</span><span class="cnt">${items.length-items.filter(t=>taskBucket(t)===3).length}</span><button class="add" data-act="newtask" data-space="${k}" data-hz="${h.k}" aria-label="${L("在","Add to ")}${k==="life"&&LIFE_HZ[h.k]?LIFE_HZ[h.k]:h.name}${L("里添加","")}">${PLUS}</button></h2>
-      <div class="list">${items.length?act_.map(taskRow).join("")||`<p class="rp-all">${L("这一轮都做完啦 ✓","All done for this round ✓")}</p>`:emptyBox(EMPTY[h.k])}</div>${wait_.length?`<details class="done-box rp-box" data-keep="rp-${k}-${h.k}"><summary>${L(`这一轮做完了 ${wait_.length} 件`,`${wait_.length} done for this round`)}</summary><div class="list">${wait_.map(taskRow).join("")}</div></details>`:""}</section>`;
+    return `<section class="group"><h2><span class="badge"></span>${k==="life"&&LIFE_HZ[h.k]?LIFE_HZ[h.k]:h.name}<span class="sub">${h.sub}</span><span class="cnt">${items.length}</span><button class="add" data-act="newtask" data-space="${k}" data-hz="${h.k}" aria-label="${L("在","Add to ")}${k==="life"&&LIFE_HZ[h.k]?LIFE_HZ[h.k]:h.name}${L("里添加","")}">${PLUS}</button></h2>
+      <div class="list">${items.length?items.map(taskRow).join(""):emptyBox(EMPTY[h.k])}</div></section>`;
   }).join("");
   const done=mine.filter(t=>t.done).sort((a,b)=>(b.doneAt||0)-(a.doneAt||0)).slice(0,50);
   const doneBox=done.length?`<details class="done-box" data-keep="done-${k}"><summary>${L(`已完成 ${done.length} 件`,`${done.length} done`)}</summary><div class="list">${done.map(taskRow).join("")}</div></details>`:"";
