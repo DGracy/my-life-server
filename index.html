@@ -5984,17 +5984,17 @@ const hmW=k=>k.startsWith("_t")?150:SHOPI[k]&&SHOPI[k].fl?100:(HM_BASE[hmBase(k)
 const HM_SZ={S:.8,M:1,L:1.22};
 const hmAll=()=>Object.entries(HM_SL).flatMap(([r,a])=>a.map((p,i)=>({r,i,...p})));
 const hmSlot=id=>{const m=/^([a-zA-Z]+)(\d+)$/.exec(id||"");if(!m||!HM_SL[m[1]]||!HM_SL[m[1]][+m[2]])return null;return {r:m[1],i:+m[2],...HM_SL[m[1]][+m[2]]}};
-const hmTrees=()=>[...forest].sort((a,b)=>(b.grownAt||0)-(a.grownAt||0)).slice(0,2);
+const hmTrees=()=>[...forest].sort((a,b)=>(b.grownAt||0)-(a.grownAt||0)).slice(0,6);
 const hmOwned=()=>Object.keys(closet).filter(k=>SHOPI[k]&&SHOPI[k].slot==="garden");
 function hmFree(k,items,self){const used=new Set(Object.entries(items).filter(([x,v])=>x!==self&&v.s).map(([,v])=>v.s));const rs=hmRows(k);return hmAll().filter(s=>rs.includes(s.r)&&!used.has(s.r+s.i)).sort((a,b)=>rs.indexOf(a.r)-rs.indexOf(b.r))}
 // first visit and new purchases: put things somewhere sensible on their own
 function hmAuto(){const it={...(homeS.items||{})},off=new Set(homeS.off||[]);let ch=false;
   const want=[...hmOwned(),...hmTrees().map((_,i)=>"_t"+i)];
-  const pref={_t0:"back3",_t1:"back1",n_g_lamp:"mid0",n_g_fire:"mid1",n_g_flower:"bed1",n_g_bucket:"bed5",n_g_mail:"front0",n_g_sun:"sky1"};
+  const pref={_t0:"back3",_t1:"back1",_t2:"back2",_t3:"back0",_t4:"mid1",_t5:"mid0",n_g_lamp:"mid0",n_g_fire:"mid1",n_g_flower:"bed1",n_g_bucket:"bed5",n_g_mail:"front0",n_g_sun:"sky1"};
   for(const k in it)if(it[k].s&&!hmSlot(it[k].s)){delete it[k];ch=true}
   for(const k of want){if(it[k]||off.has(k))continue;
     if(hmRows(k)[0]==="walk"){it[k]={sz:"M"};ch=true;continue}
-    const fr=hmFree(k,it);if(!fr.length)continue;const p=fr.find(s=>s.r+s.i===pref[k])||fr[0];it[k]={s:p.r+p.i,sz:k==="_t1"?"S":"M"};ch=true}
+    const fr=hmFree(k,it);if(!fr.length)continue;const p=fr.find(s=>s.r+s.i===pref[k])||fr[0];it[k]={s:p.r+p.i,sz:k.startsWith("_t")&&k!=="_t0"?"S":"M"};ch=true}
   for(const k in it)if(!k.startsWith("_t")&&!owns(k)){delete it[k];ch=true}
   if(ch){homeS={...homeS,items:it};hmSave()}}
 function hmSave(){if(!db)return;const r=db.doc("garden/home");const d={items:homeS.items||{},off:homeS.off||[],at:Date.now()};queued(r.path,()=>r.set(d))}
@@ -6010,7 +6010,7 @@ function hmGround(){let t=`<defs><linearGradient id="hmSky" x1="0" y1="0" x2="0"
   return t}
 // small still picture of the home, used by the shop's fitting room
 function hmPreview(fitK,fit){const it=JSON.parse(JSON.stringify(homeS.items||{}));
-  if(!Object.keys(it).length){hmTrees().forEach((_,i)=>it["_t"+i]={s:i?"back1":"back3",sz:i?"S":"M"})}
+  if(!Object.keys(it).length){hmTrees().forEach((_,i)=>it["_t"+i]={s:["back3","back1","back2","back0","mid1","mid0"][i],sz:i?"S":"M"})}
   for(const k of fitK){if(it[k])continue;if(hmRows(k)[0]==="walk"){it[k]={sz:"M"};continue}const fr=hmFree(k,it);if(fr.length)it[k]={s:fr[0].r+fr[0].i,sz:"M"}}
   let wi=0,h="";
   for(const [k,v] of Object.entries(it)){const a=hmArt(k);if(!a)continue;let x,y,sc;
