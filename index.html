@@ -1545,7 +1545,16 @@ body.pomo-open .snack{bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}
 .h-del:hover{color:var(--danger)}
 .habit-add{display:flex;gap:8px}
 .habit-add{margin-bottom:2px}
-.focusbar+.dpent{margin-top:0}
+.fcard{background:var(--surface);border-radius:20px;padding:12px;box-shadow:var(--shadow);margin-bottom:10px}
+.fcard h4{margin:0 0 10px 4px;font-family:var(--f-display);font-weight:400;font-size:17px}
+.fc2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fct{display:flex;align-items:center;gap:10px;border:0;border-radius:16px;padding:10px 12px;text-align:left;font:inherit;color:var(--fg);cursor:pointer;min-width:0}
+.fct>svg{width:34px;height:34px;flex:none}.fct>span:last-child{min-width:0}.fct b{display:block;font-size:14.5px}.fct small{display:block;font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fct.r{background:color-mix(in srgb,#ef5d6e 10%,var(--surface))}.fct.b{background:color-mix(in srgb,#3d63dd 10%,var(--surface))}
+.fct.r.on{box-shadow:inset 0 0 0 2px #ef5d6e}.fct.b.on{box-shadow:inset 0 0 0 2px #6b8cf5}.fct.on small{color:var(--fg);font-weight:600}
+.fct .dpbars{width:34px}
+.ov-dp{margin-left:auto;align-self:center;border:0;font:inherit;font-size:12.5px;font-weight:600;color:#3d63dd;background:color-mix(in srgb,#3d63dd 10%,var(--surface));border-radius:99px;padding:5px 11px;cursor:pointer;white-space:nowrap}
+:root[data-theme="dark"] .ov-dp,:root:not([data-theme])[data-tod="night"] .ov-dp{color:#9fb3ff}
 .dpent{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;width:100%;text-align:left;border:0;padding:10px 12px;border-radius:20px;background:var(--surface);color:var(--fg);box-shadow:var(--shadow);font:inherit;cursor:pointer;margin:0 0 10px}
 .dpent>span:nth-child(2){min-width:0}.dpent b{display:block;font-family:var(--f-display);font-weight:400;font-size:17px}.dpent small{display:block;font-size:12.5px;color:var(--muted)}
 .dpbars{display:flex;gap:3px;align-items:flex-end;justify-content:center;flex:none}.dpbars i{width:8px;border-radius:3px;background:#6b8cf5}.dpbars i:nth-child(2){background:#8b9cf0}.dpbars i:nth-child(3){background:#9b7af0}
@@ -1589,7 +1598,9 @@ body.dp-on{overflow:hidden}
 .dp-tr{display:flex;gap:10px;align-items:stretch}.dp-tr .tm{width:44px;flex:none;font-size:12px;color:var(--dp-mut);padding-top:9px;font-family:Fredoka,Arial,sans-serif}
 .dp-tr .bk{flex:1;border-radius:14px;padding:8px 12px;color:#fff;font-size:12.5px;display:flex;flex-direction:column;position:relative;min-width:0}.dp-tr .bk b{font-size:13.5px}
 .bk.b0{background:#2e2840}.bk.b1{background:#5a6fd6}.bk.b2{background:#e8789a}
-.bk.ev{background:repeating-linear-gradient(135deg,var(--dp-chip) 0 8px,color-mix(in srgb,var(--dp-chip) 70%,var(--dp-card)) 8px 16px);color:var(--dp-fg)}.bk.ev button{position:absolute;right:8px;top:6px;border:0;background:none;color:var(--dp-mut);font-size:16px;cursor:pointer}
+.bk.ev{background:repeating-linear-gradient(135deg,var(--dp-chip) 0 8px,color-mix(in srgb,var(--dp-chip) 70%,var(--dp-card)) 8px 16px);color:var(--dp-fg)}
+button.bk{border:0;text-align:left;font:inherit;cursor:pointer}.dp-tr .bk .ed{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-style:normal;font-size:11.5px;opacity:.7}
+.dp-edf{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 4px 54px;font-size:13px;color:var(--dp-mut)}.dp-edf input,.dp-edf select{border:1.5px solid var(--dp-line);border-radius:10px;padding:5px 8px;font:inherit;font-size:13px;background:var(--dp-card);color:var(--dp-fg)}.dp-edf .sp{flex:1}
 .dp-addev{align-self:flex-start;margin-left:54px;border:0;font:inherit;font-size:12.5px;color:var(--dp-acc);background:color-mix(in srgb,var(--dp-acc) 12%,transparent);border-radius:99px;padding:5px 12px;cursor:pointer}
 .dp-evf{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:54px}.dp-evf input{border:1.5px solid var(--dp-line);border-radius:10px;padding:6px 8px;font:inherit;font-size:13px;background:var(--dp-card);color:var(--dp-fg);min-width:0}.dp-evf input:first-child{width:110px}
 .dp-bar{padding:24px 0 0;width:calc(100% - 64px);max-width:560px;margin:0 auto}
@@ -2670,7 +2681,7 @@ const TOUR_FULL=()=>[
   {sel:".tabs",t:L("四个板块","Four boards"),b:L("<em>打卡</em>放每天的小习惯，<em>生活 / 学习 / 工作</em>放各自的任务。不用的板块可以在设置里关掉。","<em>Habits</em> holds your daily habits; <em>Life / Study / Work</em> hold their own tasks. Turn off boards you don't need in Settings.")},
   {sel:"#fab",pad:4,t:L("想到什么就丢给{pet}","Toss anything to {pet}"),b:L("点右下角，随手写一段话，比如「周五交 essay，明天买牛奶」，{pet}会自动分到对应的板块。","Tap the bottom-right button and jot down anything, like “essay due Friday, buy milk tomorrow”. {pet} sorts it into the right boards.")},
   {go:"study",sel:".board .task",t:L("任务","Tasks"),b:L("点任务可以改日期、设成<em>每周重复</em>，想分几步做就点「<em>加子任务</em>」。完成了点左边的圆圈。","Tap a task to change its date, make it <em>repeat</em>, or <em>break it down</em> when it's hard to start. Tick the circle when it's done.")},
-  {go:"study",sel:".focusbar",t:L("番茄专注","Focus timer"),b:L("点「▶ 开始」或任务右边的 ▶，{pet}陪你专注 25 分钟，结束后提醒你休息。专注的时间会记在任务上。","Tap ▶ Start or the ▶ on a task and {pet} focuses with you for 25 minutes, then reminds you to rest. Focus time is saved on the task.")},
+  {go:"study",sel:".fcard",t:L("番茄专注","Focus timer"),b:L("点「▶ 开始」或任务右边的 ▶，{pet}陪你专注 25 分钟，结束后提醒你休息。专注的时间会记在任务上。","Tap ▶ Start or the ▶ on a task and {pet} focuses with you for 25 minutes, then reminds you to rest. Focus time is saved on the task.")},
   {go:"study",sel:".cls,.cls-empty",t:L("今天的课","Today's classes"),b:L("把课程表加进来，每天在这里看今天有什么课。可以手动加，也能导入学校课表的 .ics 文件。","Add your timetable to see today's classes here. Add them by hand or import your school's .ics file.")},
   {go:"lifeshop",sel:".food",t:L("吃 & 买","Food"),b:L("不知道吃什么就转一下转盘。下面还有<em>冰箱</em>，记着食材放了几天；<em>购物清单</em>买到了能直接放进冰箱。","Can't decide what to eat? Spin the wheel. Below are your <em>fridge</em>, which tracks how long things have been in, and your <em>shopping list</em>.")},
   {sel:"#jbtn",pad:4,t:L("小结","Today"),b:L("每天看看做了什么：<em>时间轴</em>、值得记住的大小事，还有「{pet}记着呢」帮你记生日和纪念日。","See your day: the <em>timeline</em>, moments worth remembering, and “{pet} remembers” for birthdays and anniversaries.")},
@@ -2678,7 +2689,7 @@ const TOUR_FULL=()=>[
   {sel:"#gear",pad:4,t:L("设置","Settings"),b:L("改名字、天气城市、新的一天从几点开始，登录同步手机和电脑。想再看这段介绍，也在这里。","Your name, weather city, when a new day starts, and sync. You can replay this tour here too.")}];
 const TOUR_NEW=()=>{const f=TOUR_FULL();return [
   {sel:"#wx",pad:4,t:L("新功能 · 天气","New · Weather"),b:f[1].b},
-  {go:"study",sel:".focusbar",t:L("新功能 · 番茄专注","New · Focus timer"),b:f[5].b},
+  {go:"study",sel:".fcard",t:L("新功能 · 番茄专注","New · Focus timer"),b:f[5].b},
   {go:"study",sel:".board .task",t:L("新功能 · 重复和子任务","New · Repeat & subtasks"),b:L("点开任务可以设成<em>每周重复</em>、加小步骤；想分几步做就点「<em>加子任务</em>」。勾完之后还能改成「是昨天做的」。","Open a task to make it <em>repeat</em> or add steps, or <em>break it down</em> when it's hard to start. After ticking, you can say you did it yesterday.")},
   {go:"study",sel:".cls,.cls-empty",t:L("新功能 · 课程表","New · Timetable"),b:f[6].b},
   {go:"lifeshop",sel:".food",t:L("新功能 · 吃 & 买","New · Food"),b:f[7].b},
@@ -2695,7 +2706,7 @@ const NEWS_BASE=()=>[
     {go:"journal",sel:".dtabs",t:L("新功能 · 感恩日记","New · Gratitude journal"),b:L("<em>感恩日记</em>每天写三件让你感激或开心的小事，再选一个明天想做的小行动；想自由写就切到<em>今日感想</em>。","In the <em>Gratitude</em> tab, note three small things you're grateful for, and maybe one small step for tomorrow. Switch to <em>Reflection</em> to write freely.")},
     {go:"study",sel:".board .task",t:L("新功能 · 任务","New · Tasks"),b:L("截止日期可以精确到<em>几点</em>，快到了会显示还剩几小时；每天要做两次的事（比如早晚吃药），重复里可以选<em>早 / 中 / 晚</em>。","Deadlines can have a <em>time</em>, with hours left shown as it gets close. For things you do twice a day, pick <em>morning / noon / evening</em> in Repeat.")}]}];
 NEWS_MORE.push(()=>({id:"1121b",steps:[
-    {web:true,sel:".focusbar",go:"study",pad:6,t:L("新功能 · 专注小窗","New · Focus mini-window"),b:L("点这里「开始」专注，再点「小窗」，桌面角落会出现一颗带番茄圈的{pet}。点它展开，能看到正在做的任务、勾掉步骤、点「完成任务」；10 秒不碰它会自己缩回去。做完一件，小窗里直接挑下一件开始。","On a computer, start focus and pick “Mini window”: {pet} sits in a corner with the tomato ring. Tap to open it, tick steps or mark the task done; it tucks itself away after 10 seconds. When one's done, pick the next right there.")}]}));
+    {web:true,sel:".fcard",go:"study",pad:6,t:L("新功能 · 专注小窗","New · Focus mini-window"),b:L("点这里「开始」专注，再点「小窗」，桌面角落会出现一颗带番茄圈的{pet}。点它展开，能看到正在做的任务、勾掉步骤、点「完成任务」；10 秒不碰它会自己缩回去。做完一件，小窗里直接挑下一件开始。","On a computer, start focus and pick “Mini window”: {pet} sits in a corner with the tomato ring. Tap to open it, tick steps or mark the task done; it tucks itself away after 10 seconds. When one's done, pick the next right there.")}]}));
 NEWS_MORE.push(()=>({id:"1119f",steps:[
     {sel:".garden",pad:6,t:L("新功能 · 睡眠挪了地方","New · Sleep moved"),b:L("睡觉前和起床后，{pet}说话的地方会出现「我去睡啦」「我起床啦」，点一下就记下，会同步到每天的小结里。昨晚睡了多久显示在 Overview 的今天最上面，点 › 可以改时间、选睡得怎么样。","Before bed and after waking, “Off to bed” / “I'm up” appears by {pet}'s words. One tap logs it into your daily notes. Last night's sleep sits at the top of Overview's Today; tap › to edit.")}]}));
 NEWS_MORE.push(()=>({id:"1119e",steps:[
@@ -2719,7 +2730,7 @@ NEWS_MORE.push(()=>({id:"1118f",steps:[
     {sel:"#coinBtn",pad:4,t:L("新功能 · 芽币和小商店","New · Coins & shop"),b:L("专注每 5 分钟得 1 个芽币，完成一个番茄再 +2，{pet}升级和种树也有奖励。点这里进小商店，给{pet}买帽子、围巾、耳机，花园摆件和专注时的背景特效，买之前可以先试穿。","Earn a coin every 5 minutes of focus, +2 per tomato, plus bonuses when {pet} levels up or you plant a tree. Tap here for the shop: hats, scarves, headphones, garden pieces and focus backgrounds. Try anything on before you buy.")}]}));
 NEWS_MORE.push(()=>({id:"1118b",steps:[
     {sel:"#mbBtn",pad:4,t:L("新功能 · 信可以更自由了","New · More ways to write"),b:L("写信时可以<em>改抬头</em>（也可以不要抬头），选<em>居中 / 靠右</em>、字的大小和颜色，还能<em>贴 3 张照片</em>。字体也多了文楷、粉圆和小薇。","Letters can now have <em>any heading</em> (or none), <em>centred or right-aligned</em> text, text size and colour, and <em>up to 3 photos</em>. New fonts too.")},
-    {go:"study",sel:".focusbar",t:L("新功能 · 专注小窗","New · Focus mini window"),b:L("在电脑的 Chrome 或 Edge 上专注时，点按钮那排最右边的小窗图标，倒计时会浮在所有窗口上面。","On desktop Chrome or Edge, tap the mini-window button while focusing and the timer floats above every window."),web:1},
+    {go:"study",sel:".fcard",t:L("新功能 · 专注小窗","New · Focus mini window"),b:L("在电脑的 Chrome 或 Edge 上专注时，点按钮那排最右边的小窗图标，倒计时会浮在所有窗口上面。","On desktop Chrome or Edge, tap the mini-window button while focusing and the timer floats above every window."),web:1},
     {sel:"#gear",pad:4,t:L("新功能 · 节日和同步","New · Holidays & sync"),b:L("过节的时候小芽会换装，不想要可以在设置里关掉。同步也搬进了设置里，⚙️ 上有蓝色小勾就是在同步。","{pet} dresses up on holidays; turn it off in Settings. Sync moved into Settings too: a blue tick on ⚙️ means you're synced.")}]}));
 NEWS_MORE.push(()=>({id:"1118c",steps:[
     {sel:"#gear",pad:4,t:L("新功能 · 按超市分组","New · Group by shop"),b:L("在设置里打开「按超市分组」，购物清单就会按 Tesco、亚超这样分开。加东西时选一下在哪家买，常买的东西会记住上次的店。","Turn on “Group by shop” in Settings and your shopping list splits by shop. Pick a shop when adding things; staples remember where you last bought them.")}]}));
@@ -2763,7 +2774,7 @@ NEWS_MORE.push(()=>moonS.enabled?{id:"1125c",steps:[
 NEWS_MORE.push(()=>({id:"1126a",steps:on("joy")?[
     {go:"ov",sel:".jar-card",pad:6,t:L("新功能 · 开心罐","New · Joy jar"),b:L("无聊又不知道干嘛的时候，点「抽一个」。把让你开心的小事写成小纸卷放进罐子，选一下现在的状态，摇一摇，{pet}帮你抽一卷。做过的会记进小结的「开心收集」。","When you're bored and don't know what to do, tap Pick one. Fill the jar with little things that make you happy, pick how you feel, shake, and {pet} draws one. What you do shows up in the recap.")}]:[]}));
 NEWS_MORE.push(()=>({id:"1126b",steps:on("study")||on("work")?[
-    {go:"study",sel:".dpent",pad:6,t:L("新功能 · 专注半天","New · Deep half-day"),b:L("先把三件大事和杂事写下来，做个开工小仪式，然后 90 · 90 · 60 一段段做。中间有会可以先排进去，做完一段也可以先停下，回来再继续。","Write down three big things and the little ones, do a tiny ritual, then work in 90 · 90 · 60 blocks. Add a meeting in between, or stop after a block and carry on later.")}]:[]}));
+    {go:"study",sel:".fcard",pad:6,t:L("新功能 · 专注半天","New · Deep half-day"),b:L("先把三件大事和杂事写下来，做个开工小仪式，然后 90 · 90 · 60 一段段做。中间有会可以先排进去，做完一段也可以先停下，回来再继续。","Write down three big things and the little ones, do a tiny ritual, then work in 90 · 90 · 60 blocks. Add a meeting in between, or stop after a block and carry on later.")}]:[]}));
 const newsPending=()=>NEWS().filter(n=>!tourSeen("nf:"+n.id));
 let tourOn=null;
 function tourGo(go){
@@ -3830,7 +3841,7 @@ function joyClick(e){const b=e.target.closest("[data-j],[data-je]");if(!b)return
 /* ---------- 专注半天: three big things, 90 · 90 · 60, on top of the focus timer ---------- */
 const DEEP_KEY="lifeos-deep";
 let DS=null;try{DS=JSON.parse(localStorage.getItem(DEEP_KEY)||"null")}catch(_){DS=null}
-let deepOpen=false, deepPickOpen=false, deepEvtOpen=false, deepWarned=0;
+let deepOpen=false, deepPickOpen=false, deepEvtOpen=false, deepWarned=0, deepEd=null;
 const saveDS=()=>{try{DS?localStorage.setItem(DEEP_KEY,JSON.stringify(DS)):localStorage.removeItem(DEEP_KEY)}catch(_){}};
 const DEEP_PRESETS=[[90,90,60],[60,60,45]];
 const deepLive=()=>!!(DS&&DS.step!=="done");
@@ -3844,10 +3855,17 @@ function deepRepSmalls(){const td=todayStr();return tasks.filter(t=>t.repeat&&!t
 function deepNew(space){DS={id:Date.now().toString(36),day:todayStr(),space:space||(tab==="work"?"work":"study"),step:"dump",bigs:[{t:""},{t:""},{t:""}],smalls:deepRepSmalls(),segs:DEEP_PRESETS[0].map((min,i)=>({min,big:i,used:0,done:false})),evts:[],start:m2hm(Math.ceil((nowMin()+5)/5)*5),ready:{},cur:0,focusMs:0};saveDS()}
 // planned start of each block: segments in order, 15-minute breaks between them, events push later blocks past them
 function deepPlan(){const out=[];let t=hm2m(DS.start);const ev=[...DS.evts].sort((a,b)=>hm2m(a.from)-hm2m(b.from));
-  DS.segs.forEach((s,i)=>{if(i>0)t+=15;let len=s.min;
-    for(const e of ev){const f=hm2m(e.from),to=hm2m(e.to);if(t<to&&t+len>f&&!e.placed){if(t<f){/* the block can't fit before the event: move it after */}t=Math.max(t,to)}}
-    out.push({k:"seg",i,at:t,len});t+=len});
+  DS.segs.forEach((s,i)=>{if(i>0)t+=15;if(s.at)t=hm2m(s.at);let left=s.min,part=0,guard=0;
+    while(left>0&&guard++<20){const inE=ev.find(e=>t>=hm2m(e.from)&&t<hm2m(e.to));if(inE){t=hm2m(inE.to);continue}
+      const nx=ev.find(e=>hm2m(e.from)>t&&hm2m(e.from)<t+left);
+      if(nx){const piece=hm2m(nx.from)-t;if(piece>=10){out.push({k:"seg",i,at:t,len:piece,part:part++});left-=piece}t=hm2m(nx.to);continue}
+      out.push({k:"seg",i,at:t,len:left,part:part++});t+=left;left=0}});
   const rows=[...out,...ev.map(e=>({k:"evt",e,at:hm2m(e.from)}))].sort((a,b)=>a.at-b.at||(a.k==="evt"?-1:1));return rows}
+function deepSub(){if(!deepLive())return L("三件大事","Three big things");const st=DS.step,n=DS.cur+1,run=deepRunning();
+  return st==="dump"||st==="ready"?L("接着准备 ›","Carry on ›"):run?(P.pausedAt?L(`第 ${n} 段 · 暂停中 ›`,`Block ${n} · paused ›`):L(`第 ${n} 段 · ${Math.ceil(remain()/6e4)} 分 ›`,`Block ${n} · ${Math.ceil(remain()/6e4)} min ›`)):st==="break"?L("休息中 ›","On a break ›"):L(`停在第 ${n} 段 ›`,`Stopped at block ${n} ›`)}
+function deepPrefill(){if(!DS||DS.step!=="dump"||DS.bigs.some(b=>b.t))return;const td=todayStr();
+  const xs=tasks.filter(t=>(t.space==="study"||t.space==="work")&&!t.done&&!t.deleted&&!t.letGo&&!(t.repeat&&t.due&&t.due>td)&&(qOf(t)==="q1"||qOf(t)==="q2")).sort((a,b)=>(qOf(a)<qOf(b)?-1:qOf(a)>qOf(b)?1:sortTasks(a,b))).slice(0,3);
+  xs.forEach((t,i)=>DS.bigs[i]={t:t.title.slice(0,40),taskId:t.id});if(xs.length){DS.space=xs[0].space;saveDS();renderDeep()}}
 function deepCard(k){if(k!=="study"&&k!=="work")return "";const on_=deepLive();
   const bars=`<span class="dpbars" aria-hidden="true"><i style="height:22px"></i><i style="height:22px"></i><i style="height:15px"></i></span>`;
   if(!on_)return `<button class="dpent" data-act="deepopen" data-space="${k}">${bars}<span><b>${L("专注半天","Deep half-day")}</b><small>${L("写下三件大事，一件件做完","Write down three big things, then do them one by one")}</small></span><em>${L("开始","Start")}</em></button>`;
@@ -3915,7 +3933,10 @@ function deepReadyHTML(){const R=DS.ready,all=R.tabs&&R.phone&&R.water,plan=deep
   return `<div class="dp-hd"><div><h2>${L("开工前的小仪式","A little ritual first")}</h2><p>${L("三件都勾上，就可以开始了","Tick all three and you're ready")}</p></div><span class="dp-pet">${SF.happy}</span></div>
   <div class="dp-ready">${rd("tabs",L("关掉无关的网页","Close unrelated tabs"),L("只留今天要用的","Keep only what you need"))}${rd("phone",L("手机扔远一点","Put your phone away"),L("放到够不着的地方","Somewhere out of reach"))}${rd("water",L("倒好一杯水","Get a glass of water"),L("中途就不用起来了","So you won't need to get up"))}
   <div class="dp-plan"><div class="dp-ph"><label>${L("几点开始","Start at")} <input type="time" data-dp-in="start" value="${DS.start}"></label><span class="dp-pre">${DEEP_PRESETS.map(p=>`<button class="${p.join()===DS.segs.map(s=>s.min).join()?"on":""}" data-dp="preset" data-v="${p.join(",")}">${p.join(" · ")}</button>`).join("")}</span></div>
-  ${plan.map(r=>r.k==="seg"?`<div class="dp-tr"><span class="tm">${m2hm(r.at)}</span><span class="bk b${r.i}"><b>${L(`第${["一","二","三"][r.i]}段 · ${r.len}′`,`Block ${r.i+1} · ${r.len}′`)}</b>${name(r.i)}</span></div>`:`<div class="dp-tr"><span class="tm">${esc(r.e.from)}</span><span class="bk ev"><b>${esc(r.e.name)} · ${esc(r.e.from)}–${esc(r.e.to)}</b><button data-dp="evtdel" data-i="${DS.evts.indexOf(r.e)}" aria-label="${L("删掉","Remove")}">×</button></span></div>`).join("")}
+  ${plan.map(r=>{if(r.k==="seg"){const ed=deepEd&&deepEd.k==="seg"&&deepEd.i===r.i,sg=DS.segs[r.i];
+      return `<div class="dp-tr"><span class="tm">${m2hm(r.at)}</span><button class="bk b${r.i}" data-dp="edseg" data-i="${r.i}"><b>${r.part?L(`第${["一","二","三"][r.i]}段（续）· ${r.len}′`,`Block ${r.i+1} (cont.) · ${r.len}′`):L(`第${["一","二","三"][r.i]}段 · ${r.len}′`,`Block ${r.i+1} · ${r.len}′`)}</b>${name(r.i)}<i class="ed">${L("改","Edit")}</i></button></div>${ed&&!r.part?`<div class="dp-edf"><label>${L("几点开始","Starts")} <input type="time" data-dp-in="segat" value="${m2hm(r.at)}"></label><label>${L("多久","Length")} <select data-dp-in="segmin">${[30,45,60,75,90,105,120].map(v=>`<option value="${v}"${v===sg.min?" selected":""}>${v}′</option>`).join("")}</select></label><span class="sp"></span>${sg.at?`<button class="btn" data-dp="segauto" data-i="${r.i}">${L("自动排","Auto")}</button>`:""}<button class="btn primary" data-dp="edok" data-i="${r.i}">${L("好","OK")}</button></div>`:""}`}
+      const j=DS.evts.indexOf(r.e),ed=deepEd&&deepEd.k==="evt"&&deepEd.i===j;
+      return `<div class="dp-tr"><span class="tm">${esc(r.e.from)}</span><button class="bk ev" data-dp="edevt" data-i="${j}"><b>${esc(r.e.name)} · ${esc(r.e.from)}–${esc(r.e.to)}</b><i class="ed">${L("改","Edit")}</i></button></div>${ed?`<div class="dp-evf"><input data-dp-in="evname" maxlength="20" value="${esc(r.e.name)}" aria-label="${L("什么事","What")}"><input type="time" data-dp-in="evfrom" value="${esc(r.e.from)}" aria-label="${L("开始","From")}"><span>–</span><input type="time" data-dp-in="evto" value="${esc(r.e.to)}" aria-label="${L("结束","To")}"><button class="btn" data-dp="evtdel" data-i="${j}">${L("删掉","Remove")}</button><button class="btn primary" data-dp="evtsave" data-i="${j}">${L("好","OK")}</button></div>`:""}`}).join("")}
   ${deepEvtOpen?`<div class="dp-evf"><input data-dp-in="evname" maxlength="20" placeholder="${L("比如：组会","e.g. Lab meeting")}" aria-label="${L("什么事","What")}"><input type="time" data-dp-in="evfrom" aria-label="${L("开始","From")}"><span>–</span><input type="time" data-dp-in="evto" aria-label="${L("结束","To")}"><button class="btn primary" data-dp="evtadd">${L("加上","Add")}</button></div>`:`<button class="dp-addev" data-dp="evtopen">${L("＋ 中间有事","＋ Something in between")}</button>`}</div></div>
   <div class="dp-bot"><button class="dp-go" data-dp="start" ${all?"":"disabled"}>${L(`开始专注`,`Start focusing`)}</button><button class="dp-back" data-dp="back">${L("‹ 回去改大事","‹ Back to the list")}</button></div>`}
 function deepRunHTML(){const s=DS.segs[DS.cur],b=DS.bigs[s.big]||{},paused=!!P.pausedAt;
@@ -3963,9 +3984,15 @@ function deepClick(e){const b=e.target.closest("[data-dp]");if(!b)return;const a
   if(a==="back"){DS.step="dump";saveDS();renderDeep();return}
   if(a==="rd"){DS.ready[b.dataset.k]=!DS.ready[b.dataset.k];saveDS();renderDeep();return}
   if(a==="preset"){const v=b.dataset.v.split(",").map(Number);DS.segs=v.map((min,k)=>({min,big:DS.segs[k]?DS.segs[k].big:k,used:0,done:false}));saveDS();renderDeep();return}
-  if(a==="evtopen"){deepEvtOpen=true;renderDeep();const n=document.querySelector('#deepRoot [data-dp-in="evname"]');if(n)n.focus();return}
+  if(a==="evtopen"){deepEvtOpen=true;deepEd=null;renderDeep();const n=document.querySelector('#deepRoot [data-dp-in="evname"]');if(n)n.focus();return}
   if(a==="evtadd"){const r=document.getElementById("deepRoot"),nm=r.querySelector('[data-dp-in="evname"]').value.trim()||L("有事","Busy"),f=r.querySelector('[data-dp-in="evfrom"]').value,t=r.querySelector('[data-dp-in="evto"]').value;if(!f||!t||t<=f){r.querySelector('[data-dp-in="'+(!f?"evfrom":"evto")+'"]').focus();return}DS.evts.push({name:nm.slice(0,20),from:f,to:t});deepEvtOpen=false;saveDS();renderDeep();return}
-  if(a==="evtdel"){DS.evts.splice(i,1);saveDS();renderDeep();return}
+  if(a==="evtdel"){DS.evts.splice(i,1);deepEd=null;saveDS();renderDeep();return}
+  if(a==="edseg"){deepEd=deepEd&&deepEd.k==="seg"&&deepEd.i===i?null:{k:"seg",i};deepEvtOpen=false;renderDeep();return}
+  if(a==="edevt"){deepEd=deepEd&&deepEd.k==="evt"&&deepEd.i===i?null:{k:"evt",i};deepEvtOpen=false;renderDeep();return}
+  if(a==="edok"){const r=document.getElementById("deepRoot"),at=r.querySelector('[data-dp-in="segat"]').value,mn=+r.querySelector('[data-dp-in="segmin"]').value,sg=DS.segs[i],cur=deepPlan().find(x=>x.k==="seg"&&x.i===i);
+    if(at&&cur&&at!==m2hm(cur.at)){if(i===0){DS.start=at;sg.at=null}else sg.at=at}if(mn)sg.min=mn;deepEd=null;saveDS();renderDeep();return}
+  if(a==="segauto"){DS.segs[i].at=null;deepEd=null;saveDS();renderDeep();return}
+  if(a==="evtsave"){const r=document.getElementById("deepRoot"),nm=r.querySelector('[data-dp-in="evname"]').value.trim()||L("有事","Busy"),f=r.querySelector('[data-dp-in="evfrom"]').value,t=r.querySelector('[data-dp-in="evto"]').value;if(!f||!t||t<=f){r.querySelector('[data-dp-in="'+(!f?"evfrom":"evto")+'"]').focus();return}DS.evts[i]={name:nm.slice(0,20),from:f,to:t};deepEd=null;saveDS();renderDeep();return}
   if(a==="start"||a==="next"){if(P&&!P.deep&&P.phase==="focus"){cheer(L("先把正在跑的番茄收好啦","Saved the tomato that was running"),"happy")}DS.breakEnd=null;DS.breakRang=false;stopFlash();deepStartSeg();return}
   if(a==="pause"){if(!P)return;if(P.pausedAt){P.pausedTotal+=Date.now()-P.pausedAt;P.pausedAt=null;wakeOn();stopFlash()}else{P.pausedAt=Date.now();wakeOff()}saveP();renderDeep();render();return}
   if(a==="pip"){openPip();return}
@@ -4421,8 +4448,10 @@ function focusBar(k){
   const td=todayStr(), n=tomatoesOn(td), m=minsOn(td);
   if(P&&P.phase==="pick")return `<div class="pick">${SF.star}<div class="pt"><b>${P.ended?L("休息结束啦","Break's over"):L("挑下一件要专注的事","Pick what to focus on next")}</b><span>${P.ended?L("挑下一件，点右边的 ▶ 开始","Pick one and tap ▶ to start"):L("点右边的 ▶ 就开始新的番茄","Tap ▶ on a task to start a new tomato")}</span></div><button class="x" data-act="pickrest">${SF.nap}${P.ended?L("再歇会儿","Rest a bit more"):L("先歇会儿","Rest first")}</button></div>`;
   const live=P&&(P.phase==="focus"||P.phase==="break");
-  return `<div class="focusbar">${FB_ICON}<div><b>${L("番茄专注","Focus")}</b><small>${n||m>=1?L(`今天 ${n} 个番茄 · ${fmtHM(m)}`,`Today: ${n} ${n_(n,"tomato","tomatoes")} · ${fmtHM(m)}`):L("挑一件事，专注一会儿","Pick something and focus for a while")}</small></div>
-    <button class="go" data-act="${live?"pomoopen":"focusstart"}" data-space="${k}">${live?(P.deep?L("专注半天中 ›","Deep focus ›"):P.phase==="break"?L("休息中 ›","On break ›"):L("专注中 ›","Focusing ›")):"▶ "+L("开始","Start")}</button></div>${deepCard(k)}`;
+  const pl=live&&!P.deep;
+  return `<div class="fcard"><h4>${L("专注","Focus")}</h4><div class="fc2">
+    <button class="fct r${pl?" on":""}" data-act="${pl?"pomoopen":"focusstart"}" data-space="${k}">${FB_ICON}<span><b>${L("番茄","Tomato")}</b><small>${pl?(P.phase==="break"?L("休息中 ›","On break ›"):L(`专注中 · ${Math.ceil(remain()/6e4)} 分 ›`,`${Math.ceil(remain()/6e4)} min left ›`)):n||m>=1?L(`今天 ${n} 个 · ${fmtHM(m)}`,`${n} today · ${fmtHM(m)}`):L("专注一会儿","Focus for a while")}</small></span></button>
+    <button class="fct b${deepLive()?" on":""}" data-act="deepopen" data-space="${k}"><span class="dpbars" aria-hidden="true"><i style="height:20px"></i><i style="height:20px"></i><i style="height:14px"></i></span><span><b>${L("专注半天","Deep half-day")}</b><small>${deepSub()}</small></span></button></div></div>`;
 }
 /* ---------- repeat / subtasks / snackbar ---------- */
 const REP_SVG=`<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M5 11a7 7 0 0 1 12-4.6M19 13a7 7 0 0 1-12 4.6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M17.5 2.8v4h-4M6.5 21.2v-4h4" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
@@ -4824,7 +4853,7 @@ function overview(){
   const chips=sp.length>1?`<div class="qchips">${[["all",L("全部","All")],...sp.map(k=>[k,name[k]])].map(([k,n])=>`<button class="qchip${ovFilter===k?" on":""}" data-act="ovf" data-v="${k}">${k!=="all"?`<i style="background:var(--${k})"></i>`:""}${n}</button>`).join("")}</div>`:"";
   const dt=new Date(td+"T12:00:00"),n=over.length+today.length;
   const first=over[0]||today[0];
-  const todayBox=`<section class="ov-today"><div class="ov-th"><b>${L("今天","Today")}</b><small>${L(`${dt.getMonth()+1}月${dt.getDate()}日 · 周${WD[dt.getDay()]}`,`${WDEN[dt.getDay()]}, ${dt.getDate()} ${MON[dt.getMonth()]}`)}</small><em>${n?L(`${n} 件`,`${n} to do`):""}</em></div>
+  const todayBox=`<section class="ov-today"><div class="ov-th"><b>${L("今天","Today")}</b><small>${L(`${dt.getMonth()+1}月${dt.getDate()}日 · 周${WD[dt.getDay()]}`,`${WDEN[dt.getDay()]}, ${dt.getDate()} ${MON[dt.getMonth()]}`)}</small><em>${n?L(`${n} 件`,`${n} to do`):""}</em>${on("study")||on("work")?`<button class="ov-dp" data-act="deepopen" data-from="ov">${L("专注半天 ›","Deep half-day ›")}</button>`:""}</div>
     ${on("habit")||OV_SP.some(on)?sleepRow():""}
     ${joyCard()}
     ${(()=>{const {live,done}=habitStats();if(!live.length)return "";const ck=checkins[td]||{};const hs=[...live].sort((a,b)=>(a.order||0)-(b.order||0));
@@ -7604,7 +7633,7 @@ document.addEventListener("click",async e=>{
   if(act.dataset.act==="wishundraw"){wishDrawn=null;render();return}
   if(act.dataset.act==="focus"){startFocus(id);return}
   if(act.dataset.act==="focusstart"){const t=defaultTask(act.dataset.space);startFocus(t?t.id:null);return}
-  if(act.dataset.act==="deepopen"){openDeep(act.dataset.space);return}
+  if(act.dataset.act==="deepopen"){const fresh=!deepLive();openDeep(act.dataset.space);if(fresh&&act.dataset.from==="ov")deepPrefill();return}
   if(act.dataset.act==="pomoopen"){if(P&&P.deep){openDeep();return}if(P){P.open=true;saveP();renderPomo()}return}
   if(act.dataset.act==="pickrest"){P=null;saveP();stopFlash();document.title=BASE_TITLE();render();return}
   if(act.dataset.act==="subtoggle"){const t=tasks.find(x=>x.id===id);if(t)toggleSub(t,+act.dataset.i,act);return}
